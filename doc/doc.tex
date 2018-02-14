@@ -31,6 +31,27 @@
 \usepackage[colorlinks=true]{hyperref}
 % \addbibresource{ivar.bib}
 
+
+%
+% git related things
+%
+\newcommand{\gitDirtyValue}{+}
+\immediate\write18{/bin/bash update_git_info.sh}
+\usepackage[mark,grumpy,dirty=\gitDirtyValue]{gitinfo2}
+\immediate\write18{/bin/bash -c "rm .git/gitHeadInfo.gin"}
+\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}
+	%\gitReln{} (
+	%	\gitAuthorDate
+	%)
+	\ifthenelse{\equal{\gitDirtyValue}{\gitDirty}}{\textbullet{} \DTMnow{}}{}
+	%	Head tags: \gitTags
+}
+
+
+\date{\gitAuthorDate}
+
+
+
 \usepackage{listings}             % for code snippets
 
 \usepackage{pdfpages}
@@ -88,6 +109,20 @@
 	\subsection{Motivation}
 	\subsection{Gegenstand der Arbeit}
 	\subsection{Aufbau der Arbeit}
+	
+	\section{Grundlagen}
+	\subsection{Rust}
+	\subsection{ASN.1}
+	\subsection{PER}
+	
+	\section{Umsetzung}
+	\subsection{Architektur C++}
+	\subsection{Architektur Rust}
+	
+	\section{Evaluierung}
+	
+	\section{Alternativen}
+	\subsection{Protobuf}
 	
 	
 	

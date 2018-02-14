@@ -29,4 +29,4 @@ git --no-pager log -1 --date=short --decorate=short \
         refnames={%d},
         firsttagdescribe={$FIRSTTAG},
         reltag={$RELTAG}
-    ]{gitexinfo}" HEAD > .git/gitHeadInfo.gin
+    ]{gitexinfo}" HEAD > ../.git/gitHeadInfo.gin

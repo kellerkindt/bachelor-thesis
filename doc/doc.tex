@@ -29,7 +29,8 @@
 
 \usepackage[backend=bibtex,style=numeric-comp]{biblatex}
 \usepackage[colorlinks=true]{hyperref}
-% \addbibresource{ivar.bib}
+\addbibresource{rust.bib}
+\addbibresource{general.bib}
 
 
 %
@@ -65,20 +66,12 @@
 %required for linebreak inside tabel cells
 \usepackage{makecell}
 
-%\input{titlepage.tex}
 
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
 
 
 
-
-\newglossaryentry{bpc}{
-	name=,
-	description={
-		Sich immer wieder wiederholender Code der benötigt wird,
-		um eine weitere Funktion umzusetzen.
-	}
-}
+\include{gloassary}
 
 \glsaddall
 \makeglossaries
@@ -113,9 +106,10 @@
 	\subsection{Aufbau der Arbeit}
 	
 	\section{Grundlagen}
-	\subsection{Rust}
+	\include{grundlagen/rust}
 	\subsection{ASN.1}
 	\subsection{PER}
+	\subsection{MEC-View Server und Umgebung}
 	
 	\section{Umsetzung}
 	\subsection{Architektur C++}

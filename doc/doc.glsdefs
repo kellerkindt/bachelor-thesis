@@ -1,0 +1,30 @@
+\ifglsentryexists{ffi}{}%
+{%
+\gls@defglossaryentry{ffi}%
+{%
+name={Foreign Function Interface},%
+sort={Foreign Function Interface},%
+type={main},%
+first={Foreign Function Interface},%
+firstplural={Foreign Function Interfaces},%
+text={Foreign Function Interface},%
+plural={Foreign Function Interfaces},%
+description={ foreign function interface },%
+descriptionplural={ foreign function interface },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%

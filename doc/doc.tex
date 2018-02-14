@@ -35,6 +35,8 @@
 %
 % git related things
 %
+\date{\gitAuthorDate}
+
 \newcommand{\gitDirtyValue}{+}
 \immediate\write18{/bin/bash update_git_info.sh}
 \usepackage[mark,grumpy,dirty=\gitDirtyValue]{gitinfo2}
@@ -43,12 +45,12 @@
 	%\gitReln{} (
 	%	\gitAuthorDate
 	%)
-	\ifthenelse{\equal{\gitDirtyValue}{\gitDirty}}{\textbullet{} \DTMnow{}}{}
+	\ifthenelse{\equal{\gitDirtyValue}{\gitDirty}}{\textbullet{} \DTMnow}{\gitAuthorDate}
 	%	Head tags: \gitTags
 }
 
 
-\date{\gitAuthorDate}
+
 
 
 

@@ -1,0 +1,103 @@
+% use koma script classes
+% \documentclass[12pt]{scrartcl}
+% \documentclass[11pt,a4paper]{article}
+\documentclass[12pt,table]{scrartcl}
+\usepackage[table]{xcolor}
+
+
+\usepackage[datesep=--,showzoneminutes=false,showzone=false]{datetime2}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{ragged2e}
+\usepackage[english]{babel}
+\usepackage{pgfplots}
+\usepackage{color, colortbl}
+\usepackage{ulem}
+\usepackage{placeins}
+
+\usepgfplotslibrary{fillbetween}
+
+%\usepackage{tikz-uml}
+\usepackage{float}
+\usepackage{tabularx}
+
+% required for nicer footer / header
+\usepackage{fancyhdr}
+
+\usepackage[backend=bibtex,style=numeric-comp]{biblatex}
+\usepackage[colorlinks=true]{hyperref}
+% \addbibresource{ivar.bib}
+
+\usepackage{listings}             % for code snippets
+
+\usepackage{pdfpages}
+\usepackage[acronym,automake]{glossaries}
+
+% better header for acronyms
+%\addto\captionsngerman{\renewcommand*\acronymname{Abkürzungsverzeichnis}}
+
+%required for linebreak inside tabel cells
+\usepackage{makecell}
+
+\input{titlepage.tex}
+
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+
+
+
+
+\newglossaryentry{bpc}{
+	name=,
+	description={
+		Sich immer wieder wiederholender Code der benötigt wird,
+		um eine weitere Funktion umzusetzen.
+	}
+}
+
+\glsaddall
+\makeglossaries
+
+\defglsdisplayfirst[main]{\glsentryname{\glslabel}\protect\footnote{\glsentrydesc{\glslabel}}}
+
+\newacronym{poc}{POC}{\underline{P}roof \underline{o}f \underline{c}oncept \todo{...}}
+\newacronym{swh}{SWH}{\underline{S}emester \underline{W}eekly \underline{H}ours}
+	
+\begin{document}
+	\maketitle
+	\thispagestyle{empty}
+	
+	\pagenumbering{roman}
+	\setcounter{page}{0}
+	
+	\clearpage	
+	\hypersetup{allcolors=black}
+	\tableofcontents
+	\hypersetup{allcolors=blue}
+	\newpage
+	
+	
+	\pagenumbering{arabic}
+	\setcounter{page}{1}
+	
+	
+	
+	\pagenumbering{Roman}
+	
+	\clearpage
+	\addcontentsline{toc}{section}{Literatur}
+	\printbibliography
+	
+	\clearpage
+	\addcontentsline{toc}{section}{List of abbreviations}
+	\printglossaries
+
+	\clearpage
+	\listoffigures
+	
+	
+\end{document}
+
+\makeglossaries

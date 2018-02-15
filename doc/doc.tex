@@ -63,7 +63,7 @@
 %
 % git related things
 %
-\date{\gitAuthorDate}
+\renewcommand{\date}{\ifthenelse{\equal{\gitDirtyValue}{\gitDirty}}{\today}{\printdate{\gitAuthorDate}}}
 
 \newcommand{\gitDirtyValue}{+}
 \immediate\write18{/bin/bash update_git_info.sh}
@@ -73,16 +73,16 @@
 	%\gitReln{} (
 	%	\gitAuthorDate
 	%)
-	\ifthenelse{\equal{\gitDirtyValue}{\gitDirty}}{\textbullet{} \DTMnow}{\gitAuthorDate}
 	%	Head tags: \gitTags
+	\textbullet{} \date
 }
 
 
 
 
 \usepackage{listings}             % for code snippets
-
-\usepackage{pdfpages}
+\usepackage{isodate}
+\usepackage{pdfpages} % to include pdfs
 \usepackage[acronym,automake]{glossaries}
 
 % better header for acronyms
@@ -113,6 +113,9 @@
 \begin{document}
 	
 	\include{titlepage}
+	\include{legal}
+	\include{declaration}
+	\include{thanks}
 	\include{fancy_quote}
 	
 	\thispagestyle{empty}

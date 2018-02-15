@@ -1,0 +1,36 @@
+
+\chapter{Einleitung}
+
+\section{Motivation}
+Der Begriff \enquote{autonomes Fahren} hat spätestens seit den Tesla Autos einen allgemeinen Bekanntheitsgrad erreicht. Das dabei allerdings nur ein erweitertes Abstand- und Spurhaltesystem
+für die Autobahn gemeint ist, wird oft unterschlagen.
+
+Die Umsetzung von autonomen Fahren in Städten wird von Autoherstellern aber bereits stark erforscht.
+Mit einer Möglichkeit einer Umsetzung von autonomen Fahren in eine Kreuzung wird in dieser Arbeit erläutert.
+Zusammen mit vielen anderen Themengebieten kann somit das autonome Fahren ermöglicht werden.
+\todo{fix 404}
+
+\section{Projektkontext}
+\todo{mec-view.de}
+
+\section{Zielsetzung}
+
+Das Ziel ist es, eine alternative Implementierung des MEC-View Servers in Rust zu schaffen.
+Durch die Garantien \todo{ref} von Rust wird erhofft, dass der menschliche Faktor als Fehlerquelle gemindert wird und somit eine fehlertolerantere und sicherere Implementation geschaffen wird.
+\todo{möglichst Beibehalt der Architektur?}
+
+
+\section{Aufbau der Arbeit}
+
+Diese Arbeit ist im wesentlichen in die folgenden Themengebiete aufgeteilt: Grundlagen, Anforderungs- und Systemanalyse, Systementwurf und Implementation und Auswertung.
+
+Im Themengebiet Grundlagen sollen wesentliche Bestandteile dieser Arbeit erläutert und erklärt werden.
+Hierzu zählt zum einen die Programmiersprache Rust in ihrer Entstehungsgeschichte \todo{ref}, Garantien \todo{ref}  und Sprachfeatures \todo{ref}, zum anderen die hochperformante, serverbasierte Kommunikationsplattform mit ihren Protokollen \todo{ref} und dem Systemkontext in dem diese betrieben wird.
+
+In der Anforderungs- und Systemanalyse wird der Kontext in dem das System betrieben werden soll genauer betrachtet. Umzusetzende funktionale und nicht-funktionale Anforderungen werden aufgestellt sowie eine Übersicht von Systemen mit denen interagiert wird.
+
+Das Themengebiet Systementwurf und Implementation befasst sich mit dem theoretischen und praktischen Lösen der im vorherigen Kapitel aufgestellten Anforderungen. Aufgrund der Tatsache, dass es sich hierbei
+um eine alternative Implementation handelt, wird zur bestehenden C++ Implementation Bezug genommen.
+Auf architektonische Unterschiede im Systementwurf, die sich aufgrund von Sprach- und Bibliotheksunterschiede, werden hier genauer beschrieben.
+
+Zuletzt wird eine Auswertung der Implementation aufgezeigt. \todo{michael.write\_more();}

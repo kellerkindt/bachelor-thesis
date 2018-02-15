@@ -35,15 +35,18 @@
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{ragged2e}
+
 \usepackage[german]{babel}
+\usepackage[autostyle=true,german=quotes]{csquotes}
+
 \usepackage{pgfplots}
-\usepackage{color, colortbl}
 \usepackage{ulem}
 \usepackage{placeins}
 \usepackage{wrapfig}
 \usepackage{xcolor}
 
-\usepgfplotslibrary{fillbetween}
+
+%\usepgfplotslibrary{fillbetween}
 
 %\usepackage{tikz-uml}
 \usepackage{float}
@@ -80,7 +83,7 @@
 
 
 
-\usepackage{listings}             % for code snippets
+%\usepackage{listings}             % for code snippets
 \usepackage{isodate}
 \usepackage{pdfpages} % to include pdfs
 \usepackage[acronym,automake]{glossaries}
@@ -132,11 +135,8 @@
 	
 	\pagenumbering{arabic}
 	\setcounter{page}{1}
-	\chapter{Einleitung}
-	\section{Motivation}
-	\section{Zielsetzung}
-	\section{Aufbau der Arbeit}
 	
+	\include{sections/intro}
 	\include{sections/rust}
 
 	

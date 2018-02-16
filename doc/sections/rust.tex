@@ -22,6 +22,54 @@ Die Stabilität des Kompilers trotz hoher Flexibilität während der Entwicklung
 
 \todo{hobbyprojekt, mozilla, open-source, Entwicklung auf GitHub - jeder kann sich beteiligen, test(coverage), automatisierte builds, stable/beta/nightly}
 
+\section{Verzeichnisaufbau der Quelldateien}
+
+
+\begin{wrapfigure}{l}[-1em]{.4\textwidth}
+	\begin{rustc}
+		src/
+		|-- main.rs
+		|-- functionality.rs
+		|-- module
+		    |-- mod.rs
+		    |-- functionality.rs
+		    |-- submodule
+		        |-- mod.rs
+		        |-- functionality.rs
+	\end{rustc}
+	\caption{Verzeichnisstruktur des Quelltext-Verzeichnisses}
+\end{wrapfigure}
+
+\todo{files.rs, (nested)modules, compiler, use, function, macro}
+
+Das Quelldatei-Verzeichnis sollte entweder eine \textit{main.rs} für Ausführbare Programme oder eine \textit{lib.rs} für Bibliotheken enthalten.
+Während der Paketmanager Cargo (\autoref{rust:cargo}) dies so als Standardkonvention erwartet, kann bei manueller Nutzung des Kompilers auch ein anderer Name für die Quelldatei vergeben werden.
+
+Die Kompilierung nutzt diese Datei als Wurzel, in der Module durch \textit{mod module;} und Quelldateien durch \textit{mod functionality;} \enquote{inkludiert} werden können.
+Die Datei \textit{mod.rs} ist Wurzeldatei eines Moduls. 
+
+
+\section{Cargo}
+\label{rust:cargo}
+\todo{dependencies}
+
+\begin{wrapfigure}{r}[-1em]{.4\textwidth}
+	\hspace{1em}
+	\begin{rustc}
+		crate/
+		|-- Cargo.toml
+		|-- src
+		    |-- ...
+	\end{rustc}
+	\caption{Vereinfachte Verzeichnisstruktur einer \enquote{crate}}
+\end{wrapfigure}
+\todo{missing .gitignore / .git mention}
+
+
+
+\section{Design Patterns}
+\todo{prove a few? from faq::  Is Rust object oriented? It is multi-paradigm. Many things you can do in OO languages you can do in Rust, but not everything, and not always using the same abstraction you’re accustomed to.}
+
 
 
 \section{type safety langauge}

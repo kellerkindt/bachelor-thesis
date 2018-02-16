@@ -30,10 +30,10 @@ Die Stabilität des Kompilers trotz hoher Flexibilität während der Entwicklung
 		src/
 		|-- main.rs
 		|-- functionality.rs
-		|-- module
+		|-- module/
 		    |-- mod.rs
 		    |-- functionality.rs
-		    |-- submodule
+		    |-- submodule/
 		        |-- mod.rs
 		        |-- functionality.rs
 	\end{rustc}
@@ -48,7 +48,6 @@ Während der Paketmanager Cargo (\autoref{rust:cargo}) eine solche Benennung so 
 Die Kompilierung nutzt \todo{diese} Datei als Wurzel, in der Module durch \rustcinline{mod module;} und Quelldateien durch \rustcinline{mod functionality;} \enquote{inkludiert} werden können.
 Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls. 
 
-
 \section{Cargo}
 \label{rust:cargo}
 \todo{dependencies}
@@ -58,18 +57,18 @@ Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 	\begin{rustc}
 		crate/
 		|-- Cargo.toml
-		|-- src
+		|-- src/
 		    |-- ...
 	\end{rustc}
 	\caption{Vereinfachte Verzeichnisstruktur einer \enquote{crate}}
 \end{wrapfigure}
+
 \todo{missing .gitignore / .git mention}
 
 \section{Hello World}
 
-\todo{official format/naming convetion}
 
-\begin{wrapfigure}{r}{.5\textwidth}
+\begin{wrapfigure}{l}{.5\textwidth}
 	\begin{rustc}
 		fn main() {
 			println!("Hello World");
@@ -78,6 +77,8 @@ Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 	\caption{\enquote{Hello World} in Rust}
 	\label{fig:rust:hello_world}
 \end{wrapfigure}
+
+\todo{official format/naming convetion}
 
 \section{Rust als funktionale Programmiersprache}
 \todo{prove via code}

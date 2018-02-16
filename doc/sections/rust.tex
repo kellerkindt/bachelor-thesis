@@ -43,10 +43,10 @@ Die Stabilität des Kompilers trotz hoher Flexibilität während der Entwicklung
 \todo{files.rs, (nested)modules, compiler, use, function, macro}
 
 Das Quelldatei-Verzeichnis sollte entweder eine \textit{main.rs} für Ausführbare Programme oder eine \textit{lib.rs} für Bibliotheken enthalten.
-Während der Paketmanager Cargo (\autoref{rust:cargo}) dies so als Standardkonvention erwartet, kann bei manueller Nutzung des Kompilers auch ein anderer Name für die Quelldatei vergeben werden.
+Während der Paketmanager Cargo (\autoref{rust:cargo}) eine solche Benennung so als Standardkonvention erwartet, kann bei manueller Nutzung des Kompilers auch ein anderer Name für die Quelldatei vergeben werden.
 
-Die Kompilierung nutzt diese Datei als Wurzel, in der Module durch \textit{mod module;} und Quelldateien durch \textit{mod functionality;} \enquote{inkludiert} werden können.
-Die Datei \textit{mod.rs} ist Wurzeldatei eines Moduls. 
+Die Kompilierung nutzt \todo{diese} Datei als Wurzel, in der Module durch \rustcinline{mod module;} und Quelldateien durch \rustcinline{mod functionality;} \enquote{inkludiert} werden können.
+Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls. 
 
 
 \section{Cargo}
@@ -65,10 +65,25 @@ Die Datei \textit{mod.rs} ist Wurzeldatei eines Moduls.
 \end{wrapfigure}
 \todo{missing .gitignore / .git mention}
 
+\section{Hello World}
 
+\todo{official format/naming convetion}
 
-\section{Design Patterns}
-\todo{prove a few? from faq::  Is Rust object oriented? It is multi-paradigm. Many things you can do in OO languages you can do in Rust, but not everything, and not always using the same abstraction you’re accustomed to.}
+\begin{wrapfigure}{r}{.5\textwidth}
+	\begin{rustc}
+		fn main() {
+			println!("Hello World");
+		}
+	\end{rustc}
+	\caption{\enquote{Hello World} in Rust}
+	\label{fig:rust:hello_world}
+\end{wrapfigure}
+
+\section{Rust als funktionale Programmiersprache}
+\todo{prove via code}
+
+\section{Rust als Objekt-Orientierte Programmiersprache}
+\todo{prove via design patterns, a few? from faq::  Is Rust object oriented? It is multi-paradigm. Many things you can do in OO languages you can do in Rust, but not everything, and not always using the same abstraction you’re accustomed to.}
 
 
 
@@ -82,17 +97,6 @@ Die Datei \textit{mod.rs} ist Wurzeldatei eines Moduls.
 \section{nichts wird dem Zufall überlassen}
 
 \todo{no undefined}
-\todo{official format/naming convetion}
-
-\begin{wrapfigure}{r}{.5\textwidth}
-	\begin{rustc}
-		fn main() {
-			println!("Hello World");
-		}
-	\end{rustc}
-	\caption{\enquote{Hello World} in Rust}
-	\label{fig:rust:hello_world}
-\end{wrapfigure}
 
 
 \todo{functional programming -> no global state, no exceptions, find literature}

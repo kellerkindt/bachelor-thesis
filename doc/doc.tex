@@ -103,9 +103,11 @@
 \newenvironment{rustc}
 	{\VerbatimEnvironment\begin{minted}[autogobble,bgcolor=codeBackground,linenos=true,tabsize=4]{rust}}
 	{\end{minted}}
+\newcommand{\rustcinline}[1]{\mintinline[bgcolor=codeBackground]{rust}{#1}}
 \newenvironment{monospace}
 {\VerbatimEnvironment\begin{minted}[autogobble,bgcolor=codeBackground,linenos=true,tabsize=4]{console}}
 	{\end{minted}}
+
 
 \include{gloassary}
 

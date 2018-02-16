@@ -6,11 +6,18 @@
 \newcommand{\figurewidth}{0.66\textwidth}
 
 % page header and footer
-\pagestyle{fancy}
-\lhead{\small Hochschule Esslingen \\ Softwaretechnik und Medieninformatik}
-\rhead{\small \setitle \\ \seauthor}
-% \lfoot{\small Author: \seauthor}
-% \rfoot{\small Stand: \lastModified}
+\clearscrheadings
+\clearscrplain
+
+\pagestyle{scrheadings}	
+
+\ihead[]{\leftmark}
+\ohead[]{\rightmark}
+
+\ifoot[]{}
+\ofoot[\pagemark]{\pagemark}
+\automark[section]{chapter}
+\setheadsepline{.4pt}[\color{black}]
 
 \begin{titlepage}
 	\centering

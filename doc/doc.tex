@@ -46,14 +46,16 @@
 \usepackage{xcolor}
 
 
-%\usepgfplotslibrary{fillbetween}
+\input{config.fonts.tex}
+\input{config.autoref.tex}
 
 %\usepackage{tikz-uml}
 \usepackage{float}
 \usepackage{tabularx}
 
 % required for nicer footer / header
-\usepackage{fancyhdr}
+\usepackage[ilines]{scrpage2}
+
 
 \usepackage[backend=bibtex,style=numeric-comp]{biblatex}
 \usepackage[colorlinks=true]{hyperref}
@@ -61,7 +63,6 @@
 
 \addbibresource{rust.bib}
 \addbibresource{general.bib}
-
 
 %
 % git related things

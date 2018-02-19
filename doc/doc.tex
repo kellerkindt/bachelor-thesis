@@ -44,6 +44,7 @@
 \usepackage{placeins}
 \usepackage{wrapfig}
 \usepackage{xcolor}
+\usepackage{caption}
 
 
 \input{config.fonts.tex}
@@ -87,10 +88,8 @@
 %\usepackage{listings}             % for code snippets
 \usepackage{isodate}
 \usepackage{pdfpages} % to include pdfs
-\usepackage[acronym,automake]{glossaries}
-
-% better header for acronyms
-%\addto\captionsngerman{\renewcommand*\acronymname{Abkürzungsverzeichnis}}
+\usepackage[acronym,automake,toc]{glossaries}
+\usepackage{glossaries-extra}
 
 %required for linebreak inside tabel cells
 \usepackage{makecell}
@@ -98,6 +97,7 @@
 \definecolor{codeBackground}{rgb}{.95,0.95,0.95}
 
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+\newcommand{\captionsource}[1]{\caption*{\footnotesize{Quelle: #1}}}
 
 \usemintedstyle{tango}
 \newenvironment{rustc}
@@ -110,14 +110,13 @@
 
 
 \include{gloassary}
+\include{acronym}
 
 \glsaddall
 \makeglossaries
 
 \defglsdisplayfirst[main]{\glsentryname{\glslabel}\protect\footnote{\glsentrydesc{\glslabel}}}
 
-\newacronym{poc}{POC}{\underline{P}roof \underline{o}f \underline{c}oncept \todo{...}}
-\newacronym{swh}{SWH}{\underline{S}emester \underline{W}eekly \underline{H}ours}
 	
 \begin{document}
 	
@@ -177,17 +176,15 @@
 	\pagenumbering{Roman}
 	
 	\clearpage
-	\addcontentsline{toc}{section}{Literatur}
 	\printbibliography
 	
 	\clearpage
-	\addcontentsline{toc}{section}{List of abbreviations}
+	\deftranslation{Acronyms}{Abkürzungsverzeichnis} 
 	\printglossaries
 
 	\clearpage
+	\addcontentsline{toc}{chapter}{\listfigurename}
 	\listoffigures
 	
 	
 \end{document}
-
-\makeglossaries

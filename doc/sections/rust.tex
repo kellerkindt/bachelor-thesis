@@ -53,16 +53,17 @@ Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementa
 		        |-- functionality.rs
 	\end{rustc}
 	\caption{Verzeichnisstruktur des Quelltext-Verzeichnisses}
+	\label{fig:rust:structure:classic}
 \end{wrapfigure}
 
-\todo{files.rs, (nested)modules, compiler, use, function, macro}
-
 Das Quelldatei-Verzeichnis sollte entweder eine \textit{main.rs} für Ausführbare Programme oder eine \textit{lib.rs} für Bibliotheken enthalten.
-Während der Paketmanager Cargo (\autoref{rust:structure:cargo}) eine solche Benennung so als Standardkonvention erwartet, kann bei manueller Nutzung des Kompilers auch ein anderer Name für die Quelldatei vergeben werden.
+Während der Paketmanager Cargo (\autoref{rust:structure:cargo}) eine solche Benennung als Standardkonvention erwartet, kann bei manueller Nutzung des Kompilers auch ein anderer Name für die Quelldatei vergeben werden.
 
-Die Kompilierung nutzt \todo{diese} Datei als Wurzel, in der Module durch \rustcinline{mod module;} und Quelldateien durch \rustcinline{mod functionality;} \enquote{inkludiert} werden können.
-Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
-
+Der Kompiler startet in der Wurzeldatei und lädt weitere Module, die durch \rustcinline{mod module;} gekennzeichnet sind (ähnlich \ccinline{# include "module.h"} in C/C++).
+Ein Modul kann dabei eine weitere Quelldatei oder ganzes Verzeichnis sein.
+Ein Verzeichnis wird aber nur als Modul interpretiert, wenn sich eine \textit{mod.rs} Datei darin befindet.
+%Module (Verzeichnisse oder Quelldateien) gesucht wird. , in der Module durch \rustcinline{mod module;} und Quelldateien durch \rustcinline{mod functionality;} \enquote{inkludiert} werden können.
+%Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 
 \subsection{Mit Cargo}
 \label{rust:structure:cargo}
@@ -76,6 +77,7 @@ Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 		    |-- ...
 	\end{rustc}
 	\caption{Vereinfachte Verzeichnisstruktur einer \enquote{crate}}
+	\label{fig:rust:structure:cargo}
 \end{wrapfigure}
 
 \todo{text is shit}
@@ -105,7 +107,7 @@ Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dab
 	\label{fig:rust:hello_world}
 \end{wrapfigure}
 
-\todo{official format/naming convetion}
+\todo{official format/naming convetion, use, function, macro}
 
 \section{Rust als funktionale Programmiersprache}
 \todo{functional programming -> no global state, no exceptions, find literature}

@@ -112,7 +112,8 @@
 \newenvironment{rustc}
 	{\VerbatimEnvironment\begin{minted}[autogobble,bgcolor=codeBackground,linenos=true,tabsize=4]{rust}}
 	{\end{minted}}
-\newcommand{\rustcinline}[1]{\mintinline[bgcolor=codeBackground]{rust}{#1}}
+\newcommand{\rustcinline}{\mintinline[bgcolor=codeBackground]{rust}}
+\newcommand{\ccinline}{\mintinline[bgcolor=codeBackground]{c}}
 \newenvironment{monospace}
 {\VerbatimEnvironment\begin{minted}[autogobble,bgcolor=codeBackground,linenos=true,tabsize=4]{console}}
 	{\end{minted}}

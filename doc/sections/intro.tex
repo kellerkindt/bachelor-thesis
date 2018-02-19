@@ -17,14 +17,48 @@ Bevor das Auto Entscheidungen treffen kann, muss es zuallererst ein Modell seine
 	\captionsource{\url{https://www.uni-due.de/~hp0309/images/Schaubild_BoschStyle_V2.png}}
 \end{figure}
 
-\gls{mec:bmwi}
-\todo{Forschungsprojekt MECView, BMWi oder so}
+Diese Abschlussarbeit befasst sich mit dem \gls{mec}-Server, der Teil des \gls{mec}-View Forschungsprojekt ist.
+Das \gls{mec}-View Projekt wird durch das \gls{bmwi} gefördert und befasst sich mit der Thematik autonom fahrender Fahrzeuge.
+Es soll erforscht werden ob und in wie weit eine durch externe Sensorik geleistete Unterstützung nötig und möglich ist um in eine Vorfahrtsstraße autonom einzufahren.
+
+Das Forschungsprojekt ist dabei ein Zusammenschluss verschiedener Unternehmen:
+\begin{center}
+	\begin{tabular}{l|l}		
+		Unternehmen & Aufgabenbereich \\ \hline \hline
+		Bosch & Hochautomatisiertes Fahrzeug \\
+		Osram & \glqq{}Intelligente\grqq{} Infrastruktursensoren \\ 
+		Nokia & 5G Mobilfunk, Mobile Edge Computing (MEC) \\
+		Universität Ulm & Sensordatenfusion, Prädiktion \\
+		\rowcolor{lightgray!20} IT-Designers Gruppe & MEC-Server Architektur\\
+		\rowcolor{lightgray!20} & Mikroskopische Verkehrsanalyse \\
+		\rowcolor{lightgray!20} & Verhaltensanalyse \\
+		TomTom & Hochgenaue statische und dynamische Karten \\
+		Daimler & Fahrstrategien \\
+		& Verhaltensanalyse \\
+		& Streckenfreigabe \\
+		Universität Duisburg & Mikroskopisch, stochastische Simulationsmodelle
+	\end{tabular}
+\end{center}
+
+
+\subsection{Ablauf}
+Externe Sensoren übermitteln erkannte Fahrzeuge via Mobilfunk an einen \gls{mec}-Server, der direkt am Empfängerfunkmast angeschlossen ist. \todo{platform, vm?}
+Nachdem die erkannten Fahrzeuge der verschiedenen Sensoren zusammengeführt wurden (Fusions-Algorithmus), sollen sie an das autonom fahrende Fahrzeug über Mobilfunk übermittelt werden.
+Somit erhält das Fahrzeug bereits im Voraus Einsicht über eventuelle Möglichkeiten in die Vorfahrtsstraße einzufahren und könnte deshalb beispielsweise die Geschwindigkeit anpassen.
+Zudem sollen bei unübersichtlichen Kreuzungen somit zuverlässiger andere Verkehrsteilnehmer erkannt werden.
+
+\subsection{Sicherheit}
+\todo{überhaupt relevant?}
+Da bei Fehlern möglicherweise andere Verkehrsteilnehmer zu Schaden kommen können, müssen diverse Sicherheitsrichtlinien beachtet werden. Die Industrienorm ISO 26262 beschreibt dabei verschiedene Vorgehensweisen,
+unter anderem eine \gls{fba}, Risikoabschätzung durch Einstufung nach \glspl{sil} und beschreibt Gegenmaßnahmen.
+
 
 \section{Zielsetzung}
 
-Das Ziel ist es, eine alternative Implementierung des MEC-View Servers in Rust zu schaffen.
-Durch die Garantien \todo{ref} von Rust wird erhofft, dass der menschliche Faktor als Fehlerquelle gemindert wird und somit eine fehlertolerantere und sicherere Implementation geschaffen wird.
-\todo{möglichst Beibehalt der Architektur?}
+Das Ziel ist es, eine alternative Implementierung des \gls{mec}-View Servers in Rust zu schaffen.
+Durch die Garantien (\autoref{rust:guarantees}) von Rust wird erhofft, dass der menschliche Faktor als Fehlerquelle gemindert wird und somit eine fehlertolerantere und sicherere Implementation geschaffen werden kann.
+
+\todo{?} Für eine bessere Wartbarkeit und Nachvollziehbarkeit soll die Implementation in Ihrer \todo{Struktur/}Architektur der C++ Implementation ähneln.
 
 
 \section{Aufbau der Arbeit}

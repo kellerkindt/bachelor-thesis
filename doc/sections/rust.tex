@@ -22,9 +22,9 @@ Die Stabilität des Kompilers trotz hoher Flexibilität während der Entwicklung
 
 \todo{hobbyprojekt, mozilla, open-source, Entwicklung auf GitHub - jeder kann sich beteiligen, test(coverage), automatisierte builds, stable/beta/nightly}
 
-\section{Verzeichnisaufbau der Quelldateien}
+\section{Ökosystem}
 
-
+\subsection{Ganz ohne}
 \begin{wrapfigure}{l}[-1em]{.4\textwidth}
 	\begin{rustc}
 		src/
@@ -46,9 +46,14 @@ Das Quelldatei-Verzeichnis sollte entweder eine \textit{main.rs} für Ausführba
 Während der Paketmanager Cargo (\autoref{rust:cargo}) eine solche Benennung so als Standardkonvention erwartet, kann bei manueller Nutzung des Kompilers auch ein anderer Name für die Quelldatei vergeben werden.
 
 Die Kompilierung nutzt \todo{diese} Datei als Wurzel, in der Module durch \rustcinline{mod module;} und Quelldateien durch \rustcinline{mod functionality;} \enquote{inkludiert} werden können.
-Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls. 
+Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 
-\section{Cargo}
+Rust nutzt den \gls{llvm}-Kompiler und erbt daher auch eine große Anzahl an Zielplattformen für die Rust kompiliert werden kann.
+Es wird aber zwischen drei Stufen unterschieden, bei denen verschieden stark ausgeprägte Garantien vergeben sind.
+Es wird zwischen \enquote{Stufe 1: Funktioniert garantiert} (u.a. X86, X86-64), \enquote{Stufe 2: Kompiliert garantiert} (u.a. ARM, PowerPC, PowerPC-64) und \enquote{Stufe 3} (u. a. Thumb) unterschieden \cite{rust:platform_support}.
+Diese Unterscheidung wirkt sich auch auf die Implementation neuer Funktionen aus (Beispiel \enquote{128-bit Integer Support} \cite{rust:github:128bit_integer})
+
+\subsection{Mit Cargo}
 \label{rust:cargo}
 \todo{dependencies}
 
@@ -63,7 +68,8 @@ Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 	\caption{Vereinfachte Verzeichnisstruktur einer \enquote{crate}}
 \end{wrapfigure}
 
-\todo{missing .gitignore / .git mention}
+\todo{Cargo init --bin <name>}
+\todo{missing .gitignore / .git mention / git alltogether}
 
 \section{Hello World}
 
@@ -81,26 +87,29 @@ Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 \todo{official format/naming convetion}
 
 \section{Rust als funktionale Programmiersprache}
+\todo{functional programming -> no global state, no exceptions, find literature}
 \todo{prove via code}
 
 \section{Rust als Objekt-Orientierte Programmiersprache}
 \todo{prove via design patterns, a few? from faq::  Is Rust object oriented? It is multi-paradigm. Many things you can do in OO languages you can do in Rust, but not everything, and not always using the same abstraction you’re accustomed to.}
 
 
+\section{Versprechen von Rust}
+\subsection{Zero Cost Abstraction}
+\subsection{Kein undefiniertes Verhalten}
+\todo{ref oreilly}
+\subsection{Kein Null-Pointer}
+\todo{explain option}
+\subsection{Kein vergessene Fehlerprüfung}
+\todo{explain result}
+\subsection{No dangling pointer}
+\todo{src https://www.youtube.com/watch?v=d1uraoHM8Gg}
+\subsection{Statische Speicher- und Lebenszeitanalyse}
+\todo{while compiling, does not compile on error / unprovable code}
+\subsection{type safety langauge}
 
-\section{type safety langauge}
-\section{no undefined behavior, oreilly}
-\section{Zero Cost Abstraction}
-
-\section{Was ist Rust?}
 
 
-\section{nichts wird dem Zufall überlassen}
-
-\todo{no undefined}
-
-
-\todo{functional programming -> no global state, no exceptions, find literature}
 
 Rust ist...
 % \lipsum
@@ -109,10 +118,6 @@ Rust ist...
 \todo{MIR/assemblerbeispiele?} \\
 \cite{rust:orly_programming}
 
-\FloatBarrier
-\section{Sprachfeatures}
-\subsection{Option}
-\subsection{Result}
 
 \section{Warum Rust?}
 
@@ -156,7 +161,6 @@ Rust ist...
 \section{Kernfeatures}
 
 https://www.youtube.com/watch?v=d1uraoHM8Gg \\
-\todo{no dangling pointers} \\
 \todo{no need for a runtime, all static analytics} \\
 \todo{memory safety} \\
 \todo{data-race freedom} \\

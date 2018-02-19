@@ -30,9 +30,9 @@
 
 \usepackage[datesep=--,showzoneminutes=false,showzone=false]{datetime2}
 
-
+\usepackage[T1]{fontenc} 
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+
 \usepackage{graphicx}
 \usepackage{ragged2e}
 
@@ -58,8 +58,16 @@
 % required for nicer footer / header
 \usepackage[ilines]{scrpage2}
 
-
-\usepackage[backend=bibtex,style=numeric-comp]{biblatex}
+\usepackage[
+	backend=biber,
+	giveninits=false,
+	style=alphabetic,
+	uniquename=true,
+	doi=true,
+	url=false,
+	sortcites=true,
+	sorting=nyt
+]{biblatex}
 \usepackage[colorlinks=true]{hyperref}
 \usepackage{minted}
 

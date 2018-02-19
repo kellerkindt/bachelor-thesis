@@ -26,9 +26,19 @@ Die Stabilität des Kompilers trotz hoher Flexibilität während der Entwicklung
 
 \todo{hobbyprojekt, mozilla, open-source, Entwicklung auf GitHub - jeder kann sich beteiligen, test(coverage), automatisierte builds, stable/beta/nightly}
 
-\section{Ökosystem}
+\section{Anwendungsgebiet}
 
-\subsection{Ganz ohne}
+\todo{intro paragraph}
+
+Rust nutzt den \gls{llvm}-Kompiler und erbt daher auch eine große Anzahl an Zielplattformen für die Rust kompiliert werden kann.
+Es wird aber zwischen drei Stufen unterschieden, bei denen verschieden stark ausgeprägte Garantien vergeben sind.
+Es wird zwischen \enquote{Stufe 1: Funktioniert garantiert} (u.a. X86, X86-64), \enquote{Stufe 2: Kompiliert garantiert} (u.a. ARM, PowerPC, PowerPC-64) und \enquote{Stufe 3} (u. a. Thumb) unterschieden \cite{rust:platform_support}.
+Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementation neuer Funktionen aus (Beispiel \enquote{128-bit Integer Support} \cite{rust:github:128bit_integer}).
+
+\section{Aufbau eines Projektverzeichnisses}
+
+\subsection{Klassisch}
+\label{rust:structure:classic}
 \begin{wrapfigure}{l}[-1em]{.4\textwidth}
 	\begin{rustc}
 		src/
@@ -47,19 +57,14 @@ Die Stabilität des Kompilers trotz hoher Flexibilität während der Entwicklung
 \todo{files.rs, (nested)modules, compiler, use, function, macro}
 
 Das Quelldatei-Verzeichnis sollte entweder eine \textit{main.rs} für Ausführbare Programme oder eine \textit{lib.rs} für Bibliotheken enthalten.
-Während der Paketmanager Cargo (\autoref{rust:cargo}) eine solche Benennung so als Standardkonvention erwartet, kann bei manueller Nutzung des Kompilers auch ein anderer Name für die Quelldatei vergeben werden.
+Während der Paketmanager Cargo (\autoref{rust:structure:cargo}) eine solche Benennung so als Standardkonvention erwartet, kann bei manueller Nutzung des Kompilers auch ein anderer Name für die Quelldatei vergeben werden.
 
 Die Kompilierung nutzt \todo{diese} Datei als Wurzel, in der Module durch \rustcinline{mod module;} und Quelldateien durch \rustcinline{mod functionality;} \enquote{inkludiert} werden können.
 Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 
-Rust nutzt den \gls{llvm}-Kompiler und erbt daher auch eine große Anzahl an Zielplattformen für die Rust kompiliert werden kann.
-Es wird aber zwischen drei Stufen unterschieden, bei denen verschieden stark ausgeprägte Garantien vergeben sind.
-Es wird zwischen \enquote{Stufe 1: Funktioniert garantiert} (u.a. X86, X86-64), \enquote{Stufe 2: Kompiliert garantiert} (u.a. ARM, PowerPC, PowerPC-64) und \enquote{Stufe 3} (u. a. Thumb) unterschieden \cite{rust:platform_support}.
-Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementation neuer Funktionen aus (Beispiel \enquote{128-bit Integer Support} \cite{rust:github:128bit_integer}).
 
 \subsection{Mit Cargo}
-\label{rust:cargo}
-\todo{dependencies}
+\label{rust:structure:cargo}
 
 \begin{wrapfigure}{r}[-1em]{.4\textwidth}
 	\hspace{1em}
@@ -72,6 +77,15 @@ Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementa
 	\caption{Vereinfachte Verzeichnisstruktur einer \enquote{crate}}
 \end{wrapfigure}
 
+\todo{text is shit}
+Im Gegensatz zu einem klassischen Aufbau (\autoref{rust:structure:classic}) wird von der Rust Gemeinschaft das Werkzeug \enquote{Cargo} (dt. Fracht/Ladung\todo{.}) angeboten.
+Mit Cargo können ähnlich wie zum Beispiel mit Maven \todo{cite?} in Java, Abhängigkeiten zu anderen Bibliotheken verwaltet werden.
+Ein Cargo Projekt wird dabei als \enquote{Crate} (dt. Kiste/Kasten\todo{.}) bezeichnet.
+Eine offizielles Verzeichnis befindet sich auf \url{https://crates.io/}.
+Von \url{https://crates.io/} werden standardmäßig Abhängigkeiten nachgeladen.
+Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dabei \enquote{first come, first serve}.
+
+\todo{dependencies}
 \todo{Cargo init --bin <name>}
 \todo{missing .gitignore / .git mention / git alltogether}
 \todo{Cargo.toml}
@@ -97,10 +111,13 @@ Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementa
 \todo{prove via code}
 
 \section{Rust als Objekt-Orientierte Programmiersprache}
+\todo{trait}
 \todo{prove via design patterns, a few? from faq::  Is Rust object oriented? It is multi-paradigm. Many things you can do in OO languages you can do in Rust, but not everything, and not always using the same abstraction you’re accustomed to.}
 
 
 \section{Versprechen von Rust}
+\subsection{Sichere Nebenläufigkeit}
+\todo{Send, Sync}
 \subsection{Zero Cost Abstraction}
 \subsection{Kein undefiniertes Verhalten}
 \todo{ref oreilly}
@@ -111,8 +128,9 @@ Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementa
 \subsection{No dangling pointer}
 \todo{src https://www.youtube.com/watch?v=d1uraoHM8Gg}
 \subsection{Statische Speicher- und Lebenszeitanalyse}
-\todo{while compiling, does not compile on error / unprovable code}
+\todo{while compiling, does not compile on error / unprovable code, trait Drop}
 \subsection{type safety langauge}
+
 
 
 

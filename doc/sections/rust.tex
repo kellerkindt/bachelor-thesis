@@ -16,11 +16,11 @@ Zudem beschrieb er C++ als \enquote{ziemlich fehlerträchtig}. \cite{rust:heise_
 
 Auch Federico Mena-Quintero -- Mitbegründer des Gnome projekts \todo{cite \url{https://people.gnome.org/~federico/} or so} --
 äußerte in einem Interview mit Golem im Juli 2017 seine Bedenken an der Verwendung der \enquote{feindseligen} Sprache C \cite{rust:c_is_hostile_golem}.
-In Vorträgen \todo{nix mehrzahl?} vermittelt er seither, wie Bibliotheken durch Implementierungen in Rust ersetzt werden können \cite{rust:c_is_hostile_mena}.
+In Vorträgen \todo{nix mehrzahl?} vermittelt er seither, wie Bibliotheken durch Implementationen in Rust ersetzt werden können \cite{rust:c_is_hostile_mena}.
 
-Ab 2009 begann Mozilla die Weiterentwicklung finanziell zu fördern, da einfache Tests und die Kernprinzipien demonstriert werden konnten.
+Ab 2009 begann Mozilla die Weiterentwicklung finanziell zu fördern, als einfache Tests und die Kernprinzipien demonstriert werden konnten.
 Die Entwicklung findet dabei öffentlich einsehbar auf GitHub unter \url{https://github.com/rust-lang/rust} statt und wird dabei nicht ausschließlich von Mozilla Angestellten koordiniert.
-Die Stabilität des Kompilers trotz hoher Flexibilität während der Entwicklung wird dabei durch Unterscheidung von drei Veröffentlichungskanälen -- release, stable und nightly -- in Kombination mit automatisierten Tests \todo{ref?} gewährleistet. \cite{rust:faq}
+Die Stabilität des Kompilers trotz hoher Flexibilität während der Entwicklung wird durch Unterscheidung von drei Veröffentlichungskanälen -- release, stable und nightly -- in Kombination mit automatisierten Tests \todo{ref?} gewährleistet. \cite{rust:faq}
 
 
 
@@ -28,12 +28,17 @@ Die Stabilität des Kompilers trotz hoher Flexibilität während der Entwicklung
 
 \section{Anwendungsgebiet}
 
-Das Ziel von Rust ist es, das designen und implementieren sicheren, nebenläufig und auch praktisch tauglichen blubber zu machen \cite{rust:faq}.
+Das Ziel von Rust ist es, das Designen und Implementieren von sicheren, nebenläufig und auch praktisch tauglichen Systemen möglich zu machen \cite{rust:faq}.
 \todo{intro paragraph}
 
-Rust nutzt den \gls{llvm}-Kompiler und erbt daher auch eine große Anzahl an Zielplattformen für die Rust kompiliert werden kann.
-Es wird aber zwischen drei Stufen unterschieden, bei denen verschieden stark ausgeprägte Garantien vergeben sind.
-Es wird zwischen \enquote{Stufe 1: Funktioniert garantiert} (u.a. X86, X86-64), \enquote{Stufe 2: Kompiliert garantiert} (u.a. ARM, PowerPC, PowerPC-64) und \enquote{Stufe 3} (u. a. Thumb) unterschieden \cite{rust:platform_support}.
+Da Rust den \gls{llvm}-Kompiler nutzt, erbt Rust auch eine große Anzahl der Zielplattformen die \gls{llvm} unterstützt.
+Die Zielplattformen sind in drei Stufen unterteilt, bei denen verschieden stark ausgeprägte Garantien vergeben sind. Es wird zwischen
+\begin{itemize}
+	\item \enquote{Stufe 1: Funktioniert garantiert} (u.a. X86, X86-64),
+	\item \enquote{Stufe 2: Kompiliert garantiert} (u.a. ARM, PowerPC, PowerPC-64) und
+	\item \enquote{Stufe 3} (u. a. Thumb)
+\end{itemize}
+unterschieden \cite{rust:platform_support}.
 Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementation neuer Funktionen aus (Beispiel \enquote{128-bit Integer Support} \cite{rust:github:128bit_integer}).
 
 \section{Aufbau eines Projektverzeichnisses}
@@ -88,10 +93,15 @@ Eine offizielles Verzeichnis befindet sich auf \url{https://crates.io/}.
 Von \url{https://crates.io/} werden standardmäßig Abhängigkeiten nachgeladen.
 Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dabei \enquote{first come, first serve}.
 
+
 \todo{dependencies}
+
 \todo{Cargo init --bin <name>}
+
 \todo{missing .gitignore / .git mention / git alltogether}
+
 \todo{Cargo.toml}
+
 \todo{[crates.io]}
 
 \section{Hello World}

@@ -1,0 +1,10 @@
+[package]
+name = "libmessages-sys"
+version = "0.1.0"
+authors = ["Michael Watzko <michael@watzko.de>"]
+
+[dependencies]
+
+[build-dependencies]
+gcc = "*"
+bindgen = "0.26.3"

@@ -1,0 +1,8 @@
+[package]
+name = "libmessages"
+version = "0.1.0"
+authors = ["Michael Watzko <michael@watzko.de>"]
+
+[dependencies.libmessages-sys]
+version = "0.1.0"
+path = "../libmessages-sys/"

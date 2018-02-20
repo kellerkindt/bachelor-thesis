@@ -18,12 +18,12 @@ mod tests {
             p.std_dev_position_east = ptr::null_mut();
             p.std_dev_position_north = ptr::null_mut();
 
-            uper_encode_to_buffer(
+            println!("{:?}", uper_encode_to_buffer(
                 &mut asn_DEF_PositionOffset as *mut asn_TYPE_descriptor_s,
                 &mut p as *mut _ as *mut raw::c_void,
                 buffer.as_mut_ptr() as *mut raw::c_void,
                 buffer.len() as usize
-            );
+            ));
             println!();
             for byte in buffer.iter() {
                 print!("{:02x} ", byte);

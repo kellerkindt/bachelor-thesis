@@ -107,7 +107,22 @@ Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dab
 	\label{fig:rust:hello_world}
 \end{wrapfigure}
 
+\todo{println!, writeln! formatting}
+
 \todo{official format/naming convetion, use, function, macro}
+
+\section{Alles hat einen Rückgabewert}
+
+\section{use mod pub}
+
+\section{Variables, Structs, Enums, Traits}
+
+\section{Eigentümer- und Verleihprinzip}
+
+\section{Scope / Memory Management}
+
+
+\todo{autodrop, auto file close}
 
 \section{Rust als funktionale Programmiersprache}
 \todo{functional programming -> no global state, no exceptions, find literature}
@@ -147,6 +162,114 @@ Rust ist...
 \cite{rust:orly_programming}
 
 
+\section{Einbinden von Bibliotheken}
+
+\subsubsection{Externe Datentypen}
+\label{rust:ffi:datatypes}
+
+Rust bietet durch das \gls{ffi} die Möglichkeit, andere (System-)Bibliotheken einzubinden.
+Entsprechende Strukturen und Funktionen werden durch einen \rustcinline{extern}-Block
+oder im Falle von Strukturen optional mit einem \rustcinline{#[repr(C)]} gekennzeichnet.
+
+In einem Beispiel, soll die Nutzung von \gls{ffi} demonstriert werden.
+
+\begin{figure}[H]
+	\begin{cc}
+		typedef struct PositionOffset {
+			long position_north;
+			long position_east;
+			long *std_dev_position_north /* OPTIONAL */;
+			long *std_dev_position_east  /* OPTIONAL */;
+			
+			// ...
+		} PositionOffset_t;
+	\end{cc}
+	\caption{Ausschnitt von \enquote{PositionOffset} \todo{ref mecview lib} in C}
+	\label{fig:rust:ffi:position_offset_c}
+\end{figure}
+
+Die Struktur in \autoref{fig:rust:ffi:position_offset_c} muss zur Nutzung in Rust zuerst bekannt gemacht werden.
+Dabei gibt es mehrere Möglichkeiten:
+\begin{enumerate}
+	\item Falls Inhalt der Struktur nicht von Bedeutung ist, kann es ausreichen, den neuen Typ lediglich bekannt zu machen: \rustcinline{#[repr(C)] struct PositionOffset;} \label{rust:ffi:example:enumerate:repr}
+	
+	\item Der Inhalt ist wie bei \autoref{rust:ffi:example:enumerate:repr} unbedeutend, es soll aber ausdrücklich auf einen externen Typ hingewiesen werden: \rustcinline{extern { type PositionOffset; }} \cite{rust:github:extern_type} (\todo{nightly})
+	
+	\item Der Inhalt der Struktur ist von Bedeutung, da darauf zugegriffen werden soll oder in Rust eine Instanz erzeugbar sein soll. In diesem Fall muss die Struktur wiedergegeben werden:
+	\begin{figure}[H]
+		\begin{rustc}
+			use std::os::raw::c_long;
+			
+			#[repr(C)]
+			pub struct PositionOffset {
+				pub position_north: c_long,
+				pub position_east: c_long,
+				pub std_dev_position_north: *mut c_long,
+				pub std_dev_position_east: *mut c_long,
+				// ...
+			}
+			
+		\end{rustc}
+		\caption{Ausschnitt von \enquote{PositionOffset} \todo{ref mecview lib} in Rust}
+		\label{fig:rust:ffi:position_offset_rust}
+	\end{figure}
+	
+	In \autoref{fig:rust:ffi:position_offset_rust} ist die Struktur \enquote{PositionOffset} definiert,
+	die durch das Attribut \rustcinline{#repr(C)} wie eine C-Struktur im Speicher organisiert wird.
+	Somit ist sie kompatibel zu der C-Struktur aus \autoref{fig:rust:ffi:position_offset_c}.
+	
+	Da auf eine C-Struktur zugegriffen wird, sollten auch, wie in \autoref{fig:rust:ffi:position_offset_rust} zu sehen, spezielle Datentypen (\rustcinline{c_long}, \rustcinline{c_void}, \rustcinline{c_char}, ...) verwendet werden, um die Kompatibilität mit verschiedenen Systemen und C-Kompilern zu wahren. \todo{u32 immer 32bit, aber int nicht immer gleich (Beispiel!?) --> Probleme}
+	
+%	\rustcinline{*mut c_long} entspricht dabei dem C-Pointer für \rustcinline{&mut c_long}, also \ccinline{long*}, ein C-Pointer für \rustcinline{&c_long} entspricht \rustcinline{*const c_long}.
+	
+%	C-Pointer werden in Rust \enquote{Raw-Pointer} genannt und \rustcinline{*mut c_long} für  \rustcinline{&mut c_long} bzw. \rustcinline{*const c_long} für \rustcinline{&c_long} geschrieben.
+	
+	Ein C-Pointer \ccinline{*long} wird in Rust \enquote{Raw-Pointer} genannt und entweder als \rustcinline{*mut c_long} oder als \rustcinline{*const c_long} geschrieben. Der Unterschied ist wie zwischen \rustcinline{&mut c_long} und \rustcinline{&c_long} und dient dem \todo{Rusttypsystem!? ref!?} zur Unterscheidung \todo{Erzwinungt im Besitz von entsprechender Mutability zu sein}, während es für die C-Seite keinen Unterschied macht \cite{rust:book:raw_ptr}:
+	
+	\begin{figure}[H]
+		\centering
+		\begin{tabular}{c|c|c}
+			Referenz in Rust & Raw-Pointer in Rust & C-Pointer \\
+			\hline
+			\rustcinline{&mut c_long}  &   \rustcinline{*mut   c_long}  &   \ccinline{long*} \\
+			\rustcinline{    &c_long}  &   \rustcinline{*const c_long}  &   \ccinline{long*}
+		\end{tabular}
+		\caption{Vergleich Rust Raw-Pointer und Referenz zu C-Pointer}
+	\end{figure}
+	
+\end{enumerate}
+
+\subsubsection{Externer Funktionsaufruf}
+\label{rust:ffi:functioncall}
+
+Während eine Struktur, die eine externe Struktur darstellen soll, optional in einem \rustcinline{extern {}} Block definiert sein kann, ist das für externe Funktionen zwingend:
+
+\begin{figure}[H]
+	\begin{rustc}
+		use std::os::raw::c_void;
+		
+		#[link(name = "messages", kind = "static")]
+		extern {
+			type asn_TYPE_descriptor_s;
+			type asn_enc_rval_t;
+			
+			fn uper_encode_to_buffer(
+				type_descriptor: *const asn_TYPE_descriptor_s,
+				struct_ptr: *const c_void,
+				buffer: *mut c_void,
+				buffer_size: usize,
+			) -> asn_enc_rval_t;
+		}
+	\end{rustc}
+	\caption{Externe Funktionsdefinition der ASN.1 Funktion zum Enkodieren}
+	\label{fig:rust:ffi:uper_encode_to_buffer}
+\end{figure}
+
+Wie in \autoref{fig:rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern {}} Blöcke mit Attributen versehen werden. Zwingend ist bei der Verwendung eines \rustcinline{#[link(..)]} Attributes der Name der Bibliothek, auf die sich der im \rustcinline{extern {}} Block stehende Code bezieht. Optional kann auch wie in \autoref{fig:rust:ffi:uper_encode_to_buffer} die Art der \todo{Linkung} (dylib, static) angegeben werden.
+
+Die Art der Definition einer externen Funktion unterscheidet sich nicht von einer normalen Funktionsdefinition. Es sollten aber, wie in \autoref{rust:ffi:datatypes} beschrieben, zu C bzw. der externen Sprache kompatiblen Datentypen verwendet werden.
+ 
+
 \section{Warum Rust?}
 
 \begin{quotation}
@@ -177,7 +300,6 @@ Rust ist...
 	\textit{\enquote{Rust hilft beim Fehlervermeiden}} 
 	\cite{rust:c_is_hostile_golem}
 \end{quotation}
-
 
 \begin{quotation}
 	\textit{\enquote{Rust is [..] a language that cares about very tight control}}

@@ -35,16 +35,16 @@ extern {
     fn uper_decode_complete(
             opt_codec_ctx: *const asn_codec_ctx_s,
             type_descriptor: *const asn_TYPE_descriptor_s,
-            struct_ptr: *const *const libc::c_void,
-            buffer: *const libc::c_void,
-            size: libc::size_t
+            struct_ptr: *const *const raw::c_void,
+            buffer: *const raw::c_void,
+            size: usize
     ) -> asn_dec_rval_t;
 
     fn uper_encode_to_buffer(
         type_descriptor: *const asn_TYPE_descriptor_s,
-        struct_ptr: *const libc::c_void,
-        buffer: *mut libc::c_void,
-        buffer_size: libc::size_t,
+        struct_ptr: *const raw::c_void,
+        buffer: *mut raw::c_void,
+        buffer_size: usize,
     ) -> asn_enc_rval_t;
 
     fn create_position_offset() -> *mut PositionOffset;
@@ -73,9 +73,9 @@ fn main() {
 
         println!("{:?}", uper_encode_to_buffer(
             &asn_DEF_PositionOffset as *const asn_TYPE_descriptor_s,
-            &p as *const _ as *const libc::c_void,
-            buffer.as_mut_ptr() as *mut libc::c_void,
-            buffer.len() as libc::size_t
+            &p as *const _ as *const raw::c_void,
+            buffer.as_mut_ptr() as *mut raw::c_void,
+            buffer.len() as usize
         ));
         println!();
         for byte in buffer.iter() {

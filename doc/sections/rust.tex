@@ -104,20 +104,50 @@ Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dab
 		{sections/rust.hello_world.rs}
 \end{wrapfigure}
 
-\autoref{fig:rust:hello_world}
+\todo{let, optionaler datentyp, macros, generics}
+
+\todo{official format/naming convetion, use, function, macro}
+
+\todo{Variables, Structs, Enums, Traits}
+
 \clearpage
 
 \section{Standardbibliothek}
 
-Die Rust Standardbibliothek ist bemüht sehr leichtgewichtig zu sein und wird selbst als eine Crate (siehe \autoref{rust:structure:cargo}) dargestellt, auf die standardmäßige eine Abhängigkeit besteht.
-Für die Verwendung von Rust im Embedded Bereich, kann diese Abhängigkeit, die für Microcontroller sehr Umfangreiche ist, durch \rustcinline{#![no_std]} unterbunden werden.
+Die Rust Community ist darum bemüht, die Standardbibliothek sehr leichtgewichtig zu halten.
+Sie wird selbst als eine Crate (siehe \autoref{rust:structure:cargo}) zur Verfügung gestellt, auf die standardmäßige eine Abhängigkeit besteht.
+Für die Verwendung von Rust im Embedded Bereich, kann diese Abhängigkeit, die für Microcontroller sehr umfangreich ist, durch \rustcinline{#![no_std]} unterbunden werden.
 Daraufhin sind nur noch die in der \rustcinline{core} Crate zur Verfügung gestellten Sprachkonstrukte verwendbar.
 
-In der \rustcinline{core} Crate zur Verfügung gestellten Sprachkonstrukte sind die üblichen  Verdächtigen: \rustcinline{bool} für boolische Ausdrücke; \rustcinline{char} für Unicode Zeichen; \rustcinline{u8}, \rustcinline{i8}, \rustcinline{u16}, \rustcinline{i16}, \rustcinline{u32}, \rustcinline{i32}, \rustcinline{u64}, \rustcinline{i64} (und bald \rustcinline{u128}, \rustcinline{i128} \todo{cite}) für Ganzzahlige Operationen ohne und mit Vorzeichen; \rustcinline{f32}, \rustcinline{f64} für Fließkommaoperationen in einfacher und zweifacher Präzision; Arrays und Slices \cite{rust:book:primitives}.
+\subsection{core}
+\label{rust:core}
+Die in der \rustcinline{core} Crate zur Verfügung gestellten Sprachkonstrukte sind im wesentlichen die üblichen  Verdächtigen: \rustcinline{bool} für boolische Ausdrücke; \rustcinline{char} für ein einzelnes Unicode Zeichen; \rustcinline{str} für eine Zeichenkette; \rustcinline{u8}, \rustcinline{i8}, \rustcinline{u16}, \rustcinline{i16}, \rustcinline{u32}, \rustcinline{i32}, \rustcinline{u64}, \rustcinline{i64} (und bald \rustcinline{u128}, \rustcinline{i128} \todo{cite}) für ganze Zahlen; \rustcinline{f32}, \rustcinline{f64} für Fließkommazahlen in einfacher und zweifacher Präzision; Arrays und Slices \cite{rust:book:primitives}.
 
-Ganzzahlige primitive Datentypen sind immer durch \rustcinline{u} für Vorzeichenlos und \rustcinline{i} für Zahlen mit Vorzeichen gekennzeichnet, mit der Angehängten Größe des Datentyps in Bits.
-Dadurch wird eine Verwirrung wie zum Beispiel in C unterbunden, die primitiven Datentypen \ccinline{int} keine definierte Größe haben, sondern dies compiler- und plattformabhängig ist.
+Ganzzahlige primitive Datentypen beginnen mit \rustcinline{u} für vorzeichenlos und \rustcinline{i} für vorzeichenbehaftet gefolgt mit der Größe des Datentyps in Bits.
+Dadurch wird eine Verwirrung wie zum Beispiel in C unterbunden, wo die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe haben, sondern dies abhängig vom eingesetzten Compiler und der Zielplattform ist. \todo{prove? => sizeof?, cite C99/C14 Standard?}
 
+Zahlen können eindeutig einem Datentyp zugewiesen werden, indem dieser angehängt wird.
+\rustcinline{4711u16} ist somit vom Datentyp \rustcinline{u16}.
+Des weiteren dürfen Ziffern durch beliebiges setzen von \rustcinline{_} getrennt werden, um die Lesbarkeit zu erhöhen: \rustcinline{1_000_000_f32}.
+
+\todo{move to hello world?}
+Arrays haben immer eine zur Compilezeit bekannte Größe. Dynamische Arrays gibt es nicht, da diese zu oft die Quelle von Fehlern seien \todo{cite!} (Abhilfe \rustcinline{Vec<_>}, siehe \autoref{rust:std}).
+Die Notation ist \rustcinline{[<Füllwert>; <Größe>]}.
+\rustcinline{[0_u8; 128]} steht also für ein 128 Byte langes Byte Array, das mit 0-en vom Datentyp \rustcinline{u8} gefüllt ist.
+\enquote{Slices} (dt. Scheibe/Stück) bezeichnet Rust Referenzen auf Arrays, die auch nur Teilbereiche umfassen können.
+Die Größe einer Slice ist in deren \todo{Fat-Pointer} \todo{explain} enthalten.
+Die Notation ähnelt die eines Arrays, aber ohne Größenspezifikation: \rustcinline{[<Datentyp>]}.
+Eine Slice kann von einem Array oder einer anderen Slice erzeugt werden, dabei wird der Start- und Endindex des Teilbereiches angegeben.
+Falls kein Start- oder Endindex angegeben wurde, wird das jeweilige Limit übernommen (0, max) \todo{shit text}: \rustcinline{let slice : &[u8] = &array[..8];}
+
+Rust kennt \ccinline{null}(-Pointer) nicht, bietet aber in \rustcinline{core} bereits \rustcinline{Option<_>} als Ersatz an.
+Für die Fehlerbehandlung wird nicht auf ein Exception-Handling zurückgegriffen, sondern ein eigener Datentyp angeboten, der entweder den Rückgabewert enthält, oder aber einen Fehler: \rustcinline{Result<_, _>}.
+Die Funktionsweise und die Vorteile von \rustcinline{Option<_>} und \rustcinline{Result<_, _>} wird in \autoref{rust:no_null} genauer erklärt.
+
+\subsection{std}
+\label{rust:std}
+
+Die Crate \rustcinline{std} erweitert \rustcinline{core} um viele \todo{collections etc}.
 
 \todo{core, datatypes, arrays slices, no null  \enquote{billion dollar mistake} }
 
@@ -125,14 +155,12 @@ Dadurch wird eine Verwirrung wie zum Beispiel in C unterbunden, die primitiven D
 
 \todo{println!, writeln! formatting}
 
-\todo{official format/naming convetion, use, function, macro}
 
 
 \section{Alles hat einen Rückgabewert}
 
 \section{use mod pub}
 
-\section{Variables, Structs, Enums, Traits}
 
 \section{Eigentümer- und Verleihprinzip}
 
@@ -157,8 +185,10 @@ Dadurch wird eine Verwirrung wie zum Beispiel in C unterbunden, die primitiven D
 \subsection{Zero Cost Abstraction}
 \subsection{Kein undefiniertes Verhalten}
 \todo{ref oreilly}
-\subsection{Kein Null-Pointer}
+\subsection{Keine vergessene Null-Pointer Prüfung}
+\label{rust:no_null}
 \todo{explain option}
+\subsection{Something with Exception/Result}
 \subsection{Kein vergessene Fehlerprüfung}
 \todo{explain result}
 \subsection{No dangling pointer}

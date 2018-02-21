@@ -102,7 +102,9 @@ Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dab
 
 \todo{Cargo.toml}
 
-\todo{[crates.io]}
+\todo{[crates.io], Anzahl Pakete}
+
+\todo{Kompilierablauf, downloaden, kompilieren von crates}
 
 \section{Hello World}
 
@@ -117,9 +119,17 @@ Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dab
 	\label{fig:rust:hello_world}
 \end{wrapfigure}
 
+
+\section{Standardbibliothek}
+
+\todo{core, datatypes, arrays slices, no null  \enquote{billion dollar mistake} }
+
+\todo{std, Vec, str, String, no\_std für embedded}
+
 \todo{println!, writeln! formatting}
 
 \todo{official format/naming convetion, use, function, macro}
+
 
 \section{Alles hat einen Rückgabewert}
 
@@ -129,7 +139,7 @@ Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dab
 
 \section{Eigentümer- und Verleihprinzip}
 
-\section{Scope / Memory Management}
+\section{Scope / Memory Management, Lebenszeit}
 
 
 \todo{autodrop, auto file close}
@@ -146,7 +156,7 @@ Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dab
 \section{Versprechen von Rust}
 \label{rust:guarantees}
 \subsection{Sichere Nebenläufigkeit}
-\todo{Send, Sync}
+\todo{Send, Sync, No dataraces weil Ownership, Channel, Mutex, RwLock}
 \subsection{Zero Cost Abstraction}
 \subsection{Kein undefiniertes Verhalten}
 \todo{ref oreilly}

@@ -104,11 +104,18 @@ Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dab
 		{sections/rust.hello_world.rs}
 \end{wrapfigure}
 
-\todo{let, optionaler datentyp, macros, generics}
+\todo{let, optionaler datentyp, macros, generics, () statt void}
 
 \todo{official format/naming convetion, use, function, macro}
 
 \todo{Variables, Structs, Enums, Traits}
+
+\todo{type safety langauge}
+
+\todo{Rust -> MIR -> assembler} \\
+
+\todo{MIR/assemblerbeispiele?} \\
+\cite{rust:orly_programming}
 
 \clearpage
 
@@ -147,7 +154,7 @@ Die Funktionsweise und die Vorteile von \rustcinline{Option<_>} und \rustcinline
 \subsection{std}
 \label{rust:std}
 
-Die Crate \rustcinline{std} erweitert \rustcinline{core} um viele \todo{collections etc}.
+Die Crate \rustcinline{std} erweitert \rustcinline{core} um viele \todo{collections etc}. \rustcinline{Vec<_>} \rustcinline{HashMap<_, _>}
 
 \todo{core, datatypes, arrays slices, no null  \enquote{billion dollar mistake} }
 
@@ -188,25 +195,13 @@ Die Crate \rustcinline{std} erweitert \rustcinline{core} um viele \todo{collecti
 \subsection{Keine vergessene Null-Pointer Prüfung}
 \label{rust:no_null}
 \todo{explain option}
-\subsection{Something with Exception/Result}
 \subsection{Kein vergessene Fehlerprüfung}
+\rustcinline{Result<_, _>}
 \todo{explain result}
 \subsection{No dangling pointer}
 \todo{src https://www.youtube.com/watch?v=d1uraoHM8Gg}
 \subsection{Statische Speicher- und Lebenszeitanalyse}
 \todo{while compiling, does not compile on error / unprovable code, trait Drop}
-\subsection{type safety langauge}
-
-
-
-
-
-Rust ist...
-% \lipsum
-
-\todo{Rust -> MIR -> assembler} \\
-\todo{MIR/assemblerbeispiele?} \\
-\cite{rust:orly_programming}
 
 
 \section{Einbinden von Bibliotheken}
@@ -216,14 +211,14 @@ Rust ist...
 
 Rust bietet durch das \gls{ffi} die Möglichkeit, andere (System-)Bibliotheken einzubinden.
 Entsprechende Strukturen und Funktionen werden durch einen \rustcinline{extern}-Block
-oder im Falle von Strukturen optional mit einem \rustcinline{#[repr(C)]} gekennzeichnet.
+oder im Falle von Strukturen stattdessen optional mit einem \rustcinline{#[repr(C)]} gekennzeichnet.
 
 In einem Beispiel, soll die Nutzung von \gls{ffi} demonstriert werden.
 
 \begin{figure}[H]
 	\ccinclude
 		{fig:rust:ffi:position_offset_c}
-		{Ausschnitt von \enquote{PositionOffset} \todo{ref mecview lib} in C}
+		{Ausschnitt von \enquote{PositionOffset} \todo{ref mecview lib} in C, autgen ASN}
 		{sections/rust.position_offset.c}
 	
 \end{figure}
@@ -231,11 +226,11 @@ In einem Beispiel, soll die Nutzung von \gls{ffi} demonstriert werden.
 Die Struktur in \autoref{fig:rust:ffi:position_offset_c} muss zur Nutzung in Rust zuerst bekannt gemacht werden.
 Dabei gibt es mehrere Möglichkeiten:
 \begin{enumerate}
-	\item Falls Inhalt der Struktur nicht von Bedeutung ist, kann es ausreichen, den neuen Typ lediglich bekannt zu machen: \rustcinline{#[repr(C)] struct PositionOffset;} \label{rust:ffi:example:enumerate:repr}
+	\item Falls der Aufbau der Struktur nicht von Bedeutung ist, kann es ausreichen, den Datentyp lediglich bekannt zu machen: \rustcinline{#[repr(C)] struct PositionOffset;} \label{rust:ffi:example:enumerate:repr}
 	
-	\item Der Inhalt ist wie bei \autoref{rust:ffi:example:enumerate:repr} unbedeutend, es soll aber ausdrücklich auf einen externen Typ hingewiesen werden: \rustcinline{extern \{ type PositionOffset; \}} \cite{rust:github:extern_type} (\todo{nightly})
+	\item Der Aufbau ist wie bei \autoref{rust:ffi:example:enumerate:repr} unbedeutend, es soll aber ausdrücklich auf einen externen Datentyp hingewiesen werden: \rustcinline{extern \{ type PositionOffset; \}} \cite{rust:github:extern_type} (\todo{nightly})
 	
-	\item Der Inhalt der Struktur ist von Bedeutung, da darauf zugegriffen werden soll oder in Rust eine Instanz erzeugbar sein soll. In diesem Fall muss die Struktur wiedergegeben werden:
+	\item Der Inhalt der Struktur ist von Bedeutung, da darauf zugegriffen werden soll oder in Rust eine Instanz erzeugbar sein soll. In diesem Fall muss die Struktur komplett wiedergegeben werden:
 	\begin{figure}[H]
 		\rustcinclude
 			{fig:rust:ffi:position_offset_rust}
@@ -247,13 +242,13 @@ Dabei gibt es mehrere Möglichkeiten:
 	die durch das Attribut \rustcinline{#repr(C)} wie eine C-Struktur im Speicher organisiert wird.
 	Somit ist sie kompatibel zu der C-Struktur aus \autoref{fig:rust:ffi:position_offset_c}.
 	
-	Da auf eine C-Struktur zugegriffen wird, sollten auch, wie in \autoref{fig:rust:ffi:position_offset_rust} zu sehen, spezielle Datentypen (\rustcinline{c_long}, \rustcinline{c_void}, \rustcinline{c_char}, ...) verwendet werden, um die Kompatibilität mit verschiedenen Systemen und C-Compilern zu wahren. \todo{u32 immer 32bit, aber int nicht immer gleich (Beispiel!?) --> Probleme}
+	Wenn auf eine C-Struktur zugegriffen wird, sollten auch, wie in \autoref{fig:rust:ffi:position_offset_rust} zu sehen, spezielle Datentypen (\rustcinline{c_long}, \rustcinline{c_void}, \rustcinline{c_char}, ...) verwendet werden, um die Kompatibilität mit verschiedenen Systemen und C-Compilern zu wahren. \todo{u32 immer 32bit, aber int nicht immer gleich (Beispiel!?) --> Probleme}
 	
 %	\rustcinline{*mut c_long} entspricht dabei dem C-Pointer für \rustcinline{&mut c_long}, also \ccinline{long*}, ein C-Pointer für \rustcinline{&c_long} entspricht \rustcinline{*const c_long}.
 	
 %	C-Pointer werden in Rust \enquote{Raw-Pointer} genannt und \rustcinline{*mut c_long} für  \rustcinline{&mut c_long} bzw. \rustcinline{*const c_long} für \rustcinline{&c_long} geschrieben.
 	
-	Ein C-Pointer \ccinline{*long} wird in Rust \enquote{Raw-Pointer} genannt und entweder als \rustcinline{*mut c_long} oder als \rustcinline{*const c_long} geschrieben. Der Unterschied ist wie zwischen \rustcinline{&mut c_long} und \rustcinline{&c_long} und dient dem \todo{Rusttypsystem!? ref!?} zur Unterscheidung \todo{Erzwinungt im Besitz von entsprechender Mutability zu sein}, während es für die C-Seite keinen Unterschied macht \cite{rust:book:raw_ptr}:
+	Ein C-Pointer \ccinline{*long} wird in Rust \enquote{Raw-Pointer} genannt und entweder \rustcinline{*mut c_long} oder \rustcinline{*const c_long} geschrieben. Der Unterschied ist wie zwischen \rustcinline{&mut c_long} und \rustcinline{&c_long} und dient dem \todo{Rusttypsystem!? ref!?} zur Unterscheidung \todo{Erzwinungt im Besitz von entsprechender Mutability zu sein}, während es für die C-Seite keinen Unterschied macht \cite{rust:book:raw_ptr}:
 	
 	\begin{figure}[H]
 		\centering
@@ -271,7 +266,7 @@ Dabei gibt es mehrere Möglichkeiten:
 \subsubsection{Externer Funktionsaufruf}
 \label{rust:ffi:functioncall}
 
-Während eine Struktur, die eine externe Struktur darstellen soll, optional in einem \rustcinline{extern {}} Block definiert sein kann, ist das für externe Funktionen zwingend:
+Während eine Struktur, die eine externe Struktur wiedergibt, sich optional in einem \rustcinline{extern \{\}} Block befinden kann, ist es zwingend, eine externe Funktionen darin bekannt zu machen:
 
 \begin{figure}[H]
 	\rustcinclude

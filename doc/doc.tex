@@ -47,9 +47,6 @@
 \usepackage{caption}
 
 
-\input{config.fonts.tex}
-\input{config.autoref.tex}
-\input{config.listing.tex}
 
 %\usepackage{tikz-uml}
 \usepackage{float}
@@ -69,7 +66,6 @@
 	sorting=nyt
 ]{biblatex}
 \usepackage[colorlinks=true]{hyperref}
-\usepackage{minted}
 
 \addbibresource{rust.bib}
 \addbibresource{general.bib}
@@ -108,19 +104,9 @@
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
 \newcommand{\captionsource}[1]{\caption*{\footnotesize{Quelle: #1}}}
 
-\usemintedstyle{tango}
-\newenvironment{rustc}
-	{\VerbatimEnvironment\begin{minted}[autogobble,bgcolor=codeBackground,linenos=true,tabsize=4]{rust}}
-	{\end{minted}}
-\newenvironment{cc}
-{\VerbatimEnvironment\begin{minted}[autogobble,bgcolor=codeBackground,linenos=true,tabsize=4]{c}}
-	{\end{minted}}
-\newcommand{\rustcinline}{\mintinline[bgcolor=codeBackground]{rust}}
-\newcommand{\ccinline}{\mintinline[bgcolor=codeBackground]{c}}
-\newenvironment{monospace}
-{\VerbatimEnvironment\begin{minted}[autogobble,bgcolor=codeBackground,linenos=true,tabsize=4]{console}}
-	{\end{minted}}
-
+\input{config.fonts.tex}
+\input{config.autoref.tex}
+\input{config.listing.tex}
 
 \include{gloassary}
 \include{acronym}

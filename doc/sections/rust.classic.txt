@@ -1,0 +1,9 @@
+src/
+|-- main.rs
+|-- functionality.rs
+|-- module/
+    |-- mod.rs
+    |-- functionality.rs
+    |-- submodule/
+        |-- mod.rs
+        |-- functionality.rs

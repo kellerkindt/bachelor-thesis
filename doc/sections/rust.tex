@@ -3,8 +3,8 @@
 
 Rust ist eine Programmiersprache, die versucht performant -- und daher durch Abstraktionen mit keinem zusätzlichen \enquote{Kosten} \todo{ref zero cost abstractions} -- sichere Programmierung zu ermöglichen.
 Ziel ist eine \todo{Systemprogrammiersprache}, die sowohl sicher \todo{cite chapter} als auch performant ist und ohne eine Laufzeit ausgeführt werden kann.
-Verschiedene Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} \todo{ref} --  werden durch Abstraktionen und mit Hilfe des Kompilers verhindert.
-Anders als Programmiersprachen, die dies mit Hilfe einer Laufzeit ermöglichen (zbsp. Java oder C\#), wird dies in Rust durch eine statische Analyse und einem Eigentümerprinzip bei der Kompilation gewährleistet.
+Verschiedene Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} \todo{ref} --  werden durch Abstraktionen und mit Hilfe des Compilers verhindert.
+Anders als Programmiersprachen, die dies mit Hilfe einer Laufzeit ermöglichen (zbsp. Java oder C\#), wird dies in Rust durch eine statische Analyse und einem Eigentümerprinzip bei der Compilation gewährleistet.
 
 
 \section{Geschichte}
@@ -20,7 +20,7 @@ In Vorträgen \todo{nix mehrzahl?} vermittelt er seither, wie Bibliotheken durch
 
 Ab 2009 begann Mozilla die Weiterentwicklung finanziell zu fördern, als einfache Tests und die Kernprinzipien demonstriert werden konnten.
 Die Entwicklung findet dabei öffentlich einsehbar auf GitHub unter \url{https://github.com/rust-lang/rust} statt und wird dabei nicht ausschließlich von Mozilla Angestellten koordiniert.
-Die Stabilität des Kompilers trotz hoher Flexibilität während der Entwicklung wird durch Unterscheidung von drei Veröffentlichungskanälen -- release, stable und nightly -- in Kombination mit automatisierten Tests \todo{ref?} gewährleistet. \cite{rust:faq}
+Die Stabilität des Compilers trotz hoher Flexibilität während der Entwicklung wird durch Unterscheidung von drei Veröffentlichungskanälen -- release, stable und nightly -- in Kombination mit automatisierten Tests \todo{ref?} gewährleistet. \cite{rust:faq}
 
 
 
@@ -31,11 +31,11 @@ Die Stabilität des Kompilers trotz hoher Flexibilität während der Entwicklung
 Das Ziel von Rust ist es, das Designen und Implementieren von sicheren, nebenläufig und auch praktisch tauglichen Systemen möglich zu machen \cite{rust:faq}.
 \todo{intro paragraph}
 
-Da Rust den \gls{llvm}-Kompiler nutzt, erbt Rust auch eine große Anzahl der Zielplattformen die \gls{llvm} unterstützt.
+Da Rust den \gls{llvm}-Compiler nutzt, erbt Rust auch eine große Anzahl der Zielplattformen die \gls{llvm} unterstützt.
 Die Zielplattformen sind in drei Stufen unterteilt, bei denen verschieden stark ausgeprägte Garantien vergeben sind. Es wird zwischen
 \begin{itemize}
 	\item \enquote{Stufe 1: Funktioniert garantiert} (u.a. X86, X86-64),
-	\item \enquote{Stufe 2: Kompiliert garantiert} (u.a. ARM, PowerPC, PowerPC-64) und
+	\item \enquote{Stufe 2: Compiliert garantiert} (u.a. ARM, PowerPC, PowerPC-64) und
 	\item \enquote{Stufe 3} (u. a. Thumb)
 \end{itemize}
 unterschieden \cite{rust:platform_support}.
@@ -45,26 +45,17 @@ Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementa
 
 \subsection{Klassisch}
 \label{rust:structure:classic}
-\begin{wrapfigure}{l}[-1em]{.4\textwidth}
-	\begin{rustc}
-		src/
-		|-- main.rs
-		|-- functionality.rs
-		|-- module/
-		    |-- mod.rs
-		    |-- functionality.rs
-		    |-- submodule/
-		        |-- mod.rs
-		        |-- functionality.rs
-	\end{rustc}
-	\caption{Verzeichnisstruktur des Quelltext-Verzeichnisses}
-	\label{fig:rust:structure:classic}
+\begin{wrapfigure}{l}[-1em]{.5\textwidth}
+	\rustcinclude
+		{fig:rust:structure:classi}
+		{Verzeichnisstruktur des Quelltext-Verzeichnisses}
+		{sections/rust.classic.txt}
 \end{wrapfigure}
 
 Das Quelldatei-Verzeichnis sollte entweder eine \textit{main.rs} für Ausführbare Programme oder eine \textit{lib.rs} für Bibliotheken enthalten.
-Während der Paketmanager Cargo (\autoref{rust:structure:cargo}) eine solche Benennung als Standardkonvention erwartet, kann bei manueller Nutzung des Kompilers auch ein anderer Name für die Quelldatei vergeben werden.
+Während der Paketmanager Cargo (\autoref{rust:structure:cargo}) eine solche Benennung als Standardkonvention erwartet, kann bei manueller Nutzung des Compilers auch ein anderer Name für die Quelldatei vergeben werden.
 
-Der Kompiler startet in der Wurzeldatei und lädt weitere Module, die durch \rustcinline{mod module;} gekennzeichnet sind (ähnlich \ccinline{# include "module.h"} in C/C++).
+Der Compiler startet in der Wurzeldatei und lädt weitere Module, die durch \rustcinline{mod module;} gekennzeichnet sind (ähnlich \ccinline{# include "module.h"} in C/C++).
 Ein Modul kann dabei eine weitere Quelldatei oder ganzes Verzeichnis sein.
 Ein Verzeichnis wird aber nur als Modul interpretiert, wenn sich eine \textit{mod.rs} Datei darin befindet.
 %Module (Verzeichnisse oder Quelldateien) gesucht wird. , in der Module durch \rustcinline{mod module;} und Quelldateien durch \rustcinline{mod functionality;} \enquote{inkludiert} werden können.
@@ -73,17 +64,14 @@ Ein Verzeichnis wird aber nur als Modul interpretiert, wenn sich eine \textit{mo
 \subsection{Mit Cargo}
 \label{rust:structure:cargo}
 
-\begin{wrapfigure}{r}[-1em]{.4\textwidth}
-	\hspace{1em}
-	\begin{rustc}
-		crate/
-		|-- Cargo.toml
-		|-- src/
-		    |-- ...
-	\end{rustc}
-	\caption{Vereinfachte Verzeichnisstruktur einer \enquote{crate}}
-	\label{fig:rust:structure:cargo}
+\begin{wrapfigure}{r}{.4\textwidth}
+	\rustcincludeml
+		{fig:rust:structure:cargo}
+		{Vereinfachte Verzeichnisstruktur einer \enquote{crate}}
+		{sections/rust.cargo.txt}
 \end{wrapfigure}
+
+
 
 \todo{text is shit}
 Im Gegensatz zu einem klassischen Aufbau (\autoref{rust:structure:classic}) wird von der Rust Gemeinschaft das Werkzeug \enquote{Cargo} (dt. Fracht/Ladung\todo{.}) angeboten.
@@ -104,23 +92,32 @@ Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dab
 
 \todo{[crates.io], Anzahl Pakete}
 
-\todo{Kompilierablauf, downloaden, kompilieren von crates}
+\todo{Compilierablauf, downloaden, compilieren von crates}
 
 \section{Hello World}
 
 
 \begin{wrapfigure}{l}{.5\textwidth}
-	\begin{rustc}
-		fn main() {
-			println!("Hello World");
-		}
-	\end{rustc}
-	\caption{\enquote{Hello World} in Rust}
-	\label{fig:rust:hello_world}
+	\rustcinclude
+		{fig:rust:hello_world}
+		{\enquote{Hello World} in Rust}
+		{sections/rust.hello_world.rs}
 \end{wrapfigure}
 
+\autoref{fig:rust:hello_world}
+\clearpage
 
 \section{Standardbibliothek}
+
+Die Rust Standardbibliothek ist bemüht sehr leichtgewichtig zu sein und wird selbst als eine Crate (siehe \autoref{rust:structure:cargo}) dargestellt, auf die standardmäßige eine Abhängigkeit besteht.
+Für die Verwendung von Rust im Embedded Bereich, kann diese Abhängigkeit, die für Microcontroller sehr Umfangreiche ist, durch \rustcinline{#![no_std]} unterbunden werden.
+Daraufhin sind nur noch die in der \rustcinline{core} Crate zur Verfügung gestellten Sprachkonstrukte verwendbar.
+
+In der \rustcinline{core} Crate zur Verfügung gestellten Sprachkonstrukte sind die üblichen  Verdächtigen: \rustcinline{bool} für boolische Ausdrücke; \rustcinline{char} für Unicode Zeichen; \rustcinline{u8}, \rustcinline{i8}, \rustcinline{u16}, \rustcinline{i16}, \rustcinline{u32}, \rustcinline{i32}, \rustcinline{u64}, \rustcinline{i64} (und bald \rustcinline{u128}, \rustcinline{i128} \todo{cite}) für Ganzzahlige Operationen ohne und mit Vorzeichen; \rustcinline{f32}, \rustcinline{f64} für Fließkommaoperationen in einfacher und zweifacher Präzision; Arrays und Slices \cite{rust:book:primitives}.
+
+Ganzzahlige primitive Datentypen sind immer durch \rustcinline{u} für Vorzeichenlos und \rustcinline{i} für Zahlen mit Vorzeichen gekennzeichnet, mit der Angehängten Größe des Datentyps in Bits.
+Dadurch wird eine Verwirrung wie zum Beispiel in C unterbunden, die primitiven Datentypen \ccinline{int} keine definierte Größe haben, sondern dies compiler- und plattformabhängig ist.
+
 
 \todo{core, datatypes, arrays slices, no null  \enquote{billion dollar mistake} }
 
@@ -194,18 +191,11 @@ oder im Falle von Strukturen optional mit einem \rustcinline{#[repr(C)]} gekennz
 In einem Beispiel, soll die Nutzung von \gls{ffi} demonstriert werden.
 
 \begin{figure}[H]
-	\begin{cc}
-		typedef struct PositionOffset {
-			long position_north;
-			long position_east;
-			long *std_dev_position_north /* OPTIONAL */;
-			long *std_dev_position_east  /* OPTIONAL */;
-			
-			// ...
-		} PositionOffset_t;
-	\end{cc}
-	\caption{Ausschnitt von \enquote{PositionOffset} \todo{ref mecview lib} in C}
-	\label{fig:rust:ffi:position_offset_c}
+	\ccinclude
+		{fig:rust:ffi:position_offset_c}
+		{Ausschnitt von \enquote{PositionOffset} \todo{ref mecview lib} in C}
+		{sections/rust.position_offset.c}
+	
 \end{figure}
 
 Die Struktur in \autoref{fig:rust:ffi:position_offset_c} muss zur Nutzung in Rust zuerst bekannt gemacht werden.
@@ -213,32 +203,21 @@ Dabei gibt es mehrere Möglichkeiten:
 \begin{enumerate}
 	\item Falls Inhalt der Struktur nicht von Bedeutung ist, kann es ausreichen, den neuen Typ lediglich bekannt zu machen: \rustcinline{#[repr(C)] struct PositionOffset;} \label{rust:ffi:example:enumerate:repr}
 	
-	\item Der Inhalt ist wie bei \autoref{rust:ffi:example:enumerate:repr} unbedeutend, es soll aber ausdrücklich auf einen externen Typ hingewiesen werden: \rustcinline{extern { type PositionOffset; }} \cite{rust:github:extern_type} (\todo{nightly})
+	\item Der Inhalt ist wie bei \autoref{rust:ffi:example:enumerate:repr} unbedeutend, es soll aber ausdrücklich auf einen externen Typ hingewiesen werden: \rustcinline{extern \{ type PositionOffset; \}} \cite{rust:github:extern_type} (\todo{nightly})
 	
 	\item Der Inhalt der Struktur ist von Bedeutung, da darauf zugegriffen werden soll oder in Rust eine Instanz erzeugbar sein soll. In diesem Fall muss die Struktur wiedergegeben werden:
 	\begin{figure}[H]
-		\begin{rustc}
-			use std::os::raw::c_long;
-			
-			#[repr(C)]
-			pub struct PositionOffset {
-				pub position_north: c_long,
-				pub position_east: c_long,
-				pub std_dev_position_north: *mut c_long,
-				pub std_dev_position_east: *mut c_long,
-				// ...
-			}
-			
-		\end{rustc}
-		\caption{Ausschnitt von \enquote{PositionOffset} \todo{ref mecview lib} in Rust}
-		\label{fig:rust:ffi:position_offset_rust}
+		\rustcinclude
+			{fig:rust:ffi:position_offset_rust}
+			{Ausschnitt von \enquote{PositionOffset} \todo{ref mecview lib} in Rust}
+			{sections/rust.position_offset.rs}
 	\end{figure}
 	
 	In \autoref{fig:rust:ffi:position_offset_rust} ist die Struktur \enquote{PositionOffset} definiert,
 	die durch das Attribut \rustcinline{#repr(C)} wie eine C-Struktur im Speicher organisiert wird.
 	Somit ist sie kompatibel zu der C-Struktur aus \autoref{fig:rust:ffi:position_offset_c}.
 	
-	Da auf eine C-Struktur zugegriffen wird, sollten auch, wie in \autoref{fig:rust:ffi:position_offset_rust} zu sehen, spezielle Datentypen (\rustcinline{c_long}, \rustcinline{c_void}, \rustcinline{c_char}, ...) verwendet werden, um die Kompatibilität mit verschiedenen Systemen und C-Kompilern zu wahren. \todo{u32 immer 32bit, aber int nicht immer gleich (Beispiel!?) --> Probleme}
+	Da auf eine C-Struktur zugegriffen wird, sollten auch, wie in \autoref{fig:rust:ffi:position_offset_rust} zu sehen, spezielle Datentypen (\rustcinline{c_long}, \rustcinline{c_void}, \rustcinline{c_char}, ...) verwendet werden, um die Kompatibilität mit verschiedenen Systemen und C-Compilern zu wahren. \todo{u32 immer 32bit, aber int nicht immer gleich (Beispiel!?) --> Probleme}
 	
 %	\rustcinline{*mut c_long} entspricht dabei dem C-Pointer für \rustcinline{&mut c_long}, also \ccinline{long*}, ein C-Pointer für \rustcinline{&c_long} entspricht \rustcinline{*const c_long}.
 	
@@ -265,27 +244,13 @@ Dabei gibt es mehrere Möglichkeiten:
 Während eine Struktur, die eine externe Struktur darstellen soll, optional in einem \rustcinline{extern {}} Block definiert sein kann, ist das für externe Funktionen zwingend:
 
 \begin{figure}[H]
-	\begin{rustc}
-		use std::os::raw::c_void;
-		
-		#[link(name = "messages", kind = "static")]
-		extern {
-			type asn_TYPE_descriptor_s;
-			type asn_enc_rval_t;
-			
-			fn uper_encode_to_buffer(
-				type_descriptor: *const asn_TYPE_descriptor_s,
-				struct_ptr: *const c_void,
-				buffer: *mut c_void,
-				buffer_size: usize,
-			) -> asn_enc_rval_t;
-		}
-	\end{rustc}
-	\caption{Externe Funktionsdefinition der ASN.1 Funktion zum Enkodieren}
-	\label{fig:rust:ffi:uper_encode_to_buffer}
+	\rustcinclude
+		{fig:rust:ffi:uper_encode_to_buffer}
+		{Externe Funktionsdefinition der ASN.1 Funktion zum Enkodieren}
+		{sections/rust.uper_encode_to_buffer.rs}
 \end{figure}
 
-Wie in \autoref{fig:rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern {}} Blöcke mit Attributen versehen werden. Zwingend ist bei der Verwendung eines \rustcinline{#[link(..)]} Attributes der Name der Bibliothek, auf die sich der im \rustcinline{extern {}} Block stehende Code bezieht. Optional kann auch wie in \autoref{fig:rust:ffi:uper_encode_to_buffer} die Art der \todo{Linkung} (dylib, static) angegeben werden.
+Wie in \autoref{fig:rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Attributen versehen werden. Zwingend ist bei der Verwendung eines \rustcinline{#[link(..)]} Attributes der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{fig:rust:ffi:uper_encode_to_buffer} die Art der \todo{Linkung} (dylib, static) angegeben werden.
 
 Die Art der Definition einer externen Funktion unterscheidet sich nicht von einer normalen Funktionsdefinition. Es sollten aber, wie in \autoref{rust:ffi:datatypes} beschrieben, zu C bzw. der externen Sprache kompatiblen Datentypen verwendet werden.
  

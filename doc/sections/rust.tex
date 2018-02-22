@@ -23,7 +23,8 @@ Die Entwicklung findet dabei öffentlich einsehbar auf GitHub unter \url{https:/
 Die Stabilität des Compilers trotz hoher Flexibilität während der Entwicklung wird durch Unterscheidung von drei Veröffentlichungskanälen -- release, stable und nightly -- in Kombination mit automatisierten Tests \todo{ref?} gewährleistet. \cite{rust:faq}
 
 
-
+\todo{wo anders? make more text, make better text}
+Bei Rust geht es also in vielerlei Hinsicht darum, Fehlerquellen aus anderen Programmiersprachen (C, C++) zu unterbinden, aber gleichzeitig genau so schnell Ausführen zu können.
 \todo{hobbyprojekt, mozilla, open-source, Entwicklung auf GitHub - jeder kann sich beteiligen, test(coverage), automatisierte builds, stable/beta/nightly}
 
 \section{Anwendungsgebiet}
@@ -117,6 +118,10 @@ Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dab
 \todo{MIR/assemblerbeispiele?} \\
 \cite{rust:orly_programming}
 
+\todo{pattern matching}
+
+\todo{formatierung}
+
 \clearpage
 
 \section{Standardbibliothek}
@@ -173,13 +178,16 @@ Die Crate \rustcinline{std} erweitert \rustcinline{core} um viele \todo{collecti
 
 \section{Alles hat einen Rückgabewert}
 
+
 \section{use mod pub}
 
 
 \section{Eigentümer- und Verleihprinzip}
 
 \section{Scope / Memory Management, Lebenszeit}
+\label{rust:scope}
 
+\todo{while compiling, does not compile on error / unprovable code, trait Drop}
 
 \todo{autodrop, auto file close}
 
@@ -204,13 +212,42 @@ Die Crate \rustcinline{std} erweitert \rustcinline{core} um viele \todo{collecti
 \subsection{Keine vergessene Null-Pointer Prüfung}
 \label{rust:no_null}
 \todo{explain option}
-\subsection{Kein vergessene Fehlerprüfung}
-\rustcinline{Result<_, _>}
+
+\subsection{Keine vergessene Fehlerprüfung}
+\label{rust:result}
+
+\begin{figure}[H]
+	\ccinclude
+	{rust:result:c_bad_fopen}
+	{Negativbeispiel: Fehlende Fehlerprüfung in C}
+	{sections/rust.fopen.c}
+\end{figure}
+
+In \autoref{rust:result:c_bad_fopen} sind mindestens zwei Fehler versteckt, die aber keinen Compileabbruch auslösen, sondern sich zur Laufzeit zeigen können.
+Der erste Fehler ist eine fehlende Überprüfung des Rückgabewertes von \ccinline{fopen} in Zeile 4, da dieser \ccinline{null} ist, falls das Öffnen der Datei fehlgeschlagen ist.
+Der Versuch in die Datei zu schreiben in Zeile 5 kann daraufhin in einen Speicherzugriffsfehler Resultieren und das Programm abstürzen lassen.
+\todo{vergleich Java/C++(++) exceptions (vergessen von fehlerbehandlung in c++(++) trotzdem möglich)}
+
+In Rust wird weder eine Ausnahme geworfen, noch ein Rückgabewert zurück gegeben, der ohne Prüfung verwendet werden kann:
+
+\begin{figure}[H]
+	\rustcinclude
+		{rust:result:rust_good_fopen}
+		{Positivbeispiel: Keine fehlende Fehlerprüfung in Rust}
+		{sections/rust.fopen.rs}
+\end{figure}
+
+Der Rückgabewert von \rustcinline{File::open("private.key")} in Zeile 5 von \autoref{rust:result:rust_good_fopen} ist vom Typ \rustcinline{Result<File, Error>}.
+Auf den eigentlichen Rückgabewert \rustcinline{File} kann nicht ohne eine Fehlerprüfung zugegriffen werden, da dies \rustcinline{Result} verhindert.
+Eine Fehlerprüfung kann wie in Zeile 5 mit einem \rustcinline{match} passieren, oder auch mit anderen Funktionen wie \rustcinline{.unwrap()}, \rustcinline{.unwrap_or()} ... https://doc.rust-lang.org/std/result/enum.Result.html die dann aber eine \rustcinline{panic!} \todo{ref} auslösen, falls ein Fehler vorliegt -- somit wird ein undefiniertes Verhalten unterbunden \todo{ref}.
+
+\todo{Der zweite Fehler...?}
+Durch die Lebenszeitanalyse \todo{ref} in Rust ist der Scope der \rustcinline{File} Variable bekannt, weshalb in dem Rust Beispiel in \autoref{rust:result:rust_good_fopen} die Datei auch wieder ordnungsgemäß geschlossen, während dies im C Beispiel in \autoref{rust:result:c_bad_fopen} nicht der Fall ist.
+
 \todo{explain result}
+
 \subsection{No dangling pointer}
 \todo{src https://www.youtube.com/watch?v=d1uraoHM8Gg}
-\subsection{Statische Speicher- und Lebenszeitanalyse}
-\todo{while compiling, does not compile on error / unprovable code, trait Drop}
 
 
 \section{Einbinden von Bibliotheken}

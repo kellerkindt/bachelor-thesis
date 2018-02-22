@@ -331,7 +331,7 @@ Auf den eigentlichen Rückgabewert \rustcinline{File} kann nicht ohne eine Fehle
 Eine Fehlerprüfung kann wie in Zeile 5 mit einem \rustcinline{match} passieren, oder auch mit anderen Funktionen wie \rustcinline{.unwrap()}, \rustcinline{.unwrap_or()} ... https://doc.rust-lang.org/std/result/enum.Result.html die dann aber eine \rustcinline{panic!} \todo{ref} auslösen, falls ein Fehler vorliegt -- somit wird ein undefiniertes Verhalten unterbunden \todo{ref}.
 
 \todo{Der zweite Fehler...?}
-Durch die Lebenszeitanalyse \todo{ref} in Rust ist der Scope der \rustcinline{File} Variable bekannt, weshalb in dem Rust Beispiel in \autoref{rust:result:rust_good_fopen} die Datei auch wieder ordnungsgemäß geschlossen, während dies im C Beispiel in \autoref{rust:result:c_bad_fopen} nicht der Fall ist.
+Durch die Lebenszeitanalyse \todo{ref} in Rust ist der Scope der \rustcinline{File} Variable bekannt, deshalb wird in dem Beispiel in Rust in \autoref{rust:result:rust_good_fopen} die Datei auch wieder ordnungsgemäß geschlossen, während dies im C Beispiel in \autoref{rust:result:c_bad_fopen} nicht der Fall ist.
 
 \todo{explain result}
 

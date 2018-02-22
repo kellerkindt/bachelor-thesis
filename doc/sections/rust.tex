@@ -1,10 +1,44 @@
 
 \chapter{Die Programmiersprache Rust}
 
+\todo{quotation besser verpacken}
+\begin{quotation}
+	\textit{\enquote{[..]Leute, die [..] sichere Programmierung haben wollen, [..] können das bei Rust haben, ohne die [von D] undeterministischen Laufzeiten oder Abstraktionskosten schlucken zu müssen. }}
+	\cite{rust:fefe}
+\end{quotation}
+
+\begin{quotation}
+	\textit{\enquote{It’s not bad programmers, it’s that C is a hostile language}} 
+	\cite[54]{rust:c_is_hostile_mena}
+\end{quotation}
+
+\begin{quotation}
+	\textit{\enquote{I’m thinking that C is actively hostile to writing and maintaining reliable code}} 
+	\cite[129]{rust:c_is_hostile_mena}
+\end{quotation}
+
+\begin{quotation}
+	\textit{\enquote{[..] Rust makes it safe, and  provides nice tools}} 
+	\cite[130]{rust:c_is_hostile_mena}
+\end{quotation}
+
+
+\begin{quotation}
+	\textit{\enquote{Rust hilft beim Fehlervermeiden}} 
+	\cite{rust:c_is_hostile_golem}
+\end{quotation}
+
+\begin{quotation}
+	\textit{\enquote{Rust is [..] a language that cares about very tight control}}
+	\cite{rust:tight_control}
+\end{quotation}
+
 Rust ist eine Programmiersprache, die versucht performant -- und daher durch Abstraktionen mit keinem zusätzlichen \enquote{Kosten} \todo{ref zero cost abstractions} -- sichere Programmierung zu ermöglichen.
 Ziel ist eine \todo{Systemprogrammiersprache}, die sowohl sicher \todo{cite chapter} als auch performant ist und ohne eine Laufzeit ausgeführt werden kann.
 Verschiedene Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} \todo{ref} --  werden durch Abstraktionen und mit Hilfe des Compilers verhindert.
 Anders als Programmiersprachen, die dies mit Hilfe einer Laufzeit ermöglichen (zbsp. Java oder C\#), wird dies in Rust durch eine statische Analyse und einem Eigentümerprinzip bei der Compilation gewährleistet.
+
+\todo{unused orly rust} \cite{rust:orly_y_rust}
 
 
 \section{Geschichte}
@@ -57,12 +91,15 @@ Das Quelldatei-Verzeichnis sollte entweder eine \textit{main.rs} für Ausführba
 Während der Paketmanager Cargo (\autoref{rust:structure:cargo}) eine solche Benennung als Standardkonvention erwartet, kann bei manueller Nutzung des Compilers auch ein anderer Name für die Quelldatei vergeben werden.
 
 Der Compiler startet in der Wurzeldatei und lädt weitere Module, die durch \rustcinline{mod module;} gekennzeichnet sind (ähnlich \ccinline{# include "module.h"} in C/C++).
-Ein Modul kann dabei eine weitere Quelldatei oder ganzes Verzeichnis sein.
-Ein Verzeichnis wird aber nur als Modul interpretiert, wenn sich eine \textit{mod.rs} Datei darin befindet.
+Ein Modul kann dabei eine weitere Quelldatei oder ein ganzes Verzeichnis sein.
+Ein Verzeichnis wird aber nur als gültiges Modul interpretiert, wenn sich eine \textit{mod.rs} Datei darin befindet.
+
+Wie bereits angedeutet, wird in Rust nicht eine \enquote{Klasse}, Datenstruktur oder Aufzählung pro Datei erwartet (\todo{wie das bei Java der Fall ist}), sondern eine Quelldatei entspricht einem Modul.
+Dies Umfasst in vielen fällen wenige aber mehrere Datenstrukturen, zugehörige Aufzählung und Fehlertypen.
 %Module (Verzeichnisse oder Quelldateien) gesucht wird. , in der Module durch \rustcinline{mod module;} und Quelldateien durch \rustcinline{mod functionality;} \enquote{inkludiert} werden können.
 %Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 
-\subsection{Mit Cargo}
+\subsection{Als Crate}
 \label{rust:structure:cargo}
 
 \begin{wrapfigure}{r}{.4\textwidth}
@@ -75,13 +112,19 @@ Ein Verzeichnis wird aber nur als Modul interpretiert, wenn sich eine \textit{mo
 
 
 \todo{text is shit}
-Im Gegensatz zu einem klassischen Aufbau (\autoref{rust:structure:classic}) wird von der Rust Gemeinschaft das Werkzeug \enquote{Cargo} (dt. Fracht/Ladung\todo{.}) angeboten.
+Im Gegensatz zu einem klassischen Aufbau (\autoref{rust:structure:classic}) wird von der Rust \todo{Gemeinschaft} das Werkzeug \enquote{Cargo} (dt. Fracht/Ladung\todo{.}) angeboten.
 Mit Cargo können ähnlich wie zum Beispiel mit Maven \todo{cite?} in Java, Abhängigkeiten zu anderen Bibliotheken verwaltet werden.
 Ein Cargo Projekt wird dabei als \enquote{Crate} (dt. Kiste/Kasten\todo{.}) bezeichnet.
 Eine offizielles Verzeichnis befindet sich auf \url{https://crates.io/}.
 Von \url{https://crates.io/} werden standardmäßig Abhängigkeiten nachgeladen.
 Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dabei \enquote{first come, first serve}.
 
+\todo{text blow is shit}
+Eine Crate kann entweder als Ziel ein ausführbares Programm oder eine Bibliothek haben.
+Davon abhängig wird die Wurzeldatei für ein ausführbares Programm in \textit{src/main.rs} und für eine Bibliothek in \textit{src/lib.rs} erwartet.
+Mit dem erzeuge einer Crate ()\rustcinline{cargo --bin meineCrate} bzw. \rustcinline{cargo --lib meineBib}) wird auch gleichzeitig \gls{git} für das Verzeichnis initialisiert.
+
+Projekte als Crates zu \todo{benutzen} ist der empfohlene Standard \todo{cite}.
 
 \todo{dependencies}
 
@@ -174,22 +217,46 @@ Die Crate \rustcinline{std} erweitert \rustcinline{core} um viele \todo{collecti
 
 \todo{println!, writeln! formatting}
 
+https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
+\todo{static type system with local type inference } \\
+
 
 
 \section{Alles hat einen Rückgabewert}
-
+\todo{() ??}
 
 \section{use mod pub}
 
 
-\section{Eigentümer- und Verleihprinzip}
-
 \section{Scope / Memory Management, Lebenszeit}
 \label{rust:scope}
+
+Rust benutzt ein \enquote{statisches, automatisches Speicher Management -- keinen Garbage Collector} \cite{rust:youtube:goto2017}.
+Das bedeutet, die Lebenszeit einer Variable wird statisch während der Compilezeit anhand des Scopes \todo{?} ermittelt.
+Durch diese statische Analyses wird eine Variable durch eine automatisierte Anweisung, die der Compiler einfügt, freigegeben.
+Dies gilt auch für Variablen auf dem Heap.
+Ein Manuelles \ccinline{free(*void)} wie in C/C++ üblich entfällt.
+
+
+\begin{figure}[H]
+	\rustcinclude
+		{rust:memory:scope}
+		{Scope von Variablen}
+		{sections/rust.memory.rs}
+\end{figure}
+
+Als Alternative kann eine Variable oder Datenstruktur auch vorzeitig durch Aufruf von \rustcinline{std::mem::drop(_)} freigegeben werden.
+Die optionalen Implementation von \rustcinline{std::op::Drop} \todo{trait? ref?} kommt der Implementation des Destruktors aus C++ gleich.
+
+\enquote{static automatic memory management} - no garbage collection \cite{rust:youtube:goto2017}
+\todo{"static automatic memory management" - no garbage collection } \\
 
 \todo{while compiling, does not compile on error / unprovable code, trait Drop}
 
 \todo{autodrop, auto file close}
+
+\section{Eigentümer- und Verleihprinzip}
+
 
 \section{Rust als funktionale Programmiersprache}
 \todo{functional programming -> no global state, no exceptions, find literature}
@@ -326,43 +393,6 @@ Wie in \autoref{fig:rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \
 Die Art der Definition einer externen Funktion unterscheidet sich nicht von einer normalen Funktionsdefinition. Es sollten aber, wie in \autoref{rust:ffi:datatypes} beschrieben, zu C bzw. der externen Sprache kompatiblen Datentypen verwendet werden.
  
 
-\section{Warum Rust?}
-
-\begin{quotation}
-	\textit{\enquote{[..]Leute, die [..] sichere Programmierung haben wollen, [..] können das bei Rust haben, ohne die [von D] undeterministischen Laufzeiten oder Abstraktionskosten schlucken zu müssen. }}
-	\cite{rust:fefe}
-\end{quotation}
-
-
-
-
-\begin{quotation}
-	\textit{\enquote{It’s not bad programmers, it’s that C is a hostile language}} 
-	(Seite 54, \cite{rust:c_is_hostile_mena})
-\end{quotation}
-
-\begin{quotation}
-	\textit{\enquote{I’m thinking that C is actively hostile to writing and maintaining reliable code}} 
-	(Seite 129, \cite{rust:c_is_hostile_mena})
-\end{quotation}
-
-\begin{quotation}
-	\textit{\enquote{[..] Rust makes it safe, and  provides nice tools}} 
-	(Seite 130, \cite{rust:c_is_hostile_mena})
-\end{quotation}
-
-
-\begin{quotation}
-	\textit{\enquote{Rust hilft beim Fehlervermeiden}} 
-	\cite{rust:c_is_hostile_golem}
-\end{quotation}
-
-\begin{quotation}
-	\textit{\enquote{Rust is [..] a language that cares about very tight control}}
-	\cite{rust:tight_control}
-\end{quotation}
-
-\todo{unused orly rust} \cite{rust:orly_y_rust}
 
 \section{Kernfeatures}
 

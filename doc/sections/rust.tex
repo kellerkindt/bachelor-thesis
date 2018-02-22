@@ -128,21 +128,28 @@ Daraufhin sind nur noch die in der \rustcinline{core} Crate zur Verfügung geste
 
 \subsection{core}
 \label{rust:core}
-Die in der \rustcinline{core} Crate zur Verfügung gestellten Sprachkonstrukte sind im wesentlichen die üblichen  Verdächtigen: \rustcinline{bool} für boolische Ausdrücke; \rustcinline{char} für ein einzelnes Unicode Zeichen; \rustcinline{str} für eine Zeichenkette; \rustcinline{u8}, \rustcinline{i8}, \rustcinline{u16}, \rustcinline{i16}, \rustcinline{u32}, \rustcinline{i32}, \rustcinline{u64}, \rustcinline{i64} (und bald \rustcinline{u128}, \rustcinline{i128} \todo{cite}) für ganze Zahlen; \rustcinline{f32}, \rustcinline{f64} für Fließkommazahlen in einfacher und zweifacher Präzision; Arrays und Slices \cite{rust:book:primitives}.
+Die in der \rustcinline{core} Crate zur Verfügung gestellten Sprachkonstrukte sind im wesentlichen die üblichen  Verdächtigen: \rustcinline{bool} für boolische Ausdrücke; \rustcinline{char} für ein einzelnes Unicode Zeichen; \rustcinline{str} für eine Zeichenkette; \rustcinline{u8}, \rustcinline{i8}, \rustcinline{u16}, \rustcinline{i16}, \rustcinline{u32}, \rustcinline{i32}, \rustcinline{u64}, \rustcinline{i64}, (bald \rustcinline{u128}, \rustcinline{i128} \todo{cite}) und \rustcinline{usize}, \rustcinline{isize}  für ganze Zahlen; \rustcinline{f32}, \rustcinline{f64} für Fließkommazahlen in einfacher und zweifacher Präzision; Arrays und Slices \cite{rust:book:primitives}.
 
-Ganzzahlige primitive Datentypen beginnen mit \rustcinline{u} für vorzeichenlos und \rustcinline{i} für vorzeichenbehaftet gefolgt mit der Größe des Datentyps in Bits.
-Dadurch wird eine Verwirrung wie zum Beispiel in C unterbunden, wo die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe haben, sondern dies abhängig vom eingesetzten Compiler und der Zielplattform ist. \todo{prove? => sizeof?, cite C99/C14 Standard?}
+Ganzzahlige primitive Datentypen mit \rustcinline{u} beginnend sind vorzeichenlos und mit \rustcinline{i} beginnend sind vorzeichenbehaftet, gefolgt mit der Anzahl der Bits  die der Datentyp groß ist.
+\todo{shit sentence} Die einzige Ausnahme bildet der Datentyp \rustcinline{usize} bzw \rustcinline{isize}, da dieser immer so groß ist, wie die Architektur der Zielplattform (X86 -> 32 Bit, X86\_64 -> 64 Bit).
+Ein Anwendungsfall von \rustcinline{usize} ist dabei die Indexierung eines Arrays oder einer Slice (\todo{siehe nächster paragraph?}), da der Index hierfür niemals negativ und niemals größer sein kann, wie die Architektur der Zielplattform darstellen kann \todo{erwähnen?: größer könnte man garnicht addressieren}.
 
-Zahlen können eindeutig einem Datentyp zugewiesen werden, indem dieser angehängt wird.
+Durch dieses Schema bei der Bezeichnung der Datentypen wird eine Verwirrung wie zum Beispiel in C unterbunden, wo die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe haben, sondern dies abhängig vom eingesetzten Compiler und der Zielplattform ist \cite[187]{deitel2013c}. Erst ab C99 wurden zusätzliche, aber optionale, ganzzahlige Datentypen mit bestimmter Größe definiert \cite[141]{goll2014c}.
+
+Konstanten können eindeutig einem Datentyp zugewiesen werden, indem dieser angehängt wird.
 \rustcinline{4711u16} ist somit vom Datentyp \rustcinline{u16}.
 Des weiteren dürfen Ziffern durch beliebiges setzen von \rustcinline{_} getrennt werden, um die Lesbarkeit zu erhöhen: \rustcinline{1_000_000_f32}.
+Eine Schreibweise in Binär (\rustcinline{0b0000_1000_u8}), in Hexadezimal (\rustcinline{0xFF_08_u16}) oder Oktal (\rustcinline{0o64_u8}) ist auch möglich. 
+Konstante Zeichen und Zeichenketten können auch als Bytes (\rustcinline{b'b'} entspricht \rustcinline{u8} und \rustcinline{b"abc"} entsricht \rustcinline{&[u8]}) \todo{hinterlegt} werden.
 
-\todo{move to hello world?}
-Arrays haben immer eine zur Compilezeit bekannte Größe. Dynamische Arrays gibt es nicht, da diese zu oft die Quelle von Fehlern seien \todo{cite!} (Abhilfe \rustcinline{Vec<_>}, siehe \autoref{rust:std}).
+Arrays haben immer eine zur Compilezeit bekannte Größe und Initialisierungswert (siehe \autoref{rust:no_unitialized_usage}).
+Dynamische Arrays gibt es nicht, da diese zu oft Fehlerquellen seien \todo{cite!} (Abhilfe: \rustcinline{Vec<_>}, siehe \autoref{rust:std}).
 Die Notation ist \rustcinline{[<Füllwert>; <Größe>]}.
 \rustcinline{[0_u8; 128]} steht also für ein 128 Byte langes Byte Array, das mit 0-en vom Datentyp \rustcinline{u8} gefüllt ist.
+
 \enquote{Slices} (dt. Scheibe/Stück) bezeichnet Rust Referenzen auf Arrays, die auch nur Teilbereiche umfassen können.
-Die Größe einer Slice ist in deren \todo{Fat-Pointer} \todo{explain} enthalten.
+Die Größe einer Slice wird dabei mit der Referenz auf den Startwert gespeichert \todo{explain Fat-Pointer?} und bei Funktionsaufrufen übergeben.
+Ein zusätzlicher Parameter für die Größe eines Buffers, wie in C üblich, ist somit unnötig.
 Die Notation ähnelt die eines Arrays, aber ohne Größenspezifikation: \rustcinline{[<Datentyp>]}.
 Eine Slice kann von einem Array oder einer anderen Slice erzeugt werden, dabei wird der Start- und Endindex des Teilbereiches angegeben.
 Falls kein Start- oder Endindex angegeben wurde, wird das jeweilige Limit übernommen (0, max) \todo{shit text}: \rustcinline{let slice : &[u8] = &array[..8];}
@@ -191,6 +198,8 @@ Die Crate \rustcinline{std} erweitert \rustcinline{core} um viele \todo{collecti
 \todo{Send, Sync, No dataraces weil Ownership, Channel, Mutex, RwLock}
 \subsection{Zero Cost Abstraction}
 \subsection{Kein undefiniertes Verhalten}
+\label{rust:no_unitialized_usage}
+\todo{auch: no unitialized usage}
 \todo{ref oreilly}
 \subsection{Keine vergessene Null-Pointer Prüfung}
 \label{rust:no_null}

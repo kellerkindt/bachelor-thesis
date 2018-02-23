@@ -33,10 +33,12 @@
 	\cite{rust:tight_control}
 \end{quotation}
 
-Rust ist eine Programmiersprache, die versucht performant -- und daher durch Abstraktionen mit keinem zusätzlichen \enquote{Kosten} \todo{ref zero cost abstractions} -- sichere Programmierung zu ermöglichen.
-Ziel ist eine \todo{Systemprogrammiersprache}, die sicher \todo{cite chapter} und performant ist, ohne eine Laufzeit ausgeführt werden kann und \todo{ergonomisch nutzbar} ist.
-Verschiedene Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} \todo{ref} --  werden durch Abstraktionen und mit Hilfe des Compilers verhindert.
-Anders als Programmiersprachen, die dies mit Hilfe einer Laufzeit ermöglichen (zbsp. Java oder C\#), wird dies in Rust durch eine statische Lebenszeitanalyse (\ref{rust:static_analysis}) und einem Eigentümerprinzip (\ref{rust:ownership}) bei der Compilation gewährleistet.
+%Rust ist eine Programmiersprache, die versucht performante -- und daher durch Abstraktionen mit keinem zusätzlichen \enquote{Kosten} \todo{ref zero cost abstractions} -- und sichere Programmierung zu ermöglichen.
+Rust hat als Ziel, eine sichere \todo{cite chapter} und performante \todo{Systemprogrammiersprache} zu sein, die ohne eine Laufzeit ausgeführt werden kann und \todo{ergonomisch nutzbar} ist.
+Abstraktionen sollen die Ergonomie verbessern, aber keine unnötigen Performanceeinbußen verursachen (siehe \todo{ref zero cost abstractions}).
+
+Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} \todo{ref} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert.
+Im Gegensatz zu Programmiersprachen, die dies mit Hilfe einer Laufzeit ermöglichen (zbsp. Java oder C\#), werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\ref{rust:static_analysis}) und mit dem Eigentümerprinzip (\ref{rust:ownership}) bei der Compilation überprüft und erzwungen.
 
 \todo{unused orly rust} \cite{rust:orly_y_rust}
 
@@ -44,21 +46,24 @@ Anders als Programmiersprachen, die dies mit Hilfe einer Laufzeit ermöglichen (
 \section{Geschichte}
 \label{rust:history}
 
-In 2006 \cite{rust:faq} begann Graydon Hoare die Programmiersprache Rust in seiner Freizeit als Hobbyprojekt zu entwickeln.
-Als Grund nannte er seine Unzufriedenheit mit der Programmiersprache C++, in der es sehr schwierig sei, fehlerfreien, speichersicheren und nebenläufigen Code zu schreiben.
-Zudem beschrieb er C++ als \enquote{ziemlich fehlerträchtig}. \cite{rust:heise_interview_graydon}
+In 2006 begann Graydon Hoare die Programmiersprache Rust in seiner Freizeit als Hobbyprojekt zu entwickeln \cite{rust:faq}.
+Als Grund nannte er seine Unzufriedenheit mit der Programmiersprache C++, in der es sehr schwierig sei, fehlerfreien, speichersicheren und nebenläufigen Programmcode zu entwickeln.
+Zudem beschrieb er C++ als \enquote{ziemlich fehlerträchtig} \cite{rust:heise_interview_graydon}.
 
-Auch Federico Mena-Quintero -- Mitbegründer des Gnome projekts \todo{cite \url{https://people.gnome.org/~federico/} or so} --
+Auch Federico Mena-Quintero -- Mitbegründer des GNOME-Projekts \todo{cite \url{https://people.gnome.org/~federico/} or so} --
 äußerte in einem Interview mit Golem im Juli 2017 seine Bedenken an der Verwendung der \enquote{feindseligen} Sprache C \cite{rust:c_is_hostile_golem}.
 In Vorträgen \todo{nix mehrzahl?} vermittelt er seither, wie Bibliotheken durch Implementationen in Rust ersetzt werden können \cite{rust:c_is_hostile_mena}.
 
 Ab 2009 begann Mozilla die Weiterentwicklung finanziell zu fördern, als einfache Tests und die Kernprinzipien demonstriert werden konnten.
-Die Entwicklung findet dabei öffentlich einsehbar auf GitHub unter \url{https://github.com/rust-lang/rust} statt und wird dabei nicht ausschließlich von Mozilla Angestellten koordiniert.
-Die Stabilität des Compilers trotz hoher Flexibilität während der Entwicklung wird durch Unterscheidung von drei Veröffentlichungskanälen -- release, stable und nightly -- in Kombination mit automatisierten Tests \todo{ref?} gewährleistet. \cite{rust:faq}
+Die Entwicklung findet dabei öffentlich einsehbar unter \url{https://github.com/rust-lang/rust} statt und wird dabei nicht ausschließlich von Mozilla Angestellten koordiniert.
+
+Durch automatisierte Tests \todo{ref} in Kombination mit drei Veröffentlichungskanälen (relese, stable und nightly) wird die Stabilität des Compilers und die der Standardbibliothek (\autoref{rust:stdlib}) gewährleistet.
+Auf eine andere Art und Weise wäre eine öffentliche Entwicklung auf \gls{github} nicht möglich, an der sich jeder -- sowohl an Diskussionen als auch an Implementationen -- beteiligen kann.
+%Die Stabilität des Compilers trotz hoher Flexibilität während der Entwicklung wird durch Unterscheidung von drei Veröffentlichungskanälen -- release, stable und nightly -- in Kombination mit automatisierten Tests \todo{ref?} gewährleistet. \cite{rust:faq}
 
 
 \todo{wo anders? make more text, make better text}
-Bei Rust geht es also in vielerlei Hinsicht darum, Fehlerquellen aus anderen Programmiersprachen (C, C++) zu unterbinden, aber gleichzeitig genau so schnell Ausführen zu können.
+Bei Rust geht es in vielerlei Hinsicht darum, bekannte Fehlerquellen aus anderen Programmiersprachen zu unterbinden, aber gleichzeitig eine mindestens genau so gute Performance zu erreichen.
 \todo{hobbyprojekt, mozilla, open-source, Entwicklung auf GitHub - jeder kann sich beteiligen, test(coverage), automatisierte builds, stable/beta/nightly}
 
 \section{Anwendungsgebiet}
@@ -71,12 +76,17 @@ Die Zielplattformen sind in drei Stufen unterteilt, bei denen verschieden stark 
 \begin{itemize}
 	\item \enquote{Stufe 1: Funktioniert garantiert} (u.a. X86, X86-64),
 	\item \enquote{Stufe 2: Compiliert garantiert} (u.a. ARM, PowerPC, PowerPC-64) und
-	\item \enquote{Stufe 3} (u. a. Thumb)
+	\item \enquote{Stufe 3} (u. a. Thumb (Cortex-Microcontroller))
 \end{itemize}
 unterschieden \cite{rust:platform_support}.
 Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementation neuer Funktionen aus (Beispiel \enquote{128-bit Integer Support} \cite{rust:github:128bit_integer}).
 
 \section{Aufbau eines Projektverzeichnisses}
+
+Der Aufbau eines Rust Projektverzeichnis kann zwischen zwei verschiedenen Arten differenziert werden.
+Zum einen gibt es den klassische Aufbau, in dem lediglich der Programmcode liegt und der Compiler direkt aufgerufen wird.
+Zum anderen wird der Aufbau als Crate empfohlen \todo{cite}, bei dem automatisch Abhängigkeiten aufgelöst aber auch Metainformationen bezüglich des Autors und der Version gehalten werden.
+Ein klassischer Aufbau ist nur selten zu anzutreffen.
 
 \subsection{Klassisch}
 \label{rust:structure:classic}
@@ -111,32 +121,22 @@ Dies Umfasst in vielen fällen wenige aber mehrere Datenstrukturen, zugehörige 
 
 
 
+Eine \enquote{Crate} (dt. Kiste/Kasten\todo{.}) erweitert den klassischen Aufbau um eine \textit{Cargo.toml} Datei, in der Metainformationen zum Projekt hinterlegt werden.
+Durch die Benutzung des Werkzeugs \enquote{Cargo} (dt. Fracht/Ladung\todo{.}, entwickelt und angeboten von der Rust \todo{Gemeinschaft}) können Abhängigkeiten automatisch aufgelöst, heruntergeladen und compiliert werden.
+
 \todo{text is shit}
-Im Gegensatz zu einem klassischen Aufbau (\autoref{rust:structure:classic}) wird von der Rust \todo{Gemeinschaft} das Werkzeug \enquote{Cargo} (dt. Fracht/Ladung\todo{.}) angeboten.
-Mit Cargo können ähnlich wie zum Beispiel mit Maven \todo{cite?} in Java, Abhängigkeiten zu anderen Bibliotheken verwaltet werden.
-Ein Cargo Projekt wird dabei als \enquote{Crate} (dt. Kiste/Kasten\todo{.}) bezeichnet.
-Eine offizielles Verzeichnis befindet sich auf \url{https://crates.io/}.
-Von \url{https://crates.io/} werden standardmäßig Abhängigkeiten nachgeladen.
-Jeder kann neue Bibliotheken hochladen/veröffentlichen, für den Namen gilt dabei \enquote{first come, first serve}.
+Eine offizielles Verzeichnis mit über 14.000 Crates (Stand \today) ist unter \url{https://crates.io/} erreichbar.
+Cargo lädt standardmäßig Abhängigkeiten von dort nach.
+Jeder kann neue Bibliotheken veröffentlichen.
+Für den Namen gilt dabei \enquote{first come, first serve}.
 
-\todo{text blow is shit}
-Eine Crate kann entweder als Ziel ein ausführbares Programm oder eine Bibliothek haben.
-Davon abhängig wird die Wurzeldatei für ein ausführbares Programm in \textit{src/main.rs} und für eine Bibliothek in \textit{src/lib.rs} erwartet.
-Mit dem erzeuge einer Crate ()\rustcinline{cargo --bin meineCrate} bzw. \rustcinline{cargo --lib meineBib}) wird auch gleichzeitig \gls{git} für das Verzeichnis initialisiert.
+Eine Crate kann entweder ein ausführbares Programm oder eine Bibliothek sein.
+Davon abhängig is die Wurzeldatei \textit{src/main.rs} (für ein ausführbares Programm) oder \textit{src/lib.rs} (für eine Bibliothek).
+Mit dem erzeuge einer Crate (\rustcinline{cargo --bin meineCrate} bzw. \rustcinline{cargo --lib meineBib}) wird auch gleichzeitig \gls{git} für das Verzeichnis initialisiert.
 
-Projekte als Crates zu \todo{benutzen} ist der empfohlene Standard \todo{cite}.
+Es wird allgemein empfohlen, ein Projekt als Crate zu betreiben \todo{cite}.
 
-\todo{dependencies}
-
-\todo{Cargo init --bin <name>}
-
-\todo{missing .gitignore / .git mention / git alltogether}
-
-\todo{Cargo.toml}
-
-\todo{[crates.io], Anzahl Pakete}
-
-\todo{Compilierablauf, downloaden, compilieren von crates}
+\todo{Cargo.toml example?}
 
 \section{Hello World}
 
@@ -168,6 +168,7 @@ Projekte als Crates zu \todo{benutzen} ist der empfohlene Standard \todo{cite}.
 \clearpage
 
 \section{Standardbibliothek}
+\label{rust:stdlib}
 
 Die Rust Community ist darum bemüht, die Standardbibliothek sehr leichtgewichtig zu halten.
 Sie wird selbst als eine Crate (siehe \autoref{rust:structure:cargo}) zur Verfügung gestellt, auf die standardmäßige eine Abhängigkeit besteht.

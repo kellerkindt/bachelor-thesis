@@ -67,7 +67,8 @@
 ]{biblatex}
 \usepackage[colorlinks=true]{hyperref}
 
-\addbibresource{rust.bib}
+\addbibresource{sections/asn.bib}
+\addbibresource{sections/rust.bib}
 \addbibresource{general.bib}
 
 %
@@ -93,7 +94,7 @@
 %\usepackage{listings}             % for code snippets
 \usepackage{isodate}
 \usepackage{pdfpages} % to include pdfs
-\usepackage[acronym,automake,toc]{glossaries}
+\usepackage[acronym,automake,toc,footnote]{glossaries}
 \usepackage{glossaries-extra}
 
 %required for linebreak inside tabel cells
@@ -119,6 +120,9 @@
 	
 \begin{document}
 	
+	\pagenumbering{roman}
+	\setcounter{page}{0}
+	
 	\include{titlepage}
 	\include{legal}
 	\include{declaration}
@@ -127,8 +131,6 @@
 	
 	\thispagestyle{empty}
 	
-	\pagenumbering{roman}
-	\setcounter{page}{0}
 	
 	\clearpage	
 	\hypersetup{allcolors=black}
@@ -148,8 +150,7 @@
 		\section{Hochperformant -> parallel?}
 		\section{Serverbasierte Kommunikationsplattform}
 		\section{Low-Latency + Entwurfsmuster + Patterns? + Algorithmen?}
-		\section{ASN.1}
-		\section{PER}
+		\include{sections/asn}
 		\section{MEC-View Server und Umgebung}
 		
 	

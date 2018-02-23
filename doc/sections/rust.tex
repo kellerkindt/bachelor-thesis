@@ -228,12 +228,12 @@ https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
 \section{use mod pub}
 
 
-\section{Scope / Memory Management, Lebenszeit}
+\section{Geltungsbereich / Memory Management, Lebenszeit}
 \label{rust:scope}
 \label{rust:static_analysis}
 
 Rust benutzt ein \enquote{statisches, automatisches Speicher Management -- keinen Garbage Collector} \cite{rust:youtube:goto2017}.
-Das bedeutet, die Lebenszeit einer Variable wird statisch während der Compilezeit anhand des Scopes \todo{?} ermittelt.
+Das bedeutet, die Lebenszeit einer Variable wird statisch während der Compilezeit anhand des Geltungsbereichs ermittelt.
 Durch diese statische Analyses wird eine Variable durch eine automatisierte Anweisung, die der Compiler einfügt, freigegeben.
 Dies gilt auch für Variablen auf dem Heap.
 Ein Manuelles \ccinline{free(*void)} wie in C/C++ üblich entfällt.
@@ -242,7 +242,7 @@ Ein Manuelles \ccinline{free(*void)} wie in C/C++ üblich entfällt.
 \begin{figure}[H]
 	\rustcinclude
 		{rust:memory:scope}
-		{Scope von Variablen}
+		{Geltungsbereich von Variablen}
 		{sections/rust.memory.rs}
 \end{figure}
 
@@ -331,7 +331,7 @@ Auf den eigentlichen Rückgabewert \rustcinline{File} kann nicht ohne eine Fehle
 Eine Fehlerprüfung kann wie in Zeile 5 mit einem \rustcinline{match} passieren, oder auch mit anderen Funktionen wie \rustcinline{.unwrap()}, \rustcinline{.unwrap_or()} ... https://doc.rust-lang.org/std/result/enum.Result.html die dann aber eine \rustcinline{panic!} \todo{ref} auslösen, falls ein Fehler vorliegt -- somit wird ein undefiniertes Verhalten unterbunden \todo{ref}.
 
 \todo{Der zweite Fehler...?}
-Durch die Lebenszeitanalyse \todo{ref} in Rust ist der Scope der \rustcinline{File} Variable bekannt, deshalb wird in dem Beispiel in Rust in \autoref{rust:result:rust_good_fopen} die Datei auch wieder ordnungsgemäß geschlossen, während dies im C Beispiel in \autoref{rust:result:c_bad_fopen} nicht der Fall ist.
+Durch die Lebenszeitanalyse \todo{ref} in Rust ist der Geltungsbereich der \rustcinline{File} Variable bekannt, deshalb wird in dem Beispiel in Rust in \autoref{rust:result:rust_good_fopen} die Datei auch wieder ordnungsgemäß geschlossen, während dies im C Beispiel in \autoref{rust:result:c_bad_fopen} nicht der Fall ist.
 
 \todo{explain result}
 

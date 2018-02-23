@@ -148,6 +148,29 @@ Es wird allgemein empfohlen, ein Projekt als Crate zu betreiben \todo{cite}.
 		{sections/rust.hello_world.rs}
 \end{wrapfigure}
 
+Der Programmcode in \autoref{fig:rust:hello_world} gibt auf der Konsole \monospaceinline{Hello World} aus.
+Das \rustcinline{fn} die Funktion \rustcinline{main} definiert und diese der Startpunkt des Programms ist, wird wenige überraschen.
+Den meisten wird vermutlich eher das Ausrufezeichen in Zeile 2 auffallen, da es auf den ersten Blick dort nicht hingehören sollte.
+In Rust haben Ausrufezeichen und Fragezeichen besondere Bedeutungen, weswegen die Verwendung in Zeile 2 trotzdem richtig ist.
+
+Die Bedeutung des Fragezeichens dient zum schnelleren Auswerten von \rustcinline{Rusult<_, _>} Werten und wird in \todo{ref} genauer erklärt.
+Das Ausrufezeichen kennzeichnet, dass der ansonsten augenscheinlicher Funktionsaufruf tatsächlich ein Aufruf einer Makrofunktion ist.
+
+Eine Funktion \rustcinline{println} gibt es nicht, auch keine aus C erwarteten Funktionen wie \ccinline{printf}, \ccinline{fputs}, \ccinline{sprintf}.
+Eine Ausgabe erfolgt durch das \rustcinline{println!} Makro, welches die Makros \rustcinline{format!} \todo{ref} und \rustcinline{writeln!} Kombiniert und das \rustcinline{Write}-Traits \todo{ref}, welches von der Standardausgabe implementiert wird, nutzt \todo{verify, cite?}.
+
+\todo{hmmmm}
+Ein kleines Beispiel, viele versteckte Mechaniken zur Laufzeitoptimierung aber trotzdem handlich und leserlich -- Rust.
+
+\subsection{Namens- und Formatierkonvention / Styleguide}
+
+\cite{rust:styleguide}
+
+\subsection{Formatierung}
+\rustcinline{format!} all se things
+
+\todo{formatierung}
+
 \todo{let, optionaler datentyp, macros, generics, () statt void}
 
 \todo{official format/naming convetion, use, function, macro}
@@ -163,14 +186,17 @@ Es wird allgemein empfohlen, ein Projekt als Crate zu betreiben \todo{cite}.
 
 \todo{pattern matching}
 
-\todo{formatierung}
+\subsection{Niemals nichts und niemals Ausnahmen \todo{se name}}
 
-\clearpage
+Rust kennt \ccinline{null}(-Pointer) nicht, bietet aber in \rustcinline{core} (\autoref{rust:core}) \rustcinline{Option<_>} als Ersatz an (siehe \autoref{rust:no_null}).
+Für die Fehlerbehandlung wird nicht auf ein Exception-Handling zurückgegriffen, sondern ein eigener Datentyp angeboten, der entweder den Rückgabewert enthält, oder aber einen Fehler: \rustcinline{Result<_, _>} (siehe \autoref{rust:result}).
+
 
 \section{Standardbibliothek}
 \label{rust:stdlib}
 
 Die Rust Community ist darum bemüht, die Standardbibliothek sehr leichtgewichtig zu halten.
+Nicht eindeutig als fundamental eingestufte Funktionalität wird lieber als Crate auf \textins{crates.io} angeboten anstatt die Standardbibliothek übernommen zu werden \todo{prove via ref}. 
 Sie wird selbst als eine Crate (siehe \autoref{rust:structure:cargo}) zur Verfügung gestellt, auf die standardmäßige eine Abhängigkeit besteht.
 Für die Verwendung von Rust im Embedded Bereich, kann diese Abhängigkeit, die für Microcontroller sehr umfangreich ist, durch \rustcinline{#![no_std]} unterbunden werden.
 Daraufhin sind nur noch die in der \rustcinline{core} Crate zur Verfügung gestellten Sprachkonstrukte verwendbar.
@@ -203,14 +229,11 @@ Die Notation ähnelt die eines Arrays, aber ohne Größenspezifikation: \rustcin
 Eine Slice kann von einem Array oder einer anderen Slice erzeugt werden, dabei wird der Start- und Endindex des Teilbereiches angegeben.
 Falls kein Start- oder Endindex angegeben wurde, wird das jeweilige Limit übernommen (0, max) \todo{shit text}: \rustcinline{let slice : &[u8] = &array[..8];}
 
-Rust kennt \ccinline{null}(-Pointer) nicht, bietet aber in \rustcinline{core} bereits \rustcinline{Option<_>} als Ersatz an.
-Für die Fehlerbehandlung wird nicht auf ein Exception-Handling zurückgegriffen, sondern ein eigener Datentyp angeboten, der entweder den Rückgabewert enthält, oder aber einen Fehler: \rustcinline{Result<_, _>}.
-Die Funktionsweise und die Vorteile von \rustcinline{Option<_>} und \rustcinline{Result<_, _>} wird in \autoref{rust:no_null} genauer erklärt.
 
 \subsection{std}
 \label{rust:std}
 
-Die Crate \rustcinline{std} erweitert \rustcinline{core} um viele \todo{collections etc}. \rustcinline{Vec<_>} \rustcinline{HashMap<_, _>} \rustcinline{String}  \rustcinline{Box} \todo{heap dinge}
+Die Crate \rustcinline{std} erweitert \rustcinline{core} um viele \todo{containers, collections, rc, arc, mutex, rwlock, platform abstractions: threads, tcp, udp}. \rustcinline{Vec<_>} \rustcinline{HashMap<_, _>} \rustcinline{String}  \rustcinline{Box} \todo{heap dinge}
 
 \todo{core, datatypes, arrays slices, no null  \enquote{billion dollar mistake} }
 

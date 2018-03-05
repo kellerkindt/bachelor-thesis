@@ -1,11 +1,46 @@
 
 \chapter{Die Programmiersprache Rust}
 
-\todo{quotation besser verpacken}
+%Rust ist eine Programmiersprache, die versucht performante -- und daher durch Abstraktionen mit keinem zusätzlichen \enquote{Kosten} \todo{ref zero cost abstractions} -- und sichere Programmierung zu ermöglichen.
+Rust hat als Ziel, eine sichere (siehe \autoref{rust:guarantees}) und performante \todo{Systemprogrammiersprache} zu sein, die ohne eine Laufzeit ausgeführt werden kann und \todo{ergonomisch nutzbar} ist.
+Abstraktionen sollen die \todo{Ergonomie} verbessern, aber keine unnötigen Performanceeinbußen verursachen (siehe \autoref{rust:zero_cost}).
+
+Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} \todo{ref} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert.
+Im Gegensatz zu Programmiersprachen, die dies mit Hilfe einer Laufzeit ermöglichen (zbsp. Java oder C\#), werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
+
+Rust hat in den letzten Jahren viel an Beliebtheit gewonnen und scheint dem Anspruch eine sichere und performante Programmiersprache zu sein, gerecht zu werden:
+
 \begin{quotation}
-	\textit{\enquote{[..]Leute, die [..] sichere Programmierung haben wollen, [..] können das bei Rust haben, ohne die [von D] undeterministischen Laufzeiten oder Abstraktionskosten schlucken zu müssen. }}
-	\cite{rust:fefe}
+	\textit{\enquote{[..]Leute, die [..] sichere Programmierung haben wollen, [..] können das bei Rust haben, ohne [..] undeterministischen Laufzeiten oder Abstraktionskosten schlucken zu müssen. }}
+	\cite[Felix von Leitner in einem Blogeintrag]{rust:fefe}
 \end{quotation}
+
+\begin{quotation}
+	\textit{\enquote{[..] Rust makes it safe, and  provides nice tools}} 
+	\cite[Folie 130, Federico Mena-Quintero in \enquote{Ersetzen von C Bibliotheken durch Rust}]{rust:c_is_hostile_mena}
+\end{quotation}
+
+\begin{quotation}
+	\textit{\enquote{Rust hilft beim Fehlervermeiden}} 
+	\cite[Federico Mena-Quintero in einem Interview]{rust:c_is_hostile_golem}
+\end{quotation}
+
+\begin{quotation}
+	\textit{\enquote{Rust is [..] a language that cares about very tight control}}
+	\cite[Diskussion zwischen Programmierern auf Reddit]{rust:tight_control}
+\end{quotation}
+
+
+\clearpage
+\section{Geschichte}
+\label{rust:history}
+
+In 2006 begann Graydon Hoare die Programmiersprache Rust in seiner Freizeit als Hobbyprojekt zu entwickeln \cite{rust:faq}.
+Als Grund nannte er seine Unzufriedenheit mit der Programmiersprache C++, in der es sehr schwierig sei, fehlerfreien, speichersicheren und nebenläufigen Programmcode zu entwickeln.
+Zudem beschrieb er C++ als \enquote{ziemlich fehlerträchtig} \cite{rust:heise_interview_graydon}.
+
+
+\todo{(re)move? / quotation besser verpacken? in text einbinden? möglich? unnötig?}
 
 \begin{quotation}
 	\textit{\enquote{It’s not bad programmers, it’s that C is a hostile language}} 
@@ -17,38 +52,8 @@
 	\cite[129]{rust:c_is_hostile_mena}
 \end{quotation}
 
-\begin{quotation}
-	\textit{\enquote{[..] Rust makes it safe, and  provides nice tools}} 
-	\cite[130]{rust:c_is_hostile_mena}
-\end{quotation}
 
 
-\begin{quotation}
-	\textit{\enquote{Rust hilft beim Fehlervermeiden}} 
-	\cite{rust:c_is_hostile_golem}
-\end{quotation}
-
-\begin{quotation}
-	\textit{\enquote{Rust is [..] a language that cares about very tight control}}
-	\cite{rust:tight_control}
-\end{quotation}
-
-%Rust ist eine Programmiersprache, die versucht performante -- und daher durch Abstraktionen mit keinem zusätzlichen \enquote{Kosten} \todo{ref zero cost abstractions} -- und sichere Programmierung zu ermöglichen.
-Rust hat als Ziel, eine sichere \todo{cite chapter} und performante \todo{Systemprogrammiersprache} zu sein, die ohne eine Laufzeit ausgeführt werden kann und \todo{ergonomisch nutzbar} ist.
-Abstraktionen sollen die Ergonomie verbessern, aber keine unnötigen Performanceeinbußen verursachen (siehe \todo{ref zero cost abstractions}).
-
-Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} \todo{ref} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert.
-Im Gegensatz zu Programmiersprachen, die dies mit Hilfe einer Laufzeit ermöglichen (zbsp. Java oder C\#), werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\ref{rust:static_analysis}) und mit dem Eigentümerprinzip (\ref{rust:ownership}) bei der Compilation überprüft und erzwungen.
-
-\todo{unused orly rust} \cite{rust:orly_y_rust}
-
-
-\section{Geschichte}
-\label{rust:history}
-
-In 2006 begann Graydon Hoare die Programmiersprache Rust in seiner Freizeit als Hobbyprojekt zu entwickeln \cite{rust:faq}.
-Als Grund nannte er seine Unzufriedenheit mit der Programmiersprache C++, in der es sehr schwierig sei, fehlerfreien, speichersicheren und nebenläufigen Programmcode zu entwickeln.
-Zudem beschrieb er C++ als \enquote{ziemlich fehlerträchtig} \cite{rust:heise_interview_graydon}.
 
 Auch Federico Mena-Quintero -- Mitbegründer des GNOME-Projekts \todo{cite \url{https://people.gnome.org/~federico/} or so} --
 äußerte in einem Interview mit Golem im Juli 2017 seine Bedenken an der Verwendung der \enquote{feindseligen} Sprache C \cite{rust:c_is_hostile_golem}.
@@ -85,8 +90,8 @@ Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementa
 
 Der Aufbau eines Rust Projektverzeichnis kann zwischen zwei verschiedenen Arten differenziert werden.
 Zum einen gibt es den klassische Aufbau, in dem lediglich der Programmcode liegt und der Compiler direkt aufgerufen wird.
-Zum anderen wird der Aufbau als Crate empfohlen \todo{cite}, bei dem automatisch Abhängigkeiten aufgelöst aber auch Metainformationen bezüglich des Autors und der Version gehalten werden.
-Ein klassischer Aufbau ist nur selten zu anzutreffen.
+Zum anderen wird der Aufbau als Crate empfohlen \todo{cite}, bei dem automatisch Abhängigkeiten aufgelöst aber auch Metainformationen bezüglich des Autors und der Version hinterlegt sind.
+Ein klassischer Aufbau ist nur selten anzutreffen.
 
 \subsection{Klassisch}
 \label{rust:structure:classic}
@@ -105,7 +110,7 @@ Ein Modul kann dabei eine weitere Quelldatei oder ein ganzes Verzeichnis sein.
 Ein Verzeichnis wird aber nur als gültiges Modul interpretiert, wenn sich eine \textit{mod.rs} Datei darin befindet.
 
 Wie bereits angedeutet, wird in Rust nicht eine \enquote{Klasse}, Datenstruktur oder Aufzählung pro Datei erwartet (\todo{wie das bei Java der Fall ist}), sondern eine Quelldatei entspricht einem Modul.
-Dies Umfasst in vielen fällen wenige aber mehrere Datenstrukturen, zugehörige Aufzählung und Fehlertypen.
+Diese Umfasst in vielen fällen wenige aber mehrere Datenstrukturen, zugehörige Aufzählung und Fehlertypen.
 %Module (Verzeichnisse oder Quelldateien) gesucht wird. , in der Module durch \rustcinline{mod module;} und Quelldateien durch \rustcinline{mod functionality;} \enquote{inkludiert} werden können.
 %Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 
@@ -162,6 +167,34 @@ Eine Ausgabe erfolgt durch das \rustcinline{println!} Makro, welches die Makros 
 \todo{hmmmm}
 Ein kleines Beispiel, viele versteckte Mechaniken zur Laufzeitoptimierung aber trotzdem handlich und leserlich -- Rust.
 
+\subsection{Einfache Datentypen}
+
+Die in der \rustcinline{core} Crate (\autoref{rust:core}) zur Verfügung gestellten Datentypen sind im wesentlichen die üblichen  Verdächtigen: \rustcinline{bool} für boolische Ausdrücke; \rustcinline{char} für ein einzelnes Unicode Zeichen; \rustcinline{str} für eine Zeichenkette; \rustcinline{u8}, \rustcinline{i8}, \rustcinline{u16}, \rustcinline{i16}, \rustcinline{u32}, \rustcinline{i32}, \rustcinline{u64}, \rustcinline{i64}, (bald \rustcinline{u128}, \rustcinline{i128} \cite{rust:github:128bit_integer:rfc}) und \rustcinline{usize}, \rustcinline{isize}  für ganzzahlige Werte; \rustcinline{f32}, \rustcinline{f64} für Fließkommazahlen in einfacher und zweifacher Präzision; Arrays und Slices \cite{rust:book:primitives}.
+
+Ganzzahlige primitive Datentypen mit \rustcinline{u} beginnend sind vorzeichenlos (\enquote{unsigned}) und mit \rustcinline{i} beginnend sind vorzeichenbehaftet (\enquote{signed}), gefolgt mit der Anzahl der Bits  die der Datentyp groß ist.
+\todo{shit sentence} Die einzige Ausnahme bildet der Datentyp \rustcinline{usize} bzw \rustcinline{isize}, da dieser immer so groß ist, wie die Architektur der Zielplattform (X86 -> 32 Bit, X86\_64 -> 64 Bit).
+Ein Anwendungsfall von \rustcinline{usize} ist dabei die Indexierung eines Arrays oder einer Slice (\todo{siehe nächster paragraph?}), da der Index hierfür niemals negativ und niemals größer sein kann, wie die Architektur der Zielplattform darstellen kann \todo{erwähnen?: größer könnte man garnicht addressieren}.
+
+Durch dieses Schema bei der Bezeichnung der Datentypen wird eine Verwirrung wie zum Beispiel in C unterbunden, wo die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe haben, sondern dies abhängig vom eingesetzten Compiler und der Zielplattform ist \cite[187]{deitel2013c}. Erst ab C99 wurden zusätzliche, aber optionale, ganzzahlige Datentypen mit bestimmter Größe definiert \cite[141]{goll2014c}.
+
+Konstanten können eindeutig einem Datentyp zugewiesen werden, indem dieser angehängt wird.
+\rustcinline{4711u16} ist somit vom Datentyp \rustcinline{u16}.
+Des weiteren dürfen Ziffern durch beliebiges setzen von \rustcinline{_} getrennt werden, um die Lesbarkeit zu erhöhen: \rustcinline{1_000_000_f32}.
+Eine Schreibweise in Binär (\rustcinline{0b0000_1000_u8}), in Hexadezimal (\rustcinline{0xFF_08_u16}) oder Oktal (\rustcinline{0o64_u8}) ist auch möglich. 
+Konstante Zeichen und Zeichenketten können auch als Bytes (\rustcinline{b'b'} entspricht \rustcinline{u8} und \rustcinline{b"abc"} entsricht \rustcinline{&[u8]}) \todo{hinterlegt} werden.
+
+Arrays haben immer eine zur Compilezeit bekannte Größe und Initialisierungswert (siehe \autoref{rust:no_unitialized_usage}).
+Dynamische Arrays gibt es nicht, da diese zu oft Fehlerquellen seien \todo{cite!} (Abhilfe: \rustcinline{Vec<_>}, siehe \autoref{rust:std}).
+Die Notation ist \rustcinline{[<Füllwert>; <Größe>]}.
+\rustcinline{[0_u8; 128]} steht also für ein 128 Byte langes Byte Array, das mit 0-en vom Datentyp \rustcinline{u8} gefüllt ist.
+
+\enquote{Slices} (dt. Scheibe/Stück) bezeichnet Rust Referenzen auf Arrays, die auch nur Teilbereiche umfassen können.
+Die Größe einer Slice wird dabei mit der Referenz auf den Startwert gespeichert \todo{explain Fat-Pointer?} und bei Funktionsaufrufen übergeben.
+Ein zusätzlicher Parameter für die Größe eines Buffers, wie in C üblich, ist somit unnötig.
+Die Notation ähnelt die eines Arrays, aber ohne Größenspezifikation: \rustcinline{[<Datentyp>]}.
+Eine Slice kann von einem Array oder einer anderen Slice erzeugt werden, dabei wird der Start- und Endindex des Teilbereiches angegeben.
+Falls kein Start- oder Endindex angegeben wurde, wird das jeweilige Limit übernommen (0, max) \todo{shit text}: \rustcinline{let slice : &[u8] = &array[..8];}
+
 \subsection{Zusammengesetzen Datentypen}
 
 Die Programmiersprache Rust kennt neben den primitiven \todo{skalaren} Datentypen (\autoref{rust:core}) weitere Möglichkeiten Daten zu organisieren:
@@ -172,7 +205,8 @@ Die Programmiersprache Rust kennt neben den primitiven \todo{skalaren} Datentype
 \end{itemize}
 
 Im Vergleich zu C kann ein Eintrag in einem \rustcinline{enum} gleichzeitig Daten wie eine Datenstruktur oder ein Tupel halten, oder lediglich einen Ganzzahlwert repräsentieren.
-
+Mit dem \rustcinline{type} Schlüsselwort können Aliase erstellt oder im Falle von FFI (siehe \autoref{rust:ffi}) aufgelöst werden: \rustcinline{type Vektor = (f32, f32);}
+ 
 Neue Datentypen einer Struktur oder Aufzählung können mit \rustcinline{pub} oder \rustcinline{pub(crate)} gekennzeichnet werden (siehe \autoref{rust:access_modifier}).
 
 \todo{pub pub(crate)}
@@ -210,31 +244,61 @@ Einen Konstruktor gibt es jedoch nicht, lediglich die Konvention, eine statische
 In seltenen Fällen wird auch \rustcinline{Default} implementiert (siehe \autoref{rust:trait:default}), wodurch eine statische Funktion \rustcinline{default()} als Konstruktor ohne Parameter bereitgestellt wird.
 
 Da eine Funktionsüberladung nicht möglich ist, soll bei weiteren Konstruktoren ein sprechender Name verwendet werden.
-Der \rustcinline{Vec} der Standardbibliothek (siehe \autoref{rust:std}) bietet zusätzlich \rustcinline{Vec::with_capacity(capacity: usize)} an um einen Vektor mit einer bestimmten Größe zu initialisieren.
+Der \rustcinline{Vec<_>} der Standardbibliothek (siehe \autoref{rust:std}) bietet zum Beispiel zusätzlich \rustcinline{Vec::with_capacity(capacity: usize)} an, um einen Vektor mit einer bestimmten Größe zu initialisieren.
 
 Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe \autoref{rust:access_modifier}). 
 \todo{pub pub(crate)}
 
-\subsection{Trait, Function}
+\subsection{Generalisierung durch Traits}
 \label{rust:trait:default}
 
-\todo{Drop, Sized, Sync, Send, Copy, Clone, Debug, Display, Default, Derive}
+Ähnlich wie Java bietet Rust durch einen eigenen Typ die Möglichkeit, ein gewünschtes Erscheinungsbild zu definieren, ohne gleichzeitig eine Implementation vorzugeben.
+Im Gegensatz zu Java wird dieser Typ in Rust \enquote{Trait} (dt. Merkmal) genannt.
 
-\subsection{Zugriffsmodifikatoren}
-\label{rust:access_modifier}
-\todo{pub pub(crate)}
+Für Merkmale werden Funktionen in einem entsprechenden \rustcinline{trait <Name> \{ \}}-Block ohne Rumpf definiert.
+Optional kann auch ein Standardrumpf implementiert werden, der bei einer Spezialisierung überschrieben werden darf.
 
-\subsection{Ausdruck/Expression vs Statement}
+\todo{dafuq u talking about}
+Um ein Merkmal als Parameter zu übergeben, gibt es drei Möglichkeiten:
+\begin{itemize}
+	\item Leihen mittels Referenz: \rustcinline{fn foo(bar: \&Bar)} oder \rustcinline{fn foo(bar: \&mut Bar)}
+	\item Eigentümerschaft übertragen durch \todo{Trait-Object}: \rustcinline{fn foo(bar: Box<Bar>)}
+	\item Als \todo{spezialisierte} Funktion \rustcinline{fn foo<T: Bar>(bar: T)}
+\end{itemize}
 
+Eine Deklaration \rustcinline{fn foo(bar: Bar)} für das Merkmal \monospaceinline{Bar} ist nicht möglich, da zur Compilezeit eine eindeutige Größe nicht bekannt ist.
 
-\subsection{Generic}
+Eine spezialisierte Funktion verhält sich ähnlich wie eine \todo{Templateklasse} in C++: der Compiler erzeugt für jeden Spezialisierung eine Kopie der Funktion und setzt den Typ ein.
+Dies erlaubt auch eine Optimierung für den entsprechenden Typ \todo{cite}.
+
+Trait-Objekt
+
+T: Blubber
+
+Ähnlich wie in C++ <T: Blubber>
+
+\todo{Drop, Sized, Sync, Send, Copy, Clone, Debug, Display, Default, PartialEq, PartialOrd}
+
+\todo{Derive}
 
 \todo{<T: Blubber> vs Box<T> (Speicherorganisation, performance)}
 
 \todo{you idiot forgot an subsub-idea}
 
+\subsection{Zugriffsmodifikatoren}
+\label{rust:access_modifier}
+
+Für Datenstrukturen, Aufzählungen, Merkmale und Funktionen können Zugriffsmodifikatoren festgelegt werden.
+Für einen globalen Zugriff sorgt ein vorangestelltes \rustcinline{pub}, für einen auf die aktuelle Crate beschränkten Zugriff sorgt \rustcinline{pub(crate)}.
+Bei keiner Festlegung wird standardmäßig der Zugriff auf das aktuelle Modul beschränkt.
+
+
+\subsection{Ausdruck/Expression vs Statement}
+
+
 
 \subsection{Matches}
+\label{rust:match}
 
 \rustcinline{match foo.bar() \{ \}}
 
@@ -269,10 +333,22 @@ Verkürzt
 
 \todo{pattern matching}
 
-\subsection{Niemals nichts und niemals Ausnahmen \todo{se name}}
+\subsection{Niemals nichts und niemals unbehandelte Ausnahmen}
+\label{rust:no_null}
 
-Rust kennt \ccinline{null}(-Pointer) nicht, bietet aber in \rustcinline{core} (\autoref{rust:core}) \rustcinline{Option<_>} als Ersatz an (siehe \autoref{rust:no_null}).
+Rust kennt \ccinline{null}(-Pointer) nicht, bietet aber in \rustcinline{core} (\autoref{rust:core}) \rustcinline{Option<_>} als Ersatz an.
+Dieser Datentyp erzwingt eine Prüfung vor dem Zugriff auf den optionalen Wert.
+
+\todo{IMMER INITIALISIERT, sonst kein zugriff erlaubt}
+
 Für die Fehlerbehandlung wird nicht auf ein Exception-Handling zurückgegriffen, sondern ein eigener Datentyp angeboten, der entweder den Rückgabewert enthält, oder aber einen Fehler: \rustcinline{Result<_, _>} (siehe \autoref{rust:result}).
+
+Durch den \todo{Fragenzeichenoperator} kann trotzdem ein ähnliches Verhalten wie beim auftreten einer Ausnahme in Java oder C++ erzielt werden. \todo{example?}
+
+\todo{ref if let Ok(\_)} 
+
+\subsection{Besorgter Compiler}
+\todo{many warnings}
 
 
 \section{Standardbibliothek}
@@ -286,31 +362,6 @@ Daraufhin sind nur noch die in der \rustcinline{core} Crate zur Verfügung geste
 
 \subsection{core}
 \label{rust:core}
-Die in der \rustcinline{core} Crate zur Verfügung gestellten Sprachkonstrukte sind im wesentlichen die üblichen  Verdächtigen: \rustcinline{bool} für boolische Ausdrücke; \rustcinline{char} für ein einzelnes Unicode Zeichen; \rustcinline{str} für eine Zeichenkette; \rustcinline{u8}, \rustcinline{i8}, \rustcinline{u16}, \rustcinline{i16}, \rustcinline{u32}, \rustcinline{i32}, \rustcinline{u64}, \rustcinline{i64}, (bald \rustcinline{u128}, \rustcinline{i128} \todo{cite}) und \rustcinline{usize}, \rustcinline{isize}  für ganze Zahlen; \rustcinline{f32}, \rustcinline{f64} für Fließkommazahlen in einfacher und zweifacher Präzision; Arrays und Slices \cite{rust:book:primitives}.
-
-Ganzzahlige primitive Datentypen mit \rustcinline{u} beginnend sind vorzeichenlos und mit \rustcinline{i} beginnend sind vorzeichenbehaftet, gefolgt mit der Anzahl der Bits  die der Datentyp groß ist.
-\todo{shit sentence} Die einzige Ausnahme bildet der Datentyp \rustcinline{usize} bzw \rustcinline{isize}, da dieser immer so groß ist, wie die Architektur der Zielplattform (X86 -> 32 Bit, X86\_64 -> 64 Bit).
-Ein Anwendungsfall von \rustcinline{usize} ist dabei die Indexierung eines Arrays oder einer Slice (\todo{siehe nächster paragraph?}), da der Index hierfür niemals negativ und niemals größer sein kann, wie die Architektur der Zielplattform darstellen kann \todo{erwähnen?: größer könnte man garnicht addressieren}.
-
-Durch dieses Schema bei der Bezeichnung der Datentypen wird eine Verwirrung wie zum Beispiel in C unterbunden, wo die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe haben, sondern dies abhängig vom eingesetzten Compiler und der Zielplattform ist \cite[187]{deitel2013c}. Erst ab C99 wurden zusätzliche, aber optionale, ganzzahlige Datentypen mit bestimmter Größe definiert \cite[141]{goll2014c}.
-
-Konstanten können eindeutig einem Datentyp zugewiesen werden, indem dieser angehängt wird.
-\rustcinline{4711u16} ist somit vom Datentyp \rustcinline{u16}.
-Des weiteren dürfen Ziffern durch beliebiges setzen von \rustcinline{_} getrennt werden, um die Lesbarkeit zu erhöhen: \rustcinline{1_000_000_f32}.
-Eine Schreibweise in Binär (\rustcinline{0b0000_1000_u8}), in Hexadezimal (\rustcinline{0xFF_08_u16}) oder Oktal (\rustcinline{0o64_u8}) ist auch möglich. 
-Konstante Zeichen und Zeichenketten können auch als Bytes (\rustcinline{b'b'} entspricht \rustcinline{u8} und \rustcinline{b"abc"} entsricht \rustcinline{&[u8]}) \todo{hinterlegt} werden.
-
-Arrays haben immer eine zur Compilezeit bekannte Größe und Initialisierungswert (siehe \autoref{rust:no_unitialized_usage}).
-Dynamische Arrays gibt es nicht, da diese zu oft Fehlerquellen seien \todo{cite!} (Abhilfe: \rustcinline{Vec<_>}, siehe \autoref{rust:std}).
-Die Notation ist \rustcinline{[<Füllwert>; <Größe>]}.
-\rustcinline{[0_u8; 128]} steht also für ein 128 Byte langes Byte Array, das mit 0-en vom Datentyp \rustcinline{u8} gefüllt ist.
-
-\enquote{Slices} (dt. Scheibe/Stück) bezeichnet Rust Referenzen auf Arrays, die auch nur Teilbereiche umfassen können.
-Die Größe einer Slice wird dabei mit der Referenz auf den Startwert gespeichert \todo{explain Fat-Pointer?} und bei Funktionsaufrufen übergeben.
-Ein zusätzlicher Parameter für die Größe eines Buffers, wie in C üblich, ist somit unnötig.
-Die Notation ähnelt die eines Arrays, aber ohne Größenspezifikation: \rustcinline{[<Datentyp>]}.
-Eine Slice kann von einem Array oder einer anderen Slice erzeugt werden, dabei wird der Start- und Endindex des Teilbereiches angegeben.
-Falls kein Start- oder Endindex angegeben wurde, wird das jeweilige Limit übernommen (0, max) \todo{shit text}: \rustcinline{let slice : &[u8] = &array[..8];}
 
 
 \subsection{std}
@@ -371,13 +422,9 @@ In dem beschriebenen \enquote{Concurrency Pattern} wird eine klare Zuordnung get
 
 Diese Philosophie setzt Rust direkt in der Sprache um, so darf eine Variable immer nur einen Eigentümer haben. Zusätzlich zu einem immer eindeutig identifizierbaren Eigentümer für eine Variable, kann diese auch ausgeliehen werden; entweder exklusiv mit sowohl Lese- als auch Schreiberlaubnis, oder mehrfache mit nur Leseerlaubnis.
 
-Die Philosophie \enquote{jede Variable hat einen Eigentümer} ist nicht neu 
-\todo{active -> Eigentümer \cite[204]{douglass2003real}} \todo{cite!}, aber Rust setzt dies in der Sprache um.
-Zusätzlich zu einem immer eindeutig identifizierbaren Eigentümer für eine Variable, kann diese auch ausgeliehen werden; einmal mit einer exklusiven Schreiberlaubnis, oder mehrfache mit nur Leserechten.
-\todo{mutability fehlt}
-Da eine Schreiberlaubnis immer exklusiv ist, werden \todo{Data-Races} unterbunden; da dies nur bei mehreren Parteien mit gleichzeitigem Schreib- und Leserecht auftreten kann.
+Eigentümerschaft kann auch übertragen werden, der alte Eigentümer kann danach nicht mehr auf den Wert zugreifen.
 
-Die Garantie nur einen exklusiven Schreibzugriff oder mehrere Lesezugriffe auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert (\autoref{rust:scope}).
+Die Garantie nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert (siehe \autoref{rust:scope}).
 
 \todo{Split example, explain more}
 \rustcinclude
@@ -385,6 +432,8 @@ Die Garantie nur einen exklusiven Schreibzugriff oder mehrere Lesezugriffe auf e
 	{Eigentümer und Referenzen von Variablen}
 	{sections/rust.ownership.rs}
 
+
+\todo{missing move? orly}
 
 
 \section{Rust als funktionale Programmiersprache}
@@ -400,13 +449,32 @@ Die Garantie nur einen exklusiven Schreibzugriff oder mehrere Lesezugriffe auf e
 \label{rust:guarantees}
 \subsection{Sichere Nebenläufigkeit}
 \todo{Send, Sync, No dataraces weil Ownership \autoref{rust:ownership}, Channel, Mutex, RwLock}
+
+\todo{Datarace benötigt immer einen schreibenden + min einen lesenden gleichzeitig}
+
+\subsection{Keine vergessene Null-Pointer Prüfung}
+\label{rust:no_null_detail}
+
+Wie in \autoref{rust:no_null} beschrieben, kennt Rust keinen \ccinline{NULL} Pointer.
+Daher ist es auch nicht möglich, durch Nachlässigkeit auf den falschen Speicher zuzugreifen.
+Eine Prüfung kann entweder durch ein \rustcinline{match} (siehe \autoref{rust:match}) oder verkürzt durch ein \rustcinline{if let Some(wert) = optional \{ /* tu etwas mit wert */ \}} geschehen.
+
 \subsection{Zero Cost Abstraction}
+\label{rust:zero_cost}
+
+Trotz der vielen verwendeten Abstraktionen möchte Rust dadurch möglichst keine weitere Laufzeitkosten erzeugen.
+
+Der \rustcinline{Option<_>} Datentyp wir zum Beispiel tatsächlich als Pointer dargestellt, der bei \ccinline{NULL} \rustcinline{None} ist und ansonsten \rustcinline{Some(_)} \cite[100]{rust:orly_programming}.
+Somit wird eine Überprüfung erzwungen, ohne dabei Laufzeitkosten erzeugt zu haben.
+
+Bei dem atomaren Referenzzähler \rustcinline{Arc<_>} ist der Zähler im Heapspeicher direkt vor dem eigentlichen Wert und nicht in einem extra Speicherbereich \todo{cite}.
+Ein weiteren indirekten Speicherzugriff mit Laufzeitkosten wird somit verhindert.
+
+
 \subsection{Kein undefiniertes Verhalten}
 \label{rust:no_unitialized_usage}
 \todo{auch: no unitialized usage}
 \todo{ref oreilly}
-\subsection{Keine vergessene Null-Pointer Prüfung}
-\label{rust:no_null}
 \todo{explain option}
 
 \subsection{Keine vergessene Fehlerprüfung}
@@ -421,7 +489,7 @@ Die Garantie nur einen exklusiven Schreibzugriff oder mehrere Lesezugriffe auf e
 
 In \autoref{rust:result:c_bad_fopen} sind mindestens zwei Fehler versteckt, die aber keinen Compileabbruch auslösen, sondern sich zur Laufzeit zeigen können.
 Der erste Fehler ist eine fehlende Überprüfung des Rückgabewertes von \ccinline{fopen} in Zeile 4, da dieser \ccinline{null} ist, falls das Öffnen der Datei fehlgeschlagen ist.
-Der Versuch in die Datei zu schreiben in Zeile 5 kann daraufhin in einen Speicherzugriffsfehler Resultieren und das Programm abstürzen lassen.
+Der Versuch in die Datei zu schreiben in Zeile 5 kann daraufhin in einen Speicherzugriffsfehler resultieren und das Programm abstürzen lassen.
 \todo{vergleich Java/C++(++) exceptions (vergessen von fehlerbehandlung in c++(++) trotzdem möglich)}
 
 In Rust wird weder eine Ausnahme geworfen, noch ein Rückgabewert zurück gegeben, der ohne Prüfung verwendet werden kann:
@@ -449,6 +517,7 @@ Durch die Lebenszeitanalyse \todo{ref} in Rust ist der Geltungsbereich der \rust
 \section{Einbinden von Bibliotheken}
 
 \subsubsection{Externe Datentypen}
+\label{rust:ffi}
 \label{rust:ffi:datatypes}
 
 Rust bietet durch das \gls{ffi} die Möglichkeit, andere (System-)Bibliotheken einzubinden.

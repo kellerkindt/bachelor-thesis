@@ -2,9 +2,11 @@
 \chapter{Einleitung}
 
 \section{Motivation}
-Der Begriff \enquote{autonomes Fahren} hat spätestens seit den Tesla Autos einen allgemeinen Bekanntheitsgrad erreicht. Um ein Auto selbstständig fahren lassen zu können, müssen erst viele Hürden gemeistert werden, zum Beispiel das Spur halten, auch bei fehlenden Fahrspurmarkierungen, das Interpretieren von Stoppschildern und navigieren durch komplexen Kreuzungen. \todo{ref tesla.com?}
+Der Begriff \enquote{autonomes Fahren} hat spätestens seit den Tesla Autos einen allgemeinen Bekanntheitsgrad erreicht. Damit ein Auto selbstständig fährt, müssen erst viele Hürden gemeistert werden.
+Dazu gehört zum Beispiel das Spur halten -- auch bei fehlenden Fahrspurmarkierungen, das richtige Interpretieren von Verkehrsschildern und navigieren durch komplexen Kreuzungen. \todo{ref tesla.com?}
 
-Bevor das Auto Entscheidungen treffen kann, muss es zuallererst ein Modell seines Umfelds erstellen oder zur Verfügung gestellt bekommen. Aber vielleicht kann ein Auto nicht immer selbständig genügend Informationen zu seinem Umfeld sammeln? \todo{(huhuhu Server implied huhuhu)}
+Bevor ein autonomes Fahrzeug Entscheidungen treffen kann, benötigt es ein möglichst genaues Model seines Umfelds.
+Hierzu werden von verschiedene Sensoren wie Front-, Rück- und Seitenkameras, Abstandssensoren und \todo{arg1} Informationen gesammelt und ausgewertet. Aber vielleicht kann ein Auto nicht immer selbständig genügend Informationen zu seinem Umfeld sammeln? \todo{(huhuhu Server implied huhuhu)}
 %Diese Arbeit beschäftigt sich mit genau dem Thema, einem selbst fahrendem Auto Informationen zu anderen Teilnehmern an einer Kreuzung zu vermitteln.
 \todo{fix 404}
 
@@ -19,7 +21,7 @@ Bevor das Auto Entscheidungen treffen kann, muss es zuallererst ein Modell seine
 
 Diese Abschlussarbeit befasst sich mit dem \gls{mec}-Server, der Teil des \gls{mec}-View Forschungsprojekts ist.
 Das \gls{mec}-View Projekt wird durch das \gls{bmwi} gefördert und befasst sich mit der Thematik autonom fahrender Fahrzeuge.
-Es soll erforscht werden ob und in wie weit eine durch externe Sensorik geleistete Unterstützung nötig und möglich ist um in eine Vorfahrtsstraße autonom einzufahren.
+Es soll erforscht werden, ob und in wie weit eine durch externe Sensorik geleistete Unterstützung nötig und möglich ist, um in eine Vorfahrtstraße autonom einzufahren.
 
 Das Forschungsprojekt ist dabei ein Zusammenschluss verschiedener Unternehmen:
 \begin{center}
@@ -58,7 +60,7 @@ unter anderem eine \gls{fba}, Risikoabschätzung durch Einstufung nach \glspl{as
 Das Ziel ist es, eine alternative Implementierung des \gls{mec}-View Servers in Rust zu schaffen.
 Durch die Garantien (\autoref{rust:guarantees}) von Rust wird erhofft, dass der menschliche Faktor als Fehlerquelle gemindert wird und somit eine fehlertolerantere und sicherere Implementation geschaffen werden kann.
 
-\todo{?} Für eine bessere Wartbarkeit und Nachvollziehbarkeit soll die Implementation in Ihrer \todo{Struktur/}Architektur der C++ Implementation ähneln.
+Für eine bessere Wartbarkeit und Nachvollziehbarkeit soll die Implementation in Rust möglichst in Struktur und Architektur der C++ Implementation ähneln.
 
 
 \section{Aufbau der Arbeit}
@@ -68,7 +70,7 @@ Diese Arbeit ist im wesentlichen in die folgenden Themengebiete aufgeteilt: Grun
 Im Themengebiet Grundlagen sollen wesentliche Bestandteile dieser Arbeit erläutert und erklärt werden.
 Hierzu zählt zum einen die Programmiersprache Rust in ihrer Entstehungsgeschichte \todo{ref}, Garantien \todo{ref}  und Sprachfeatures \todo{ref}, zum anderen die hochperformante, serverbasierte Kommunikationsplattform mit ihren Protokollen \todo{ref} und dem Systemkontext in dem diese betrieben wird.
 
-In der Anforderungs- und Systemanalyse wird der Kontext in dem das System betrieben werden soll genauer betrachtet. Umzusetzende funktionale und nicht-funktionale Anforderungen werden aufgestellt sowie eine Übersicht von Systemen mit denen interagiert wird.
+In der Anforderungs- und Systemanalyse wird der Kontext in dem das System betrieben werden soll genauer betrachtet. Umzusetzende funktionale und nicht-funktionale Anforderungen werden aufgestellt, sowie eine Übersicht von Systemen mit denen das System interagiert wird.
 
 Das Themengebiet Systementwurf und Implementation befasst sich mit dem theoretischen und praktischen Lösen der im vorherigen Kapitel aufgestellten Anforderungen. Aufgrund der Tatsache, dass es sich hierbei
 um eine alternative Implementation handelt, wird zur bestehenden C++ Implementation Bezug genommen.

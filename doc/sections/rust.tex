@@ -154,13 +154,31 @@ Den meisten wird vermutlich eher das Ausrufezeichen in Zeile 2 auffallen, da es 
 In Rust haben Ausrufezeichen und Fragezeichen besondere Bedeutungen, weswegen die Verwendung in Zeile 2 trotzdem richtig ist.
 
 Die Bedeutung des Fragezeichens dient zum schnelleren Auswerten von \rustcinline{Rusult<_, _>} Werten und wird in \todo{ref} genauer erklärt.
-Das Ausrufezeichen kennzeichnet, dass der ansonsten augenscheinlicher Funktionsaufruf tatsächlich ein Aufruf einer Makrofunktion ist.
+Das Ausrufezeichen kennzeichnet, dass der ansonsten augenscheinliche Funktionsaufruf tatsächlich ein Aufruf einer Makrofunktion ist.
 
 Eine Funktion \rustcinline{println} gibt es nicht, auch keine aus C erwarteten Funktionen wie \ccinline{printf}, \ccinline{fputs}, \ccinline{sprintf}.
 Eine Ausgabe erfolgt durch das \rustcinline{println!} Makro, welches die Makros \rustcinline{format!} \todo{ref} und \rustcinline{writeln!} Kombiniert und das \rustcinline{Write}-Traits \todo{ref}, welches von der Standardausgabe implementiert wird, nutzt \todo{verify, cite?}.
 
 \todo{hmmmm}
 Ein kleines Beispiel, viele versteckte Mechaniken zur Laufzeitoptimierung aber trotzdem handlich und leserlich -- Rust.
+
+\subsection{Generic}
+
+\todo{<T: Blubber> vs Box<T> (Speicherorganisation, performance)}
+
+\todo{you idiot forgot an subsub-idea}
+
+
+\subsection{Matches}
+
+\rustcinline{match foo.bar() \{ \}}
+
+Verkürzt
+
+\rustcinline{if let Ok(line) = blubber.readline() \{ \}}
+
+\rustcinline{if let Some(value) = foo.bar() \{ \}}
+
 
 \subsection{Namens- und Formatierkonvention / Styleguide}
 

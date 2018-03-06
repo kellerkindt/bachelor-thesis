@@ -330,6 +330,18 @@ Dazu gehören unter anderem die \enquote{guard expression}, \enquote{bindings} u
 
 \subsection{Namens- und Formatierkonvention / Styleguide}
 
+\rustcinclude
+	{rust:styleguide:bad}
+	{Beispiel für nicht Styleguide konformer Aufzählung}
+	{sections/rust.styleguide.bad.rs}
+
+\begin{small}
+	\textcolor{orange}{\monospaceinline{type `MY_ENUM` should have a camel case name such as `MyEnum`}}
+	
+	\textcolor{orange}{\monospaceinline{variant `AN_ENTRY` should have a camel case name such as `AnEntry`}}
+	
+	\textcolor{orange}{\monospaceinline{variant `ANOTHER_ENTRY` should have a camel case name such as `AnotherEntry`}}
+\end{small}
 \cite{rust:styleguide}
 
 \subsection{Formatierung}
@@ -627,6 +639,10 @@ Die Art der Definition einer externen Funktion unterscheidet sich nicht von eine
 
 
 \section{Kernfeatures}
+
+\todo{nothing on heap unless specified (Box, Vec, other container)}
+
+\todo{closures are fast, orly, p.310}
 
 https://www.youtube.com/watch?v=d1uraoHM8Gg \\
 \todo{no need for a runtime, all static analytics} \\

@@ -7,6 +7,9 @@ Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber 
 
 \todo{rust performance very wow, much parallel, great safety}
 
+\todo{wo anders? make more text, make better text}
+Bei Rust geht es in vielerlei Hinsicht darum, bekannte Fehlerquellen aus anderen Programmiersprachen zu unterbinden, aber gleichzeitig eine mindestens genau so gute Performance zu erreichen.
+
 Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert (\autoref{rust:guarantees}).
 Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
 
@@ -41,37 +44,17 @@ In 2006 begann Graydon Hoare die Programmiersprache Rust in seiner Freizeit als 
 Als Grund nannte er seine Unzufriedenheit mit der Programmiersprache C++, in der es sehr schwierig sei, fehlerfreien, speichersicheren und nebenläufigen Programmcode zu entwickeln.
 Zudem beschrieb er C++ als \enquote{ziemlich fehlerträchtig} \cite{rust:heise_interview_graydon}.
 
-
-\todo{(re)move? / quotation besser verpacken? in text einbinden? möglich? unnötig?}
-
-\begin{quotation}
-	\textit{\enquote{It’s not bad programmers, it’s that C is a hostile language}} 
-	\cite[54]{rust:c_is_hostile_mena}
-\end{quotation}
-
-\begin{quotation}
-	\textit{\enquote{I’m thinking that C is actively hostile to writing and maintaining reliable code}} 
-	\cite[129]{rust:c_is_hostile_mena}
-\end{quotation}
-
-
-
-
-Auch Federico Mena-Quintero -- Mitbegründer des GNOME-Projekts \todo{cite \url{https://people.gnome.org/~federico/} or so} --
+Auch Federico Mena-Quintero -- Mitbegründer des GNOME-Projekts \cite{rust:gnome:federico}  --
 äußerte in einem Interview mit Golem im Juli 2017 seine Bedenken an der Verwendung der \enquote{feindseligen} Sprache C \cite{rust:c_is_hostile_golem}.
 In Vorträgen \todo{nix mehrzahl?} vermittelt er seither, wie Bibliotheken durch Implementationen in Rust ersetzt werden können \cite{rust:c_is_hostile_mena}.
 
 Ab 2009 begann Mozilla die Weiterentwicklung finanziell zu fördern, als einfache Tests und die Kernprinzipien demonstriert werden konnten.
-Die Entwicklung findet dabei öffentlich einsehbar unter \url{https://github.com/rust-lang/rust} statt und wird dabei nicht ausschließlich von Mozilla Angestellten koordiniert.
+Die Entwicklung der Programmiersprache, des Compilers, Buchs, von Cargo, crates.io und weitere Bestandteile findet öffentlich einsehbar auf \gls{github}  unter \url{https://github.com/rust-lang} statt und wird nicht ausschließlich von Mozilla Angestellten koordiniert.
+Dadurch kann sich jeder an Diskussionen oder Implementation beteiligen, seine Bedenken äußern oder Verbesserungen vorschlagen.
 
-Durch automatisierte Tests \todo{ref} in Kombination mit drei Veröffentlichungskanälen (relese, stable und nightly) wird die Stabilität des Compilers und die der Standardbibliothek (\autoref{rust:stdlib}) gewährleistet.
-Auf eine andere Art und Weise wäre eine öffentliche Entwicklung auf \gls{github} nicht möglich, an der sich jeder -- sowohl an Diskussionen als auch an Implementationen -- beteiligen kann.
-%Die Stabilität des Compilers trotz hoher Flexibilität während der Entwicklung wird durch Unterscheidung von drei Veröffentlichungskanälen -- release, stable und nightly -- in Kombination mit automatisierten Tests \todo{ref?} gewährleistet. \cite{rust:faq}
+Durch automatisierte Tests \todo{ref} in Kombination mit drei Veröffentlichungskanälen (\enquote{relese}, \enquote{stable} und \enquote{nightly}) und \todo{feature gates} wird die Stabilität des Compilers und die der Standardbibliothek (\autoref{rust:stdlib}) gewährleistet.
 
-
-\todo{wo anders? make more text, make better text}
-Bei Rust geht es in vielerlei Hinsicht darum, bekannte Fehlerquellen aus anderen Programmiersprachen zu unterbinden, aber gleichzeitig eine mindestens genau so gute Performance zu erreichen.
-\todo{hobbyprojekt, mozilla, open-source, Entwicklung auf GitHub - jeder kann sich beteiligen, test(coverage), automatisierte builds, stable/beta/nightly}
+Rust ist wahlweise unter MIT oder der Apache Lizenz in Version 2 lizenziert.
 
 \section{Anwendungsgebiet}
 
@@ -254,34 +237,50 @@ Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe 
 \subsection{Generalisierung durch Traits}
 \label{rust:trait:default}
 
-Ähnlich wie Java bietet Rust durch einen eigenen Typ die Möglichkeit, ein gewünschtes Erscheinungsbild zu definieren, ohne gleichzeitig eine Implementation vorzugeben.
+Ähnlich wie Java oder C\# bietet Rust durch einen eigenen Typ die Möglichkeit, ein gewünschtes Erscheinungsbild zu generalisieren, ohne gleichzeitig eine Implementation vorzugeben.
 Im Gegensatz zu Java wird dieser Typ in Rust \enquote{Trait} (dt. Merkmal) genannt.
 
-Für Merkmale werden Funktionen in einem entsprechenden \rustcinline{trait <Name> \{ \}}-Block ohne Rumpf definiert.
+Für Merkmale werden Funktionen in einem entsprechenden \rustcinline{trait <Name> \{ \}}-Block ohne Rumpf deklariert.
 Optional kann auch ein Standardrumpf implementiert werden, der bei einer Spezialisierung überschrieben werden darf.
 
-\todo{dafuq u talking about}
-Um ein Merkmal als Parameter zu übergeben, gibt es drei Möglichkeiten:
+Merkmale unterscheiden sich in ihrer Handhabung gegenüber anderen Datentypen, da sie oft keine bekannte Größe zur Compilezeit haben.
+Während dies in Programmiersprachen wie Java und C\# automatisch abstrahiert wird (\todo{virtuelle methoden, vergleich c++}), wird dies in Rust aus Performancegründen nicht getan.
+Stattdessen muss der Programmierer entscheiden, welche Handhabung am besten ist.
+\todo{dabei dabei dabei dabei dabei dabei} Dabei gibt es mehrere Möglichkeiten:
 \begin{itemize}
-	\item Leihen mittels Referenz: \rustcinline{fn foo(bar: \&Bar)} oder \rustcinline{fn foo(bar: \&mut Bar)}
-	\item Eigentümerschaft übertragen durch \todo{Trait-Object}: \rustcinline{fn foo(bar: Box<Bar>)}
-	\item Als \todo{spezialisierte} Funktion \rustcinline{fn foo<T: Bar>(bar: T)}
+	\item Leihen mittels Referenz: \rustcinline{fn foo(bar: \&Bar)} oder \rustcinline{fn foo(bar: \&mut Bar)} -- ein Unterschied zu anderen Datentypen ist nicht zu erkennen.
+	\item Eigentümerschaft eines unbekannten aber Merkmal implementierenden Datentyps auf dem Heap übertragen: \rustcinline{fn foo(bar: Box<Bar>)} (auch \enquote{Trait-Object} genannt)
+	\item Als \todo{spezialisierte} Funktion: \rustcinline{fn foo<T: Bar>(bar: T)} (auch für Felder in Aufzählungen oder Datenstrukturen möglich)
 \end{itemize}
 
-Eine Deklaration \rustcinline{fn foo(bar: Bar)} für das Merkmal \monospaceinline{Bar} ist nicht möglich, da zur Compilezeit eine eindeutige Größe nicht bekannt ist.
+Eine Deklaration \rustcinline{fn foo(bar: Bar)} für das Merkmal \monospaceinline{Bar} ist nicht möglich, da zur Compilezeit eine eindeutige Größe nicht bekannt ist, weshalb der zu reservierende Speicher für die Variable nicht bestimmt werden kann.
+Verschiedene Implementationen sind zudem meist unterschiedlich groß.
 
 Eine spezialisierte Funktion verhält sich ähnlich wie eine \todo{Templateklasse} in C++: der Compiler erzeugt für jeden Spezialisierung eine Kopie der Funktion und setzt den Typ ein.
-Dies erlaubt auch eine Optimierung für den entsprechenden Typ \todo{cite}.
+Dies ermöglicht zudem Optimierungen für der Funktion für den eingesetzten Typ \todo{cite?}, vergrößert aber das Compilat.
 
-Trait-Objekt
+Im folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibliothek kurz erläutert:
+\begin{itemize}
+	\item \monospaceinline{Send}: Markiert einen Datentyp als zwischen Threads übertragbar. Automatisch für alle Datentypen bei denen auch alle beinhalteten Datentypen von Typ Send sind \todo{rly? cite?}. Manuelle Implementation ist \todo{unsafe}.
+	\item \monospaceinline{Sync}: Markiert einen Datentype als Thread sicher, d.h. mehrere Threads dürfen gleichzeitig darauf zugreifen. \todo{automatisch? manuell?} Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Sync} sind.
+	\item \monospaceinline{Copy}: Markiert einen Datentyp, der durch einfaches Speicherkopieren \todo{memcpy} vervielfacht werden kann (\todo{bsp skalare datentypen}). Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Copy} sind
+	\item \monospaceinline{Clone}: Markiert einen Datentyp der vervielfacht werden kann, dabei jedoch Laufzeitkosten verursacht. Stelle eine Funktion zum clonen bereit, die explizit aufgerufen werden muss (zbsp Zähler inkrementieren). Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Clone} sind.
+	\item \monospaceinline{Sized}: Verlangt eine zu Compilezeit bekannte Größe. \monospaceinline{!Sized} erlaubt dagegen eine unbekannte Größe zur Compilezeit.
+	\item \monospaceinline{Debug} und \monospaceinline{Display}: Verlangt die Implementation von Funktionen um als Text dargestellt zu werden, entweder mit mehr Zusatzinformationen (\monospaceinline{Debug}) oder \todo{schön} (\monospaceinline{Display}). Verlangt, \todo{..}
+	\item \monospaceinline{Deafult}: Verlangt die Implementation einer statische Methode \monospaceinline{default()}, die wie ein leerer Standardkonstruktor von Java oder C\# wirkt.
+	\item \monospaceinline{PartialEq} und \monospaceinline{PartialOrd}: Verlangt die Implementation einer Funktion um mit Objekten gleichen Typs verglichen demwerden zu können. Im Vergleich zu \monospaceinline{Eq} und \monospaceinline{Ord} erlauben \monospaceinline{PartialEq} und \monospaceinline{PartialOrd} den Rückgabewert \enquote{nicht vergleichbar} -- der bei  vergleichen zwischen zwei \rustcinline{Nan}-Werten wichtig ist \todo{cite ISO hierfür}. Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{PartialEq} bzw. \monospaceinline{PartialOrd} sind.
+	\item \monospaceinline{Drop}: Stellt eine Funktion bereit, die kurz vor der Speicherfreigabe einers Objekts aufgerufen wird (ähnlich Destruktor aus C++).
+\end{itemize}
 
-T: Blubber
+Durch das Attribute \rustcinline{#[derive(..)]} ist eine automatisierte Implementation genannter Merkmale oft möglich, insofern die jeweiligen Bedingungen erfüllt sind.
+So kann im allgemeinen \rustcinline{#[derive(Clone)]} genutzt werden um eine Datenstruktur oder eine Aufzählung klonbar zu machen oder \rustcinline{#[derive(Debug)]} um automatisch alle Felder in Text zu wandeln, ohne manuell Code schreiben zu müssen.
+Dies reduziert weiterhin die Fehleranfälligkeit für diese einfachen aber oft genutzten Funktionalitäten.
 
 Ähnlich wie in C++ <T: Blubber>
 
 \todo{Drop, Sized, Sync, Send, Copy, Clone, Debug, Display, Default, PartialEq, PartialOrd}
 
-\todo{Derive}
+\todo{Derive}: \enquote{Default}-Implementation
 
 \todo{<T: Blubber> vs Box<T> (Speicherorganisation, performance)}
 
@@ -449,6 +448,21 @@ Die Garantie nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere
 
 \section{Versprechen von Rust}
 \label{rust:guarantees}
+
+\todo{(re)move? / quotation besser verpacken? in text einbinden? möglich? unnötig?}
+
+\begin{quotation}
+	\textit{\enquote{It’s not bad programmers, it’s that C is a hostile language}} 
+	\cite[54]{rust:c_is_hostile_mena}
+\end{quotation}
+
+\begin{quotation}
+	\textit{\enquote{I’m thinking that C is actively hostile to writing and maintaining reliable code}} 
+	\cite[129]{rust:c_is_hostile_mena}
+\end{quotation}
+
+
+
 \subsection{Sichere Nebenläufigkeit}
 \todo{Send, Sync, No dataraces weil Ownership \autoref{rust:ownership}, Channel, Mutex, RwLock}
 

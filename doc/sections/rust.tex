@@ -82,7 +82,7 @@ Ein klassischer Aufbau ist nur selten anzutreffen.
 \label{rust:structure:classic}
 \begin{wrapfigure}{l}[-1em]{.5\textwidth}
 	\rustcinclude
-		{fig:rust:structure:classi}
+		{rust:structure:classi}
 		{Verzeichnisstruktur des Quelltext-Verzeichnisses}
 		{sections/rust.classic.txt}
 \end{wrapfigure}
@@ -104,7 +104,7 @@ Diese Umfasst in vielen fällen wenige aber mehrere Datenstrukturen, zugehörige
 
 \begin{wrapfigure}{r}{.4\textwidth}
 	\rustcincludeml
-		{fig:rust:structure:cargo}
+		{rust:structure:cargo}
 		{Vereinfachte Verzeichnisstruktur einer \enquote{crate}}
 		{sections/rust.cargo.txt}
 \end{wrapfigure}
@@ -133,12 +133,12 @@ Es wird allgemein empfohlen, ein Projekt als Crate zu betreiben \todo{cite}.
 
 \begin{wrapfigure}{l}{.5\textwidth}
 	\rustcinclude
-		{fig:rust:hello_world}
+		{rust:hello_world}
 		{\enquote{Hello World} in Rust}
 		{sections/rust.hello_world.rs}
 \end{wrapfigure}
 
-Der Programmcode in \autoref{fig:rust:hello_world} gibt auf der Konsole \monospaceinline{Hello World} aus.
+Der Programmcode in \autoref{rust:hello_world} gibt auf der Konsole \monospaceinline{Hello World} aus.
 Das \rustcinline{fn} die Funktion \rustcinline{main} definiert und diese der Startpunkt des Programms ist, wird wenige überraschen.
 Den meisten wird vermutlich eher das Ausrufezeichen in Zeile 2 auffallen, da es auf den ersten Blick dort nicht hingehören sollte.
 In Rust haben Ausrufezeichen und Fragezeichen besondere Bedeutungen, weswegen die Verwendung in Zeile 2 trotzdem richtig ist.
@@ -272,9 +272,9 @@ Im folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibl
 	\item \monospaceinline{Drop}: Stellt eine Funktion bereit, die kurz vor der Speicherfreigabe einers Objekts aufgerufen wird (ähnlich Destruktor aus C++).
 \end{itemize}
 
-Durch das Attribute \rustcinline{#[derive(..)]} ist eine automatisierte Implementation genannter Merkmale oft möglich, insofern die jeweiligen Bedingungen erfüllt sind.
-So kann im allgemeinen \rustcinline{#[derive(Clone)]} genutzt werden um eine Datenstruktur oder eine Aufzählung klonbar zu machen oder \rustcinline{#[derive(Debug)]} um automatisch alle Felder in Text zu wandeln, ohne manuell Code schreiben zu müssen.
-Dies reduziert weiterhin die Fehleranfälligkeit für diese einfachen aber oft genutzten Funktionalitäten.
+Mit dem Attribute \rustcinline{#[derive(..)]} ist eine automatisierte Implementation genannter Merkmale oft möglich, insofern die jeweiligen Bedingungen erfüllt sind.
+So kann im allgemeinen \rustcinline{#[derive(Clone)]} genutzt werden um eine Datenstruktur oder eine Aufzählung klonbar zu machen oder \rustcinline{#[derive(Debug)]} um automatisch alle Felder in Text wandeln zu können, ohne manuell Code schreiben zu müssen.
+Dadurch wird der menschliche Faktor als Fehlerquelle für oft genutzte aber im Prinzip einfache Mechanismen ausgeschlossen.
 
 Ähnlich wie in C++ <T: Blubber>
 
@@ -289,26 +289,44 @@ Dies reduziert weiterhin die Fehleranfälligkeit für diese einfachen aber oft g
 \subsection{Zugriffsmodifikatoren}
 \label{rust:access_modifier}
 
-Für Datenstrukturen, Aufzählungen, Merkmale und Funktionen können Zugriffsmodifikatoren festgelegt werden.
-Für einen globalen Zugriff sorgt ein vorangestelltes \rustcinline{pub}, für einen auf die aktuelle Crate beschränkten Zugriff sorgt \rustcinline{pub(crate)}.
-Bei keiner Festlegung wird standardmäßig der Zugriff auf das aktuelle Modul beschränkt.
+Zugriffsmodifikatoren erlauben es in Rust, Module, \todo{Re-exporte / use}, Datenstrukturen, Aufzählungen, Merkmale und Funktionen gegenüber Nutzern einer Crate und anderen Modulen sichtbar zu machen.
+Der Standardmodifikator limitiert die Sichtbarkeit auf das Modul, in dem die Deklaration stattgefunden hat und wird durch keine Nennung eines Zugriffsmodifikators erreicht.
+Um die Sichtbarkeit auf die gesamte Crate zu erhöhen, wird ein \rustcinline{pub(crate)} vorangestellt.
+Mit \rustcinline{pub} ist die Deklaration für alle sichtbar.
 
 
 \subsection{Ausdruck/Expression vs Statement}
 
 
 
-\subsection{Matches}
+\subsection{Musterabgleich}
 \label{rust:match}
 
-\rustcinline{match foo.bar() \{ \}}
+Der \rustcinline{match} Ausdruck ist ein sehr mächtiges Werkzeug in Rust und entspricht einem stark erweiterten \ccinline{switch} aus Programmiersprachen wie C, Java oder C\#.
+Mit ihm ist es möglich einen Wert eine Aufzählung aufzulösen und auf eventuell beinhaltete Werte zuzugreifen oder zu konsumieren.
 
-Verkürzt
+\rustcinclude
+	{rust:match:large}
+	{Kompletter \rustcinline{match} Ausdruck}
+	{sections/rust.match.large.rs}
 
-\rustcinline{if let Ok(line) = blubber.readline() \{ \}}
+In Zeile 3 von \autoref{rust:match:large} wird \rustcinline{value} aufgelöst.
+In dem Beispiel ist \rustcinline{value} aus Zeile 2 und 3 \rustcinline{Some("text")}, weswegen Zeile 4 ausgeführt wird, \rustcinline{value} konsumiert wird und \monospaceinline{Wert ist: text} auf der Konsole erscheint.
 
-\rustcinline{if let Some(value) = foo.bar() \{ \}}
+Für die Fälle, in denen nur eine Option von Bedeutung ist, gibt es die verkürzte \rustcinline{if let} Schreibweise:
 
+\rustcinclude
+	{rust:match:iflet}
+	{Vereinfachte \rustcinline{if let} Ausdruck}
+	{sections/rust.match.iflet.rs}
+
+Ein weiterer Unterschied von \autoref{rust:match:iflet} gegenüber \autoref{rust:match:large} ist in Zeile 3 das Schlüsselwort \rustcinline{ref}, wodurch der Konsum des Wertes verhindert wird.
+Das Schlüsselwort \rustcinline{mut} erlaubt zudem eine Änderung des Wertes, weswegen \rustcinline{value} in Zeile 4 vom Typ \rustcinline{&mut u32} ist und die Dereferenzierung mit Addition ermöglicht.
+
+Als Wildcard für sowohl nicht benötigte Werte, als auch alle weiteren Fälle kann \rustcinline{_} verwendet werden: \rustcinline{if let Some(_) = value \{ println!("It's something!"); \} }
+
+Weitere Möglichkeiten Muster zu erkennen sind ab Seite 221 in \cite{rust:orly_programming} in detaillierter Ausführung zu finden.
+Dazu gehören unter anderem die \enquote{guard expression}, \enquote{bindings} und \enquote{ranges}.
 
 \subsection{Namens- und Formatierkonvention / Styleguide}
 
@@ -544,13 +562,13 @@ In einem Beispiel, soll die Nutzung von \gls{ffi} demonstriert werden.
 
 \begin{figure}[H]
 	\ccinclude
-		{fig:rust:ffi:position_offset_c}
+		{rust:ffi:position_offset_c}
 		{Ausschnitt von \enquote{PositionOffset} \todo{ref mecview lib} in C, autgen ASN}
 		{sections/rust.position_offset.c}
 	
 \end{figure}
 
-Die Struktur in \autoref{fig:rust:ffi:position_offset_c} muss zur Nutzung in Rust zuerst bekannt gemacht werden.
+Die Struktur in \autoref{rust:ffi:position_offset_c} muss zur Nutzung in Rust zuerst bekannt gemacht werden.
 Dabei gibt es mehrere Möglichkeiten:
 \begin{enumerate}
 	\item Falls der Aufbau der Struktur nicht von Bedeutung ist, kann es ausreichen, den Datentyp lediglich bekannt zu machen: \rustcinline{#[repr(C)] struct PositionOffset;} \label{rust:ffi:example:enumerate:repr}
@@ -560,16 +578,16 @@ Dabei gibt es mehrere Möglichkeiten:
 	\item Der Inhalt der Struktur ist von Bedeutung, da darauf zugegriffen werden soll oder in Rust eine Instanz erzeugbar sein soll. In diesem Fall muss die Struktur komplett wiedergegeben werden:
 	\begin{figure}[H]
 		\rustcinclude
-			{fig:rust:ffi:position_offset_rust}
+			{rust:ffi:position_offset_rust}
 			{Ausschnitt von \enquote{PositionOffset} \todo{ref mecview lib} in Rust}
 			{sections/rust.position_offset.rs}
 	\end{figure}
 	
-	In \autoref{fig:rust:ffi:position_offset_rust} ist die Struktur \enquote{PositionOffset} definiert,
+	In \autoref{rust:ffi:position_offset_rust} ist die Struktur \enquote{PositionOffset} definiert,
 	die durch das Attribut \rustcinline{#repr(C)} wie eine C-Struktur im Speicher organisiert wird.
-	Somit ist sie kompatibel zu der C-Struktur aus \autoref{fig:rust:ffi:position_offset_c}.
+	Somit ist sie kompatibel zu der C-Struktur aus \autoref{rust:ffi:position_offset_c}.
 	
-	Wenn auf eine C-Struktur zugegriffen wird, sollten auch, wie in \autoref{fig:rust:ffi:position_offset_rust} zu sehen, spezielle Datentypen (\rustcinline{c_long}, \rustcinline{c_void}, \rustcinline{c_char}, ...) verwendet werden, um die Kompatibilität mit verschiedenen Systemen und C-Compilern zu wahren. \todo{u32 immer 32bit, aber int nicht immer gleich (Beispiel!?) --> Probleme}
+	Wenn auf eine C-Struktur zugegriffen wird, sollten auch, wie in \autoref{rust:ffi:position_offset_rust} zu sehen, spezielle Datentypen (\rustcinline{c_long}, \rustcinline{c_void}, \rustcinline{c_char}, ...) verwendet werden, um die Kompatibilität mit verschiedenen Systemen und C-Compilern zu wahren. \todo{u32 immer 32bit, aber int nicht immer gleich (Beispiel!?) --> Probleme}
 	
 %	\rustcinline{*mut c_long} entspricht dabei dem C-Pointer für \rustcinline{&mut c_long}, also \ccinline{long*}, ein C-Pointer für \rustcinline{&c_long} entspricht \rustcinline{*const c_long}.
 	
@@ -597,12 +615,12 @@ Während eine Struktur, die eine externe Struktur wiedergibt, sich optional in e
 
 \begin{figure}[H]
 	\rustcinclude
-		{fig:rust:ffi:uper_encode_to_buffer}
+		{rust:ffi:uper_encode_to_buffer}
 		{Externe Funktionsdefinition der ASN.1 Funktion zum Enkodieren}
 		{sections/rust.uper_encode_to_buffer.rs}
 \end{figure}
 
-Wie in \autoref{fig:rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Attributen versehen werden. Zwingend ist bei der Verwendung eines \rustcinline{#[link(..)]} Attributes der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{fig:rust:ffi:uper_encode_to_buffer} die Art der \todo{Linkung} (dylib, static) angegeben werden.
+Wie in \autoref{rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Attributen versehen werden. Zwingend ist bei der Verwendung eines \rustcinline{#[link(..)]} Attributes der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{rust:ffi:uper_encode_to_buffer} die Art der \todo{Linkung} (dylib, static) angegeben werden.
 
 Die Art der Definition einer externen Funktion unterscheidet sich nicht von einer normalen Funktionsdefinition. Es sollten aber, wie in \autoref{rust:ffi:datatypes} beschrieben, zu C bzw. der externen Sprache kompatiblen Datentypen verwendet werden.
  

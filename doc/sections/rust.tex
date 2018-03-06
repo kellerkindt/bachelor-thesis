@@ -2,11 +2,13 @@
 \chapter{Die Programmiersprache Rust}
 
 %Rust ist eine Programmiersprache, die versucht performante -- und daher durch Abstraktionen mit keinem zusätzlichen \enquote{Kosten} \todo{ref zero cost abstractions} -- und sichere Programmierung zu ermöglichen.
-Rust hat als Ziel, eine sichere (siehe \autoref{rust:guarantees}) und performante \todo{Systemprogrammiersprache} zu sein, die ohne eine Laufzeit ausgeführt werden kann und \todo{ergonomisch nutzbar} ist.
-Abstraktionen sollen die \todo{Ergonomie} verbessern, aber keine unnötigen Performanceeinbußen verursachen (siehe \autoref{rust:zero_cost}).
+Rust hat als Ziel, eine sichere (siehe \autoref{rust:guarantees}) und performante Systemprogrammiersprache zu sein, die ohne eine Laufzeit ausgeführt werden kann.
+Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber keine unnötigen Performanceeinbußen verursachen (siehe \autoref{rust:zero_cost}).
 
-Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} \todo{ref} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert.
-Im Gegensatz zu Programmiersprachen, die dies mit Hilfe einer Laufzeit ermöglichen (zbsp. Java oder C\#), werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
+\todo{rust performance very wow, much parallel, great safety}
+
+Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert (\autoref{rust:guarantees}).
+Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
 
 Rust hat in den letzten Jahren viel an Beliebtheit gewonnen und scheint dem Anspruch eine sichere und performante Programmiersprache zu sein, gerecht zu werden:
 

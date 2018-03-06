@@ -313,7 +313,7 @@ Mit ihm ist es möglich einen Wert eine Aufzählung aufzulösen und auf eventuel
 In Zeile 3 von \autoref{rust:match:large} wird \rustcinline{value} aufgelöst.
 In dem Beispiel ist \rustcinline{value} aus Zeile 2 und 3 \rustcinline{Some("text")}, weswegen Zeile 4 ausgeführt wird, \rustcinline{value} konsumiert wird und \monospaceinline{Wert ist: text} auf der Konsole erscheint.
 
-Für die Fälle, in denen nur eine Option von Bedeutung ist, gibt es die verkürzte \rustcinline{if let} Schreibweise:
+Wenn nur ein konkreter Fall von Bedeutung ist, kann dies in der verkürzten Schreibweise \rustcinline{if let} notiert werden:
 
 \rustcinclude
 	{rust:match:iflet}

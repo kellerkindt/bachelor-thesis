@@ -3,56 +3,49 @@
 
 \section{Motivation}
 Der Begriff \enquote{autonomes Fahren} hat spätestens seit den Tesla Autos einen allgemeinen Bekanntheitsgrad erreicht. Damit ein Auto selbstständig fährt, müssen erst viele Hürden gemeistert werden.
-Dazu gehört zum Beispiel das Spur halten -- auch bei fehlenden Fahrspurmarkierungen, das richtige Interpretieren von Verkehrsschildern und navigieren durch komplexen Kreuzungen. \todo{ref tesla.com?}
+Dazu gehört zum Beispiel das Spur halten -- auch bei fehlenden Fahrspurmarkierungen, das richtige Interpretieren von Verkehrsschildern und navigieren durch komplexe Kreuzungen. \todo{ref tesla.com?}
 
 Bevor ein autonomes Fahrzeug Entscheidungen treffen kann, benötigt es ein möglichst genaues Model seines Umfelds.
 Hierzu werden von verschiedene Sensoren wie Front-, Rück- und Seitenkameras, Abstandssensoren und \todo{arg1} Informationen gesammelt und ausgewertet. Aber vielleicht kann ein Auto nicht immer selbständig genügend Informationen zu seinem Umfeld sammeln? \todo{(huhuhu Server implied huhuhu)}
 %Diese Arbeit beschäftigt sich mit genau dem Thema, einem selbst fahrendem Auto Informationen zu anderen Teilnehmern an einer Kreuzung zu vermitteln.
 \todo{fix 404}
 
+\todo{Y RUST SO FANCY}
+
+\todo{MOAR PEP}
+
+\todo{... Programme haben fehler, sind aber nicht Computer schuld, sondern Menschen}
+
+\todo{Methoden/Vorgehensweisen können "perfekt" sein, Programmierer leider nicht}
+
+\todo{Wäre es nicht toll, in einer Welt zu leben, in der der menschliche Faktor als Fehlerquelle in fktl. sicherheitsrelevanter Software nahezu ausgeschlossen ist?}
+
 \section{Projektkontext}
 \begin{figure}[H]
 	\label{test 123}
 	\centering
-	\includegraphics[width=\textwidth]{images/MECView_Schaubild_BoschStyle_V2.png}
-	\caption{MEC-View Schaubild der Robert Bosch GmbH \cite{mec:home} {}}
-	\captionsource{\url{https://www.uni-due.de/~hp0309/images/Schaubild_BoschStyle_V2.png}}
+	\includegraphics[width=\textwidth]{images/MECView_Arch_de_V1_mod.png}
+	\caption{Übersicht über das Forschungsprojekt \cite{mec:home}}
+	\captionsource{\url{https://www.uni-due.de/~hp0309/images/Arch_de_V1.png} (modifiziert)}
 \end{figure}
 
-Diese Abschlussarbeit befasst sich mit dem \gls{mec}-Server, der Teil des \gls{mec}-View Forschungsprojekts ist.
+Diese Abschlussarbeit befasst sich mit dem Kommunikationsserver von \gls{mec}-View.
 Das \gls{mec}-View Projekt wird durch das \gls{bmwi} gefördert und befasst sich mit der Thematik autonom fahrender Fahrzeuge.
 Es soll erforscht werden, ob und in wie weit eine durch externe Sensorik geleistete Unterstützung nötig und möglich ist, um in eine Vorfahrtstraße autonom einzufahren.
 
-Das Forschungsprojekt ist dabei ein Zusammenschluss verschiedener Unternehmen:
-\begin{center}
-	\begin{tabular}{l|l}		
-		Unternehmen & Aufgabenbereich \\ \hline \hline
-		Bosch & Hochautomatisiertes Fahrzeug \\
-		Osram & \glqq{}Intelligente\grqq{} Infrastruktursensoren \\ 
-		Nokia & 5G Mobilfunk, Mobile Edge Computing (MEC) \\
-		Universität Ulm & Sensordatenfusion, Prädiktion \\
-		\rowcolor{lightgray!20} IT-Designers Gruppe & MEC-Server Architektur\\
-		\rowcolor{lightgray!20} & Mikroskopische Verkehrsanalyse \\
-		\rowcolor{lightgray!20} & Verhaltensanalyse \\
-		TomTom & Hochgenaue statische und dynamische Karten \\
-		Daimler & Fahrstrategien \\
-		& Verhaltensanalyse \\
-		& Streckenfreigabe \\
-		Universität Duisburg & Mikroskopisch, stochastische Simulationsmodelle
-	\end{tabular}
-\end{center}
+Das Forschungsprojekt ist dabei ein Zusammenschluss mehrerer Unternehmen mit unterschiedlichen Themengebieten.
+Die IT-Designers Gruppe beschäftigt sich mit dem Kommunikationsserver, der auf der von Nokia zur Verfügung gestellten Infrastruktur im 5G Mobilfunk als \gls{mec} Server betrieben wird.
+Erkannte Fahrzeuge und andere Verkehrsteilnehmer werden von den Sensoren von Osram via Mobilfunk an den Kommunikationsserver übertragen.
+Der Kommunikationsserver stellt diese Informationen dem Fusionsalgorithmus der Universität Ulm zur Verfügung und leitet das daraus gewonnene Umfeldmodell an das hochautomatisierten Fahrzeug von Bosch oder der Universität Ulm weiter.
+Durch hochgenaue statische und dynamische Karten von TomTom und den Fahrstrategien von Daimler soll das Fahrzeug daraufhin autonom in die Kreuzung einfahren können.
 
+\todo{Dinge beachten, Fußgänger}
 
-\subsection{Ablauf}
-Externe Sensoren übermitteln erkannte Fahrzeuge via Mobilfunk an einen \gls{mec}-Server, der direkt am Empfängerfunkmast angeschlossen ist. \todo{platform, vm?}
-Nachdem die erkannten Fahrzeuge der verschiedenen Sensoren zusammengeführt wurden (Fusions-Algorithmus), sollen sie an das autonom fahrende Fahrzeug über Mobilfunk übermittelt werden.
-Somit erhält das Fahrzeug bereits im Voraus Einsicht über eventuelle Möglichkeiten in die Vorfahrtsstraße einzufahren und könnte deshalb beispielsweise die Geschwindigkeit anpassen.
-Zudem sollen bei unübersichtlichen Kreuzungen somit zuverlässiger andere Verkehrsteilnehmer erkannt werden.
-
-\subsection{Sicherheit}
-\todo{überhaupt relevant?}
-Da bei Fehlern möglicherweise andere Verkehrsteilnehmer zu Schaden kommen können, müssen diverse Sicherheitsrichtlinien beachtet werden. Die Industrienorm ISO 26262 beschreibt dabei verschiedene Vorgehensweisen,
-unter anderem eine \gls{fba}, Risikoabschätzung durch Einstufung nach \glspl{asil} und beschreibt Gegenmaßnahmen.
+%\subsection{Ablauf}
+%Externe Sensoren übermitteln erkannte Fahrzeuge via Mobilfunk an einen \gls{mec}-Server, der direkt am Empfängerfunkmast angeschlossen ist. \todo{platform, vm?}
+%Nachdem die erkannten Fahrzeuge der verschiedenen Sensoren zusammengeführt wurden (Fusions-Algorithmus), sollen sie an das autonom fahrende Fahrzeug über Mobilfunk übermittelt werden.
+%Somit erhält das Fahrzeug bereits im Voraus Einsicht über eventuelle Möglichkeiten in die Vorfahrtsstraße einzufahren und könnte deshalb beispielsweise die Geschwindigkeit anpassen.
+%Zudem sollen bei unübersichtlichen Kreuzungen somit zuverlässiger andere Verkehrsteilnehmer erkannt werden.
 
 
 \section{Zielsetzung}
@@ -60,7 +53,9 @@ unter anderem eine \gls{fba}, Risikoabschätzung durch Einstufung nach \glspl{as
 Das Ziel ist es, eine alternative Implementierung des \gls{mec}-View Servers in Rust zu schaffen.
 Durch die Garantien (\autoref{rust:guarantees}) von Rust wird erhofft, dass der menschliche Faktor als Fehlerquelle gemindert wird und somit eine fehlertolerantere und sicherere Implementation geschaffen werden kann.
 
-Für eine bessere Wartbarkeit und Nachvollziehbarkeit soll die Implementation in Rust möglichst in Struktur und Architektur der C++ Implementation ähneln.
+Eine Ähnlichkeit in Struktur und Architektur zu der bestehender C++ Implementation ist explizit nicht vonnöten.
+Eventuelle \todo{Eigenheiten} von Rust sollen im vollen Umfang genutzt werden können, ohne durch auferzwungene und unpassende Architekturmuster benachteiligt zu werden.
+\todo{Es ist erwünscht eine kompetitive Implementation in Rust zu schaffen.}
 
 
 \section{Aufbau der Arbeit}
@@ -68,7 +63,8 @@ Für eine bessere Wartbarkeit und Nachvollziehbarkeit soll die Implementation in
 Diese Arbeit ist im wesentlichen in die folgenden Themengebiete aufgeteilt: Grundlagen, Anforderungs- und Systemanalyse, Systementwurf und Implementation und Auswertung.
 
 Im Themengebiet Grundlagen sollen wesentliche Bestandteile dieser Arbeit erläutert und erklärt werden.
-Hierzu zählt zum einen die Programmiersprache Rust in ihrer Entstehungsgeschichte \todo{ref}, Garantien \todo{ref}  und Sprachfeatures \todo{ref}, zum anderen die hochperformante, serverbasierte Kommunikationsplattform mit ihren Protokollen \todo{ref} und dem Systemkontext in dem diese betrieben wird.
+Hierzu zählt zum einen die Programmiersprache Rust in ihrer Entstehungsgeschichte \todo{ref}, Garantien \todo{ref}  und Sprachfeatures \todo{ref}.
+Zum anderen die hochperformante, serverbasierte Kommunikationsplattform mit ihren Protokollen \todo{ref} und dem Systemkontext in dem diese betrieben wird.
 
 In der Anforderungs- und Systemanalyse wird der Kontext in dem das System betrieben werden soll genauer betrachtet. Umzusetzende funktionale und nicht-funktionale Anforderungen werden aufgestellt, sowie eine Übersicht von Systemen mit denen das System interagiert wird.
 

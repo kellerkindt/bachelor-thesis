@@ -194,7 +194,6 @@ Mit dem \rustcinline{type} Schlüsselwort können Aliase erstellt oder im Falle 
  
 Neue Datentypen einer Struktur oder Aufzählung können mit \rustcinline{pub} oder \rustcinline{pub(crate)} gekennzeichnet werden (siehe \autoref{rust:access_modifier}).
 
-\todo{pub pub(crate)}
 
 \todo{seit neuestem union, mention?}
 
@@ -295,9 +294,6 @@ Um die Sichtbarkeit auf die gesamte Crate zu erhöhen, wird ein \rustcinline{pub
 Mit \rustcinline{pub} ist die Deklaration für alle sichtbar.
 
 
-\subsection{Ausdruck/Expression vs Statement}
-
-
 
 \subsection{Musterabgleich}
 \label{rust:match}
@@ -367,6 +363,9 @@ Dazu gehören unter anderem die \enquote{guard expression}, \enquote{bindings} u
 \subsection{Niemals nichts und niemals unbehandelte Ausnahmen}
 \label{rust:no_null}
 
+
+\todo{core, datatypes, arrays slices, no null  \enquote{billion dollar mistake} }
+
 Rust kennt \ccinline{null}(-Pointer) nicht, bietet aber in \rustcinline{core} (\autoref{rust:core}) \rustcinline{Option<_>} als Ersatz an.
 Dieser Datentyp erzwingt eine Prüfung vor dem Zugriff auf den optionalen Wert.
 
@@ -386,29 +385,34 @@ Durch den \todo{Fragenzeichenoperator} kann trotzdem ein ähnliches Verhalten wi
 \label{rust:stdlib}
 
 Die Rust Community ist darum bemüht, die Standardbibliothek sehr leichtgewichtig zu halten.
-Nicht eindeutig als fundamental eingestufte Funktionalität wird lieber als Crate auf \textins{crates.io} angeboten anstatt die Standardbibliothek übernommen zu werden \todo{prove via ref}. 
-Sie wird selbst als eine Crate (siehe \autoref{rust:structure:cargo}) zur Verfügung gestellt, auf die standardmäßige eine Abhängigkeit besteht.
-Für die Verwendung von Rust im Embedded Bereich, kann diese Abhängigkeit, die für Microcontroller sehr umfangreich ist, durch \rustcinline{#![no_std]} unterbunden werden.
-Daraufhin sind nur noch die in der \rustcinline{core} Crate zur Verfügung gestellten Sprachkonstrukte verwendbar.
+Nicht eindeutig als fundamental eingestufte Funktionalität wird lieber als Crate auf \url{https://crates.io} angeboten, anstatt in die Standardbibliothek übernommen zu werden \todo{prove via cite}. 
+Mit dieser Entscheidung soll auch eine Entwicklung unabhängig von den Releasezyklen von Rust ermöglicht werden \todo{cite}.
 
-\subsection{core}
-\label{rust:core}
+Die Standardbibliothek wird selbst als eine Crate (siehe \autoref{rust:structure:cargo}) zur Verfügung gestellt, auf die standardmäßige eine Abhängigkeit besteht.
+Für die Verwendung von Rust im Embedded-Bereich, kann diese Abhängigkeit, die für Microcontroller sehr umfangreich ist, durch \rustcinline{#![no_std]} unterbunden werden.
+Daraufhin sind nur noch die in der \rustcinline{core} Crate zur Verfügung gestellten, fundamentalen Sprachkonstrukte verwendbar.
 
+Da diese Abschlussarbeit keine Anwendung im Embedded-Bereich findet, wird der volle Funktionsumfang der Standardbibliothek genutzt.
+Wichtige aber auch Bekannte Datentypen sind:
 
-\subsection{std}
-\label{rust:std}
+\begin{itemize}
+	\item \textbf{std::vec::Vec}: Ein Vektor (wie eine Liste), bei dem die Werte in einem dynamisch groß allokierten Speicherbereich auf dem Heap liegen.
+	Ist \textbf{der} Ersatz für dynamische Arrays.
+	
+	\item \textbf{std::boxed::Box}: Ein Speicherbereich auf dem Heap für einen beliebigen Datentyp.
+	
+	\item \textbf{std::string::String}: Eine UTF-8 encodierte, vergrößer- und verkleinerbare Zeichenkette auf dem Heap.
+	
+	\item \todo{more?!}\todo{containers, collections, rc, arc, mutex, rwlock, platform abstractions: threads, tcp, udp} \todo{println!, writeln!, format!}
+\end{itemize}
 
-Die Crate \rustcinline{std} erweitert \rustcinline{core} um viele \todo{containers, collections, rc, arc, mutex, rwlock, platform abstractions: threads, tcp, udp}. \rustcinline{Vec<_>} \rustcinline{HashMap<_, _>} \rustcinline{String}  \rustcinline{Box} \todo{heap dinge}
-
-\todo{core, datatypes, arrays slices, no null  \enquote{billion dollar mistake} }
-
-\todo{std, Vec, str, String, no\_std für embedded}
-
-\todo{println!, writeln! formatting}
 
 https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
 \todo{static type system with local type inference } \\
 
+\todo{per default: stack}
+
+\todo{formatting rules}
 
 
 \section{Alles hat einen Rückgabewert}
@@ -417,15 +421,16 @@ https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
 \section{use mod pub}
 
 
-\section{Geltungsbereich / Memory Management, Lebenszeit}
+\section{Speichermanagement}
 \label{rust:scope}
 \label{rust:static_analysis}
 
 Rust benutzt ein \enquote{statisches, automatisches Speicher Management -- keinen Garbage Collector} \cite{rust:youtube:goto2017}.
-Das bedeutet, die Lebenszeit einer Variable wird statisch während der Compilezeit anhand des Geltungsbereichs ermittelt.
-Durch diese statische Analyses wird eine Variable durch eine automatisierte Anweisung, die der Compiler einfügt, freigegeben.
-Dies gilt auch für Variablen auf dem Heap.
-Ein Manuelles \ccinline{free(*void)} wie in C/C++ üblich entfällt.
+Das bedeutet, die Lebenszeit einer Variable wird statisch während der Compilezeit anhand des Geltungsbereichs ermittelt (siehe \autoref{rust:scope}).
+Durch diese statische Analyses findet der Compiler heraus, wann der Speicher einer Variable wieder freigegeben werden muss.
+Dies ist nämlich genau dann, wenn der Geltungsbereich des Eigentümers zu Ende ist.
+Weder ein \gls{gc}, der dies zur Laufzeit nachverfolgt, noch ein manuelles eingreifen durch den Entwickler (zum Beispiel durch \ccinline{free(*void)}, wie in C/C++ üblich) nötig.
+Der menschliche Faktor als Fehlerquelle wird wieder unterbunden, ohne Laufzeitkosten zu erzeugen.
 
 
 \begin{figure}[H]
@@ -438,7 +443,6 @@ Ein Manuelles \ccinline{free(*void)} wie in C/C++ üblich entfällt.
 Als Alternative kann eine Variable oder Datenstruktur auch vorzeitig durch Aufruf von \rustcinline{std::mem::drop(_)} freigegeben werden.
 Die optionalen Implementation von \rustcinline{std::op::Drop} \todo{trait? ref?} kommt der Implementation des Destruktors aus C++ gleich.
 
-\enquote{static automatic memory management} - no garbage collection \cite{rust:youtube:goto2017}
 \todo{"static automatic memory management" - no garbage collection } \\
 
 \todo{while compiling, does not compile on error / unprovable code, trait Drop}
@@ -453,9 +457,10 @@ In dem beschriebenen \enquote{Concurrency Pattern} wird eine klare Zuordnung get
 
 Diese Philosophie setzt Rust direkt in der Sprache um, so darf eine Variable immer nur einen Eigentümer haben. Zusätzlich zu einem immer eindeutig identifizierbaren Eigentümer für eine Variable, kann diese auch ausgeliehen werden; entweder exklusiv mit sowohl Lese- als auch Schreiberlaubnis, oder mehrfache mit nur Leseerlaubnis.
 
-Eigentümerschaft kann auch übertragen werden, der alte Eigentümer kann danach nicht mehr auf den Wert zugreifen.
+Eigentümerschaft kann auch übertragen werden, der vorherige Eigentümer kann danach nicht mehr auf den Wert zugreifen.
 
 Die Garantie nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert (siehe \autoref{rust:scope}).
+Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nötig, weshalb diese Philosophie keinen negativen Einfluss auf die \todo{Ausführgeschwindigkeit} hat.
 
 \todo{Split example, explain more}
 \rustcinclude

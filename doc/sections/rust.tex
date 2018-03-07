@@ -7,6 +7,8 @@ Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber 
 
 \todo{rust performance very wow, much parallel, great safety}
 
+\todo{rust sehr sauber, nahezu nix undefined (ref), nix uninitalized access(ref), datentypen namen u/i..(ref), styleguide}
+
 \todo{wo anders? make more text, make better text}
 Bei Rust geht es in vielerlei Hinsicht darum, bekannte Fehlerquellen aus anderen Programmiersprachen zu unterbinden, aber gleichzeitig eine mindestens genau so gute Performance zu erreichen.
 
@@ -332,11 +334,9 @@ Dazu gehören unter anderem die \enquote{guard expression}, \enquote{bindings} u
 	{sections/rust.styleguide.bad.rs}
 
 \begin{small}
-	\textcolor{orange}{\monospaceinline{type `MY_ENUM` should have a camel case name such as `MyEnum`}}
-	
-	\textcolor{orange}{\monospaceinline{variant `AN_ENTRY` should have a camel case name such as `AnEntry`}}
-	
-	\textcolor{orange}{\monospaceinline{variant `ANOTHER_ENTRY` should have a camel case name such as `AnotherEntry`}}
+	\textbf{\textcolor{orange}{[warning]}: type `MY\_ENUM` should have a camel case name such as `MyEnum`}
+	\textbf{\textcolor{orange}{[warning]}: variant `AN\_ENTRY` should have a camel case name such as `AnEntry`}
+	\textbf{\textcolor{orange}{[warning]}: variant `ANOTHER\_ENTRY` should have a camel case name such as `AnotherEntry`}
 \end{small}
 \cite{rust:styleguide}
 
@@ -484,8 +484,6 @@ Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nö
 \section{Versprechen von Rust}
 \label{rust:guarantees}
 
-\todo{(re)move? / quotation besser verpacken? in text einbinden? möglich? unnötig?}
-
 \begin{quotation}
 	\textit{\enquote{It’s not bad programmers, it’s that C is a hostile language}} 
 	\cite[54]{rust:c_is_hostile_mena}
@@ -496,37 +494,46 @@ Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nö
 	\cite[129]{rust:c_is_hostile_mena}
 \end{quotation}
 
+Im Gegensatz zu anderen Programmiersprachen wirbt Rust mit Versprechen und Garantien, die dafür sorgen sollen, Fehler zu vermeiden.
+In einer perfekten Welt wären viele dieser Maßnahmen nicht nötig, aber leider sind Programmierer auch nur Menschen.
+Menschen machen Fehler.
+Deswegen hat Rust einige Interessante Mechaniken eingeführt, bekannte Fehlerquellen zu unterbinden und erzwingt die Einhaltung indem andere Vorgehensweisen meist ausgeschlossen werden.
 
+Dieses Kapitel beschäftigt sich mit den wichtigsten und bekanntesten dieser Mechaniken.
 
-\subsection{Sichere Nebenläufigkeit}
-\todo{Send, Sync, No dataraces weil Ownership \autoref{rust:ownership}, Channel, Mutex, RwLock}
+\subsection{Kein undefiniertes Verhalten}
+\label{rust:no_unitialized_usage}
+\label{rust:no_undefined}
 
-\todo{Datarace benötigt immer einen schreibenden + min einen lesenden gleichzeitig}
+Bei der Entwicklung von Rust wird ein sehr großer Fokus darauf gelegt, keine undefinierten Zustände zu erlauben.
+Daher ist es normalerweise nicht möglich, ein undefiniertes Verhalten oder einen undefinierten Zustand zu erzeugen.
+Die Ausnahme macht dabei die Nutzung von \rustcinline{unsafe}, für zum Beispiel FFI (siehe \autoref{rust:ffi}).
+Für diese Fälle gibt es eine überschaubare Liste von Szenarien, aus denen ein undefinierter Zustand bzw. undefiniertes Verhalten resultieren kann \cite{rust:book:undefined}.
+
+Als einfaches Beispiel eines undefinierten Zustandes in C ist eine Variable, die deklariert wurde, aber der noch kein Wert zugewiesen wurde.
+In manchen Szenarien hat die Variable dann den Wert der in diesem Moment an der entsprechenden Stelle im Speicher stand, in anderen Szenarien wird der Speicher vom Betriebssystem, Allokator oder von vom Compiler eingefügten Befehlen mit 0en gefüllt -- eine sichere Aussage ist nicht möglich.
+
+Rust dagegen lässt keinen zugriff auf Variablen zu, die nicht zuvor initialisiert wurden \cite[126]{rust:orly_programming}.
+Der Compiler stoppt mit einem Fehler: \enquote{\textbf{\textcolor{red}{error[E0381]}: use of possibly uninitialized variable: `a`}}.
+
 
 \subsection{Keine vergessene Null-Pointer Prüfung}
 \label{rust:no_null_detail}
 
-Wie in \autoref{rust:no_null} beschrieben, kennt Rust keinen \ccinline{NULL} Pointer.
-Daher ist es auch nicht möglich, durch Nachlässigkeit auf den falschen Speicher zuzugreifen.
-Eine Prüfung kann entweder durch ein \rustcinline{match} (siehe \autoref{rust:match}) oder verkürzt durch ein \rustcinline{if let Some(wert) = optional \{ /* tu etwas mit wert */ \}} geschehen.
+\begin{quotation}
+	\textit{\enquote{I call it my billion-dollar mistake. It was the invention of the null reference in 1965}}
+	\cite[Tony Hoare, QCon Software Konferenz in London, 2009]{rust:infoq:null}
+	\todo{cant find moment in video / presentation of this qutoe!?}
+\end{quotation}
 
-\subsection{Zero Cost Abstraction}
-\label{rust:zero_cost}
-
-Trotz der vielen verwendeten Abstraktionen möchte Rust dadurch möglichst keine weitere Laufzeitkosten erzeugen.
-
-Der \rustcinline{Option<_>} Datentyp wir zum Beispiel tatsächlich als Pointer dargestellt, der bei \ccinline{NULL} \rustcinline{None} ist und ansonsten \rustcinline{Some(_)} \cite[100]{rust:orly_programming}.
-Somit wird eine Überprüfung erzwungen, ohne dabei Laufzeitkosten erzeugt zu haben.
-
-Bei dem atomaren Referenzzähler \rustcinline{Arc<_>} ist der Zähler im Heapspeicher direkt vor dem eigentlichen Wert und nicht in einem extra Speicherbereich \todo{cite}.
-Ein weiteren indirekten Speicherzugriff mit Laufzeitkosten wird somit verhindert.
+Wie in \autoref{rust:no_null} beschrieben, kennt Rust keinen \ccinline{NULL}-Pointer.
+Daher ist es auch nicht möglich, durch Nachlässigkeit auf den falschen Speicher zuzugreifen, da eine Referenz immer gültig ist.
+Für fälle, in denen es eventuell keinen Wert gibt, bietet Rust stattdessen den \rustcinline{Option<_>} Datentyp an.
+\rustcinline{Option<_>} ist eine Aufzählung, die entweder \rustcinline{None} ist, oder \rustcinline{Some(_)} mit einem Wert.
+Auf den Wert kann nicht zugegriffen werden, ohne zu prüfen, ob wirklich ein \rustcinline{Some(_)} vorliegt.
+Dies kann durch \rustcinline{match} oder verkürzt durch ein \rustcinline{if let Some(wert) = optional \{ /* tu etwas mit wert */ \}} geschehen (siehe \autoref{rust:match}).
 
 
-\subsection{Kein undefiniertes Verhalten}
-\label{rust:no_unitialized_usage}
-\todo{auch: no unitialized usage}
-\todo{ref oreilly}
-\todo{explain option}
 
 \subsection{Keine vergessene Fehlerprüfung}
 \label{rust:result}
@@ -547,9 +554,9 @@ In Rust wird weder eine Ausnahme geworfen, noch ein Rückgabewert zurück gegebe
 
 \begin{figure}[H]
 	\rustcinclude
-		{rust:result:rust_good_fopen}
-		{Positivbeispiel: Keine fehlende Fehlerprüfung in Rust}
-		{sections/rust.fopen.rs}
+	{rust:result:rust_good_fopen}
+	{Positivbeispiel: Keine fehlende Fehlerprüfung in Rust}
+	{sections/rust.fopen.rs}
 \end{figure}
 
 Der Rückgabewert von \rustcinline{File::open("private.key")} in Zeile 5 von \autoref{rust:result:rust_good_fopen} ist vom Typ \rustcinline{Result<File, Error>}.
@@ -563,6 +570,27 @@ Durch die Lebenszeitanalyse \todo{ref} in Rust ist der Geltungsbereich der \rust
 
 \subsection{No dangling pointer}
 \todo{src https://www.youtube.com/watch?v=d1uraoHM8Gg}
+
+\subsection{Sichere Nebenläufigkeit}
+\todo{Send, Sync, No dataraces weil Ownership \autoref{rust:ownership}, Channel, Mutex, RwLock}
+
+\todo{Datarace benötigt immer einen schreibenden + min einen lesenden gleichzeitig}
+
+
+\subsection{Slice out of index}
+
+\subsection{Zero Cost Abstraction}
+\label{rust:zero_cost}
+
+Trotz der vielen verwendeten Abstraktionen möchte Rust dadurch möglichst keine weitere Laufzeitkosten erzeugen.
+
+Der \rustcinline{Option<_>} Datentyp kann zum Beispiel tatsächlich als Pointer dargestellt werden, der bei \ccinline{NULL} \rustcinline{None} ist und ansonsten \rustcinline{Some(_)} \cite[100]{rust:orly_programming}.
+Somit wird eine Überprüfung erzwungen, ohne dabei Laufzeitkosten erzeugt zu haben.
+
+\todo{nothing special?}
+Ein weiteres Beispiel ist der atomare Referenzzähler  von \rustcinline{Arc<_>}. Der Zähler ist im Heap direkt vor dem beinhalteten Wert und nicht in einem extra Speicherbereich \todo{cite}.
+Ein weiteren indirekten Speicherzugriff mit Laufzeitkosten wird somit verhindert.
+
 
 
 \section{Einbinden von Bibliotheken}

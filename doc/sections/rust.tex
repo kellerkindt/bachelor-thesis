@@ -295,13 +295,12 @@ Im Rust wird dieser Typ \enquote{Trait} (dt. Merkmal) genannt.
 Für Merkmale werden Funktionen in einem entsprechenden \rustcinline{trait <Name> \{ \}}-Block ohne Rumpf deklariert.
 Optional kann auch ein Standardrumpf implementiert werden, der bei einer Spezialisierung überschrieben werden darf.
 
-Merkmale unterscheiden sich in ihrer Handhabung gegenüber anderen Datentypen, da sie oft keine bekannte Größe zur Compilezeit haben.
-Während dies in Programmiersprachen wie Java und C\# automatisch abstrahiert wird (\todo{virtuelle methoden, vergleich c++, speicher, indirekt}), wird dies in Rust aus Performancegründen nicht getan.
-Stattdessen muss der Programmierer entscheiden, welche Handhabung am besten ist.
-\todo{dabei dabei dabei dabei dabei dabei} Dabei gibt es mehrere Möglichkeiten:
+Merkmale unterscheiden sich in ihrer Handhabung gegenüber anderen Datentypen, da sie im allgemeinen keine bekannte Größe zur Compilezeit haben.
+Während dies in Programmiersprachen wie Java und C\# automatisch durch \todo{vtables} umgesetzt wird (\todo{virtuelle methoden, vergleich c++, speicher, indirekt}), muss in Rust dies der Entwickler entscheiden.
+\todo{dabei dabei dabei dabei dabei dabei} Dabei gibt es mehrere Vorgehensweisen:
 \begin{itemize}
 	\item Leihen mittels Referenz: \rustcinline{fn foo(bar: \&Bar)} oder \rustcinline{fn foo(bar: \&mut Bar)} -- ein Unterschied zu anderen Datentypen ist nicht zu erkennen.
-	\item Eigentümerschaft eines unbekannten aber Merkmal implementierenden Datentyps auf dem Heap übertragen: \rustcinline{fn foo(bar: Box<Bar>)} (auch \enquote{Trait-Object} genannt)
+	\item Datentyp, der das geforderte Merkmal implementiert, auf den Heap verschieben und die \todo{Eigentümerschaft} über den Heapbereich übertragen (\todo{resultiert in einfacher Pointer-übergabe}): \rustcinline{fn foo(bar: Box<Bar>)} (auch \enquote{Trait-Object} genannt)
 	\item Als \todo{spezialisierte} Funktion: \rustcinline{fn foo<T: Bar>(bar: T)} (auch für Felder in Aufzählungen oder Datenstrukturen möglich)
 \end{itemize}
 

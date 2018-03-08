@@ -60,11 +60,18 @@ Rust ist wahlweise unter MIT oder der Apache Lizenz in Version 2 lizenziert.
 
 \section{Anwendungsgebiet}
 
-Das Ziel von Rust ist es, das Designen und Implementieren von sicheren, nebenläufig und auch praktisch tauglichen Systemen möglich zu machen \cite{rust:faq}.
-\todo{intro paragraph}
+Das Ziel von Rust ist es, das Designen und Implementieren von sicheren und nebenläufigen Programmen möglich zu machen.
+Gleichzeitig soll der Spagat geschaffen werden, nicht nur ein sicheres aber lediglich theoretisches Konstrukt zu sein, sondern  in der Praxis eine Anwendung zu finden \cite{rust:faq}.
+Als Beweis könnte hierbei auf die Umstellung von Firefox auf Rust und Servo -- ein minimaler Webbrowser komplett in Rust geschrieben -- verwiesen werden.
 
+Interessant ist eine Diskussion in 2009, bei der \enquote{sicher aber nutzlos} und \enquote{unsicher aber sinnvoll} Gegenübergestellt wurde.
+Programmiersprachen scheinen auf der Suche nach dem nicht existierende \enquote{Nirvana} zu sein, das sowohl sichere als auch sinnvolle Programmierung verspricht \cite[ab ca Minute 58:20]{rust:infoq:null}.
+Rust möchte dieses Nirvana gefunden haben.
+% bei einer Diskussion \footnote{Siehe auch \enquote{unsafe but useful}/\enquote{safe but useless} \cite[ab ca Minute 58:20]{rust:infoq:null}}.
+
+\subsection{Kompatibilität}
 Da Rust den \gls{llvm}-Compiler nutzt, erbt Rust auch eine große Anzahl der Zielplattformen die \gls{llvm} unterstützt.
-Die Zielplattformen sind in drei Stufen unterteilt, bei denen verschieden stark ausgeprägte Garantien vergeben sind. Es wird zwischen
+Die Zielplattformen sind in drei Stufen unterteilt, bei denen verschieden stark ausgeprägte Garantien vergeben werden. Es wird zwischen
 \begin{itemize}
 	\item \enquote{Stufe 1: Funktioniert garantiert} (u.a. X86, X86-64),
 	\item \enquote{Stufe 2: Compiliert garantiert} (u.a. ARM, PowerPC, PowerPC-64) und
@@ -73,12 +80,33 @@ Die Zielplattformen sind in drei Stufen unterteilt, bei denen verschieden stark 
 unterschieden \cite{rust:platform_support}.
 Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementation neuer Funktionen aus (Beispiel \enquote{128-bit Integer Support} \cite{rust:github:128bit_integer}).
 
+\subsection{Veröffentlichungszyklus}
+
+Es stehen Versionen in drei verschieden Veröffentlichungskanälen zur Verfügung:
+\begin{itemize}
+	\item \textbf{nightly}: Version die einmal am Tag mit dem aktuellen Stand des Quellcodes gebaut wird. Experimentelle und nicht fertige Features sind hier enthalten.
+	\item \textbf{beta}: Alle sechs Wochen wird die aktuellste Nightly zur Beta befördert und es werden nur noch Fehler aus dieser Version getilgt.
+	Dieser Prozess könnte auch als Reifephase bezeichnet werden.
+	\item \textbf{stable}: Nach sechs Wochen wird die aktuellste Beta zur Stable befördert und veröffentlicht.
+	Gleichzeitig wird auch eine neue Beta veröffentlicht.
+\end{itemize}
+
+\subsection{Ökosystem}
+
+
+\todo{crates.io -> docs.rs}
+
+\todo{rust-lang.org -> doc.rust-lang.org}
+
+\todo{https://github.com/rust-lang}
+
 \section{Aufbau eines Projektverzeichnisses}
 
 Der Aufbau eines Rust Projektverzeichnis kann zwischen zwei verschiedenen Arten differenziert werden.
 Zum einen gibt es den klassische Aufbau, in dem lediglich der Programmcode liegt und der Compiler direkt aufgerufen wird.
 Zum anderen wird der Aufbau als Crate empfohlen \todo{cite}, bei dem automatisch Abhängigkeiten aufgelöst aber auch Metainformationen bezüglich des Autors und der Version hinterlegt sind.
 Ein klassischer Aufbau ist nur selten anzutreffen.
+
 
 \subsection{Klassisch}
 \label{rust:structure:classic}
@@ -130,6 +158,12 @@ Es wird allgemein empfohlen, ein Projekt als Crate zu betreiben \todo{cite}.
 
 \todo{Cargo.toml example?}
 
+\todo{versions schema}
+
+\todo{pfade}
+
+\todo{extern crate ...}
+
 \section{Hello World}
 
 
@@ -154,7 +188,8 @@ Eine Ausgabe erfolgt durch das \rustcinline{println!} Makro, welches die Makros 
 \todo{hmmmm}
 Ein kleines Beispiel, viele versteckte Mechaniken zur Laufzeitoptimierung aber trotzdem handlich und leserlich -- Rust.
 
-\subsection{Einfache Datentypen}
+\section{Einfache Datentypen}
+\label{rust:types:simple}
 
 Die in der \rustcinline{core} Crate (\autoref{rust:core}) zur Verfügung gestellten Datentypen sind im wesentlichen die üblichen  Verdächtigen: \rustcinline{bool} für boolische Ausdrücke; \rustcinline{char} für ein einzelnes Unicode Zeichen; \rustcinline{str} für eine Zeichenkette; \rustcinline{u8}, \rustcinline{i8}, \rustcinline{u16}, \rustcinline{i16}, \rustcinline{u32}, \rustcinline{i32}, \rustcinline{u64}, \rustcinline{i64}, (bald \rustcinline{u128}, \rustcinline{i128} \cite{rust:github:128bit_integer:rfc}) und \rustcinline{usize}, \rustcinline{isize}  für ganzzahlige Werte; \rustcinline{f32}, \rustcinline{f64} für Fließkommazahlen in einfacher und zweifacher Präzision; Arrays und Slices \cite{rust:book:primitives}.
 
@@ -171,35 +206,39 @@ Eine Schreibweise in Binär (\rustcinline{0b0000_1000_u8}), in Hexadezimal (\rus
 Konstante Zeichen und Zeichenketten können auch als Bytes (\rustcinline{b'b'} entspricht \rustcinline{u8} und \rustcinline{b"abc"} entsricht \rustcinline{&[u8]}) \todo{hinterlegt} werden.
 
 Arrays haben immer eine zur Compilezeit bekannte Größe und Initialisierungswert (siehe \autoref{rust:no_unitialized_usage}).
-Dynamische Arrays gibt es nicht, da diese zu oft Fehlerquellen seien \todo{cite!} (Abhilfe: \rustcinline{Vec<_>}, siehe \autoref{rust:std}).
+Dynamische Arrays gibt es nicht, da diese zu oft Fehlerquellen seien \todo{cite!} (Abhilfe: \rustcinline{Vec<_>}, siehe \autoref{rust:stdlib}).
 Die Notation ist \rustcinline{[<Füllwert>; <Größe>]}.
 \rustcinline{[0_u8; 128]} steht also für ein 128 Byte langes Byte Array, das mit 0-en vom Datentyp \rustcinline{u8} gefüllt ist.
 
-\enquote{Slices} (dt. Scheibe/Stück) bezeichnet Rust Referenzen auf Arrays, die auch nur Teilbereiche umfassen können.
-Die Größe einer Slice wird dabei mit der Referenz auf den Startwert gespeichert \todo{explain Fat-Pointer?} und bei Funktionsaufrufen übergeben.
+\enquote{Slices} (dt. Scheiben/Stücke) bezeichnet Rust Referenzen auf Arrays, oder Teilbereiche auf diese.
+Die Größe einer Slice wird dabei mit der Referenz auf die Startposition in einer Variable gespeichert und bei Funktionsaufrufen übergeben.
+Diese Kombination aus Referenz und Länge wird oft auch \enquote{fat-pointer} genannt.
 Ein zusätzlicher Parameter für die Größe eines Buffers, wie in C üblich, ist somit unnötig.
-Die Notation ähnelt die eines Arrays, aber ohne Größenspezifikation: \rustcinline{[<Datentyp>]}.
+Die Notation ähnelt dabei die eines Arrays, aber ohne Größenspezifikation: \rustcinline{[<Datentyp>]}.
 Eine Slice kann von einem Array oder einer anderen Slice erzeugt werden, dabei wird der Start- und Endindex des Teilbereiches angegeben.
-Falls kein Start- oder Endindex angegeben wurde, wird das jeweilige Limit übernommen (0, max) \todo{shit text}: \rustcinline{let slice : &[u8] = &array[..8];}
+Falls kein Start- oder Endindex angegeben wurde, wird das jeweilige Limit übernommen.
+Das folgende Beispiel erstellt eine Slice auf ein Array oder eine andere Slice vom Index 2 bis inklusive Index 7: \rustcinline{let slice : &[u8] = &array[2..8];}
 
-\subsection{Zusammengesetzen Datentypen}
+\section{Zusammengesetzen Datentypen}
+\label{rust:types:composed}
 
-Die Programmiersprache Rust kennt neben den primitiven \todo{skalaren} Datentypen (\autoref{rust:core}) weitere Möglichkeiten Daten zu organisieren:
+Die Programmiersprache Rust kennt neben den einfachen Datentypen (\autoref{rust:types:simple}) weitere Möglichkeiten Daten zu organisieren:
 \begin{itemize}
-	\item ein Tupel, das mehrere Werte namenlos zusammenfasst: \rustcinline{(f32, u8)},
-	\item eine Datenstruktur, die wie in C Datentypen namenbehaftet zusammenfasst: \linebreak\rustcinline{struct Punkt \{ x: f32, y: f32 \} }
-	\item eine Aufzählung: \rustcinline{enum Bildschirm \{ Tv, Monitor \}}. \todo{think better!}
+	\item ein Tupel, das mehrere Werte namenlos zusammenfasst: \rustcinline{(f32, u8)}: \rustcinline{a.0 = 1.0_f32},
+	\item eine Datenstruktur, die wie in C Datentypen namenbehaftet zusammenfasst: \linebreak\rustcinline{struct Punkt \{ x: f32, y: f32 \} }: \rustcinline{p.x = 1.0_f32}
+	\item und Aufzählungen: \rustcinline{enum Bildschirm \{ Tv, Monitor, Leinwand \}}.
 \end{itemize}
 
 Im Vergleich zu C kann ein Eintrag in einem \rustcinline{enum} gleichzeitig Daten wie eine Datenstruktur oder ein Tupel halten, oder lediglich einen Ganzzahlwert repräsentieren.
 Mit dem \rustcinline{type} Schlüsselwort können Aliase erstellt oder im Falle von FFI (siehe \autoref{rust:ffi}) aufgelöst werden: \rustcinline{type Vektor = (f32, f32);}
  
-Neue Datentypen einer Struktur oder Aufzählung können mit \rustcinline{pub} oder \rustcinline{pub(crate)} gekennzeichnet werden (siehe \autoref{rust:access_modifier}).
+Felder einer Struktur können mit \rustcinline{pub} oder \rustcinline{pub(crate)} gekennzeichnet werden (siehe \autoref{rust:access_modifier}).
 
+Seit Version 1.19 ist der Datentyp \rustcinline{union} auch in Rust vorhanden \cite{rust:v1.19}.
+Eine \rustcinline{union} kann aber nur in \rustcinline{unsafe}-Blöcken verwendet werden, da der Compiler eine Ordnungsgemäße Nutzung nicht überprüfen kann.
+Für diese Arbeit hat der Datentyp aber keine Relevanz und wird nicht weiter erwähnt.
 
-\todo{seit neuestem union, mention?}
-
-\subsection{Funktionen, Ausdrücke und Statements}
+\section{Funktionen, Ausdrücke und Statements}
 
 Funktionen werden durch \rustcinline{fn} gekennzeichnet, gefolgt mit dem Funktionsnamen, der Parameterliste und zuletzt der Datentyp für den Rückgabewert.
 Die Parameterliste unterscheidet sich von bekannten Programmiersprachen wie C und Java, indem zuerst der Variablenname und darauf folgend der Datentyp notiert wird.
@@ -215,7 +254,7 @@ Auch ein if-else ist ein Ausdruck und kann einen Rückgabewert haben.
 Ein bedingter Operator (?:) is somit unnötig, da stattdessen ein if-else verwendet werden kann: \rustcinline{let a = if b \{ c \} else \{ d \};}. 
 Auch eine Zeile mit einen Semikolon hat einen Rückgabewert: \rustcinline{()}. \todo{explain () void}
 
-\subsection{Implementierung einer Datenstruktur}
+\section{Implementierung einer Datenstruktur}
 
 Zu einer Datenstruktur oder Aufzählung kann ein individuelles Verhalten implementiert werden.
 In dieser Kombination ähneln diese Konstrukte sehr einer Klasse aus bekannten objektorientierten Programmiersprachen, wie zum Beispiel Java oder C++. \todo{ref rust OOP}
@@ -235,7 +274,7 @@ Der \rustcinline{Vec<_>} der Standardbibliothek (siehe \autoref{rust:std}) biete
 Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe \autoref{rust:access_modifier}). 
 \todo{pub pub(crate)}
 
-\subsection{Generalisierung durch Traits}
+\section{Generalisierung durch Traits}
 \label{rust:trait:default}
 
 Ähnlich wie Java oder C\# bietet Rust durch einen eigenen Typ die Möglichkeit, ein gewünschtes Erscheinungsbild zu generalisieren, ohne gleichzeitig eine Implementation vorzugeben.
@@ -287,7 +326,7 @@ Dadurch wird der menschliche Faktor als Fehlerquelle für oft genutzte aber im P
 
 \todo{you idiot forgot an subsub-idea}
 
-\subsection{Zugriffsmodifikatoren}
+\section{Zugriffsmodifikatoren}
 \label{rust:access_modifier}
 
 Zugriffsmodifikatoren erlauben es in Rust, Module, \todo{Re-exporte / use}, Datenstrukturen, Aufzählungen, Merkmale und Funktionen gegenüber Nutzern einer Crate und anderen Modulen sichtbar zu machen.
@@ -297,7 +336,7 @@ Mit \rustcinline{pub} ist die Deklaration für alle sichtbar.
 
 
 
-\subsection{Musterabgleich}
+\section{Musterabgleich}
 \label{rust:match}
 
 Der \rustcinline{match} Ausdruck ist ein sehr mächtiges Werkzeug in Rust und entspricht einem stark erweiterten \ccinline{switch} aus Programmiersprachen wie C, Java oder C\#.
@@ -326,7 +365,7 @@ Als Wildcard für sowohl nicht benötigte Werte, als auch alle weiteren Fälle k
 Weitere Möglichkeiten Muster zu erkennen sind ab Seite 221 in \cite{rust:orly_programming} in detaillierter Ausführung zu finden.
 Dazu gehören unter anderem die \enquote{guard expression}, \enquote{bindings} und \enquote{ranges}.
 
-\subsection{Namens- und Formatierkonvention / Styleguide}
+\section{Namens- und Formatierkonvention / Styleguide}
 
 \rustcinclude
 	{rust:styleguide:bad}
@@ -340,7 +379,7 @@ Dazu gehören unter anderem die \enquote{guard expression}, \enquote{bindings} u
 \end{small}
 \cite{rust:styleguide}
 
-\subsection{Formatierung}
+\section{Formatierung}
 \rustcinline{format!} all se things
 
 \todo{formatierung}
@@ -360,7 +399,7 @@ Dazu gehören unter anderem die \enquote{guard expression}, \enquote{bindings} u
 
 \todo{pattern matching}
 
-\subsection{Niemals nichts und niemals unbehandelte Ausnahmen}
+\section{Niemals nichts und niemals unbehandelte Ausnahmen}
 \label{rust:no_null}
 
 
@@ -377,7 +416,7 @@ Durch den \todo{Fragenzeichenoperator} kann trotzdem ein ähnliches Verhalten wi
 
 \todo{ref if let Ok(\_)} 
 
-\subsection{Besorgter Compiler}
+\section{Besorgter Compiler}
 \todo{many warnings}
 
 
@@ -572,6 +611,9 @@ Durch die Lebenszeitanalyse \todo{ref} in Rust ist der Geltungsbereich der \rust
 \todo{src https://www.youtube.com/watch?v=d1uraoHM8Gg}
 
 \subsection{Sichere Nebenläufigkeit}
+
+\todo{\enquote{Safety is invisible} \cite[41]{rust:orly_programming}}
+
 \todo{Send, Sync, No dataraces weil Ownership \autoref{rust:ownership}, Channel, Mutex, RwLock}
 
 \todo{Datarace benötigt immer einen schreibenden + min einen lesenden gleichzeitig}

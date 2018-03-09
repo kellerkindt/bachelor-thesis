@@ -3,17 +3,18 @@
 
 \section{Motivation}
 Der Begriff \enquote{autonomes Fahren} hat spätestens seit den Tesla Autos einen allgemeinen Bekanntheitsgrad erreicht. Damit ein Auto selbstständig fahren kann, müssen erst viele Hürden gemeistert werden.
-Dazu gehört zum Beispiel das Spur halten -- auch bei fehlenden Fahrspurmarkierungen, das richtige Interpretieren von Verkehrsschildern und navigieren durch komplexe Kreuzungen. \todo{ref tesla.com?}
+Dazu gehört zum Beispiel das Spur halten, das richtige Interpretieren von Verkehrsschildern und das Navigieren durch komplexe Kreuzungen.
 
 Bevor ein autonomes Fahrzeug Entscheidungen treffen kann, benötigt es ein möglichst genaues Model seines Umfelds.
-Hierzu werden von verschiedene Sensoren wie Front-, Rück- und Seitenkameras, Abstandssensoren und \todo{arg1} Informationen gesammelt und ausgewertet. Aber vielleicht kann ein Auto nicht immer selbständig genügend Informationen zu seinem Umfeld sammeln? \todo{(huhuhu Server implied huhuhu)}
+Hierzu werden von verschiedene Sensoren wie Front-, Rück- und Seitenkameras und Abstandssensoren Informationen gesammelt und ausgewertet.
+Aber vielleicht kann ein Auto nicht immer selbständig genügend Informationen zu seinem Umfeld sammeln? \todo{(huhuhu Server implied huhuhu)}
 %Diese Arbeit beschäftigt sich mit genau dem Thema, einem selbst fahrendem Auto Informationen zu anderen Teilnehmern an einer Kreuzung zu vermitteln.
 
 \todo{make se shit better}
 Externe Sensorik könnte Informationen liefern, die das Auto selbst nicht erfassen kann.
 Ein viel zu schneller Radfahrer hinter einer Hecke in einer unübersichtlicher Kreuzung?
-Eine Lücke zwischen Autos, die ausreichend groß ist, um einzufahren ohne zu bremsen, falls bis zur Kreuzung die richtige Geschwindigkeit gewählt wird?
-Die nächste Ampel wird bei Ankunft rot seit, weshalb jetzt ein schnelles und Umwelt belastendes Anfahren nicht nötig ist?
+Eine Lücke zwischen Autos, die ausreichend groß ist, um einzufahren ohne zu bremsen?
+Die nächste Ampel wird bei Ankunft rot sein, ein schnelles und Umwelt belastendes Anfahren ist nicht nötig?
 Ideen gibt es zuhauf.
 
 Aber was ist, wenn das System aussetzt?
@@ -23,18 +24,17 @@ Eine Lücke zwischen Autos, wo keine ist; eine freie Fahrbahn, wo ein Radfahrer 
 Ein solches System muss sicher sein -- nicht nur vor Hackern.
 Es muss \todo{funktional} sicher sein, Redundanzen und Notfallsysteme müssen jederzeit greifen.
 
-Aber was nützt die beste Idee, die ausgeklügelte Strategie gegenüber einer undefinierten Situation in der verwendeten Programmiersprache.
-Wenn ein Verhalten durch den Programmcode falsch angenommen wird, die der Compiler ganz anders umsetzt.
-Wenn nur ein Rückgabewert genutzt wurde, ohne auf den Fehlerfall zu prüfen.
-Was nützt es, wenn zwei Kollegen sich Strategien für das Freigeben von Speicher in Notfallsituationen falsch verstanden haben?
+Aber was nützt die beste Idee, die ausgeklügelte Strategie gegenüber einer undefinierten Situation in der verwendeten Programmiersprache?
+Wenn nur ein einziges mal vergessen wurde, einen Rückgabewert auf den Fehlerfall zu prüfen?
+Was nützt es, wenn Kollegen Strategien für das Freigeben von Speicher in Notfallsituationen falsch verstanden haben?
 Das System handelt total unvorhersehbar.
 
 Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt; die fehlerhaften Strategien zur Compilezeit findet und die Compilation stoppt.
 Die trotz erzwungener Sicherheitsmaßnahmen, schnell und \todo{echtzeitnah? ref!} reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
 
-Rust könnte die Antwort sein.
+Könnte Rust die Antwort sein? \todo{zuuu viele Fragen}
 
-\todo{fix 404}
+
 
 \todo{Y RUST SO FANCY}
 
@@ -46,6 +46,7 @@ Rust könnte die Antwort sein.
 
 \todo{Wäre es nicht toll, in einer Welt zu leben, in der der menschliche Faktor als Fehlerquelle in fktl. sicherheitsrelevanter Software nahezu ausgeschlossen ist?}
 
+\clearpage % auch wenn julian sagt es ist behindert
 \section{Projektkontext}
 \begin{figure}[H]
 	\label{test 123}
@@ -60,12 +61,10 @@ Das \gls{mec}-View Projekt wird durch das \gls{bmwi} gefördert und befasst sich
 Es soll erforscht werden, ob und in wie weit eine durch externe Sensorik geleistete Unterstützung nötig und möglich ist, um in eine Vorfahrtstraße autonom einzufahren.
 
 Das Forschungsprojekt ist dabei ein Zusammenschluss mehrerer Unternehmen mit unterschiedlichen Themengebieten.
-Die IT-Designers Gruppe beschäftigt sich mit dem Kommunikationsserver, der auf der von Nokia zur Verfügung gestellten Infrastruktur im 5G Mobilfunk als \gls{mec} Server betrieben wird.
+Die IT-Designers Gruppe beschäftigt sich mit der Implementation des Kommunikationsservers, der auf der von Nokia zur Verfügung gestellten Infrastruktur im 5G Mobilfunk als \gls{mec} Server betrieben wird.
 Erkannte Fahrzeuge und andere Verkehrsteilnehmer werden von den Sensoren von Osram via Mobilfunk an den Kommunikationsserver übertragen.
-Der Kommunikationsserver stellt diese Informationen dem Fusionsalgorithmus der Universität Ulm zur Verfügung und leitet das daraus gewonnene Umfeldmodell an das hochautomatisierten Fahrzeug von Bosch oder der Universität Ulm weiter.
-Durch hochgenaue statische und dynamische Karten von TomTom und den Fahrstrategien von Daimler soll das Fahrzeug daraufhin autonom in die Kreuzung einfahren können.
-
-\todo{Dinge beachten, Fußgänger}
+Der Kommunikationsserver stellt diese Informationen dem Fusionsalgorithmus der Universität Ulm zur Verfügung und leitet das daraus gewonnene Umfeldmodell an die hochautomatisierten Fahrzeuge von Bosch und der Universität Ulm weiter.
+Durch hochgenaue, statische und dynamische Karten von TomTom und den Fahrstrategien von Daimler soll das Fahrzeug daraufhin autonom in die Kreuzung einfahren können.
 
 %\subsection{Ablauf}
 %Externe Sensoren übermitteln erkannte Fahrzeuge via Mobilfunk an einen \gls{mec}-Server, der direkt am Empfängerfunkmast angeschlossen ist. \todo{platform, vm?}
@@ -77,11 +76,11 @@ Durch hochgenaue statische und dynamische Karten von TomTom und den Fahrstrategi
 \section{Zielsetzung}
 
 Das Ziel ist es, eine alternative Implementierung des \gls{mec}-View Servers in Rust zu schaffen.
-Durch die Garantien (\autoref{rust:guarantees}) von Rust wird erhofft, dass der menschliche Faktor als Fehlerquelle gemindert wird und somit eine fehlertolerantere und sicherere Implementation geschaffen werden kann.
+Durch die Garantien (\autoref{rust:guarantees}) von Rust wird erhofft, dass der menschliche Faktor als Fehlerquelle gemindert und somit eine fehlertolerantere und sicherere Implementation geschaffen werden kann.
 
 Eine Ähnlichkeit in Struktur und Architektur zu der bestehender C++ Implementation ist explizit nicht vonnöten.
-Eventuelle \todo{Eigenheiten} von Rust sollen im vollen Umfang genutzt werden können, ohne durch auferzwungene und unpassende Architekturmuster benachteiligt zu werden.
-\todo{Es ist erwünscht eine kompetitive Implementation in Rust zu schaffen.}
+Eventuelle Spracheigenheiten und einzigartige Features von Rust sollen im vollen Umfang genutzt werden können, ohne durch Auferzwungene und unpassende Architekturmuster benachteiligt zu werden.
+Es ist erwünscht eine kompetitive Implementation in Rust zu schaffen.
 
 
 \section{Aufbau der Arbeit}
@@ -89,8 +88,8 @@ Eventuelle \todo{Eigenheiten} von Rust sollen im vollen Umfang genutzt werden k�
 Diese Arbeit ist im wesentlichen in die folgenden Themengebiete aufgeteilt: Grundlagen, Anforderungs- und Systemanalyse, Systementwurf und Implementation und Auswertung.
 
 Im Themengebiet Grundlagen sollen wesentliche Bestandteile dieser Arbeit erläutert und erklärt werden.
-Hierzu zählt zum einen die Programmiersprache Rust in ihrer Entstehungsgeschichte \todo{ref}, Garantien \todo{ref}  und Sprachfeatures \todo{ref}.
-Zum anderen die hochperformante, serverbasierte Kommunikationsplattform mit ihren Protokollen \todo{ref} und dem Systemkontext in dem diese betrieben wird.
+Hierzu zählt zum einen die Programmiersprache Rust in ihrer Entstehungsgeschichte (siehe \autoref{rust:history}), Garantien  und Sprachfeatures  (siehe \autoref{rust:guarantees}).
+Zum anderen die hochperformante, serverbasierte Kommunikationsplattform mit ihren Protokollen (ab \autoref{com_plattform}) und dem Systemkontext in dem diese betrieben wird.
 
 In der Anforderungs- und Systemanalyse wird der Kontext in dem das System betrieben werden soll genauer betrachtet. Umzusetzende funktionale und nicht-funktionale Anforderungen werden aufgestellt, sowie eine Übersicht von Systemen mit denen das System interagiert wird.
 

@@ -9,11 +9,12 @@ Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber 
 
 \todo{rust sehr sauber, nahezu nix undefined (ref), nix uninitalized access(ref), datentypen namen u/i..(ref), styleguide}
 
-\todo{wo anders? make more text, make better text}
-Bei Rust geht es in vielerlei Hinsicht darum, bekannte Fehlerquellen aus anderen Programmiersprachen zu unterbinden, aber gleichzeitig eine mindestens genau so gute Performance zu erreichen.
 
 Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert (\autoref{rust:guarantees}).
 Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
+
+Diese erlaubt Rust eine zur Laufzeit hohe Ausführgeschwindigkeit zu erreichen.
+Das Eigentümerprinzip (siehe \autoref{rust:ownership}) erlaubt eine sichere \todo{und vergleichsweise einfache} Nebenläufigkeit,
 
 Rust hat in den letzten Jahren viel an Beliebtheit gewonnen und scheint dem Anspruch eine sichere und performante Programmiersprache zu sein, gerecht zu werden:
 

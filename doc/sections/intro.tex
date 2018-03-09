@@ -2,12 +2,38 @@
 \chapter{Einleitung}
 
 \section{Motivation}
-Der Begriff \enquote{autonomes Fahren} hat spätestens seit den Tesla Autos einen allgemeinen Bekanntheitsgrad erreicht. Damit ein Auto selbstständig fährt, müssen erst viele Hürden gemeistert werden.
+Der Begriff \enquote{autonomes Fahren} hat spätestens seit den Tesla Autos einen allgemeinen Bekanntheitsgrad erreicht. Damit ein Auto selbstständig fahren kann, müssen erst viele Hürden gemeistert werden.
 Dazu gehört zum Beispiel das Spur halten -- auch bei fehlenden Fahrspurmarkierungen, das richtige Interpretieren von Verkehrsschildern und navigieren durch komplexe Kreuzungen. \todo{ref tesla.com?}
 
 Bevor ein autonomes Fahrzeug Entscheidungen treffen kann, benötigt es ein möglichst genaues Model seines Umfelds.
 Hierzu werden von verschiedene Sensoren wie Front-, Rück- und Seitenkameras, Abstandssensoren und \todo{arg1} Informationen gesammelt und ausgewertet. Aber vielleicht kann ein Auto nicht immer selbständig genügend Informationen zu seinem Umfeld sammeln? \todo{(huhuhu Server implied huhuhu)}
 %Diese Arbeit beschäftigt sich mit genau dem Thema, einem selbst fahrendem Auto Informationen zu anderen Teilnehmern an einer Kreuzung zu vermitteln.
+
+\todo{make se shit better}
+Externe Sensorik könnte Informationen liefern, die das Auto selbst nicht erfassen kann.
+Ein viel zu schneller Radfahrer hinter einer Hecke in einer unübersichtlicher Kreuzung?
+Eine Lücke zwischen Autos, die ausreichend groß ist, um einzufahren ohne zu bremsen, falls bis zur Kreuzung die richtige Geschwindigkeit gewählt wird?
+Die nächste Ampel wird bei Ankunft rot seit, weshalb jetzt ein schnelles und Umwelt belastendes Anfahren nicht nötig ist?
+Ideen gibt es zuhauf.
+
+Aber was ist, wenn das System aussetzt?
+Die Antwort hierzu ist einfach: das Auto muss immer noch selbstständig agieren können, externe Systeme sollen nur optionale Helfer sein.
+Viel schlimmer ist es dagegen, wenn das unterstützende System falsche Informationen liefert.
+Eine Lücke zwischen Autos, wo keine ist; eine freie Fahrbahn, wo ein Radfahrer fährt; ein angeblich entgegenkommendes Auto, eine unnötig Vollbremsung, ein Auffahrunfall.
+Ein solches System muss sicher sein -- nicht nur vor Hackern.
+Es muss \todo{funktional} sicher sein, Redundanzen und Notfallsysteme müssen jederzeit greifen.
+
+Aber was nützt die beste Idee, die ausgeklügelte Strategie gegenüber einer undefinierten Situation in der verwendeten Programmiersprache.
+Wenn ein Verhalten durch den Programmcode falsch angenommen wird, die der Compiler ganz anders umsetzt.
+Wenn nur ein Rückgabewert genutzt wurde, ohne auf den Fehlerfall zu prüfen.
+Was nützt es, wenn zwei Kollegen sich Strategien für das Freigeben von Speicher in Notfallsituationen falsch verstanden haben?
+Das System handelt total unvorhersehbar.
+
+Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt; die fehlerhaften Strategien zur Compilezeit findet und die Compilation stoppt.
+Die trotz erzwungener Sicherheitsmaßnahmen, schnell und \todo{echtzeitnah? ref!} reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
+
+Rust könnte die Antwort sein.
+
 \todo{fix 404}
 
 \todo{Y RUST SO FANCY}

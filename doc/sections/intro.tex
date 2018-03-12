@@ -1,6 +1,7 @@
 
 \chapter{Einleitung}
 
+% Without it being a section, it fits on one page
 \section{Motivation}
 Der Begriff \enquote{autonomes Fahren} hat spätestens seit den Tesla Autos einen allgemeinen Bekanntheitsgrad erreicht. Damit ein Auto selbstständig fahren kann, müssen erst viele Hürden gemeistert werden.
 Dazu gehört zum Beispiel das Spur halten, das richtige Interpretieren von Verkehrsschildern und das Navigieren durch komplexe Kreuzungen.
@@ -10,7 +11,6 @@ Hierzu werden von verschiedene Sensoren wie Front-, Rück- und Seitenkameras und
 Aber vielleicht kann ein Auto nicht immer selbständig genügend Informationen zu seinem Umfeld sammeln? \todo{(huhuhu Server implied huhuhu)}
 %Diese Arbeit beschäftigt sich mit genau dem Thema, einem selbst fahrendem Auto Informationen zu anderen Teilnehmern an einer Kreuzung zu vermitteln.
 
-\todo{make se shit better}
 Externe Sensorik könnte Informationen liefern, die das Auto selbst nicht erfassen kann.
 Ein viel zu schneller Radfahrer hinter einer Hecke in einer unübersichtlicher Kreuzung?
 Eine Lücke zwischen Autos, die ausreichend groß ist, um einzufahren ohne zu bremsen?
@@ -22,17 +22,18 @@ Die Antwort hierzu ist einfach: das Auto muss immer noch selbstständig agieren 
 Viel schlimmer ist es dagegen, wenn das unterstützende System falsche Informationen liefert.
 Eine Lücke zwischen Autos, wo keine ist; eine freie Fahrbahn, wo ein Radfahrer fährt; ein angeblich entgegenkommendes Auto, eine unnötig Vollbremsung, ein Auffahrunfall.
 Ein solches System muss sicher sein -- nicht nur vor Hackern.
-Es muss \todo{funktional} sicher sein, Redundanzen und Notfallsysteme müssen jederzeit greifen.
+Es muss funktional sicher sein, Redundanzen und Notfallsysteme müssen jederzeit greifen.
 
 Aber was nützt die beste Idee, die ausgeklügelte Strategie gegenüber einer undefinierten Situation in der verwendeten Programmiersprache?
 Wenn nur ein einziges mal vergessen wurde, einen Rückgabewert auf den Fehlerfall zu prüfen?
-Was nützt es, wenn Kollegen Strategien für das Freigeben von Speicher in Notfallsituationen falsch verstanden haben?
+Was nützt es, wenn Strategien für das Freigeben von Speicher in Notfallsituationen einen Sonderfall übersehen haben?
 Das System handelt total unvorhersehbar.
 
 Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt; die fehlerhaften Strategien zur Compilezeit findet und die Compilation stoppt.
-Die trotz erzwungener Sicherheitsmaßnahmen, schnell und \todo{echtzeitnah? ref!} reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
+Die trotz erzwungener Sicherheitsmaßnahmen, schnell und echtzeitnah reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
 
-Könnte Rust die Antwort sein? \todo{zuuu viele Fragen}
+Diese Arbeit soll zeigen, dass Rust genau so eine Programmiersprache ist und sich für sicherheitsrelevante, hoch parallelisierte und echtzeitnahe Anwendungsfälle bestens eignet.
+%Könnte Rust die Antwort sein? \todo{zuuu viele Fragen}
 
 
 

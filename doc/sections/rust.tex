@@ -254,7 +254,7 @@ Für diese Abschlussarbeit hat der Datentyp aber keine Relevanz und wird daher n
 \section{Funktionen, Ausdrücke und Statements}
 
 Funktionen werden durch \rustcinline{fn} gekennzeichnet, gefolgt mit dem Funktionsnamen, der Parameterliste und zuletzt der Datentyp für den Rückgabewert.
-Selbst wenn kein expliziter Rückgabetyp angegeben wird, wird formal \rustcinline{()} zurück gegeben, \rustcinline{()} entspricht etwa \ccinline{void} aus bekannten Programmiersprachen.
+Selbst wenn kein expliziter Rückgabetyp angegeben wird, wird formal \rustcinline{()} zurück gegeben; \rustcinline{()} entspricht etwa \ccinline{void} aus bekannten Programmiersprachen.
 Die Parameterliste unterscheidet sich von bekannten Programmiersprachen wie C und Java, indem zuerst der Variablenname und darauf folgend der Datentyp notiert wird.
 
 \rustcinclude
@@ -381,6 +381,8 @@ Wenn nur ein konkreter Fall von Bedeutung ist, kann dies in der verkürzten Schr
 	{rust:match:iflet}
 	{Vereinfachte \rustcinline{if let} Ausdruck}
 	{sections/rust.match.iflet.rs}
+	
+\todo{Dekonstruktion von Werten mittels Pattern Matching}
 
 Ein weiterer Unterschied von \autoref{rust:match:iflet} gegenüber \autoref{rust:match:large} ist in Zeile 3 das Schlüsselwort \rustcinline{ref}, wodurch der Konsum des Wertes verhindert wird.
 Das Schlüsselwort \rustcinline{mut} erlaubt zudem eine Änderung des Wertes, weswegen \rustcinline{value} in Zeile 4 vom Typ \rustcinline{&mut u32} ist.
@@ -465,6 +467,66 @@ Wichtige aber auch Bekannte Datentypen sind:
 \begin{itemize}
 	\item \textbf{std::vec::Vec}: Ein Vektor (wie eine Liste), bei dem die Werte in einem dynamisch groß allokierten Speicherbereich auf dem Heap liegen.
 	Ist \textbf{der} Ersatz für dynamische Arrays.
+	\todo{graph stack(pointer) + heap(vec+elements) + stack(slice)}
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}
+		
+			\node[text width=3cm, align=center] at (3,  6.25) {\textbf{Stack}};
+			\node[text width=3cm, align=center] at (10, 6.25) {\textbf{Heap}};
+			
+			\draw[black] (1, 0) -- (1, 6);
+			\draw[black] (5, 0) -- (5, 6);
+			
+			\filldraw[fill=green!20!white, draw=black] (1, 5.5) rectangle(5, 2.5);
+			\filldraw[fill=blue!20!white, draw=black] (1, 2.5) rectangle(5, 0.5);
+			
+			\draw[black, dotted] (1, 5.5) -- (5, 5.5);
+			\node[text width=3cm, align=center] at (3, 5) {pointer};
+			\draw[black, dotted] (1, 4.5) -- (5, 4.5);
+			\node[text width=3cm, align=center] at (3, 4) {capacity (5)};
+			\draw[black, dotted] (1, 3.5) -- (5, 3.5);
+			\node[text width=3cm, align=center] at (3, 3) {length (4)};
+			\draw[black, dotted] (1, 2.5) -- (5, 2.5);
+			\node[text width=3cm, align=center] at (3, 2) {pointer};
+			\draw[black, dotted] (1, 1.5) -- (5, 1.5);
+			\node[text width=3cm, align=center] at (3, 1) {length (2)};
+			\draw[black, dotted] (1, 0.5) -- (5, 0.5);
+			
+			
+			% Heap
+			\filldraw[fill=green!14!white, draw=black!0] (8, 5.5) rectangle(12, 1.5);
+			\filldraw[fill=green!7!white, draw=black!0] (8, 1.5) rectangle(12, 0.5);
+			\filldraw[fill=blue!14!white, draw=black!0] (8, 4.5) rectangle(8.5, 2.5);
+			\filldraw[fill=blue!14!white, draw=black!0] (11.5, 4.5) rectangle(12, 2.5);
+			
+			\draw[black] (8, 0) -- (8, 6);
+			\draw[black] (12, 0) -- (12, 6);
+			
+			
+			\draw[black, dotted] (8, 5.5) -- (12, 5.5);
+			\node[text width=3cm, align=center] at (10, 5) {vec[0]};
+			\draw[black, dotted] (8, 4.5) -- (12, 4.5);
+			\node[text width=3cm, align=center] at (10, 4) {vec[1]};
+			\draw[black, dotted] (8, 3.5) -- (12, 3.5);
+			\node[text width=3cm, align=center] at (10, 3) {vec[2]};
+			\draw[black, dotted] (8, 2.5) -- (12, 2.5);
+			\node[text width=3cm, align=center] at (10, 2) {vec[3]};
+			\draw[black, dotted] (8, 1.5) -- (12, 1.5);
+			\node[text width=3cm, align=center] at (10, 1) {vec[4]};
+			\draw[black, dotted] (8, 0.5) -- (12, 0.5);
+			
+			
+			
+			\draw[decoration={brace,mirror,raise=5pt},decorate] (1, 5.5) -- node[left=6pt] {Vec} (1, 2.55);
+			\draw[decoration={brace,mirror,raise=5pt},decorate] (1, 2.45) -- node[left=6pt] {Slice} (1, 0.5);
+			
+			\draw[->,black] (4.5, 5) -- (8, 5.5);
+			\draw[->,black] (4.5, 2) -- (8, 4.5);
+		
+		\end{tikzpicture}
+		\caption{Speicherlayout Vec und Slice \cite[63]{rust:orly_programming}}
+	\end{figure}
 	
 	\item \textbf{std::boxed::Box}: Ein Speicherbereich auf dem Heap für einen beliebigen Datentyp.
 	
@@ -661,6 +723,67 @@ Somit wird eine Überprüfung erzwungen, ohne dabei Laufzeitkosten erzeugt zu ha
 \todo{nothing special?}
 Ein weiteres Beispiel ist der atomare Referenzzähler  von \rustcinline{Arc<_>}. Der Zähler ist im Heap direkt vor dem beinhalteten Wert und nicht in einem extra Speicherbereich \todo{cite}.
 Ein weiteren indirekten Speicherzugriff mit Laufzeitkosten wird somit verhindert.
+
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+	
+	\node[text width=3cm, align=center] at (3,  4.25) {\textbf{Stack}};
+	\node[text width=3cm, align=center] at (10, 4.25) {\textbf{Heap}};
+	
+	\draw[black] (1, 0) -- (1, 4);
+	\draw[black] (5, 0) -- (5, 4);
+	
+	\filldraw[fill=red!20!white, draw=black] (1, 3.5) rectangle(5, 2.5);
+	%\filldraw[fill=blue!20!white, draw=black] (1, 2.5) rectangle(5, 0.5);
+	
+	%\draw[black, dotted] (1, 5.5) -- (5, 5.5);
+	%\node[text width=3cm, align=center] at (3, 5) {pointer};
+	%\draw[black, dotted] (1, 4.5) -- (5, 4.5);
+	%\node[text width=3cm, align=center] at (3, 4) {capacity (5)};
+	\draw[black, dotted] (1, 3.5) -- (5, 3.5);
+	\node[text width=3cm, align=center] at (3, 3) {pointer};
+	\draw[black, dotted] (1, 2.5) -- (5, 2.5);
+	%\node[text width=3cm, align=center] at (3, 2) {pointer};
+	\draw[black, dotted] (1, 1.5) -- (5, 1.5);
+	%\node[text width=3cm, align=center] at (3, 1) {length (2)};
+	\draw[black, dotted] (1, 0.5) -- (5, 0.5);
+	
+	
+	% Heap
+	%\filldraw[fill=green!14!white, draw=black!0] (8, 5.5) rectangle(12, 1.5);
+	\filldraw[fill=green!7!white, draw=black!0] (8, 2.5) rectangle(12, 0.5);
+	\filldraw[fill=red!14!white, draw=black!0] (8, 3.5) rectangle(12, 2.5);
+	%\filldraw[fill=red!14!white, draw=black!0] (11.5, 3.5) rectangle(12, 2.5);
+	
+	\draw[black] (8, 0) -- (8, 4);
+	\draw[black] (12, 0) -- (12, 4);
+	
+	
+	%\draw[black, dotted] (8, 5.5) -- (12, 5.5);
+	%\node[text width=3cm, align=center] at (10, 5) {vec[0]};
+	%\draw[black, dotted] (8, 4.5) -- (12, 4.5);
+	%\node[text width=3cm, align=center] at (10, 4) {vec[1]};
+	\draw[black, dotted] (8, 3.5) -- (12, 3.5);
+	\node[text width=3cm, align=center] at (10, 3) {counter};
+	\draw[black, dotted] (8, 2.5) -- (12, 2.5);
+	\node[text width=3cm, align=center] at (10, 2) {Actual Value};
+	\draw[black, dotted] (8, 1.5) -- (12, 1.5);
+	\node[text width=3cm, align=center] at (10, 1) {\ldots};
+	\draw[black, dotted] (8, 0.5) -- (12, 0.5);
+	
+	
+	
+	\draw[decoration={brace,mirror,raise=5pt},decorate] (1, 3.5) -- node[left=6pt] {Arc} (1, 2.5);
+	%\draw[decoration={brace,mirror,raise=5pt},decorate] (1, 2.45) -- node[left=6pt] {Slice} (1, 0.5);
+	
+	%\draw[->,black] (4.5, 5) -- (8, 5.5);
+	\draw[->,black] (4.5, 3) -- (8, 3.5);
+	
+	\end{tikzpicture}
+	\caption{Speicherlayout Arc \todo{cite}}
+\end{figure}
 
 
 

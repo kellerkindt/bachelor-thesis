@@ -301,39 +301,54 @@ Im Rust wird dieser Typ \enquote{Trait} (dt. Merkmal) genannt.
 Für Merkmale werden Funktionen in einem entsprechenden \rustcinline{trait <Name> \{ \}}-Block ohne Rumpf deklariert.
 Optional kann auch ein Standardrumpf implementiert werden, der bei einer Spezialisierung überschrieben werden darf.
 
+\todo{Implementieren via impl .. for ...}
+
+\todo{Default implementiereungen können durch speziellere impl überschrieben werden}
+
 Merkmale unterscheiden sich in ihrer Handhabung gegenüber anderen Datentypen, da sie im allgemeinen keine bekannte Größe zur Compilezeit haben.
-Während dies in Programmiersprachen wie Java und C\# automatisch durch \todo{vtables} umgesetzt wird (\todo{virtuelle methoden, vergleich c++, speicher, indirekt}), muss in Rust dies der Entwickler entscheiden.
+Während dies in Programmiersprachen wie Java und C\# automatisch durch die Darstellung abstrahiert und versteckt wird, hat ein Entwickler in Rust mehr Kontrolle über die Handhabung.
+
 \todo{dabei dabei dabei dabei dabei dabei} Dabei gibt es mehrere Vorgehensweisen:
 \begin{itemize}
-	\item Leihen mittels Referenz: \rustcinline{fn foo(bar: \&Bar)} oder \rustcinline{fn foo(bar: \&mut Bar)} -- ein Unterschied zu anderen Datentypen ist nicht zu erkennen.
-	\item Datentyp, der das geforderte Merkmal implementiert, auf den Heap verschieben und die \todo{Eigentümerschaft} über den Heapbereich übertragen (\todo{resultiert in einfacher Pointer-übergabe}): \rustcinline{fn foo(bar: Box<Bar>)} (auch \enquote{Trait-Object} genannt)
-	\item Als \todo{spezialisierte} Funktion: \rustcinline{fn foo<T: Bar>(bar: T)} (auch für Felder in Aufzählungen oder Datenstrukturen möglich)
+	\item Die einfachste Art erfolgt über das Leihen mittels Referenz: \rustcinline{fn foo(bar: \&Bar)} oder \rustcinline{fn foo(bar: \&mut Bar)} -- ein Unterschied zu anderen Datentypen ist nicht zu erkennen.
+	Hierbei werden Funktionen aber dynamisch über eine \enquote{vtable} aufgerufen, weswegen dies höhere Laufzeitkosten mit sich bringt.
+	In Zukunft soll dieser Syntax eventuell durch \rustcinline{fn foo(bar: \&dyn Bar)} und \rustcinline{fn foo(bar: \&mut dyn Bar)} ersetzt werden, um auf den dynamischen Aufruf besser hinzuweisen \cite{rust:github:dyn}.
+	
+	\item Alternativ kann das Objekt, das das geforderte Merkmal implementiert, auf den Heap verschoben und anschließend davon die Eigentümerschaft übertragen werden.
+	Dies ist möglich, da nach dem Verschieben auf den Heap die Größe der \rustcinline{Box} bekannt ist.
+	Eine \rustcinline{Box} ist letztendlich nur ein Pointer auf einen Speicherbereich auf dem Heap.
+	Ein Merkmal in einer \rustcinline{Box} wird \enquote{Trait-Object} genannt und eine Funktionsdeklaration könnte so aussehen: \rustcinline{fn foo(bar: Box<Bar>)}.
+	
+	\item Die performanteste Alternative ist eine spezialisierte Funktion.
+	Der Compiler dupliziert automatisch für jeden Datentyp die Funktion, setzt diesen ein und führt Optimierungen für den Datentyp durch (ähnlich einer Templateklasse in C++).
+	In der Notation wird ein lokaler Typ deklariert, der als Bedingung ein oder Mehrere Merkmale implementiert haben muss: \rustcinline{fn foo<T: Bar>(bar: T)}.
 \end{itemize}
 
 Eine Deklaration \rustcinline{fn foo(bar: Bar)} für das Merkmal \monospaceinline{Bar} ist nicht möglich, da zur Compilezeit eine eindeutige Größe nicht bekannt ist.
-Der zu reservierende Speicher für die Variable kann nicht bestimmt werden.
+Der zu reservierende Speicher für die Variable kann nicht bestimmt werden, weswegen eine Übergabe über den Stack nicht möglich ist.
 
-Eine spezialisierte Funktion verhält sich ähnlich wie eine \todo{Templateklasse} in C++.
-Der Compiler erzeugt für jede Spezialisierung eine Kopie der Funktion und setzt den entsprechenden Typ ein.
-Dies ermöglicht auch Optimierungen der Funktion für den eingesetzten Typ \todo{cite?}, vergrößert aber das Compilat.
 
 Im folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibliothek kurz erläutert:
 \begin{itemize}
-	\item \monospaceinline{Send}: Markiert einen Datentyp als zwischen Threads übertragbar. Automatisch für alle Datentypen bei denen auch alle beinhalteten Datentypen von Typ Send sind \todo{rly? cite?}. Manuelle Implementation ist \todo{unsafe}.
-	\rustcinline{!Sized} verhindert dagegen, dass ein Wert zu anderen Threads übertragen werden darf.
-	Somit können ansonsten textuelle Beschränkungen, wie für der OpenGL-Kontext, durch den Compiler überprüft und erzwungen werden. C\todo{Beispiel OpenGL?}
+	\item \monospaceinline{Send}: Markiert einen Datentyp als zwischen Threads übertragbar. Automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ Send sind \todo{rly? cite?}. Manuelle Implementation ist \todo{unsafe}.
+	\rustcinline{!Send} verhindert dagegen, dass ein Wert zu anderen Threads übertragen werden darf.
+	Somit können ansonsten textuelle Beschränkungen, wie zum Beispiel für der OpenGL-Kontext, durch den Compiler überprüft und erzwungen werden.
 	
-	\item \monospaceinline{Sync}: Markiert einen Datentype als Thread sicher, d.h. mehrere Threads dürfen gleichzeitig lesend darauf zugreifen, während \rustcinline{!Sync} dies verhindert. \todo{automatisch? manuell?} Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Sync} sind.
+	\item \monospaceinline{Sync}: Markiert einen Datentype als zwischen Threads synchronisierbar, d.h. mehrere Threads dürfen gleichzeitig lesend darauf zugreifen.
+	\rustcinline{!Sync} verbietet dies dagegen.
+	Automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ Sync sind \todo{rly? cite?}. Manuelle Implementation ist \todo{unsafe}.
 	
 	\item \monospaceinline{Sized}: Verlangt eine zu Compilezeit bekannte Größe. \monospaceinline{!Sized} erlaubt dagegen eine unbekannte Größe zur Compilezeit.
 	
-	\item \monospaceinline{Copy}: Markiert einen Datentyp, der durch einfaches Speicherkopieren \todo{memcpy} vervielfacht werden kann (\todo{bsp skalare datentypen}). Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Copy} sind.
+	\item \monospaceinline{Copy}: Markiert einen Datentyp, der durch einfaches Speicherkopieren (\enquote{memcpy}) vervielfacht werden kann. Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Copy} sind.
 	Alle einfachen Datentypen sind bereits \monospaceinline{Copy}.
 	
-	\item \monospaceinline{Clone}: Markiert einen Datentyp der vervielfacht werden kann, dabei jedoch Laufzeitkosten verursacht. Stelle eine Funktion zum clonen bereit, die explizit aufgerufen werden muss (zbsp Zähler inkrementieren). Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Clone} sind.
+	\item \monospaceinline{Clone}: Markiert einen Datentyp der vervielfacht werden kann, dies jedoch nicht durch kopieren des Speichers möglich ist -- zum Beispiel da der Referenzzähler von \rustcinline{Arc} oder \rustcinline{Rc} erhöht werden muss.
+	Stellt die Funktion \rustcinline{clone} bereit, die dafür explizit aufgerufen werden muss.
+	Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Clone} sind.
 	Alle einfachen Datentypen sind bereits \monospaceinline{Clone}.
 	
-	\item \monospaceinline{Debug} und \monospaceinline{Display}: Verlangt die Implementation von Funktionen um als Text dargestellt zu werden, entweder mit mehr Zusatzinformationen (\monospaceinline{Debug}) oder \todo{schön} (\monospaceinline{Display}). Verlangt, \todo{..}
+	\item \monospaceinline{Debug} und \monospaceinline{Display}: Verlangt die Implementation von Funktionen um als Text dargestellt zu werden. , entweder mit mehr Zusatzinformationen (\monospaceinline{Debug}) oder \todo{schön} (\monospaceinline{Display}). Verlangt, \todo{..}
 	
 	\item \monospaceinline{Deafult}: Verlangt die Implementation einer statische Methode \monospaceinline{default()}, die wie ein leerer Standardkonstruktor von Java oder C\# wirkt. Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Deafult} sind.
 	

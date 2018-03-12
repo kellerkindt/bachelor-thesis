@@ -2,21 +2,16 @@
 \chapter{Die Programmiersprache Rust}
 
 %Rust ist eine Programmiersprache, die versucht performante -- und daher durch Abstraktionen mit keinem zusätzlichen \enquote{Kosten} \todo{ref zero cost abstractions} -- und sichere Programmierung zu ermöglichen.
-Rust hat als Ziel, eine sichere (siehe \autoref{rust:guarantees}) und performante Systemprogrammiersprache zu sein, die ohne eine Laufzeit ausgeführt werden kann.
+Rust hat als Ziel, eine sichere (siehe \autoref{rust:guarantees}) und performante Systemprogrammiersprache zu sei.
 Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber keine unnötigen Performanceeinbußen verursachen (siehe \autoref{rust:zero_cost}).
-
-\todo{rust performance very wow, much parallel, great safety}
-
-\todo{rust sehr sauber, nahezu nix undefined (ref), nix uninitalized access(ref), datentypen namen u/i..(ref), styleguide}
-
 
 Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert (\autoref{rust:guarantees}).
 Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
 
 Diese erlaubt Rust eine zur Laufzeit hohe Ausführgeschwindigkeit zu erreichen.
-Das Eigentümerprinzip (siehe \autoref{rust:ownership}) erlaubt eine sichere \todo{und vergleichsweise einfache} Nebenläufigkeit,
+Das Eigentümerprinzip (siehe \autoref{rust:ownership}) und die Markierung durch von Datentypen durch Merkmale (siehe \autoref{rust:traits}) vereinfacht es, nebenläufige und sichere Programme zu schreiben.
 
-Rust hat in den letzten Jahren viel an Beliebtheit gewonnen und scheint dem Anspruch eine sichere und performante Programmiersprache zu sein, gerecht zu werden:
+Rust hat in den letzten Jahren viel an Beliebtheit gewonnen und scheint dem Anspruch, eine sichere und performante Programmiersprache zu sein, gerecht zu werden:
 
 \begin{quotation}
 	\textit{\enquote{[..]Leute, die [..] sichere Programmierung haben wollen, [..] können das bei Rust haben, ohne [..] undeterministischen Laufzeiten oder Abstraktionskosten schlucken zu müssen. }}
@@ -39,6 +34,16 @@ Rust hat in den letzten Jahren viel an Beliebtheit gewonnen und scheint dem Ansp
 \end{quotation}
 
 
+%Durch Merkmale (siehe \autoref{rust:traits}) kann die Zugriffsart auf Datentypen über verschiedene Threads hinweg festgelegt oder verhindert werden, wodurch falsche nebenläufige Programmierung zur Compilezeit erkannt und verhindert wird.
+%Dies begünstigt parallelisierte Architekturen und ermöglicht es, die vielen CPU-Kerne auf modernen Computern einfacher zu nutzen.
+%\todo{rust performance very wow, much parallel, great safety}
+
+%Programmierer müssen sich für Rust an ein striktes Regelwerk und einen \enquote{besorgten} Compiler (siehe \autoref{rust:worried_compiler}) gewöhnen, erhalten im Gegenzug aber eine Sprache, die ein undefiniertes Verhalten nur in absoluten Ausnahmefällen kennt (siehe \autoref{rust:undefined}).
+%Eine vom Compiler bemängelte Formatierung des Programmcodes und Benennung von Datentypen, Felder und Funktionen (siehe \autoref{rust:styleguide}) erlaubt ein einheitliches Auftreten des Programmcodes innerhalb der \todo{Community}.
+
+%\todo{rust sehr sauber, nahezu nix undefined (ref), nix uninitalized access(ref), datentypen namen u/i..(ref), styleguide}
+
+
 \clearpage
 \section{Geschichte}
 \label{rust:history}
@@ -49,15 +54,15 @@ Zudem beschrieb er C++ als \enquote{ziemlich fehlerträchtig} \cite{rust:heise_i
 
 Auch Federico Mena-Quintero -- Mitbegründer des GNOME-Projekts \cite{rust:gnome:federico}  --
 äußerte in einem Interview mit Golem im Juli 2017 seine Bedenken an der Verwendung der \enquote{feindseligen} Sprache C \cite{rust:c_is_hostile_golem}.
-In Vorträgen \todo{nix mehrzahl?} vermittelt er seither, wie Bibliotheken durch Implementationen in Rust ersetzt werden können \cite{rust:c_is_hostile_mena}.
+In Vorträgen vermittelt er seither, wie Bibliotheken durch Implementationen in Rust ersetzt werden können \cite{rust:c_is_hostile_mena}.
 
 Ab 2009 begann Mozilla die Weiterentwicklung finanziell zu fördern, als einfache Tests und die Kernprinzipien demonstriert werden konnten.
-Die Entwicklung der Programmiersprache, des Compilers, Buchs, von Cargo, crates.io und weitere Bestandteile findet öffentlich einsehbar auf \gls{github}  unter \url{https://github.com/rust-lang} statt und wird nicht ausschließlich von Mozilla Angestellten koordiniert.
+Die Entwicklung der Programmiersprache, des Compilers, des Buchs, von Cargo, von crates.io und von weiteren Bestandteilen findet öffentlich einsehbar auf \gls{github}  unter \url{https://github.com/rust-lang} statt und wird nicht ausschließlich von Mozilla Angestellten koordiniert.
 Dadurch kann sich jeder an Diskussionen oder Implementation beteiligen, seine Bedenken äußern oder Verbesserungen vorschlagen.
 
-Durch automatisierte Tests \todo{ref} in Kombination mit drei Veröffentlichungskanälen (\enquote{relese}, \enquote{stable} und \enquote{nightly}) und \todo{feature gates} wird die Stabilität des Compilers und die der Standardbibliothek (\autoref{rust:stdlib}) gewährleistet.
+Durch automatisierte Tests (siehe \autoref{rust:tests}) in Kombination mit drei Veröffentlichungskanälen (\enquote{relese}, \enquote{stable} und \enquote{nightly}) und \enquote{feature gates} (siehe \autoref{rust:feature_gates}) wird die Stabilität des Compilers und die der Standardbibliothek (\autoref{rust:stdlib}) gewährleistet.
 
-Rust ist wahlweise unter MIT oder der Apache Lizenz in Version 2 lizenziert.
+Rust ist wahlweise unter MIT oder der Apache Lizenz in Version 2 verfügbar \cite{rust:copyright}.
 
 \section{Anwendungsgebiet}
 
@@ -82,10 +87,15 @@ unterschieden \cite{rust:platform_support}.
 Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementation neuer Funktionen aus (Beispiel \enquote{128-bit Integer Support} \cite{rust:github:128bit_integer}).
 
 \subsection{Veröffentlichungszyklus}
+\label{rust:feature_gates}
 
 Es stehen Versionen in drei verschieden Veröffentlichungskanälen zur Verfügung:
 \begin{itemize}
-	\item \textbf{nightly}: Version die einmal am Tag mit dem aktuellen Stand des Quellcodes gebaut wird. Experimentelle und nicht fertige Features sind hier enthalten.
+	\item \textbf{nightly}:
+	Version die einmal am Tag mit dem aktuellen Stand des Quellcodes gebaut wird.
+	Experimentelle und nicht fertige Features sind hier zwar enthalten, aber hinter \enquote{feature gates} versteckt.
+	Diese können durch ein entsprechendes Attribute (siehe \autoref{rust:attributes}) geöffnet werden (\rustcinline{#[feature(const_fn)]} ermöglicht die Definition von Konstante Funktionen, Stand \today).
+	
 	\item \textbf{beta}: Alle sechs Wochen wird die aktuellste Nightly zur Beta befördert und es werden nur noch Fehler aus dieser Version getilgt.
 	Dieser Prozess könnte auch als Reifephase bezeichnet werden.
 	\item \textbf{stable}: Nach sechs Wochen wird die aktuellste Beta zur Stable befördert und veröffentlicht.
@@ -94,28 +104,29 @@ Es stehen Versionen in drei verschieden Veröffentlichungskanälen zur Verfügun
 
 \subsection{Ökosystem}
 
+Mit Rust wird nicht nur eine Programmiersprache, sondern auch ein umfassendes Ökosystem angeboten.
 
+Cargo ist vermutlich das größte angebotene Werkzeug.
+Es löst Abhängigkeiten auf, indem es auf das öffentliche Verzeichnis unter \url{https://crates.io} zurückgreift und diese entsprechend herunterlädt und compiliert.
+Zum jetzigen Zeitpunkt (\today) sind über 14.000 Crates öffentliche erreichbar und nutzbar.
+Zudem wird durch Crago eine \textit{Cargo.toml} verlangt, in der Metainformationen einer Crate hinterlegt sind.
+Dies Umfasst u.a. Name, Version, Autor, Lizenz und Abhängigkeiten.
 
-\todo{text is shit}
-Eine offizielles Verzeichnis mit über 14.000 Crates (Stand \today) ist unter \url{https://crates.io/} erreichbar.
-Cargo lädt standardmäßig Abhängigkeiten von dort nach.
-Jeder kann neue Bibliotheken veröffentlichen.
-Für den Namen gilt dabei \enquote{first come, first serve}.
+Eine Crate kan von jedem veröffentlicht werden, insofern derjenige ein \gls{github}-Konto besitzt, der Name der Crate noch nicht vergeben ist und der Programmcode compiliert.
+Die API-Dokumentation der jeweiligen Crate wird dabei automatisiert auf \url{https://docs.rs} veröffentlicht.
 
-\todo{crates.io -> docs.rs}
+Unter \url{https://www.rust-lang.org} ist die Website von Rust erreichbar und unter \url{https://doc.rust-lang.org} sowohl die API-Dokumentation der Standardbibliothek als auch as Hauseigene Rust Buch in Version 1 und 2.
+Die Entwicklung findet dagegen auf \gls{github} unter \url{https://github.com/rust-lang} statt.
 
-\todo{rust-lang.org -> doc.rust-lang.org}
+Kleine Testprogramme und Experimente können auf dem \enquote{Spielplatz} unter \url{https://play.rust-lang.org} compiliert und ausgeführt werden, ohne lokal etwas zu installieren.
 
-\todo{https://github.com/rust-lang}
-
-\todo{https://play.rust-lang.org/}
 
 \section{Aufbau eines Projektverzeichnisses}
 
 Der Aufbau eines Rust Projektverzeichnis kann zwischen zwei verschiedenen Arten differenziert werden.
 Zum einen gibt es den klassische Aufbau, in dem lediglich der Programmcode liegt und der Compiler direkt aufgerufen und parametrisiert wird.
-Zum anderen wird der Aufbau als Crate empfohlen \todo{cite}, bei dem automatisch Abhängigkeiten aufgelöst aber auch Metainformationen bezüglich des Autors, der Version und Abhängigkeiten hinterlegt sind.
-Ein klassischer Aufbau ist nur selten anzutreffen.
+Zum anderen wird der Aufbau als Crate (siehe \autoref{rust:structure:crate}) empfohlen, da dadurch Abhängigkeiten automatisch aufgelöst werden können aber auch Metainformationen bezüglich des Autors, der Version und der Abhängigkeiten hinterlegt werden müssen.
+Ein klassischer Aufbau ist dagegen nur selten anzutreffen.
 
 
 \subsection{Klassisch}
@@ -128,11 +139,12 @@ Ein klassischer Aufbau ist nur selten anzutreffen.
 \end{wrapfigure}
 
 Das Quelldatei-Verzeichnis sollte entweder eine \textit{main.rs} für Ausführbare Programme oder eine \textit{lib.rs} für Bibliotheken enthalten.
-Während der Paketmanager Cargo (\autoref{rust:structure:cargo}) eine solche Benennung als Standardkonvention erwartet, kann bei manueller Nutzung des Compilers auch ein anderer Name für die Quelldatei vergeben werden.
+Während der Paketmanager Cargo eine solche Benennung als Standardkonvention erwartet, kann bei manueller Nutzung des Compilers auch ein anderer Name für die Quelldatei vergeben werden.
 
 Der Compiler startet in der Wurzeldatei und lädt weitere Module, die durch \rustcinline{mod module;} gekennzeichnet sind (ähnlich \ccinline{# include "module.h"} in C/C++).
 Ein Modul kann dabei eine weitere Quelldatei oder ein ganzes Verzeichnis sein.
 Ein Verzeichnis wird aber nur als gültiges Modul interpretiert, wenn sich eine \textit{mod.rs} Datei darin befindet.
+Um Datentypen und Funktionen aus einem Modul nutzen zu können, ohne dessen kompletten Pfad jedes mal auszuschreiben, müssen sie durch zum Beispiel \rustcinline{use module::functionality::Data;} in dem aktuellen Namensraum bekannt gemacht werden.
 
 Wie bereits angedeutet, wird in Rust nicht eine \enquote{Klasse}, Datenstruktur oder Aufzählung pro Datei erwartet, sondern eine Quelldatei entspricht einem Modul.
 Diese Umfasst in vielen fällen wenige aber mehrere Datenstrukturen, zugehörige Aufzählung und Fehlertypen.
@@ -140,7 +152,7 @@ Diese Umfasst in vielen fällen wenige aber mehrere Datenstrukturen, zugehörige
 %Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 
 \subsection{Als Crate}
-\label{rust:structure:cargo}
+\label{rust:structure:crate}
 
 \begin{wrapfigure}{r}{.4\textwidth}
 	\rustcincludeml
@@ -151,22 +163,12 @@ Diese Umfasst in vielen fällen wenige aber mehrere Datenstrukturen, zugehörige
 
 
 
-Eine \enquote{Crate} (dt. Kiste/Kasten\todo{.}) erweitert den klassischen Aufbau um eine \textit{Cargo.toml} Datei, in der Metainformationen zum Projekt hinterlegt werden.
+Eine \enquote{Crate} (dt. Kiste/Kasten) erweitert den klassischen Aufbau um eine \textit{Cargo.toml} Datei, in der Metainformationen zum Projekt hinterlegt werden.
 Durch die Benutzung des Werkzeugs \enquote{Cargo} (dt. Fracht/Ladung) können Abhängigkeiten automatisch aufgelöst, heruntergeladen und compiliert werden.
 
 Eine Crate kann entweder ein ausführbares Programm oder eine Bibliothek sein.
 Davon abhängig is die Wurzeldatei \textit{src/main.rs} (für ein ausführbares Programm) oder \textit{src/lib.rs} (für eine Bibliothek).
-Mit dem erzeuge einer Crate (\rustcinline{cargo --bin meinProg} bzw. \rustcinline{cargo --lib meineBib}) wird auch gleichzeitig \gls{git} für das Verzeichnis initialisiert.
-
-Es wird allgemein empfohlen, ein Projekt als Crate zu betreiben \todo{cite}.
-
-\todo{Cargo.toml example?}
-
-\todo{versions schema}
-
-\todo{pfade}
-
-\todo{extern crate ...}
+Mit dem erzeuge einer Crate (\rustcinline{cargo new --bin meinProg} bzw. \rustcinline{cargo new --lib meineBib}) wird auch gleichzeitig \gls{git} für das Verzeichnis initialisiert.
 
 \section{Hello World}
 
@@ -181,15 +183,16 @@ Es wird allgemein empfohlen, ein Projekt als Crate zu betreiben \todo{cite}.
 Der Programmcode in \autoref{rust:hello_world} gibt auf der Konsole \monospaceinline{Hello World} aus.
 Das \rustcinline{fn} die Funktion \rustcinline{main} definiert und diese der Startpunkt des Programms ist, wird vermutlich wenig überraschend sein.
 Viel überraschender ist vermutlich eher das Ausrufezeichen in Zeile 2, da es auf den ersten Blick dort nicht hingehören sollte.
-In Rust haben Ausrufezeichen und Fragezeichen besondere Bedeutungen, weswegen die Verwendung in Zeile 2 trotzdem ist.
+In Rust haben Ausrufezeichen und Fragezeichen besondere Bedeutungen, weswegen die Verwendung in Zeile 2 trotzdem richtig ist.
 
-Die Bedeutung des Fragezeichens dient zum schnelleren Auswerten von \rustcinline{Rusult<_, _>}-Werten und wird in \todo{ref} genauer erklärt.
+Die Bedeutung des Fragezeichens dient zum schnelleren Auswerten von \rustcinline{Rusult<_, _>}-Werten und wird in \autoref{rust:result} genauer erklärt.
 Das Ausrufezeichen kennzeichnet, dass der ansonsten augenscheinliche Funktionsaufruf tatsächlich ein Aufruf einer Makrofunktion ist.
 
-Eine Funktion \rustcinline{println} gibt es nicht, auch keine aus C erwarteten Funktionen wie \ccinline{printf}, \ccinline{fputs}, \ccinline{sprintf}.
-Eine Ausgabe erfolgt durch das \rustcinline{println!} Makro, welches die Makros \rustcinline{format!} \todo{ref} und \rustcinline{writeln!} Kombiniert und das \rustcinline{Write}-Traits \todo{ref}, welches von der Standardausgabe implementiert wird, nutzt \todo{verify, cite?}.
+Eine Funktion \rustcinline{println} gibt es nicht, auch keine aus C erwarteten Funktionen wie \ccinline{printf}, \ccinline{fputs} oder \ccinline{sprintf}.
+Eine Ausgabe erfolgt durch das \rustcinline{println!} Makro, welches eine String durch Nutzung des \rustcinline{format!} Makros formatiert und erstellt.
+Daraufhin wird das \rustcinline{writeln!} Makro verwendet, um die formatierte Zeichenkette auf die Standardausgabe zu schreiben.
 
-\todo{hmmmm}
+\todo{nopeZ?}
 Ein kleines Beispiel, viele versteckte Mechaniken zur Laufzeitoptimierung aber trotzdem handlich und leserlich -- Rust.
 
 \section{Einfache Datentypen}
@@ -288,6 +291,8 @@ Der \rustcinline{Vec<_>} der Standardbibliothek (siehe \autoref{rust:stdlib}) bi
 Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe \autoref{rust:access_modifier}). 
 
 \section{Generalisierung durch Traits}
+\label{rust:traits}
+\label{rust:generics}
 \label{rust:trait:default}
 
 Ähnlich wie Java oder C\# bietet Rust durch einen eigenen Typ die Möglichkeit, ein gewünschtes Erscheinungsbild zu generalisieren, ohne gleichzeitig eine Implementation vorzugeben.
@@ -394,6 +399,14 @@ Weitere Möglichkeiten, Muster zu erkennen sind ab Seite 221 in \cite{rust:orly_
 Dazu gehören unter anderem die \enquote{guard expression}, \enquote{bindings} und \enquote{ranges}.
 Aufgrund des Umfangs wird hier auf eine weitere Vertiefung verzichtet.
 
+\section{Attribute}
+\label{rust:attributes}
+\todo{Unterscheidung Methode, Datentyp oder main.rs/lib.rs}
+
+\section{Automatisierte Tests}
+\label{rust:tests}
+\todo{arg1}
+
 \section{Namens- und Formatierkonvention / Styleguide}
 
 \rustcinclude
@@ -447,6 +460,7 @@ Durch den \todo{Fragenzeichenoperator} kann trotzdem ein ähnliches Verhalten wi
 \todo{ref if let Ok(\_)} 
 
 \section{Besorgter Compiler}
+\label{rust:worried_compiler}
 \todo{many warnings}
 
 
@@ -457,7 +471,7 @@ Die Rust Community ist darum bemüht, die Standardbibliothek sehr leichtgewichti
 Nicht eindeutig als fundamental eingestufte Funktionalität wird lieber als Crate auf \url{https://crates.io} angeboten, anstatt in die Standardbibliothek übernommen zu werden \todo{prove via cite}. 
 Mit dieser Entscheidung soll auch eine Entwicklung unabhängig von den Releasezyklen von Rust ermöglicht werden \todo{cite}.
 
-Die Standardbibliothek wird selbst als eine Crate (siehe \autoref{rust:structure:cargo}) zur Verfügung gestellt, auf die standardmäßige eine Abhängigkeit besteht.
+Die Standardbibliothek wird selbst als eine Crate (siehe \autoref{rust:structure:crate}) zur Verfügung gestellt, auf die standardmäßige eine Abhängigkeit besteht.
 Für die Verwendung von Rust im Embedded-Bereich, kann diese Abhängigkeit, die für Microcontroller sehr umfangreich ist, durch \rustcinline{#![no_std]} unterbunden werden.
 Daraufhin sind nur noch die in der \rustcinline{core} Crate zur Verfügung gestellten, fundamentalen Sprachkonstrukte verwendbar.
 
@@ -697,6 +711,8 @@ Eine Fehlerprüfung kann wie in Zeile 5 mit einem \rustcinline{match} passieren,
 Durch die Lebenszeitanalyse \todo{ref} in Rust ist der Geltungsbereich der \rustcinline{File} Variable bekannt, deshalb wird in dem Beispiel in Rust in \autoref{rust:result:rust_good_fopen} die Datei auch wieder ordnungsgemäß geschlossen, während dies im C Beispiel in \autoref{rust:result:c_bad_fopen} nicht der Fall ist.
 
 \todo{explain result}
+
+\todo{explain shorthand '?'}
 
 \subsection{No dangling pointer}
 \todo{src https://www.youtube.com/watch?v=d1uraoHM8Gg}

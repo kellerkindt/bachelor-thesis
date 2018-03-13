@@ -298,17 +298,19 @@ Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe 
 Ähnlich wie Java oder C\# bietet Rust durch einen eigenen Typ die Möglichkeit, ein gewünschtes Erscheinungsbild zu generalisieren, ohne gleichzeitig eine Implementation vorzugeben.
 Im Rust wird dieser Typ \enquote{Trait} (dt. Merkmal) genannt.
 
-Für Merkmale werden Funktionen in einem entsprechenden \rustcinline{trait <Name> \{ \}}-Block ohne Rumpf deklariert.
+Für Merkmale werden Funktionen in einem entsprechenden \rustcinline{trait <Name> \{ \}} Block ohne Rumpf deklariert.
 Optional kann auch ein Standardrumpf implementiert werden, der bei einer Spezialisierung überschrieben werden darf.
+Auch auf ein Merkmal kann ein Zugriffsmodifikatoren gesetzt werden (siehe \autoref{rust:access_modifier}).
 
-\todo{Implementieren via impl .. for ...}
+Die Implementation eines Merkmals wird für jeden Datentyp in einem separaten Block vorgenommen und entspricht der Notation \rustcinline{impl Merkmal for Datentyp \{ fn ... \} }.
+Alternativ können Implementationen auch für ganze Gruppen von anderen Merkmalen vorgenommen werden: \rustcinline{impl Merkmal for T where T: Clone \{ ... \} } (entspricht: \enquote{implementiere \rustcinline{Merkmal} für alle, die \rustcinline{Clone}-bar sind}).
 
-\todo{Default implementiereungen können durch speziellere impl überschrieben werden}
+In Zukunft -- oder jetzt in \enquote{nightly} und hinter dem \enquote{feature gate} \rustcinline{specialization} -- wird es möglich sein, ein Standardverhalten für Gruppen zu implementieren und dieses später, für einen spezialisierten Fall, zu überschreiben \cite{rust:github:specialization}.
 
 Merkmale unterscheiden sich in ihrer Handhabung gegenüber anderen Datentypen, da sie im allgemeinen keine bekannte Größe zur Compilezeit haben.
 Während dies in Programmiersprachen wie Java und C\# automatisch durch die Darstellung abstrahiert und versteckt wird, hat ein Entwickler in Rust mehr Kontrolle über die Handhabung.
 
-\todo{dabei dabei dabei dabei dabei dabei} Dabei gibt es mehrere Vorgehensweisen:
+Dabei gibt es mehrere Vorgehensweisen:
 \begin{itemize}
 	\item Die einfachste Art erfolgt über das Leihen mittels Referenz: \rustcinline{fn foo(bar: \&Bar)} oder \rustcinline{fn foo(bar: \&mut Bar)} -- ein Unterschied zu anderen Datentypen ist nicht zu erkennen.
 	Hierbei werden Funktionen aber dynamisch über eine \enquote{vtable} aufgerufen, weswegen dies höhere Laufzeitkosten mit sich bringt.
@@ -437,25 +439,9 @@ Aufgrund des Umfangs wird hier auf eine weitere Vertiefung verzichtet.
 \end{small}
 \cite{rust:styleguide}
 
-\section{Formatierung}
-\rustcinline{format!} all se things
-
-\todo{formatierung}
-
-\todo{let, optionaler datentyp, macros, generics, () statt void}
-
 \todo{official format/naming convetion, use, function, macro}
 
-\todo{Variables, Structs, Enums, Traits}
-
 \todo{type safety langauge}
-
-\todo{Rust -> MIR -> assembler} \\
-
-\todo{MIR/assemblerbeispiele?} \\
-\cite{rust:orly_programming}
-
-\todo{pattern matching}
 
 \section{Niemals nichts und niemals unbehandelte Ausnahmen}
 \label{rust:no_null}
@@ -463,7 +449,7 @@ Aufgrund des Umfangs wird hier auf eine weitere Vertiefung verzichtet.
 
 \todo{core, datatypes, arrays slices, no null  \enquote{billion dollar mistake} }
 
-Rust kennt \ccinline{null}(-Pointer) nicht, bietet aber in \rustcinline{core} (\autoref{rust:core}) \rustcinline{Option<_>} als Ersatz an.
+Rust kennt \ccinline{null}(-Pointer) nicht und erlaubt auch keine nicht initialisierte Variablen (siehe \autoref{rust:undefined}), bietet aber einen \rustcinline{Option<_>}-Datentyp als Ersatz an.
 Dieser Datentyp erzwingt eine Prüfung vor dem Zugriff auf den optionalen Wert.
 
 \todo{IMMER INITIALISIERT, sonst kein zugriff erlaubt}
@@ -688,9 +674,11 @@ Der Compiler stoppt mit einem Fehler: \enquote{\textbf{\textcolor{red}{error[E03
 Wie in \autoref{rust:no_null} beschrieben, kennt Rust keinen \ccinline{NULL}-Pointer.
 Daher ist es auch nicht möglich, durch Nachlässigkeit auf den falschen Speicher zuzugreifen, da eine Referenz immer gültig ist.
 Für fälle, in denen es eventuell keinen Wert gibt, bietet Rust stattdessen den \rustcinline{Option<_>} Datentyp an.
-\rustcinline{Option<_>} ist eine Aufzählung, die entweder \rustcinline{None} ist, oder \rustcinline{Some(_)} mit einem Wert.
+\rustcinline{Option<_>} ist eine Aufzählung, die entweder \rustcinline{None} ohne einen Wert, oder \rustcinline{Some(_)} mit einem Wert ist.
 Auf den Wert kann nicht zugegriffen werden, ohne zu prüfen, ob wirklich ein \rustcinline{Some(_)} vorliegt.
 Dies kann durch \rustcinline{match} oder verkürzt durch ein \rustcinline{if let Some(wert) = optional \{ /* tu etwas mit wert */ \}} geschehen (siehe \autoref{rust:match}).
+
+In vielen fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als \ccinline{NULL}-Pointer dargestellt werden, weswegen durch die Abstraktion keinen weiteren Laufzeitkosten eingeführt werden \cite[100]{rust:orly_programming} (siehe \autoref{rust:zero_cost}).
 
 
 
@@ -741,19 +729,20 @@ Durch die Lebenszeitanalyse \todo{ref} in Rust ist der Geltungsbereich der \rust
 \todo{Datarace benötigt immer einen schreibenden + min einen lesenden gleichzeitig}
 
 
-\subsection{Slice out of index}
+\todo{Mutex, RwLock -- immer mit Result}
+
 
 \subsection{Zero Cost Abstraction}
 \label{rust:zero_cost}
 
 Trotz der vielen verwendeten Abstraktionen möchte Rust dadurch möglichst keine weitere Laufzeitkosten erzeugen.
+Beim übersetzen werden deshalb viele Abstraktionen durch Optimierungen für den Maschinencode unsichtbar.
 
-Der \rustcinline{Option<_>} Datentyp kann zum Beispiel tatsächlich als Pointer dargestellt werden, der bei \ccinline{NULL} \rustcinline{None} ist und ansonsten \rustcinline{Some(_)} \cite[100]{rust:orly_programming}.
+Der \rustcinline{Option<_>} Datentyp kann zum Beispiel in vielen Fällen als Pointer dargestellt werden, der bei \ccinline{NULL} \rustcinline{None} und ansonsten \rustcinline{Some(_)} ist \cite[100]{rust:orly_programming}.
 Somit wird eine Überprüfung erzwungen, ohne dabei Laufzeitkosten erzeugt zu haben.
 
-\todo{nothing special?}
-Ein weiteres Beispiel ist der atomare Referenzzähler  von \rustcinline{Arc<_>}. Der Zähler ist im Heap direkt vor dem beinhalteten Wert und nicht in einem extra Speicherbereich \todo{cite}.
-Ein weiteren indirekten Speicherzugriff mit Laufzeitkosten wird somit verhindert.
+Ein weiteres Beispiel sind die Referenzzählertypen \rustcinline{Rc} und \rustcinline{Arc<_>}.
+Der Zähler ist im Heap direkt vor dem beinhalteten Wert und nicht in einem extra Speicherbereich, weshalb ein weiterer, indirekter Speicherzugriff mit Laufzeitkosten verhindert werden kann.
 
 
 \begin{figure}[H]
@@ -767,6 +756,7 @@ Ein weiteren indirekten Speicherzugriff mit Laufzeitkosten wird somit verhindert
 	\draw[black] (5, 0) -- (5, 4);
 	
 	\filldraw[fill=red!20!white, draw=black] (1, 3.5) rectangle(5, 2.5);
+	\filldraw[fill=red!20!white, draw=black] (1, 1.5) rectangle(5, 0.5);
 	%\filldraw[fill=blue!20!white, draw=black] (1, 2.5) rectangle(5, 0.5);
 	
 	%\draw[black, dotted] (1, 5.5) -- (5, 5.5);
@@ -776,9 +766,9 @@ Ein weiteren indirekten Speicherzugriff mit Laufzeitkosten wird somit verhindert
 	\draw[black, dotted] (1, 3.5) -- (5, 3.5);
 	\node[text width=3cm, align=center] at (3, 3) {pointer};
 	\draw[black, dotted] (1, 2.5) -- (5, 2.5);
-	%\node[text width=3cm, align=center] at (3, 2) {pointer};
+	\node[text width=3cm, align=center] at (3, 2) {some variable};
 	\draw[black, dotted] (1, 1.5) -- (5, 1.5);
-	%\node[text width=3cm, align=center] at (3, 1) {length (2)};
+	\node[text width=3cm, align=center] at (3, 1) {pointer};
 	\draw[black, dotted] (1, 0.5) -- (5, 0.5);
 	
 	
@@ -799,21 +789,23 @@ Ein weiteren indirekten Speicherzugriff mit Laufzeitkosten wird somit verhindert
 	\draw[black, dotted] (8, 3.5) -- (12, 3.5);
 	\node[text width=3cm, align=center] at (10, 3) {counter};
 	\draw[black, dotted] (8, 2.5) -- (12, 2.5);
-	\node[text width=3cm, align=center] at (10, 2) {Actual Value};
+	\node[text width=3cm, align=center] at (10, 2) {actual};
 	\draw[black, dotted] (8, 1.5) -- (12, 1.5);
-	\node[text width=3cm, align=center] at (10, 1) {\ldots};
+	\node[text width=3cm, align=center] at (10, 1) {value};
 	\draw[black, dotted] (8, 0.5) -- (12, 0.5);
 	
 	
 	
-	\draw[decoration={brace,mirror,raise=5pt},decorate] (1, 3.5) -- node[left=6pt] {Arc} (1, 2.5);
+	\draw[decoration={brace,mirror,raise=5pt},decorate] (1, 3.5) -- node[left=6pt] {Rc} (1, 2.5);
+	\draw[decoration={brace,mirror,raise=5pt},decorate] (1, 1.5) -- node[left=6pt] {Rc} (1, 0.5);
 	%\draw[decoration={brace,mirror,raise=5pt},decorate] (1, 2.45) -- node[left=6pt] {Slice} (1, 0.5);
 	
 	%\draw[->,black] (4.5, 5) -- (8, 5.5);
 	\draw[->,black] (4.5, 3) -- (8, 3.5);
+	\draw[->,black] (4.5, 1) -- (8, 3.5);
 	
 	\end{tikzpicture}
-	\caption{Speicherlayout Arc \todo{cite}}
+	\caption{Speicherlayout Rc \cite[90-91]{rust:orly_programming}}
 \end{figure}
 
 
@@ -825,7 +817,7 @@ Ein weiteren indirekten Speicherzugriff mit Laufzeitkosten wird somit verhindert
 \label{rust:ffi:datatypes}
 
 Rust bietet durch das \gls{ffi} die Möglichkeit, andere (System-)Bibliotheken einzubinden.
-Entsprechende Strukturen und Funktionen werden durch einen \rustcinline{extern}-Block
+Entsprechende Strukturen und Funktionen werden durch einen \rustcinline{extern} Block
 oder im Falle von Strukturen stattdessen optional mit einem \rustcinline{#[repr(C)]} gekennzeichnet.
 
 In einem Beispiel, soll die Nutzung von \gls{ffi} demonstriert werden.
@@ -833,37 +825,41 @@ In einem Beispiel, soll die Nutzung von \gls{ffi} demonstriert werden.
 \begin{figure}[H]
 	\ccinclude
 		{rust:ffi:position_offset_c}
-		{Ausschnitt von \enquote{PositionOffset} \todo{ref mecview lib} in C, autgen ASN}
+		{Ausschnitt von \enquote{PositionOffset} (C-Code) aus der \textit{libmessages-sys} Crate}
 		{sections/rust.position_offset.c}
 	
 \end{figure}
 
 Die Struktur in \autoref{rust:ffi:position_offset_c} muss zur Nutzung in Rust zuerst bekannt gemacht werden.
 Dabei gibt es mehrere Möglichkeiten:
-\begin{enumerate}
-	\item Falls der Aufbau der Struktur nicht von Bedeutung ist, kann es ausreichen, den Datentyp lediglich bekannt zu machen: \rustcinline{#[repr(C)] struct PositionOffset;} \label{rust:ffi:example:enumerate:repr}
+\begin{itemize}
+	\item Falls der Aufbau der Struktur nicht von Bedeutung ist, kann es ausreichen, den Datentyp lediglich bekannt zu machen: \rustcinline{#[repr(C)] struct PositionOffset;}.
+	In diesem Fall können aber nur Referenzen und Raw-Pointer auf die Struktur verwendet werden.
+	\label{rust:ffi:example:enumerate:repr}
 	
-	\item Der Aufbau ist wie bei \autoref{rust:ffi:example:enumerate:repr} unbedeutend, es soll aber ausdrücklich auf einen externen Datentyp hingewiesen werden: \rustcinline{extern \{ type PositionOffset; \}} \cite{rust:github:extern_type} (\todo{nightly})
+	\item Falls der Aufbau wie in \autoref{rust:ffi:example:enumerate:repr} unbedeutend ist, es soll aber ausdrücklich auf einen externen Datentyp hingewiesen werden, kann dieser in einem \rustcinline{extern \{ \} } Block bekannt gemacht werden: \rustcinline{extern \{ type PositionOffset; \}} \cite{rust:github:extern_type}.
+	Dies ist zum jetzigen Zeitpunkt aber nur in \enquote{nightly} und hinter dem \enquote{feature gate} \monospaceinline{extern_types} möglich.
 	
-	\item Der Inhalt der Struktur ist von Bedeutung, da darauf zugegriffen werden soll oder in Rust eine Instanz erzeugbar sein soll. In diesem Fall muss die Struktur komplett wiedergegeben werden:
+	\item Der Inhalt der Struktur ist von Bedeutung, da darauf zugegriffen oder in Rust eine Instanz werden soll. In diesem Fall ist eine komplette Wiedergabe die Struktur unumgänglich:
 	\begin{figure}[H]
 		\rustcinclude
 			{rust:ffi:position_offset_rust}
-			{Ausschnitt von \enquote{PositionOffset} \todo{ref mecview lib} in Rust}
+			{Ausschnitt von \enquote{PositionOffset} (Rust-Code) aus der \textit{libmessages-sys} Crate}
 			{sections/rust.position_offset.rs}
 	\end{figure}
 	
-	In \autoref{rust:ffi:position_offset_rust} ist die Struktur \enquote{PositionOffset} definiert,
-	die durch das Attribut \rustcinline{#repr(C)} wie eine C-Struktur im Speicher organisiert wird.
-	Somit ist sie kompatibel zu der C-Struktur aus \autoref{rust:ffi:position_offset_c}.
-	
-	Wenn auf eine C-Struktur zugegriffen wird, sollten auch, wie in \autoref{rust:ffi:position_offset_rust} zu sehen, spezielle Datentypen (\rustcinline{c_long}, \rustcinline{c_void}, \rustcinline{c_char}, ...) verwendet werden, um die Kompatibilität mit verschiedenen Systemen und C-Compilern zu wahren. \todo{u32 immer 32bit, aber int nicht immer gleich (Beispiel!?) --> Probleme}
+	In \autoref{rust:ffi:position_offset_rust} ist die Struktur \enquote{PositionOffset} deklariert,
+	die durch das Attribut \rustcinline{#[repr(C)]} wie eine C-Struktur im Speicher organisiert wird.
+	Damit die Struktur in Rust kompatibel zu der in C ist, müssen die Variablen von der selben Größe sein, ansonsten würde das Speicherlayout nicht übereinstimmen.
+	Hierfür werden spezielle Datentypen (\rustcinline{c_long}, \rustcinline{c_void}, \rustcinline{c_char}, ...) angeboten, um die Kompatibilität mit verschiedenen Systemen und C-Compilern zu wahren.
+	% (siehe \autoref{rust:types:simple}).
 	
 %	\rustcinline{*mut c_long} entspricht dabei dem C-Pointer für \rustcinline{&mut c_long}, also \ccinline{long*}, ein C-Pointer für \rustcinline{&c_long} entspricht \rustcinline{*const c_long}.
 	
 %	C-Pointer werden in Rust \enquote{Raw-Pointer} genannt und \rustcinline{*mut c_long} für  \rustcinline{&mut c_long} bzw. \rustcinline{*const c_long} für \rustcinline{&c_long} geschrieben.
 	
-	Ein C-Pointer \ccinline{*long} wird in Rust \enquote{Raw-Pointer} genannt und entweder \rustcinline{*mut c_long} oder \rustcinline{*const c_long} geschrieben. Der Unterschied ist wie zwischen \rustcinline{&mut c_long} und \rustcinline{&c_long} und dient dem \todo{Rusttypsystem!? ref!?} zur Unterscheidung \todo{Erzwinungt im Besitz von entsprechender Mutability zu sein}, während es für die C-Seite keinen Unterschied macht \cite{rust:book:raw_ptr}:
+	Ein C-Pointer \ccinline{*long} wird in Rust \enquote{Raw-Pointer} genannt und entweder \rustcinline{*mut c_long} oder \rustcinline{*const c_long} geschrieben. Der Unterschied ist wie zwischen \rustcinline{&mut c_long} und \rustcinline{&c_long} und dient dem Rust Compiler zum Nachvollziehen, ob ein exklusiver zugriff benötigt wird, oder nicht.
+	Dies hilft zwar für die Fehlervermeidung durch eventuelle Compilefehler anstatt Laufzeitfehler, ist aber für die C-Funktion unbedeutend \cite{rust:book:raw_ptr}:
 	
 	\begin{figure}[H]
 		\centering
@@ -876,12 +872,12 @@ Dabei gibt es mehrere Möglichkeiten:
 		\caption{Vergleich Rust Raw-Pointer und Referenz zu C-Pointer}
 	\end{figure}
 	
-\end{enumerate}
+\end{itemize}
 
 \subsubsection{Externer Funktionsaufruf}
 \label{rust:ffi:functioncall}
 
-Während eine Struktur, die eine externe Struktur wiedergibt, sich optional in einem \rustcinline{extern \{\}} Block befinden kann, ist es zwingend, eine externe Funktionen darin bekannt zu machen:
+Externe Funktionen müssen im Gegensatz zu externen Strukturen immer in einem \rustcinline{extern \{\}} Block deklariert sein.
 
 \begin{figure}[H]
 	\rustcinclude
@@ -890,7 +886,7 @@ Während eine Struktur, die eine externe Struktur wiedergibt, sich optional in e
 		{sections/rust.uper_encode_to_buffer.rs}
 \end{figure}
 
-Wie in \autoref{rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Attributen versehen werden. Zwingend ist bei der Verwendung eines \rustcinline{#[link(..)]} Attributes der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{rust:ffi:uper_encode_to_buffer} die Art der \todo{Linkung} (dylib, static) angegeben werden.
+Wie in \autoref{rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Attributen versehen werden. Zwingend ist bei der Verwendung eines \rustcinline{#[link(..)]} Attributes der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{rust:ffi:uper_encode_to_buffer} die Art der Linkung (dynamisch oder statisch) angegeben werden.
 
 Die Art der Definition einer externen Funktion unterscheidet sich nicht von einer normalen Funktionsdefinition. Es sollten aber, wie in \autoref{rust:ffi:datatypes} beschrieben, zu C bzw. der externen Sprache kompatiblen Datentypen verwendet werden.
  

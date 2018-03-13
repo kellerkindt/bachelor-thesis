@@ -11,7 +11,13 @@ Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\f
 Diese erlaubt Rust eine zur Laufzeit hohe Ausführgeschwindigkeit zu erreichen.
 Das Eigentümerprinzip (siehe \autoref{rust:ownership}) und die Markierung durch von Datentypen durch Merkmale (siehe \autoref{rust:traits}) vereinfacht es, nebenläufige und sichere Programme zu schreiben.
 
-Rust hat in den letzten Jahren viel an Beliebtheit gewonnen und scheint dem Anspruch, eine sichere und performante Programmiersprache zu sein, gerecht zu werden:
+Rust hat in den letzten Jahren viel an Beliebtheit gewonnen und ist 2018 das dritte Jahr in Folge als beliebteste Programmiersprache in einer Umfrage auf Stack Overflow gewählt worden \cite{rust:stack_overflow:mose_loved}.
+Rust scheint dem Anspruch, eine sichere und performante Programmiersprache zu sein, gerecht zu werden:
+
+\begin{quotation}
+	\textit{\enquote{Again, Rust guides you toward good programs}}
+	\cite[497]{rust:orly_programming}
+\end{quotation}
 
 \begin{quotation}
 	\textit{\enquote{[..]Leute, die [..] sichere Programmierung haben wollen, [..] können das bei Rust haben, ohne [..] undeterministischen Laufzeiten oder Abstraktionskosten schlucken zu müssen. }}
@@ -192,9 +198,6 @@ Eine Funktion \rustcinline{println} gibt es nicht, auch keine aus C erwarteten F
 Eine Ausgabe erfolgt durch das \rustcinline{println!} Makro, welches eine String durch Nutzung des \rustcinline{format!} Makros formatiert und erstellt.
 Daraufhin wird das \rustcinline{writeln!} Makro verwendet, um die formatierte Zeichenkette auf die Standardausgabe zu schreiben.
 
-\todo{nopeZ?}
-Ein kleines Beispiel, viele versteckte Mechaniken zur Laufzeitoptimierung aber trotzdem handlich und leserlich -- Rust.
-
 \section{Einfache Datentypen}
 \label{rust:types:simple}
 
@@ -226,6 +229,11 @@ Die Notation ähnelt dabei die eines Arrays, aber ohne Größenspezifikation: \r
 Eine Slice ist immer eine Referenz.
 Um eine Slice auf ein Array oder eine andere Slice zu erhalten, muss der Start- und  Endindex des Teilbereiches angegeben werden.
 Falls kein Start- oder Endindex angegeben wurde, wird das jeweilige Limit übernommen.
+
+\todo{let, let mut, let ... : type = ..., \& \&mut, deref via *}
+
+https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
+\todo{static type system with local type inference } \\
 
 Folgendes Beispiel soll die Notation von Arrays und Slices Beispielhaft verdeutlichen:
 
@@ -303,7 +311,7 @@ Optional kann auch ein Standardrumpf implementiert werden, der bei einer Spezial
 Auch auf ein Merkmal kann ein Zugriffsmodifikatoren gesetzt werden (siehe \autoref{rust:access_modifier}).
 
 Die Implementation eines Merkmals wird für jeden Datentyp in einem separaten Block vorgenommen und entspricht der Notation \rustcinline{impl Merkmal for Datentyp \{ fn ... \} }.
-Alternativ können Implementationen auch für ganze Gruppen von anderen Merkmalen vorgenommen werden: \rustcinline{impl Merkmal for T where T: Clone \{ ... \} } (entspricht: \enquote{implementiere \rustcinline{Merkmal} für alle, die \rustcinline{Clone}-bar sind}).
+Alternativ können Implementationen auch für ganze Gruppen von anderen Merkmalen vorgenommen werden: \rustcinline{impl<T> Merkmal for T where T: Clone \{ ... \} } (entspricht: \enquote{implementiere \rustcinline{Merkmal} für alle, die \rustcinline{Clone}-bar sind}).
 
 In Zukunft -- oder jetzt in \enquote{nightly} und hinter dem \enquote{feature gate} \rustcinline{specialization} -- wird es möglich sein, ein Standardverhalten für Gruppen zu implementieren und dieses später, für einen spezialisierten Fall, zu überschreiben \cite{rust:github:specialization}.
 
@@ -340,7 +348,7 @@ Im folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibl
 	\rustcinline{!Sync} verbietet dies dagegen.
 	Automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ Sync sind \todo{rly? cite?}. Manuelle Implementation ist \todo{unsafe}.
 	
-	\item \monospaceinline{Sized}: Verlangt eine zu Compilezeit bekannte Größe. \monospaceinline{!Sized} erlaubt dagegen eine unbekannte Größe zur Compilezeit.
+	\item \monospaceinline{Sized}: Verlangt eine zu Compilezeit bekannte Größe. \monospaceinline{?Sized} erlaubt dagegen eine unbekannte Größe zur Compilezeit.
 	
 	\item \monospaceinline{Copy}: Markiert einen Datentyp, der durch einfaches Speicherkopieren (\enquote{memcpy}) vervielfacht werden kann. Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Copy} sind.
 	Alle einfachen Datentypen sind bereits \monospaceinline{Copy}.
@@ -360,7 +368,7 @@ Im folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibl
 	
 	\item \rustcinline{Eq}: Erlaubt dem Compiler einen Vergleich auf Bit-Ebene durchzuführen, ungeachtet des Datentyps \cite{rust:doc:eq}.
 	
-	\item \rustcinline{PartialOrd}: Verlangt die Implementation einer Funktion um mit Instanzen des gleichen Typs sortieren zu können. Erlaubt aber auch, dass Werte zueinander nicht sortierbar sind.
+	\item \rustcinline{PartialOrd}: Verlangt die Implementation einer Funktion um mit Instanzen des gleichen Typs sortiert werden zu können. Erlaubt aber auch, dass Werte zueinander nicht sortierbar sind.
 	Dies ist zum Beispiel für Fließkommazahlen wichtig, da laut IEE754  \rustcinline{Nan} nicht sortiert werden kann (weder \rustcinline{Nan <= 0} noch \rustcinline{Nan > 0} ergibt \rustcinline{true}) \cite{wiki:nan}\cite[275-277]{rust:orly_programming}\cite{rust:doc:partialord}.
 	
 	\item \rustcinline{Ord}: Erzwingt im Gegensatz zu \rustcinline{PartialOrd}, dass Werte immer sortierbar sind.
@@ -376,18 +384,19 @@ Ein ergonomisches aber auch Fehler reduzierendes Feature.
 \section{Zugriffsmodifikatoren}
 \label{rust:access_modifier}
 
-Zugriffsmodifikatoren erlauben es in Rust, Module, \todo{Re-exporte / use}, Datenstrukturen, Aufzählungen, Merkmale und Funktionen gegenüber Nutzern einer Crate und anderen Modulen sichtbar zu machen.
-Der Standardmodifikator limitiert die Sichtbarkeit auf das Modul, in dem die Deklaration stattgefunden hat und wird durch keine Nennung eines Zugriffsmodifikators erreicht.
+Zugriffsmodifikatoren erlauben es in Rust, Module, Datenstrukturen, Aufzählungen, Merkmale und Funktionen gegenüber Nutzern einer Crate und anderen Modulen sichtbar zu machen.
+Der standardmäßige Zugriffsmodifikator limitiert die Sichtbarkeit auf das Modul, in dem die Deklaration stattgefunden hat und wird durch keine Notation eines Zugriffsmodifikators erreicht.
 Um die Sichtbarkeit auf die gesamte Crate zu erhöhen, wird ein \rustcinline{pub(crate)} vorangestellt.
 Mit \rustcinline{pub} ist die Deklaration für alle sichtbar.
 
+Zugriffsmodifikatoren können auch vor \rustcinline{use} Anweisungen geschrieben werden, um entsprechende Datentypen zusätzlich unter einem neuen Namensraum bekannt zu machen.
 
 
 \section{Musterabgleich}
 \label{rust:match}
 
 Der \rustcinline{match} Ausdruck ist ein sehr mächtiges Werkzeug in Rust und entspricht einem stark erweiterten \ccinline{switch} aus Programmiersprachen wie C, Java oder C\#.
-Mit ihm ist es möglich einen Wert eine Aufzählung aufzulösen und auf eventuell beinhaltete Werte zuzugreifen oder zu konsumieren.
+Mit ihm ist es möglich einen Wert einer Aufzählung aufzulösen und gleichzeitig auf eventuell beinhaltete Werte zuzugreifen oder zu konsumieren.
 
 \rustcinclude
 	{rust:match:large}
@@ -446,19 +455,13 @@ Aufgrund des Umfangs wird hier auf eine weitere Vertiefung verzichtet.
 \section{Niemals nichts und niemals unbehandelte Ausnahmen}
 \label{rust:no_null}
 
-
-\todo{core, datatypes, arrays slices, no null  \enquote{billion dollar mistake} }
-
-Rust kennt \ccinline{null}(-Pointer) nicht und erlaubt auch keine nicht initialisierte Variablen (siehe \autoref{rust:undefined}), bietet aber einen \rustcinline{Option<_>}-Datentyp als Ersatz an.
-Dieser Datentyp erzwingt eine Prüfung vor dem Zugriff auf den optionalen Wert.
-
-\todo{IMMER INITIALISIERT, sonst kein zugriff erlaubt}
+Rust kennt \ccinline{NULL}(-Pointer) nicht und erlaubt auch keine nicht initialisierte Variablen (siehe \autoref{rust:no_unitialized_usage}), bietet aber einen \rustcinline{Option<_>}-Datentyp als Ersatz an.
+Dieser Datentyp erzwingt eine Prüfung vor dem Zugriff auf den optionalen Wert (siehe \autoref{rust:no_null_detail}).
 
 Für die Fehlerbehandlung wird nicht auf ein Exception-Handling zurückgegriffen, sondern ein eigener Datentyp angeboten, der entweder den Rückgabewert enthält, oder aber einen Fehler: \rustcinline{Result<_, _>} (siehe \autoref{rust:result}).
 
-Durch den \todo{Fragenzeichenoperator} kann trotzdem ein ähnliches Verhalten wie beim auftreten einer Ausnahme in Java oder C++ erzielt werden. \todo{example?}
+Durch den Fragezeichenoperator kann trotzdem ein ähnliches Verhalten wie beim auftreten einer Ausnahme in Java oder C++ erzielt werden \todo{autoref}.
 
-\todo{ref if let Ok(\_)} 
 
 \section{Besorgter Compiler}
 \label{rust:worried_compiler}
@@ -469,20 +472,22 @@ Durch den \todo{Fragenzeichenoperator} kann trotzdem ein ähnliches Verhalten wi
 \label{rust:stdlib}
 
 Die Rust Community ist darum bemüht, die Standardbibliothek sehr leichtgewichtig zu halten.
-Nicht eindeutig als fundamental eingestufte Funktionalität wird lieber als Crate auf \url{https://crates.io} angeboten, anstatt in die Standardbibliothek übernommen zu werden \todo{prove via cite}. 
+Nicht eindeutig als fundamental eingestufte Funktionalitäten werden lieber als Crate auf \url{https://crates.io} angeboten, anstatt sie in die Standardbibliothek zu übernommen \todo{prove via cite}. 
 Mit dieser Entscheidung soll auch eine Entwicklung unabhängig von den Releasezyklen von Rust ermöglicht werden \todo{cite}.
 
-Die Standardbibliothek wird selbst als eine Crate (siehe \autoref{rust:structure:crate}) zur Verfügung gestellt, auf die standardmäßige eine Abhängigkeit besteht.
-Für die Verwendung von Rust im Embedded-Bereich, kann diese Abhängigkeit, die für Microcontroller sehr umfangreich ist, durch \rustcinline{#![no_std]} unterbunden werden.
+Die Standardbibliothek wird selbst als eine Crate zur Verfügung gestellt, auf die standardmäßige eine Abhängigkeit besteht.
+Für Fälle, in denen diese Abhängigkeit zu groß ist, wie im zum Beispiel im Embedded-Bereich, kann diese Abhängigkeit durch das Attribut \rustcinline{#![no_std]} unterbunden werden.
 Daraufhin sind nur noch die in der \rustcinline{core} Crate zur Verfügung gestellten, fundamentalen Sprachkonstrukte verwendbar.
 
-Da diese Abschlussarbeit keine Anwendung im Embedded-Bereich findet, wird der volle Funktionsumfang der Standardbibliothek genutzt.
-Wichtige aber auch Bekannte Datentypen sind:
+In dieser Abschlussarbeit wird der volle Funktionsumfang der Standardbibliothek genutzt.
+Wichtige aber auch bekannte Datentypen sind:
 
 \begin{itemize}
 	\item \textbf{std::vec::Vec}: Ein Vektor (wie eine Liste), bei dem die Werte in einem dynamisch groß allokierten Speicherbereich auf dem Heap liegen.
-	Ist \textbf{der} Ersatz für dynamische Arrays.
-	\todo{graph stack(pointer) + heap(vec+elements) + stack(slice)}
+	Ist \textbf{der} Ersatz für dynamische Arrays, da auch der \rustcinline{[]}-Operator implementiert ist und sich daher ein \textbf{Vec} wie ein Array ansprechen lässt.
+	
+	In \autoref{rust:memory_layout:vec_slice} ist das Speicherlayout eines \textbf{Vec} und einer \textbf{Slice} auf dem Stack und dem Heap abgebildet.
+	Zu sehen ist, dass eine \textbf{Slice} direkt auf die Elemente eines \textbf{Vec} zeigen kann und sich daher von einem Array-Pointer aus C und C++ nur durch die angehängte Längeninformation unterscheidet.
 	\begin{figure}[H]
 		\centering
 		\begin{tikzpicture}
@@ -541,28 +546,31 @@ Wichtige aber auch Bekannte Datentypen sind:
 		
 		\end{tikzpicture}
 		\caption{Speicherlayout Vec und Slice \cite[63]{rust:orly_programming}}
+		\label{rust:memory_layout:vec_slice}
 	\end{figure}
 	
-	\item \textbf{std::boxed::Box}: Ein Speicherbereich auf dem Heap für einen beliebigen Datentyp.
+	\item \textbf{std::boxed::Box}:
+	Verweis auf einen Speicherbereich auf dem Heap für einen beliebigen Datentyp.
+	Erlaubt es, u.a. Eigentümerschaft über ein unbekannt großen Datentyp zu erlangen, da dies die Größe von \textbf{Box} nicht beeinflusst (siehe \autoref{rust:generics}).
+	Eine \textbf{Box} kann mit einem immer gültigen Heap-Pointer aus C und C++ verglichen werden.
 	
-	\item \textbf{std::string::String}: Eine UTF-8 encodierte, vergrößer- und verkleinerbare Zeichenkette auf dem Heap.
+	\item \textbf{std::string::String}: Eine UTF-8 codierte, vergrößer- und verkleinerbare Zeichenkette auf dem Heap.
 	
-	\item \todo{more?!}\todo{containers, collections, rc, arc, mutex, rwlock, platform abstractions: threads, tcp, udp} \todo{println!, writeln!, format!}
+	\item \textbf{std::rc::Rc}: Erweitert die \textbf{Box} um einen Referenzzähler und ermöglicht somit augenscheinlich mehrere Eigentümer, mit der Limitierung, nur noch lesend auf den beinhalteten Wert zugreifen zu können.
+	Der beinhaltende Wert wird erst bei Lebensende der letzten \textbf{Rc} Instanz freigegeben.
+	Verwendet einen mit wenig Mehraufwand verbundenen, nicht-atomaren Referenzzähler, weswegen eine \textbf{Rc} Instanz nicht zwischen Threads übertragen werden kann (\rustcinline{!Sync}, \rustcinline{!Send}).
+	
+	\item \textbf{std::sync::Arc}: Entspricht weitestgehend dem \textbf{Rc}, verwendet jedoch einen atomaren Referenzzähler.
+	Dies ist zwar mit Mehraufwand zur Laufzeit verbunden, erlaubt aber auch, dass eine \textbf{Arc} Instanz zwischen Threads übertragen werden kann, insofern der beinhaltende Wert dies erlaubt.
+	Mehrere Threads können daher lesend auf den beinhalteten Wert zugreifen.
+	
+	\item \textbf{std::sync::Mutex}: \todo{?} Schützt Daten anstatt Code
+	\item \textbf{std::sync::RwLock}: \todo{?} Erlaubt mehrfach lesend
+	\item \textbf{std::net::TcpStream}: \todo{?} 
+	\item \textbf{Module std::thread}: \todo{?}
+	\item \textbf{std::collections::HashMap}: \todo{?}
+	
 \end{itemize}
-
-
-https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
-\todo{static type system with local type inference } \\
-
-\todo{per default: stack}
-
-\todo{formatting rules}
-
-
-\section{Alles hat einen Rückgabewert}
-\todo{() ??, Statement vs }
-
-\section{use mod pub}
 
 
 \section{Speichermanagement}
@@ -572,10 +580,14 @@ https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
 Rust benutzt ein \enquote{statisches, automatisches Speicher Management -- keinen Garbage Collector} \cite{rust:youtube:goto2017}.
 Das bedeutet, die Lebenszeit einer Variable wird statisch während der Compilezeit anhand des Geltungsbereichs ermittelt (siehe \autoref{rust:scope}).
 Durch diese statische Analyses findet der Compiler heraus, wann der Speicher einer Variable wieder freigegeben werden muss.
-Dies ist nämlich genau dann, wenn der Geltungsbereich des Eigentümers zu Ende ist.
-Weder ein \gls{gc}, der dies zur Laufzeit nachverfolgt, noch ein manuelles eingreifen durch den Entwickler (zum Beispiel durch \ccinline{free(*void)}, wie in C/C++ üblich) nötig.
-Der menschliche Faktor als Fehlerquelle wird wieder unterbunden, ohne Laufzeitkosten zu erzeugen.
+Dies ist genau dann, wenn der Geltungsbereich des Eigentümers zu Ende ist.
+Weder ein \gls{gc}, der dies zur Laufzeit nachverfolgt, noch ein manuelles eingreifen durch den Entwickler (zum Beispiel durch \ccinline{free(*void)}, wie in C/C++ üblich) ist nötig.
 
+Falls der Compiler keine ordnungsgemäße Nutzung feststellen kann, wie zum Beispiel eine Referenz die länger als die eigentliche Variable lebt, wird die Kompilation verweigert.
+Der menschliche Faktor als Fehlerquelle wird wieder unterbunden, ohne Laufzeitkosten zu erzeugen (siehe \autoref{rust:guarantee:no_danling_pointer}).
+
+Im folgenden \autoref{rust:memory:scope} wird Beispielhaft Speicher auf dem Heap allokiert.
+Dieser wird ordnungsgemäß freigegeben, ohne manuell eine Freigabe einzuleiten.
 
 \begin{figure}[H]
 	\rustcinclude
@@ -584,14 +596,8 @@ Der menschliche Faktor als Fehlerquelle wird wieder unterbunden, ohne Laufzeitko
 		{sections/rust.memory.rs}
 \end{figure}
 
-Als Alternative kann eine Variable oder Datenstruktur auch vorzeitig durch Aufruf von \rustcinline{std::mem::drop(_)} freigegeben werden.
-Die optionalen Implementation von \rustcinline{std::op::Drop} \todo{trait? ref?} kommt der Implementation des Destruktors aus C++ gleich.
-
-\todo{"static automatic memory management" - no garbage collection } \\
-
-\todo{while compiling, does not compile on error / unprovable code, trait Drop}
-
-\todo{autodrop, auto file close}
+Eine Variable kann auch vorzeitig durch den Aufruf von \rustcinline{std::mem::drop(_)} freigegeben werden.
+Die optionalen Implementation des \rustcinline{std::op::Drop}-Merkmals (siehe \autoref{rust:generics}) kommt der Implementation des Destruktors aus C++ gleich.
 
 \section{Eigentümer- und Verleihprinzip}
 \label{rust:ownership}
@@ -639,10 +645,10 @@ Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nö
 	\cite[129]{rust:c_is_hostile_mena}
 \end{quotation}
 
-Im Gegensatz zu anderen Programmiersprachen wirbt Rust mit Versprechen und Garantien, die dafür sorgen sollen, Fehler zu vermeiden.
-In einer perfekten Welt wären viele dieser Maßnahmen nicht nötig, aber leider sind Programmierer auch nur Menschen.
-Menschen machen Fehler.
-Deswegen hat Rust einige Interessante Mechaniken eingeführt, bekannte Fehlerquellen zu unterbinden und erzwingt die Einhaltung indem andere Vorgehensweisen meist ausgeschlossen werden.
+Rust wirbt mit Versprechen und Garantien, die dafür sorgen sollen, typische Fehler zu vermeiden.
+In einer perfekten Welt wären viele dieser Maßnahmen nicht nötig, da perfekte Wesen niemals einen Fehler machen würden, aber leider sind Programmierer auch nur Menschen.
+Menschen, die Fehler machen.
+Deswegen hat Rust einige Interessante Mechaniken eingeführt, bekannte Fehlerquellen zu unterbinden und erzwingt die Einhaltung dieser, indem andere Vorgehensweisen meist ausgeschlossen werden.
 
 Dieses Kapitel beschäftigt sich mit den wichtigsten und bekanntesten dieser Mechaniken.
 
@@ -652,13 +658,13 @@ Dieses Kapitel beschäftigt sich mit den wichtigsten und bekanntesten dieser Mec
 
 Bei der Entwicklung von Rust wird ein sehr großer Fokus darauf gelegt, keine undefinierten Zustände zu erlauben.
 Daher ist es normalerweise nicht möglich, ein undefiniertes Verhalten oder einen undefinierten Zustand zu erzeugen.
-Die Ausnahme macht dabei die Nutzung von \rustcinline{unsafe}, für zum Beispiel FFI (siehe \autoref{rust:ffi}).
+Die Ausnahme bildet dabei die Nutzung innerhalb von \rustcinline{unsafe} Blöcken, für zum Beispiel FFI (siehe \autoref{rust:ffi}).
 Für diese Fälle gibt es eine überschaubare Liste von Szenarien, aus denen ein undefinierter Zustand bzw. undefiniertes Verhalten resultieren kann \cite{rust:book:undefined}.
 
-Als einfaches Beispiel eines undefinierten Zustandes in C ist eine Variable, die deklariert wurde, aber der noch kein Wert zugewiesen wurde.
-In manchen Szenarien hat die Variable dann den Wert der in diesem Moment an der entsprechenden Stelle im Speicher stand, in anderen Szenarien wird der Speicher vom Betriebssystem, Allokator oder von vom Compiler eingefügten Befehlen mit 0en gefüllt -- eine sichere Aussage ist nicht möglich.
+Als einfaches Beispiel eines undefinierten Zustandes in C ist eine Variable, die deklariert wurde, der aber noch keinen Wert zugewiesen wurde.
+In manchen Szenarien hat die Variable dann den Wert der in diesem Moment an der entsprechenden Stelle im Speicher steht, in anderen Szenarien wird der Speicher vom Betriebssystem, Allokator oder von vom Compiler eingefügten Befehlen mit 0en gefüllt -- eine sichere Aussage ist nicht möglich.
 
-Rust dagegen lässt keinen zugriff auf Variablen zu, die nicht zuvor initialisiert wurden \cite[126]{rust:orly_programming}.
+Rust lässt deshalb keinen Zugriff auf Variablen zu, die nicht zuvor initialisiert wurden \cite[126]{rust:orly_programming}.
 Der Compiler stoppt mit einem Fehler: \enquote{\textbf{\textcolor{red}{error[E0381]}: use of possibly uninitialized variable: `a`}}.
 
 
@@ -671,14 +677,14 @@ Der Compiler stoppt mit einem Fehler: \enquote{\textbf{\textcolor{red}{error[E03
 	\todo{cant find moment in video / presentation of this qutoe!?}
 \end{quotation}
 
-Wie in \autoref{rust:no_null} beschrieben, kennt Rust keinen \ccinline{NULL}-Pointer.
+Wie in \autoref{rust:no_null} bereits erwähnt, kennt Rust keinen \ccinline{NULL}-Pointer.
 Daher ist es auch nicht möglich, durch Nachlässigkeit auf den falschen Speicher zuzugreifen, da eine Referenz immer gültig ist.
 Für fälle, in denen es eventuell keinen Wert gibt, bietet Rust stattdessen den \rustcinline{Option<_>} Datentyp an.
 \rustcinline{Option<_>} ist eine Aufzählung, die entweder \rustcinline{None} ohne einen Wert, oder \rustcinline{Some(_)} mit einem Wert ist.
 Auf den Wert kann nicht zugegriffen werden, ohne zu prüfen, ob wirklich ein \rustcinline{Some(_)} vorliegt.
 Dies kann durch \rustcinline{match} oder verkürzt durch ein \rustcinline{if let Some(wert) = optional \{ /* tu etwas mit wert */ \}} geschehen (siehe \autoref{rust:match}).
 
-In vielen fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als \ccinline{NULL}-Pointer dargestellt werden, weswegen durch die Abstraktion keinen weiteren Laufzeitkosten eingeführt werden \cite[100]{rust:orly_programming} (siehe \autoref{rust:zero_cost}).
+In vielen fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als \ccinline{NULL}-Pointer dargestellt werden, weswegen durch diese Abstraktion meist keine weiteren Laufzeitkosten eingeführt werden \cite[100]{rust:orly_programming} (siehe \autoref{rust:zero_cost}).
 
 
 
@@ -693,9 +699,9 @@ In vielen fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als
 \end{figure}
 
 In \autoref{rust:result:c_bad_fopen} sind mindestens zwei Fehler versteckt, die aber keinen Compileabbruch auslösen, sondern sich zur Laufzeit zeigen können.
-Der erste Fehler ist eine fehlende Überprüfung des Rückgabewertes von \ccinline{fopen} in Zeile 4, da dieser \ccinline{null} ist, falls das Öffnen der Datei fehlgeschlagen ist.
+Der erste Fehler ist eine fehlende Überprüfung des Rückgabewertes von \ccinline{fopen} in Zeile 4.
+Der Rückgabewert kann \ccinline{NULL} sein, falls das Öffnen der Datei fehlgeschlagen ist.
 Der Versuch in die Datei zu schreiben in Zeile 5 kann daraufhin in einen Speicherzugriffsfehler resultieren und das Programm abstürzen lassen.
-\todo{vergleich Java/C++(++) exceptions (vergessen von fehlerbehandlung in c++(++) trotzdem möglich)}
 
 In Rust wird weder eine Ausnahme geworfen, noch ein Rückgabewert zurück gegeben, der ohne Prüfung verwendet werden kann:
 
@@ -708,16 +714,17 @@ In Rust wird weder eine Ausnahme geworfen, noch ein Rückgabewert zurück gegebe
 
 Der Rückgabewert von \rustcinline{File::open("private.key")} in Zeile 5 von \autoref{rust:result:rust_good_fopen} ist vom Typ \rustcinline{Result<File, Error>}.
 Auf den eigentlichen Rückgabewert \rustcinline{File} kann nicht ohne eine Fehlerprüfung zugegriffen werden, da dies \rustcinline{Result} verhindert.
-Eine Fehlerprüfung kann wie in Zeile 5 mit einem \rustcinline{match} passieren, oder auch mit anderen Funktionen wie \rustcinline{.unwrap()}, \rustcinline{.unwrap_or()} ... https://doc.rust-lang.org/std/result/enum.Result.html die dann aber eine \rustcinline{panic!} \todo{ref} auslösen, falls ein Fehler vorliegt -- somit wird ein undefiniertes Verhalten unterbunden \todo{ref}.
+Eine Fehlerprüfung kann wie in Zeile 5 mit einem \rustcinline{match} oder verkürzt durch ein \rustcinline{if let Ok(mut file) = ...} geschehen.
 
-\todo{Der zweite Fehler...?}
-Durch die Lebenszeitanalyse \todo{ref} in Rust ist der Geltungsbereich der \rustcinline{File} Variable bekannt, deshalb wird in dem Beispiel in Rust in \autoref{rust:result:rust_good_fopen} die Datei auch wieder ordnungsgemäß geschlossen, während dies im C Beispiel in \autoref{rust:result:c_bad_fopen} nicht der Fall ist.
+Durch die statische Lebenszeitanalyse (siehe \autoref{rust:static_analysis}) in Rust ist der Geltungsbereich der \rustcinline{File} Variable bekannt, deshalb wird in dem Beispiel in Rust in \autoref{rust:result:rust_good_fopen} die Datei auch wieder ordnungsgemäß geschlossen.
+Dies ist im im C Beispiel in \autoref{rust:result:c_bad_fopen} nicht der Fall.
+In einem größeren Programm könnte so zu unbekanntem Zeitpunkt das Limit an gleichzeitig geöffneten Dateien erreicht werden.
 
-\todo{explain result}
 
 \todo{explain shorthand '?'}
 
 \subsection{No dangling pointer}
+\label{rust:guarantee:no_danling_pointer}
 \todo{src https://www.youtube.com/watch?v=d1uraoHM8Gg}
 
 \subsection{Sichere Nebenläufigkeit}

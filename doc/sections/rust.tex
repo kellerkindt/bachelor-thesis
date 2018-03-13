@@ -602,31 +602,28 @@ Die optionalen Implementation des \rustcinline{std::op::Drop}-Merkmals (siehe \a
 \section{Eigentümer- und Verleihprinzip}
 \label{rust:ownership}
 
-Bereits 2003 beschreibt Bruce Powel Douglass im Buch \enquote{Real-Time Design Patterns}, dass \enquote{passive} Objekte ihre Arbeit nur in dem \todo{Thread-Kontext} ihres \enquote{aktiven} Eigentümers tätigen sollen \cite[204]{douglass2003real}.
+Bereits 2003 beschreibt Bruce Powel Douglass im Buch \enquote{Real-Time Design Patterns}, dass \enquote{passive} Objekte ihre Arbeit nur in dem Thread-Kontext ihres \enquote{aktiven} Eigentümers tätigen sollen \cite[204]{douglass2003real}.
 In dem beschriebenen \enquote{Concurrency Pattern} wird eine klare Zuordnung getätigt, welche Objekte welchem anderen Objekt als Eigentümern zugeordnet sind, um eine sicherere Nebenläufigkeit zu schaffen \todo{shit}.
 
 Diese Philosophie setzt Rust direkt in der Sprache um, so darf eine Variable immer nur einen Eigentümer haben. Zusätzlich zu einem immer eindeutig identifizierbaren Eigentümer für eine Variable, kann diese auch ausgeliehen werden; entweder exklusiv mit sowohl Lese- als auch Schreiberlaubnis, oder mehrfache mit nur Leseerlaubnis.
 
 Eigentümerschaft kann auch übertragen werden, der vorherige Eigentümer kann danach nicht mehr auf den Wert zugreifen.
 
-Die Garantie nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert (siehe \autoref{rust:scope}).
-Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nötig, weshalb diese Philosophie keinen negativen Einfluss auf die \todo{Ausführgeschwindigkeit} hat.
+Die Garantie, nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert (siehe \autoref{rust:scope}).
+Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nötig, weshalb diese Philosophie keinen negativen Einfluss auf die Laufzeit hat.
 
-\todo{Split example, explain more}
 \rustcinclude
 	{rust:ownership:scope}
 	{Eigentümer und Referenzen von Variablen}
 	{sections/rust.ownership.rs}
 
 
-\todo{missing move? orly}
 
-
-\section{Rust als funktionale Programmiersprache}
+\section{Rust als funktionale Programmiersprache ??}
 \todo{functional programming -> no global state, no exceptions, find literature}
 \todo{prove via code}
 
-\section{Rust als Objekt-Orientierte Programmiersprache}
+\section{Rust als Objekt-Orientierte Programmiersprache ??}
 \label{rust:oop}
 \todo{trait}
 \todo{prove via design patterns, a few? from faq::  Is Rust object oriented? It is multi-paradigm. Many things you can do in OO languages you can do in Rust, but not everything, and not always using the same abstraction you’re accustomed to.}

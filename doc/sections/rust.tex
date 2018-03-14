@@ -11,7 +11,7 @@ Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\f
 Diese erlaubt Rust eine zur Laufzeit hohe Ausführgeschwindigkeit zu erreichen.
 Das Eigentümerprinzip (siehe \autoref{rust:ownership}) und die Markierung durch von Datentypen durch Merkmale (siehe \autoref{rust:traits}) vereinfacht es, nebenläufige und sichere Programme zu schreiben.
 
-Rust hat in den letzten Jahren viel an Beliebtheit gewonnen und ist 2018 das dritte Jahr in Folge als beliebteste Programmiersprache in einer Umfrage auf Stack Overflow gewählt worden \cite{rust:stack_overflow:mose_loved}.
+Rust hat in den letzten Jahren viel an Beliebtheit gewonnen und ist 2018 das dritte Jahr in Folge als die beliebteste Programmiersprache in einer Umfrage auf Stack Overflow gewählt worden \cite{rust:stack_overflow:mose_loved}.
 Rust scheint dem Anspruch, eine sichere und performante Programmiersprache zu sein, gerecht zu werden:
 
 \begin{quotation}
@@ -100,7 +100,7 @@ Es stehen Versionen in drei verschieden Veröffentlichungskanälen zur Verfügun
 	\item \textbf{nightly}:
 	Version die einmal am Tag mit dem aktuellen Stand des Quellcodes gebaut wird.
 	Experimentelle und nicht fertige Features sind hier zwar enthalten, aber hinter \enquote{feature gates} versteckt.
-	Diese können durch ein entsprechendes Attribute (siehe \autoref{rust:attributes}) geöffnet werden (\rustcinline{#[feature(const_fn)]} ermöglicht die Definition von Konstante Funktionen, Stand \today).
+	Diese \enquote{Tore} können durch entsprechende Attribute (siehe \autoref{rust:attributes}) geöffnet werden, so ermöglicht (\rustcinline{#[feature(const_fn)]} die Definition von Konstante Funktionen (Stand \today).
 	
 	\item \textbf{beta}: Alle sechs Wochen wird die aktuellste Nightly zur Beta befördert und es werden nur noch Fehler aus dieser Version getilgt.
 	Dieser Prozess könnte auch als Reifephase bezeichnet werden.
@@ -137,7 +137,7 @@ Ein klassischer Aufbau ist dagegen nur selten anzutreffen.
 
 \subsection{Klassisch}
 \label{rust:structure:classic}
-\begin{wrapfigure}{l}[-1em]{.5\textwidth}
+\begin{wrapfigure}{L}[-1em]{.5\textwidth}
 	\rustcinclude
 		{rust:structure:classi}
 		{Verzeichnisstruktur des Quelltext-Verzeichnisses}
@@ -160,7 +160,7 @@ Diese Umfasst in vielen fällen wenige aber mehrere Datenstrukturen, zugehörige
 \subsection{Als Crate}
 \label{rust:structure:crate}
 
-\begin{wrapfigure}{r}{.4\textwidth}
+\begin{wrapfigure}{R}{.4\textwidth}
 	\rustcincludeml
 		{rust:structure:cargo}
 		{Vereinfachte Verzeichnisstruktur einer \enquote{crate}}
@@ -179,7 +179,7 @@ Mit dem erzeuge einer Crate (\rustcinline{cargo new --bin meinProg} bzw. \rustci
 \section{Hello World}
 
 
-\begin{wrapfigure}{l}{.5\textwidth}
+\begin{wrapfigure}{L}{.5\textwidth}
 	\rustcinclude
 		{rust:hello_world}
 		{\enquote{Hello World} in Rust}
@@ -203,32 +203,34 @@ Daraufhin wird das \rustcinline{writeln!} Makro verwendet, um die formatierte Ze
 
 Die Datentypen in Rust sind im wesentlichen die üblichen  Verdächtigen: \rustcinline{bool} für boolische Ausdrücke; \rustcinline{char} für ein einzelnes Unicode Zeichen; \rustcinline{str} für eine Zeichenkette; \rustcinline{u8}, \rustcinline{i8}, \rustcinline{u16}, \rustcinline{i16}, \rustcinline{u32}, \rustcinline{i32}, \rustcinline{u64}, \rustcinline{i64}, (bald \rustcinline{u128}, \rustcinline{i128} \cite{rust:github:128bit_integer:rfc}) und \rustcinline{usize}, \rustcinline{isize}  für ganzzahlige Werte; \rustcinline{f32}, \rustcinline{f64} für Fließkommazahlen in einfacher und zweifacher Präzision; Arrays und Slices \cite{rust:book:primitives}.
 
-Ganzzahlige Datentypen mit einem führenden \rustcinline{u} sind vorzeichenlos (\enquote{unsigned}), vorzeichenbehaftete (\enquote{signed}) sind dagegen mit einem \rustcinline{i} gekennzeichnet.
+Ganzzahlige Datentypen mit einem führenden \rustcinline{u} sind vorzeichenlos (\enquote{unsigned}), vorzeichenbehaftete Datentypen (\enquote{signed}) sind dagegen mit einem \rustcinline{i} gekennzeichnet.
+Fließkommazahlen sind stattdessen mit einem führenden \rustcinline{f} (\enquote{floating point}) gekennzeichnet.
 Die darauf folgende Zahl gibt die Anzahl der Bits wieder, die der Datentyp groß ist.
-Die einzige Ausnahme bildet unter den ganzzahligen Datentypen ist \rustcinline{usize} bzw \rustcinline{isize}, da dieser immer so groß ist, wie die Architektur der Zielplattform.
-Bei der Indexierung eines Arrays bzw. einer Slice würde ein Datentyp, mit einer global definierten Größe, keinen Sinn ergeben. Das Maximum an adressierbaren Einträgen ist von der Architektur der Zielplattform abhängig.
-Fließkommazahlen sind mit einem führenden \rustcinline{f} gekennzeichnet.
+Die einzige Ausnahme sind die ganzzahligen Datentypen \rustcinline{usize} und \rustcinline{isize}, da diese immer so groß sind, wie die Architektur der Zielplattform.
+Für die Indexierung eines Arrays oder einer Slice würden andere Datentypen, mit einer fest definierten Größe, keinen Sinn ergeben, da das Maximum an adressierbaren Elementen von der Architektur der Zielplattform abhängig ist.
 
-Durch dieses Schema bei der Bezeichnung der Datentypen wird eine Verwirrung wie zum Beispiel in C unterbunden, wo die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe haben, sondern dies abhängig vom eingesetzten Compiler und der Zielplattform ist \cite[187]{deitel2013c}. Erst ab C99 wurden zusätzliche, aber optionale, ganzzahlige Datentypen mit bestimmten Größe definiert \cite[141]{goll2014c}.
+Durch dieses Schema bei der Bezeichnung der Datentypen wird eine Verwirrung wie zum Beispiel in C unterbunden, wo die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe haben, sondern dies abhängig vom eingesetzten Compiler und der Zielplattform ist \cite[187]{deitel2013c}. Erst ab C99 wurden zusätzliche, aber optionale, ganzzahlige Datentypen mit festen Größe definiert \cite[141]{goll2014c}.
 
-Konstanten können eindeutig einem Datentyp zugewiesen werden, indem dieser angehängt wird: \rustcinline{4711u16} ist vom Datentyp \rustcinline{u16}.
-Des weiteren dürfen Ziffern durch beliebiges setzen von \rustcinline{_} getrennt werden, um die Lesbarkeit zu erhöhen: \rustcinline{1_000_000_f32}.
+Konstanten können in Rust direkt einem Datentyp zugewiesen werden, indem dieser angehängt wird: \rustcinline{4711u16} ist vom Datentyp \rustcinline{u16}.
+Unterstriche dürfen an beliebiger stelle Ziffern trennen, um die Lesbarkeit zu erhöhen: \rustcinline{1_000_000_f32}.
 Eine Schreibweise in Binär (\rustcinline{0b0000_1000_u8}), in Hexadezimal (\rustcinline{0xFF_08_u16}) oder in Oktal (\rustcinline{0o64_u8}) ist auch möglich. 
-Konstante Zeichen und Zeichenketten können auch automatisch durch ein vorangestelltes \textit{b} in Bytes gewandelt werden (\rustcinline{b'b'} entspricht \rustcinline{0x62_u8} und \rustcinline{b"abc"} entsricht \rustcinline{&[0x61_u8, 0x62_u8, 0x63_u8]}).
+Konstante Zeichen und Zeichenketten können auch automatisch durch ein vorangestelltes \textit{b} in Bytes gewandelt werden: \rustcinline{b'b'} entspricht \rustcinline{0x62_u8} und \rustcinline{b"abc"} entsricht \rustcinline{&[0x61_u8, 0x62_u8, 0x63_u8]}.
 
 Arrays haben immer eine zur Compilezeit bekannte Größe und müssen auch immer mit einem Wert initialisiert werden (siehe \autoref{rust:no_unitialized_usage}).
 Dynamische Arrays auf dem Stack gibt es (noch? \cite{rust:github:alloca}) nicht,
 stattdessen wird auf die Vektor Implementation der Standardbibliothek verwiesen (siehe \autoref{rust:stdlib}).
 Die Notation für Arrays ist \rustcinline{[<Füllwert>; <Größe>]}, wobei die Größe ein konstanter Wert sein muss.
-\rustcinline{[0_u8; 128]} steht demnach für ein 128 Byte langes Array, das mit 0-en vom Datentyp \rustcinline{u8} gefüllt ist.
+\rustcinline{[0_u8; 128]} steht demnach für ein 128 Byte langes Array vom Datentyp \rustcinline{u8}, das mit 0-en initialisiert ist.
 
-\enquote{Slices} (dt. Scheiben/Stücke) bezeichnet Rust Referenzen oder Referenzen auf Teilbereiche von Arrays und Slices.
-Die Größe einer Slice wird dabei mit der Referenz auf die Startposition gespeichert und oft auch \enquote{fat pointer} genannt (siehe auch \autoref{rust:memory_layout:vec_slice}).
-Ein zusätzliche, manuell gepflegte Variable für die Größe eines Arrays bzw Pointer auf ein Array, wie in C üblich, ist somit unnötig.
-Die Notation ähnelt dabei die eines Arrays, aber ohne Größenspezifikation: \rustcinline{&[<Datentyp>]}.
-Eine Slice ist zudem immer eine Referenz.
+\enquote{Slices} (dt. Scheiben/Stücke) bezeichnet Rust Referenzen auf Arrays oder auf Teilbereiche von Arrays und Slices.
+In einem so genannten \enquote{fat pointer} wird der Startpunkt und die Größe der Slice gespeichert  (siehe auch \autoref{rust:memory_layout:vec_slice}).
+Der Compiler kann hierdurch einen Zugriff außerhalb einer Slice oder eines Arrays entweder zur Laufzeit, oder, falls möglich, zur Compilezeit verhindern.
+Ein Buffer-Overflow ist in Rust daher nicht möglich.
+
+Die Notation ähnelt die eines Arrays, aber ohne Größenspezifikation: \rustcinline{&[<Datentyp>]}.
+Eine Slice kann zudem immer nur als eine Referenz angesprochen werden (siehe \autoref{rust:reference}).
 Um eine Slice auf ein Array oder eine andere Slice zu erhalten, muss der Start- und  Endindex des Teilbereiches angegeben werden.
-Falls kein Start- oder Endindex angegeben wurde, wird das jeweilige Limit übernommen.
+Falls kein Start- oder Endindex angegeben wird, wird das jeweilige Limit übernommen.
 
 
 Folgendes Beispiel soll die Notation von Arrays und Slices Beispielhaft verdeutlichen:
@@ -246,7 +248,7 @@ Anstatt eine Variable optional als unveränderlich zu kennzeichnen (\ccinline{co
 
 \subsubsection{Lokale Typinferenz}
 
-Da Rust ein statisches Typensystem mit lokaler Typinferenz ist \todo{cite? https://www.youtube.com/watch?v=-Tj8Q12DaEQ}, muss der Datentyp der Variable nicht notiert werden, sondern dieser wird automatisch erkannt.
+Da Rust ein statisches Typensystem mit lokaler Typinferenz ist, muss der Datentyp einer Variable nicht notiert werden, sondern dieser wird automatisch erkannt.
 Dies gilt aber nur lokal, also innerhalb von Funktionen und Closures, für Parameterlisten und Rückgabewerte von Funktionen müssen die Datentypen explizit angegeben werden (siehe \autoref{rust:fn}).
 
 \rustcinclude
@@ -276,16 +278,16 @@ Eine \rustcinline{union} kann aber nur in \rustcinline{unsafe}-Blöcken verwende
 Für diese Abschlussarbeit hat der Datentyp aber keine Relevanz und wird daher nicht weiter erwähnt.
 
 \subsubsection{Referenzen}
+\label{rust:reference}
 
-\todo{... just rewrite it}
-Auf Zusammengesetze und einfache Datentypen können Referenzen erstellt werden.
-Es wird zwischen einer exklusiven, veränderlichen Referenz und vielen, unveränderlichen Referenzen unterschieden (siehe \autoref{rust:ownership}).
-Die Notation unveränderlicher Referenzen ist \rustcinline{&<Datentyp>}, von veränderlichen Referenzen ist dies \rustcinline{&mut <Datentyp>}.
-Für Merkmale wird zukünftig vermutlich zusätzlich das Schlüsselwort \rustcinline{dyn} in den Syntax aufgenommen (siehe \autoref{rust:generics}).
-Referenzen auf Referenzen sind möglich.
-Referenzen sind immer gültig, es gibt keine \ccinline{NULL}-Referenz (siehe \autoref{rust:no_null}).
+Auf alle Datentypen können Referenzen erstellt werden, um auf diese zuzugreifen, ohne sie zu konsumieren.
+In Rust spricht man dann oft davon, den Wert zu \enquote{leihen}, da sich der Eigentümer nicht ändert, sondern für den Gültigkeitsbereich der Referenz eine andere Variable auf den Wert verweist.
+Wie bei Variablen, wird zwischen Referenzen auf unveränderlichen und veränderlichen Werte unterschieden (siehe \autoref{rust:ownership}).
+Die Notation für Referenzen auf unveränderliche Werte ist \rustcinline{&<Datentyp>}.
+Erwartungsgemäß ist \rustcinline{&mut <Datentyp>} die Notation für Referenzen auf veränderliche Werte.
+Referenzen auf Referenzen sind möglich, auch mit unterschiedlichen
 Eine Manuelle Dereferenzierung einer Referenz ist in den allermeisten Fällen nicht nötig, sondern wird vom Compiler vorgenommen.
-Falls doch nötig, dann mit \rustcinline{*}.
+In Fällen in denen dies nicht wie erwartet automatisch geschieht, kann eine Manuelle Dereferenzierung durch den \rustcinline{*}-Operator erzwungen werden.
 
 \section{Funktionen, Ausdrücke und Statements}
 \label{rust:fn}
@@ -366,27 +368,30 @@ Der zu reservierende Speicher für die Variable kann nicht bestimmt werden, wesw
 
 Im folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibliothek kurz erläutert:
 \begin{itemize}
-	\item \monospaceinline{Send}: Markiert einen Datentyp als zwischen Threads übertragbar. Automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ Send sind \todo{rly? cite?}. Manuelle Implementation ist \todo{unsafe}.
+	\item \monospaceinline{Send}: Markiert einen Datentyp als zwischen Threads übertragbar. Automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ Send sind. Manuelle Implementation ist nicht sicher \cite{rust:book:send_sync}.
+	
 	\rustcinline{!Send} verhindert dagegen, dass ein Wert zu anderen Threads übertragen werden darf.
-	Somit können ansonsten textuelle Beschränkungen, wie zum Beispiel für der OpenGL-Kontext, durch den Compiler überprüft und erzwungen werden.
+	Somit können ansonsten rein textuell beschriebene Beschränkungen, wie zum Beispiel für der OpenGL-Kontext, durch den Compiler überprüft und erzwungen werden.
 	
 	\item \monospaceinline{Sync}: Markiert einen Datentype als zwischen Threads synchronisierbar, d.h. mehrere Threads dürfen gleichzeitig lesend darauf zugreifen.
-	\rustcinline{!Sync} verbietet dies dagegen.
-	Automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ Sync sind \todo{rly? cite?}. Manuelle Implementation ist \todo{unsafe}.
+	\rustcinline{!Sync} verbietet dies hingegen.
+	Automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ Sync sind. Manuelle Implementation ist nicht sicher \cite{rust:book:send_sync}.
 	
 	\item \monospaceinline{Sized}: Verlangt eine zu Compilezeit bekannte Größe. \monospaceinline{?Sized} erlaubt dagegen eine unbekannte Größe zur Compilezeit.
 	
-	\item \monospaceinline{Copy}: Markiert einen Datentyp, der durch einfaches Speicherkopieren (\enquote{memcpy}) vervielfacht werden kann. Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Copy} sind.
+	\item \monospaceinline{Copy}: Markiert einen Datentyp, der durch einfaches Speicherkopieren (etwa \enquote{memcpy}) vervielfacht werden kann. Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Copy} sind.
 	Alle einfachen Datentypen sind bereits \monospaceinline{Copy}.
 	
 	\item \monospaceinline{Clone}: Markiert einen Datentyp der vervielfacht werden kann, dies jedoch nicht durch kopieren des Speichers möglich ist -- zum Beispiel da der Referenzzähler von \rustcinline{Arc} oder \rustcinline{Rc} erhöht werden muss.
 	Stellt die Funktion \rustcinline{clone} bereit, die dafür explizit aufgerufen werden muss.
-	Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Clone} sind.
+	Verlangt für eine automatisierte Implementation, dass alle beinhalteten Datentypen auch \monospaceinline{Clone} sind.
 	Alle einfachen Datentypen sind bereits \monospaceinline{Clone}.
 	
-	\item \monospaceinline{Debug} und \monospaceinline{Display}: Verlangt die Implementation von Funktionen um als Text dargestellt zu werden. , entweder mit mehr Zusatzinformationen (\monospaceinline{Debug}) oder \todo{schön} (\monospaceinline{Display}). Verlangt, \todo{..}
+	\item \monospaceinline{Debug} und \monospaceinline{Display}: Erzwingt die Implementation von Funktionen um einen Datentyp als Text darzustellen. Entweder mit möglichst vielen Zusatzinformationen (\monospaceinline{Debug}) oder schön (\monospaceinline{Display}).
+	Verlangt für eine automatisierte Implementation, dass alle beinhalteten Datentypen auch \monospaceinline{Debug} bzw \monospaceinline{Display} sind.
 	
-	\item \monospaceinline{Deafult}: Verlangt die Implementation einer statische Methode \monospaceinline{default()}, die wie ein leerer Standardkonstruktor von Java oder C\# wirkt. Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Deafult} sind.
+	\item \monospaceinline{Deafult}: Erzwingt die Implementation einer statische Methode \monospaceinline{default()}, die wie ein leerer Standardkonstruktor von Java oder C\# wirkt: Erzeugung einer neuen Instanz mit Standardwerten.
+	Verlangt für eine automatisierte Implementation, dass alle beinhalteten Datentypen auch \monospaceinline{Deafult} sind.
 	
 	\item \rustcinline{PartialEq}: Verlangt die Implementation einer Funktion um mit Instanzen des gleichen Typs verglichen werden zu können.
 	Im Vergleich zu \monospaceinline{Eq} erlaubt \monospaceinline{PartialEq}, dass Typen keine volle Äquivalenzrelation haben.
@@ -397,7 +402,7 @@ Im folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibl
 	\item \rustcinline{PartialOrd}: Verlangt die Implementation einer Funktion um mit Instanzen des gleichen Typs sortiert werden zu können. Erlaubt aber auch, dass Werte zueinander nicht sortierbar sind.
 	Dies ist zum Beispiel für Fließkommazahlen wichtig, da laut IEE754  \rustcinline{Nan} nicht sortiert werden kann (weder \rustcinline{Nan <= 0} noch \rustcinline{Nan > 0} ergibt \rustcinline{true}) \cite{wiki:nan}\cite[275-277]{rust:orly_programming}\cite{rust:doc:partialord}.
 	
-	\item \rustcinline{Ord}: Erzwingt im Gegensatz zu \rustcinline{PartialOrd}, dass Werte immer sortierbar sind.
+	\item \rustcinline{Ord}: Erzwingt im Gegensatz zu \rustcinline{PartialOrd}, dass Werte zueinander immer geordnet werden können.
 	
 	\item \monospaceinline{Drop}: Verlangt die Implementation einer Funktion, die kurz vor der Speicherfreigabe eines Objekts aufgerufen wird (ähnlich Destruktor aus C++).
 \end{itemize}
@@ -430,21 +435,20 @@ In einem \rustcinline{match} wird immer der erste kompatible Codepfad ausgeführ
 	{Kompletter \rustcinline{match} Ausdruck}
 	{sections/rust.match.large.rs}
 
-\todo{...}
-In Zeile 3 von \autoref{rust:match:large} wird \rustcinline{value} aufgelöst und auf der Konsole wird anschließend \monospaceinline{Wert ist: text} ausgegeben.
+Die Ausgabe des Programms aus \autoref{rust:match:large} ist \monospaceinline{Wert ist: text}.
 In dem Beispiel ist \rustcinline{value} aus Zeile 2 und 3 \rustcinline{Some("text")}.
-Sowohl Zeile 4 als auch Zeile 5 prüfen auf das übereinstimmende Feld \rustcinline{Some}, aber nur der Codepfad in Zeile 5 wird ausgeführt.
+Sowohl Zeile 4 als auch Zeile 5 prüfen auf die Variation \rustcinline{Some}, aber nur der Codepfad in Zeile 5 wird ausgeführt.
 %Dekonstruktion von Werten mittels Pattern Matching
-Dies liegt an der Prüfung auf den beinhalteten Wert, der in Zeile 4 mit \rustcinline{\"test\"} übereinstimmen müsste.
-Da eine Übereinstimmung nicht vorliegt, trifft als nächstes Zeile 5 zu, in der nur das Feld \rustcinline{Some} übereinstimmen muss, während der beinhaltete Wert beliebig sein darf.
-Die Variable \rustcinline{value} bindet bei einer Übereinstimmung den Wert, um ihn für den Programmcode ansprechbar zu machen.
-Falls dies nicht nötig ist, kann auch das Wildcard \rustcinline{_} verwendet werden.
+Dies liegt an der zusätzlichen Prüfung für den beinhalteten Wert, der für den Codepfad in Zeile 4 mit \rustcinline{\"test\"} übereinstimmen müsste.
+Da eine Übereinstimmung nicht vorliegt, trifft als nächstes Zeile 5 zu, in der nur die Variation \rustcinline{Some} übereinstimmen muss.
+Die Variable \rustcinline{value} bindet bei dieser Übereinstimmung den Wert, um ihn für den Programmcode ansprechbar zu machen.
+Falls dies nicht nötig wäre, könnte stattdessen auch die Wildcard \rustcinline{_} verwendet werden.
 
-Das \rustcinline{match} Statement von Rust verlangt, dass eine Musterabgleichung immer zu einem Ergebnis führt, dementsprechend müssen all Felder eine Aufzählung aufgeführt sein.
-Hiermit wird verhindert, dass, nachdem eine Aufzählung um ein Feld erweitert wurde, eine Musterabgleichung nicht um das neue Element ergänzt wurde.
-In Situationen, in denen nur wenige Fälle von Bedeutung sind, können alle anderen Fälle durch das Wildcard mittels \rustcinline{_ => {}} adressiert werden.
+Das \rustcinline{match} Statement von Rust verlangt, dass eine Musterabgleichung immer zu einem Ergebnis führt.
+Dementsprechend müssen entweder alle Varianten eine Aufzählung aufgeführt sein oder ein Standardpfade vorhanden sein \rustcinline{_ => \{ \} }.
+Hiermit wird verhindert, dass, nachdem eine Aufzählung um eine Variation erweitert wurde, eine Musterabgleichung nicht um das neue Element ergänzt wurde.
 
-Wenn sogar nur ein konkreter Fall von Bedeutung ist, kann dies in der verkürzten Schreibweise \rustcinline{if let} notiert werden:
+Wenn sogar nur ein konkreter Fall von Bedeutung ist, kann dies in der verkürzten \rustcinline{if let} Schreibweise notiert werden:
 
 \rustcinclude
 	{rust:match:iflet}
@@ -496,31 +500,33 @@ Dieser Datentyp erzwingt eine Prüfung vor dem Zugriff auf den optionalen Wert (
 
 Für die Fehlerbehandlung wird nicht auf ein Exception-Handling zurückgegriffen, sondern ein eigener Datentyp angeboten, der entweder den Rückgabewert enthält, oder aber einen Fehler: \rustcinline{Result<_, _>} (siehe \autoref{rust:result}).
 
-Durch den Fragezeichenoperator kann trotzdem ein ähnliches Verhalten wie beim auftreten einer Ausnahme in Java oder C++ erzielt werden \todo{autoref}.
+Durch den Fragezeichenoperator kann trotzdem ein ähnliches Verhalten wie beim auftreten einer Ausnahme in Java oder C++ erzielt werden (siehe \autoref{rust:result}).
 
 
 \section{Besorgter Compiler}
 \label{rust:worried_compiler}
 \todo{many warnings}
 
+\todo{remove?}
+
 
 \section{Standardbibliothek}
 \label{rust:stdlib}
 
-Die Rust Community ist darum bemüht, die Standardbibliothek sehr leichtgewichtig zu halten.
-Nicht eindeutig als fundamental eingestufte Funktionalitäten werden lieber als Crate auf \url{https://crates.io} angeboten, anstatt sie in die Standardbibliothek zu übernommen \todo{prove via cite}. 
-Mit dieser Entscheidung soll auch eine Entwicklung unabhängig von den Releasezyklen von Rust ermöglicht werden \todo{cite}.
+Das Rust Entwicklerteam ist darum bemüht, die Standardbibliothek sehr leichtgewichtig zu halten.
+Nicht eindeutig als fundamental eingestufte Funktionalitäten werden lieber als Crate auf \url{https://crates.io} angeboten, anstatt sie in die Standardbibliothek zu übernommen \todo{find example again}. 
+Mit dieser Entscheidung soll auch eine Entwicklung unabhängig von den Releasezyklen von Rust ermöglicht werden \todo{find source again}.
 
-Die Standardbibliothek wird selbst als eine Crate zur Verfügung gestellt, auf die standardmäßige eine Abhängigkeit besteht.
-Für Fälle, in denen diese Abhängigkeit zu groß ist, wie im zum Beispiel im Embedded-Bereich, kann diese Abhängigkeit durch das Attribut \rustcinline{#![no_std]} unterbunden werden.
+Die Standardbibliothek ist selbst eine Crates, auf die standardmäßige eine Abhängigkeit erstellt wird.
+Für Fälle, in denen diese Abhängigkeit zu schwergewichtig ist, wie zum Beispiel im Embedded-Bereich, kann diese Abhängigkeit durch das Attribut \rustcinline{#![no_std]} unterbunden werden.
 Daraufhin sind nur noch die in der \rustcinline{core} Crate zur Verfügung gestellten, fundamentalen Sprachkonstrukte verwendbar.
 
 In dieser Abschlussarbeit wird der volle Funktionsumfang der Standardbibliothek genutzt.
-Wichtige aber auch bekannte Datentypen sind:
+Wichtige aber auch bekannte Datentypen sind hierbei:
 
 \begin{itemize}
 	\item \textbf{std::vec::Vec}: Ein Vektor (wie eine Liste), bei dem die Werte in einem dynamisch groß allokierten Speicherbereich auf dem Heap liegen.
-	Ist \textbf{der} Ersatz für dynamische Arrays, da auch der \rustcinline{[]}-Operator implementiert ist und sich daher ein \textbf{Vec} wie ein Array ansprechen lässt.
+	Ist \textbf{der} Ersatz für dynamische Arrays, da auch der \rustcinline{[]}-Operator überschrieben ist und sich daher ein \textbf{Vec} wie ein Array ansprechen lässt.
 	
 	In \autoref{rust:memory_layout:vec_slice} ist das Speicherlayout eines \textbf{Vec} und einer \textbf{Slice} auf dem Stack und dem Heap abgebildet.
 	Zu sehen ist, dass eine \textbf{Slice} direkt auf die Elemente eines \textbf{Vec} zeigen kann und sich daher von einem Array-Pointer aus C und C++ nur durch die angehängte Längeninformation unterscheidet.
@@ -587,7 +593,7 @@ Wichtige aber auch bekannte Datentypen sind:
 	
 	\item \textbf{std::boxed::Box}:
 	Verweis auf einen Speicherbereich auf dem Heap für einen beliebigen Datentyp.
-	Erlaubt es, u.a. Eigentümerschaft über ein unbekannt großen Datentyp zu erlangen, da dies die Größe von \textbf{Box} nicht beeinflusst (siehe \autoref{rust:generics}).
+	Erlaubt es, u.a. Eigentümerschaft über ein unbekannt großen Datentyp zu erlangen, da dies die Größe einer \textbf{Box} nicht beeinflusst (siehe \autoref{rust:generics}).
 	Eine \textbf{Box} kann mit einem immer gültigen Heap-Pointer aus C und C++ verglichen werden.
 	
 	\item \textbf{std::string::String}: Eine UTF-8 codierte, vergrößer- und verkleinerbare Zeichenkette auf dem Heap.
@@ -597,11 +603,11 @@ Wichtige aber auch bekannte Datentypen sind:
 	Verwendet einen mit wenig Mehraufwand verbundenen, nicht-atomaren Referenzzähler, weswegen eine \textbf{Rc} Instanz nicht zwischen Threads übertragen werden kann (\rustcinline{!Sync}, \rustcinline{!Send}).
 	
 	\item \textbf{std::sync::Arc}: Entspricht weitestgehend dem \textbf{Rc}, verwendet jedoch einen atomaren Referenzzähler.
-	Dies ist zwar mit Mehraufwand zur Laufzeit verbunden, erlaubt aber auch, dass eine \textbf{Arc} Instanz zwischen Threads übertragen werden kann, insofern der beinhaltende Wert dies erlaubt.
+	Dies ist zwar mit höheren Laufzeitkosten verbunden, erlaubt es aber, dass eine \textbf{Arc} Instanz zwischen Threads übertragen werden kann.
 	Mehrere Threads können daher lesend auf den beinhalteten Wert zugreifen.
 	
 	\item \textbf{std::sync::Mutex}: \todo{?} Schützt Daten anstatt Code
-	\item \textbf{std::sync::RwLock}: \todo{?} Erlaubt mehrfach lesend
+	\item \textbf{std::sync::RwLock}: \todo{?} Erlaubt mehrfach lesend oder einmal schreibend
 	\item \textbf{std::net::TcpStream}: \todo{?} 
 	\item \textbf{Module std::thread}: \todo{?}
 	\item \textbf{std::collections::HashMap}: \todo{?}
@@ -639,14 +645,16 @@ Die optionalen Implementation des \rustcinline{std::op::Drop}-Merkmals (siehe \a
 \label{rust:ownership}
 
 Bereits 2003 beschreibt Bruce Powel Douglass im Buch \enquote{Real-Time Design Patterns}, dass \enquote{passive} Objekte ihre Arbeit nur in dem Thread-Kontext ihres \enquote{aktiven} Eigentümers tätigen sollen \cite[204]{douglass2003real}.
-In dem beschriebenen \enquote{Concurrency Pattern} wird eine klare Zuordnung getätigt, welche Objekte welchem anderen Objekt als Eigentümern zugeordnet sind, um eine sicherere Nebenläufigkeit zu schaffen \todo{shit}.
+In dem beschriebenen \enquote{Concurrency Pattern} werden Objekte eindeutig Eigentümern zugeordnet, um so eine sicherere Nebenläufigkeit zu erlauben.
 
-Diese Philosophie setzt Rust direkt in der Sprache um, so darf eine Variable immer nur einen Eigentümer haben. Zusätzlich zu einem immer eindeutig identifizierbaren Eigentümer für eine Variable, kann diese auch ausgeliehen werden; entweder exklusiv mit sowohl Lese- als auch Schreiberlaubnis, oder mehrfache mit nur Leseerlaubnis.
+Diese Philosophie setzt Rust direkt in der Sprache um, denn in Rust darf ein Wert immer nur einen Eigentümer haben.
+Zusätzlich zu einem immer eindeutig identifizierbaren Eigentümer, kann der Wert auch ausgeliehen werden, um einen kurzzeitigen Zugriff zu erlauben; entweder exklusiv mit sowohl Lese- als auch Schreiberlaubnis, oder mehrfache mit nur Leseerlaubnis.
 
 Eigentümerschaft kann auch übertragen werden, der vorherige Eigentümer kann danach nicht mehr auf den Wert zugreifen.
+Ein entsprechender Versuch wird mit einem Compilerfehler bemängelt.
 
 Die Garantie, nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert (siehe \autoref{rust:scope}).
-Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nötig, weshalb diese Philosophie keinen negativen Einfluss auf die Laufzeit hat.
+Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nötig, weshalb diese Philosophie keinen Laufzeitkosten mit sich bringt.
 
 \rustcinclude
 	{rust:ownership:scope}
@@ -656,12 +664,18 @@ Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nö
 
 
 \section{Rust als funktionale Programmiersprache ??}
+
 \todo{functional programming -> no global state, no exceptions, find literature}
+
 \todo{prove via code}
 
 \section{Rust als Objekt-Orientierte Programmiersprache ??}
 \label{rust:oop}
+
+Vererbung explizit nicht erwünscht, Composition over Inheritance, inheritance dissallows static sizes, enum allow passing by value
+
 \todo{trait}
+
 \todo{prove via design patterns, a few? from faq::  Is Rust object oriented? It is multi-paradigm. Many things you can do in OO languages you can do in Rust, but not everything, and not always using the same abstraction you’re accustomed to.}
 
 
@@ -712,13 +726,14 @@ Der Compiler stoppt mit einem Fehler: \enquote{\textbf{\textcolor{red}{error[E03
 \end{quotation}
 
 Wie in \autoref{rust:no_null} bereits erwähnt, kennt Rust keinen \ccinline{NULL}-Pointer.
-Daher ist es auch nicht möglich, durch Nachlässigkeit auf den falschen Speicher zuzugreifen, da eine Referenz immer gültig ist.
+Daher ist es auch nicht möglich, durch Nachlässigkeit auf den falschen Speicher zuzugreifen.
+Eine Referenz ist immer gültig.
 Für fälle, in denen es situationsbedingt keinen gültigen Wert gibt, bietet Rust stattdessen den \rustcinline{Option<_>} Datentyp an.
 \rustcinline{Option<_>} ist eine Aufzählung, die entweder \rustcinline{None} ohne einen Wert, oder \rustcinline{Some(_)} mit einem Wert ist.
-Auf den Wert kann nicht zugegriffen werden, ohne zu prüfen, ob wirklich ein \rustcinline{Some(_)} vorliegt.
+Auf den Wert kann nicht zugegriffen werden, ohne zu prüfen, ob wirklich die Variation \rustcinline{Some(_)} vorliegt.
 Dies kann durch \rustcinline{match} oder verkürzt durch ein \rustcinline{if let Some(wert) = optional \{ /* tu etwas mit wert */ \}} geschehen (siehe \autoref{rust:match}).
 
-In vielen fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als \ccinline{NULL}-Pointer dargestellt werden, weswegen durch diese Abstraktion meist keine weiteren Laufzeitkosten eingeführt werden \cite[100]{rust:orly_programming} (siehe \autoref{rust:zero_cost}).
+In vielen fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als \ccinline{NULL}-Pointer dargestellt werden, weswegen durch diese Abstraktion keine weiteren Laufzeitkosten eingeführt werden \cite[100]{rust:orly_programming} (siehe \autoref{rust:zero_cost}).
 
 
 
@@ -764,8 +779,6 @@ Dazu muss die Funktion, die den Operator verwendet aber auch ein \rustcinline{Re
 		{sections/rust.result.shorthand.rs}
 \end{figure}
 
-
-\todo{explain shorthand '?'}
 
 \subsection{No dangling pointer}
 \label{rust:guarantee:no_danling_pointer}
@@ -861,7 +874,7 @@ Der Zähler ist im Heap direkt vor dem beinhalteten Wert und nicht in einem extr
 
 
 
-\section{Einbinden von Bibliotheken}
+\section{Einbinden von externen Bibliotheken}
 
 \subsubsection{Externe Datentypen}
 \label{rust:ffi}

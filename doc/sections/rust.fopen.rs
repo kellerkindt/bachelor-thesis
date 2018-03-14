@@ -2,10 +2,12 @@ use std::fs::File;
 use std::io::Write;
 
 fn main() {
-    match File::open("private.key") {
-        Err(e) => println!("Fehler aufgetreten: {}", e),
-        Ok(mut file) => {
-            let _ = write!(file, "42");
-        }
+  match File::create("private.key") {
+    Err(e) => println!("Datei nicht erstellbar: {}", e),
+    Ok(mut file) => {
+      if let Err(e) = write!(file, "42") {
+        println!("Konnte nicht in Datei schreiben: {}", e);
+      }
     }
+  }
 }

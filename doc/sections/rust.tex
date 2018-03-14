@@ -213,8 +213,8 @@ Durch dieses Schema bei der Bezeichnung der Datentypen wird eine Verwirrung wie 
 
 Konstanten können eindeutig einem Datentyp zugewiesen werden, indem dieser angehängt wird: \rustcinline{4711u16} ist vom Datentyp \rustcinline{u16}.
 Des weiteren dürfen Ziffern durch beliebiges setzen von \rustcinline{_} getrennt werden, um die Lesbarkeit zu erhöhen: \rustcinline{1_000_000_f32}.
-Eine Schreibweise in Binär (\rustcinline{0b0000_1000_u8}), in Hexadezimal (\rustcinline{0xFF_08_u16}) oder Oktal (\rustcinline{0o64_u8}) ist auch möglich. 
-Konstante Zeichen und Zeichenketten können auch automatisch in Bytes gewandelt werden (\rustcinline{b'b'} entspricht \rustcinline{0x62_u8} und \rustcinline{b"abc"} entsricht \rustcinline{&[0x61_u8, 0x62_u8, 0x63_u8]}).
+Eine Schreibweise in Binär (\rustcinline{0b0000_1000_u8}), in Hexadezimal (\rustcinline{0xFF_08_u16}) oder in Oktal (\rustcinline{0o64_u8}) ist auch möglich. 
+Konstante Zeichen und Zeichenketten können auch automatisch durch ein vorangestelltes \textit{b} in Bytes gewandelt werden (\rustcinline{b'b'} entspricht \rustcinline{0x62_u8} und \rustcinline{b"abc"} entsricht \rustcinline{&[0x61_u8, 0x62_u8, 0x63_u8]}).
 
 Arrays haben immer eine zur Compilezeit bekannte Größe und müssen auch immer mit einem Wert initialisiert werden (siehe \autoref{rust:no_unitialized_usage}).
 Dynamische Arrays auf dem Stack gibt es (noch? \cite{rust:github:alloca}) nicht,
@@ -223,17 +223,13 @@ Die Notation für Arrays ist \rustcinline{[<Füllwert>; <Größe>]}, wobei die G
 \rustcinline{[0_u8; 128]} steht demnach für ein 128 Byte langes Array, das mit 0-en vom Datentyp \rustcinline{u8} gefüllt ist.
 
 \enquote{Slices} (dt. Scheiben/Stücke) bezeichnet Rust Referenzen oder Referenzen auf Teilbereiche von Arrays und Slices.
-Die Größe einer Slice wird dabei mit der Referenz auf die Startposition gespeichert und oft auch \enquote{fat pointer} genannt.
-Ein zusätzlicher Parameter für die Größe eines Buffers, wie in C üblich, ist somit unnötig.
+Die Größe einer Slice wird dabei mit der Referenz auf die Startposition gespeichert und oft auch \enquote{fat pointer} genannt (siehe auch \autoref{rust:memory_layout:vec_slice}).
+Ein zusätzliche, manuell gepflegte Variable für die Größe eines Arrays bzw Pointer auf ein Array, wie in C üblich, ist somit unnötig.
 Die Notation ähnelt dabei die eines Arrays, aber ohne Größenspezifikation: \rustcinline{&[<Datentyp>]}.
-Eine Slice ist immer eine Referenz.
+Eine Slice ist zudem immer eine Referenz.
 Um eine Slice auf ein Array oder eine andere Slice zu erhalten, muss der Start- und  Endindex des Teilbereiches angegeben werden.
 Falls kein Start- oder Endindex angegeben wurde, wird das jeweilige Limit übernommen.
 
-\todo{let, let mut, let ... : type = ..., \& \&mut, deref via *}
-
-https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
-\todo{static type system with local type inference } \\
 
 Folgendes Beispiel soll die Notation von Arrays und Slices Beispielhaft verdeutlichen:
 
@@ -243,6 +239,23 @@ Folgendes Beispiel soll die Notation von Arrays und Slices Beispielhaft verdeutl
 	{sections/rust.slices.rs}
 	
 Das in \autoref{rust:slices:example} gezeigte Programm, gibt auf der Konsole \rustcinline{2, 3, 4, } aus.
+
+Variablen werden durch das \rustcinline{let} Schlüsselwort \enquote{gebindet}, das heißt, der Variable wird die Eigentümerschaft über den Wert zugewiesen.
+Ausnahmen können Datentypen mit dem Merkmal \rustcinline{Copy} bilden, da diese ein implizite Kopie erlauben (siehe \autoref{rust:generics}).
+Anstatt eine Variable optional als unveränderlich zu kennzeichnen (\ccinline{const} in C, \javacinline{final} in Java), wird eine Variable in Rust optional als veränderlich gekennzeichnet (\rustcinline{mut}), während standardmäßig Variablen unveränderlich sind.
+
+\subsubsection{Lokale Typinferenz}
+
+Da Rust ein statisches Typensystem mit lokaler Typinferenz ist \todo{cite? https://www.youtube.com/watch?v=-Tj8Q12DaEQ}, muss der Datentyp der Variable nicht notiert werden, sondern dieser wird automatisch erkannt.
+Dies gilt aber nur lokal, also innerhalb von Funktionen und Closures, für Parameterlisten und Rückgabewerte von Funktionen müssen die Datentypen explizit angegeben werden (siehe \autoref{rust:fn}).
+
+\rustcinclude
+	{rust:type_interference}
+	{Beispiel für lokale Typinferenz}
+	{sections/rust.type_interference.rs}
+	
+
+
 
 \section{Zusammengesetzen Datentypen}
 \label{rust:types:composed}
@@ -262,7 +275,20 @@ Seit Version 1.19 ist auch der Datentyp \rustcinline{union} in Rust verfügbar \
 Eine \rustcinline{union} kann aber nur in \rustcinline{unsafe}-Blöcken verwendet werden, da der Compiler eine Ordnungsgemäße Nutzung nicht überprüfen kann.
 Für diese Abschlussarbeit hat der Datentyp aber keine Relevanz und wird daher nicht weiter erwähnt.
 
+\subsubsection{Referenzen}
+
+\todo{... just rewrite it}
+Auf Zusammengesetze und einfache Datentypen können Referenzen erstellt werden.
+Es wird zwischen einer exklusiven, veränderlichen Referenz und vielen, unveränderlichen Referenzen unterschieden (siehe \autoref{rust:ownership}).
+Die Notation unveränderlicher Referenzen ist \rustcinline{&<Datentyp>}, von veränderlichen Referenzen ist dies \rustcinline{&mut <Datentyp>}.
+Für Merkmale wird zukünftig vermutlich zusätzlich das Schlüsselwort \rustcinline{dyn} in den Syntax aufgenommen (siehe \autoref{rust:generics}).
+Referenzen auf Referenzen sind möglich.
+Referenzen sind immer gültig, es gibt keine \ccinline{NULL}-Referenz (siehe \autoref{rust:no_null}).
+Eine Manuelle Dereferenzierung einer Referenz ist in den allermeisten Fällen nicht nötig, sondern wird vom Compiler vorgenommen.
+Falls doch nötig, dann mit \rustcinline{*}.
+
 \section{Funktionen, Ausdrücke und Statements}
+\label{rust:fn}
 
 Funktionen werden durch \rustcinline{fn} gekennzeichnet, gefolgt mit dem Funktionsnamen, der Parameterliste und zuletzt der Datentyp für den Rückgabewert.
 Selbst wenn kein expliziter Rückgabetyp angegeben wird, wird formal \rustcinline{()} zurück gegeben; \rustcinline{()} entspricht etwa \ccinline{void} aus bekannten Programmiersprachen.
@@ -396,24 +422,34 @@ Zugriffsmodifikatoren können auch vor \rustcinline{use} Anweisungen geschrieben
 \label{rust:match}
 
 Der \rustcinline{match} Ausdruck ist ein sehr mächtiges Werkzeug in Rust und entspricht einem stark erweiterten \ccinline{switch} aus Programmiersprachen wie C, Java oder C\#.
-Mit ihm ist es möglich einen Wert einer Aufzählung aufzulösen und gleichzeitig auf eventuell beinhaltete Werte zuzugreifen oder zu konsumieren.
+Mit ihm ist es nicht nur möglich einen Wert einer Aufzählung aufzulösen sondern Muster inklusive Konstanten zu vergleichen und gleichzeitig auf eventuell beinhaltete Werte zuzugreifen oder diese zu konsumieren.
+In einem \rustcinline{match} wird immer der erste kompatible Codepfad ausgeführt.
 
 \rustcinclude
 	{rust:match:large}
 	{Kompletter \rustcinline{match} Ausdruck}
 	{sections/rust.match.large.rs}
 
-In Zeile 3 von \autoref{rust:match:large} wird \rustcinline{value} aufgelöst.
-In dem Beispiel ist \rustcinline{value} aus Zeile 2 und 3 \rustcinline{Some("text")}, weswegen Zeile 4 ausgeführt, \rustcinline{value} konsumiert und \monospaceinline{Wert ist: text} auf der Konsole ausgegeben wird.
+\todo{...}
+In Zeile 3 von \autoref{rust:match:large} wird \rustcinline{value} aufgelöst und auf der Konsole wird anschließend \monospaceinline{Wert ist: text} ausgegeben.
+In dem Beispiel ist \rustcinline{value} aus Zeile 2 und 3 \rustcinline{Some("text")}.
+Sowohl Zeile 4 als auch Zeile 5 prüfen auf das übereinstimmende Feld \rustcinline{Some}, aber nur der Codepfad in Zeile 5 wird ausgeführt.
+%Dekonstruktion von Werten mittels Pattern Matching
+Dies liegt an der Prüfung auf den beinhalteten Wert, der in Zeile 4 mit \rustcinline{\"test\"} übereinstimmen müsste.
+Da eine Übereinstimmung nicht vorliegt, trifft als nächstes Zeile 5 zu, in der nur das Feld \rustcinline{Some} übereinstimmen muss, während der beinhaltete Wert beliebig sein darf.
+Die Variable \rustcinline{value} bindet bei einer Übereinstimmung den Wert, um ihn für den Programmcode ansprechbar zu machen.
+Falls dies nicht nötig ist, kann auch das Wildcard \rustcinline{_} verwendet werden.
 
-Wenn nur ein konkreter Fall von Bedeutung ist, kann dies in der verkürzten Schreibweise \rustcinline{if let} notiert werden:
+Das \rustcinline{match} Statement von Rust verlangt, dass eine Musterabgleichung immer zu einem Ergebnis führt, dementsprechend müssen all Felder eine Aufzählung aufgeführt sein.
+Hiermit wird verhindert, dass, nachdem eine Aufzählung um ein Feld erweitert wurde, eine Musterabgleichung nicht um das neue Element ergänzt wurde.
+In Situationen, in denen nur wenige Fälle von Bedeutung sind, können alle anderen Fälle durch das Wildcard mittels \rustcinline{_ => {}} adressiert werden.
+
+Wenn sogar nur ein konkreter Fall von Bedeutung ist, kann dies in der verkürzten Schreibweise \rustcinline{if let} notiert werden:
 
 \rustcinclude
 	{rust:match:iflet}
 	{Vereinfachte \rustcinline{if let} Ausdruck}
 	{sections/rust.match.iflet.rs}
-	
-\todo{Dekonstruktion von Werten mittels Pattern Matching}
 
 Ein weiterer Unterschied von \autoref{rust:match:iflet} gegenüber \autoref{rust:match:large} ist in Zeile 3 das Schlüsselwort \rustcinline{ref}, wodurch der Konsum des Wertes verhindert wird.
 Das Schlüsselwort \rustcinline{mut} erlaubt zudem eine Änderung des Wertes, weswegen \rustcinline{value} in Zeile 4 vom Typ \rustcinline{&mut u32} ist.
@@ -423,7 +459,7 @@ Als Wildcard für sowohl nicht benötigte Werte, als auch alle weiteren Fälle k
 
 Weitere Möglichkeiten, Muster zu erkennen sind ab Seite 221 in \cite{rust:orly_programming} in detaillierter Ausführung zu finden.
 Dazu gehören unter anderem die \enquote{guard expression}, \enquote{bindings} und \enquote{ranges}.
-Aufgrund des Umfangs wird hier auf eine weitere Vertiefung verzichtet.
+Aufgrund des Umfangs und die Irrelevanz für diese Arbeit wird hier auf eine weitere Vertiefung verzichtet.
 
 \section{Attribute}
 \label{rust:attributes}
@@ -643,8 +679,8 @@ Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nö
 \end{quotation}
 
 Rust wirbt mit Versprechen und Garantien, die dafür sorgen sollen, typische Fehler zu vermeiden.
-In einer perfekten Welt wären viele dieser Maßnahmen nicht nötig, da perfekte Wesen niemals einen Fehler machen würden, aber leider sind Programmierer auch nur Menschen.
-Menschen, die Fehler machen.
+In einer perfekten Welt wären viele dieser Maßnahmen nicht nötig, da perfekte Wesen niemals einen Fehler machen und niemals etwas übersehen würden.
+Programmierer sind aber Menschen, Menschen machen Fehler.
 Deswegen hat Rust einige Interessante Mechaniken eingeführt, bekannte Fehlerquellen zu unterbinden und erzwingt die Einhaltung dieser, indem andere Vorgehensweisen meist ausgeschlossen werden.
 
 Dieses Kapitel beschäftigt sich mit den wichtigsten und bekanntesten dieser Mechaniken.
@@ -655,11 +691,12 @@ Dieses Kapitel beschäftigt sich mit den wichtigsten und bekanntesten dieser Mec
 
 Bei der Entwicklung von Rust wird ein sehr großer Fokus darauf gelegt, keine undefinierten Zustände zu erlauben.
 Daher ist es normalerweise nicht möglich, ein undefiniertes Verhalten oder einen undefinierten Zustand zu erzeugen.
-Die Ausnahme bildet dabei die Nutzung innerhalb von \rustcinline{unsafe} Blöcken, für zum Beispiel FFI (siehe \autoref{rust:ffi}).
+Die Ausnahme bilden einige Fälle innerhalb von \rustcinline{unsafe} Blöcken, für zum Beispiel FFI (siehe \autoref{rust:ffi}).
 Für diese Fälle gibt es eine überschaubare Liste von Szenarien, aus denen ein undefinierter Zustand bzw. undefiniertes Verhalten resultieren kann \cite{rust:book:undefined}.
 
 Als einfaches Beispiel eines undefinierten Zustandes in C ist eine Variable, die deklariert wurde, der aber noch keinen Wert zugewiesen wurde.
 In manchen Szenarien hat die Variable dann den Wert der in diesem Moment an der entsprechenden Stelle im Speicher steht, in anderen Szenarien wird der Speicher vom Betriebssystem, Allokator oder von vom Compiler eingefügten Befehlen mit 0en gefüllt -- eine sichere Aussage ist nicht möglich.
+Sich darauf zu verlassen, dass neue Werte automatisch mit 0 initialisiert wurden, kann auf neuen Systemen oder mit anderen Compilern ein unvorhersehbares Verhalten provozieren.
 
 Rust lässt deshalb keinen Zugriff auf Variablen zu, die nicht zuvor initialisiert wurden \cite[126]{rust:orly_programming}.
 Der Compiler stoppt mit einem Fehler: \enquote{\textbf{\textcolor{red}{error[E0381]}: use of possibly uninitialized variable: `a`}}.
@@ -676,7 +713,7 @@ Der Compiler stoppt mit einem Fehler: \enquote{\textbf{\textcolor{red}{error[E03
 
 Wie in \autoref{rust:no_null} bereits erwähnt, kennt Rust keinen \ccinline{NULL}-Pointer.
 Daher ist es auch nicht möglich, durch Nachlässigkeit auf den falschen Speicher zuzugreifen, da eine Referenz immer gültig ist.
-Für fälle, in denen es eventuell keinen Wert gibt, bietet Rust stattdessen den \rustcinline{Option<_>} Datentyp an.
+Für fälle, in denen es situationsbedingt keinen gültigen Wert gibt, bietet Rust stattdessen den \rustcinline{Option<_>} Datentyp an.
 \rustcinline{Option<_>} ist eine Aufzählung, die entweder \rustcinline{None} ohne einen Wert, oder \rustcinline{Some(_)} mit einem Wert ist.
 Auf den Wert kann nicht zugegriffen werden, ohne zu prüfen, ob wirklich ein \rustcinline{Some(_)} vorliegt.
 Dies kann durch \rustcinline{match} oder verkürzt durch ein \rustcinline{if let Some(wert) = optional \{ /* tu etwas mit wert */ \}} geschehen (siehe \autoref{rust:match}).
@@ -704,18 +741,28 @@ In Rust wird weder eine Ausnahme geworfen, noch ein Rückgabewert zurück gegebe
 
 \begin{figure}[H]
 	\rustcinclude
-	{rust:result:rust_good_fopen}
-	{Positivbeispiel: Keine fehlende Fehlerprüfung in Rust}
-	{sections/rust.fopen.rs}
+		{rust:result:rust_good_fopen}
+		{Positivbeispiel: Keine fehlende Fehlerprüfung in Rust}
+		{sections/rust.fopen.rs}
 \end{figure}
 
 Der Rückgabewert von \rustcinline{File::open("private.key")} in Zeile 5 von \autoref{rust:result:rust_good_fopen} ist vom Typ \rustcinline{Result<File, Error>}.
 Auf den eigentlichen Rückgabewert \rustcinline{File} kann nicht ohne eine Fehlerprüfung zugegriffen werden, da dies \rustcinline{Result} verhindert.
-Eine Fehlerprüfung kann wie in Zeile 5 mit einem \rustcinline{match} oder verkürzt durch ein \rustcinline{if let Ok(mut file) = ...} geschehen.
+Eine Fehlerprüfung kann wie in Zeile 5 mit einem \rustcinline{match} oder verkürzt durch ein \rustcinline{if let} wie in Zeile 8 geschehen.
 
-Durch die statische Lebenszeitanalyse (siehe \autoref{rust:static_analysis}) in Rust ist der Geltungsbereich der \rustcinline{File} Variable bekannt, deshalb wird in dem Beispiel in Rust in \autoref{rust:result:rust_good_fopen} die Datei auch wieder ordnungsgemäß geschlossen.
+Durch die statische Lebenszeitanalyse (siehe \autoref{rust:static_analysis}) in Rust ist der Geltungsbereich der \rustcinline{mut file} Variable bekannt, deshalb wird in dem Beispiel in Rust in \autoref{rust:result:rust_good_fopen} die Datei auch wieder ordnungsgemäß geschlossen.
 Dies ist im im C Beispiel in \autoref{rust:result:c_bad_fopen} nicht der Fall.
 In einem größeren Programm könnte so zu unbekanntem Zeitpunkt das Limit an gleichzeitig geöffneten Dateien erreicht werden.
+
+Da eine \rustcinline{match} oder ein \rustcinline{if let} für jeden Funktionsaufruf der einen Fehler zurückgeben könnte, sehr umständlich und bereits für kleine Beispiele wie \autoref{rust:result:rust_good_fopen} unübersichtlich wird, kann dies durch den Operator \rustcinline{?} abgekürzt werden.
+Dazu muss die Funktion, die den Operator verwendet aber auch ein \rustcinline{Result} im einem kompatiblen Fehlertyp zurückgeben, wie in \autoref{rust:result:shorthand} zu sehen:
+
+\begin{figure}[H]
+	\rustcinclude
+		{rust:result:shorthand}
+		{Verkürzte Fehlerbehandlung in Rust}
+		{sections/rust.result.shorthand.rs}
+\end{figure}
 
 
 \todo{explain shorthand '?'}

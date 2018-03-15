@@ -13,32 +13,44 @@ unter anderem eine \gls{fba}, Risikoabschätzung durch Einstufung nach \glspl{as
 
 \section{Funktionale Anforderungen}
 
-\todo{server start stop auf MEC VM / linux}
+\requirement{impl:rust}{Implementation in Rust}{Die Implementation wird in der Programmiersprache Rust vorgenommen.}
 
-\todo{reaktionszeit, soft-realtime?}
+\requirement{exec:mec}{Plattform MEC}{Die Serverimplementation muss auf einem MEC Server mit Ubuntu 14.04 LTS Server als Betriebssystem gestartet werden können.}
 
-\todo{erlauben von clients via tcp}
 
-\todo{Kommunikationsprotokoll: protokoll asn}
+\requirement{exec:time}{Reaktionszeit für Ergebnisse des Fusions-Algorithmus}{Die Zeit die der Server für die Weitergabe der Ergebnisse aus dem Fusions-Algorithmus benögtit, soll \todo{trölf} Millisekunden nicht überschreiten.}
 
-\todo{client kann sensor sein}
+\requirement{exec:realtime}{Kein Echtzeitsystem}{Trotz Anforderung \reqNumberForLabel{exec:time} wird das System nicht als Echtzeitsystem gewertet. Eine Analyse für die maximale Reaktionszeit ist nicht verlangt.}
 
-\todo{client kann auto sein}
+\requirement{com:tcp}{TCP Server}{Auf Port \todo{...} werden auf neue TCP Verbindungen gehört. Jeder Client hat eine eigene TCP Verbindung.}
 
-\todo{client kann sich ein geofence zuweisen}
+\requirement{com:asn}{Kommunikationsprotokoll ist ASN.1}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients ist ASN.1. Es werden die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert.}
 
-\todo{unterteilung in aktive und nicht aktive geofences}
+\requirement{client:sensor}{Client als Sensor}{Ein Client kann sich nach dem Verbindungsaufbau als Sensor registrieren.}
 
-\todo{sensoren in nicht aktiven geofence sollen pausiert werden}
+\requirement{client:car}{Client als Fahrzeug}{Ein Client kann sich nach dem Verbindungsaufbau als Fahrzeug registrieren.}
 
-\todo{eingehende sensordaten müssen algorithmus übergeben werden}
+\requirement{client:geofence}{GeoFence bestimmbar}{Ein Client kann das GeoFence in dem er sich physikalisch befindet bekannt zuweisen.}
 
-\todo{Ergebnis von Algorithmus muss Fahrzeugen in entsprechendem geofence gesendet werden}
+\requirement{geofence:state}{GeoFence Unterteilung}{Es wird zwischen aktiven und inaktiven GeoFences unterschieden. Ein GeoFence ist nur dann aktiv, wenn mindestens ein Fahrzeug zugewiesen ist.}
 
-	
+\requirement{geofence:sensor:pause}{Sensoren pausieren}{Sensoren werden bei der Zustandsänderung des zugewiesenen GeoFences zu inaktiv oder bei Zuweisung zu einem inaktiven GeoFence pausiert.}
+
+\requirement{geofence:sensor:resume}{Sensoren wecken}{Sensoren werden bei der Zustandsänderung des zugewiesenen Geofences zu aktiv oder bei Zuweisung zu einem aktiven GeoFence geweckt.}
+
+\requirement{impl:algorithmus:to}{Sensordaten weitergeben}{Empfangene Sensordaten werden dekodiert und an den Fusions-Algorithmus weitergegeben. \todo{geofence?}}
+
+\requirement{impl:algorithmus:from}{Ergebnisse weitergeben}{Ergebnisse des Fusions-Algorithmus werden enkodiert un an die Fahrzeuge in den entsprechenden GeoFences versendet.}
+
+\requirement{com:count}{Mindestanzahl Clients}{Der Server muss mindestens \todo{..} Sensoren und \todo{..} Fahrzeuge gleichzeitig bedienen können.}
+
+\requirement{exec:time}{Reaktionszeit für Sensordaten}{Die Zeit die der Server für Anforderung \reqNumberForLabel{impl:algorithmus:to} und \reqNumberForLabel{impl:algorithmus:from} zusammen benötigt soll \todo{trölf} Millisekunden nicht überschreiten.}
+
+\requirement{dos:sensor}{Widerstand gegen Sensor DOS}{Die Funktionalität des Servers gegenüber anderen Clients wird durch eine Überflutung von Daten eines Sensors nicht beeinträchtigt. \todo{optional?}}
+
+\requirement{dos:car}{Widerstand gegen Nachrichtenrückstau}{Die Funktionalität des Servers gegenüber anderen Clients wird durch Fahrzeuge, für die sich ein \todo{Nachrichtenrückstau} bildet und von einzelnen langsamen Verbindungen nicht beeinträchtigt. \todo{optional?}}
+
+
 \section{Nichtfunktionale Anforderungen}
 
-\todo{optional? Sensoren dürfen server nicht DOSen können}
-
-\todo{optional? Gestörte/Langsame Verbindung darf nicht allen Speicher fressen (queue)}
-
+\requirement{nfktl:speed}{Möglichst schnell}{Der Server soll auf Sensordaten und Algorithmusergebnisse schnell reagieren.}

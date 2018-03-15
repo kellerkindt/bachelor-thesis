@@ -1,34 +1,34 @@
 
 \chapter{Hochperformante, serverbasierte Kommunikationsplattform}
-	\label{com_plattform}
-	\section{Echtzeitsysteme}
-		Echtzeitsysteme zeichnen sich im allgemeinen dadurch aus, eine Aufgabe in einem zuvor vorgegebenen Zeitraum bearbeiten zu können.
-		Es existiert zu einer Aufgabe also immer eine Frist.
-		Bei der Bewertung der Richtigkeit eines Systems, wird die Fähigkeit, eine Frist einhalten zu können, auch bewertet \cite[2]{perf:buttazzo2006soft}.
-		Je nach Art des Echtzeitsystems, wird diese First jedoch unterschiedlich gewichtet:
-		
-		\begin{itemize}
-			\item Bei einem harten Echtzeitsystem kann eine Überschreitung der Frist einen katastrophalen Ausgang haben.
-			Selbst im schlimmsten Fall darf diese Frist nicht überschritten werden.
-			Deswegen wird in einem harten Echtzeitsystem die im maximale Reaktionszeit dem Zeitraum bis zur Frist gegenübergestellt \cite[75]{douglass2003real}.
-			Ein Ergebnis nach Ablauf der Frist wird als nutzlos gewertet \cite[2]{perf:wang2017real}.
+\label{com_plattform}
+
+Dieses Kapitel erläutert den Begriff \enquote{hochperformante, serverbasierte Kommunikationsplattform} und vermittelt Basiswissen hierzu.
+
+\section{Echtzeitsysteme}
+Echtzeitsysteme zeichnen sich im allgemeinen dadurch aus, eine Aufgabe in einem zuvor vorgegebenen Zeitraum bearbeiten zu können.
+Es existiert zu einer Aufgabe also immer eine Frist.
+Bei der Bewertung der Richtigkeit eines Systems, wird die Fähigkeit, eine Frist einhalten zu können, auch bewertet \cite[2]{perf:buttazzo2006soft}.
+Je nach Art des Echtzeitsystems, wird diese First jedoch unterschiedlich gewichtet:
+
+\begin{itemize}
+	\item Bei einem harten Echtzeitsystem kann eine Überschreitung der Frist einen katastrophalen Ausgang haben.
+	Selbst im schlimmsten Fall darf diese Frist nicht überschritten werden.
+	Deswegen wird in einem harten Echtzeitsystem die im maximale Reaktionszeit dem Zeitraum bis zur Frist gegenübergestellt \cite[75]{douglass2003real}.
+	Ein Ergebnis nach Ablauf der Frist wird als nutzlos gewertet \cite[2]{perf:wang2017real}.
+	
+	Zum Beispiel könnte eine zu späte Auswertung von Beschleunigungsdaten in einem Flugzeug zu einer verzögerten und mittlerweile falschen Reaktion und daraufhin zu einem Absturz führen \cite[5]{perf:laplante2004real}.
+	
+	\item Bei einem weichen Echtzeitsystem resultiert die Überschreitung des vorgegebenes Zeitraums nicht in eine Katastrophe.
+	Es wird die durchschnittliche Reaktionszeit dem Zeitraum bis zur Frist gegenübergestellt, eine seltene und unter last auftretende Überschreitung wird in kauf genommen \cite[76]{douglass2003real}.
+	Das System führt in so einem Fall weiterhin seine Aufgaben aus, die Performance wird aber \todo{abgewertet} eingestuft.
+	Weiche Echtzeitsysteme können sogar überhaupt keine Frist haben, sondern die Aufgabe, die Antwortzeit so gering wie möglich zu gehalten \cite[4]{perf:buttazzo2006soft}.
+\end{itemize}
+
+\subsection{Echtzeitnah}
+	\label{com:near_real_time}
+	\todo{?}
 			
-			Zum Beispiel könnte eine zu späte Auswertung von Beschleunigungsdaten in einem Flugzeug zu einer verzögerten und mittlerweile falschen Reaktion und daraufhin zu einem Absturz führen \cite[5]{perf:laplante2004real}.
-			
-			\item Bei einem weichen Echtzeitsystem resultiert die Überschreitung des vorgegebenes Zeitraums nicht in eine Katastrophe.
-			Es wird die durchschnittliche Reaktionszeit dem Zeitraum bis zur Frist gegenübergestellt, eine seltene und unter last auftretende Überschreitung wird in kauf genommen \cite[76]{douglass2003real}.
-			Das System führt in so einem Fall weiterhin seine Aufgaben aus, die Performance wird aber \todo{abgewertet} eingestuft.
-			Weiche Echtzeitsysteme können sogar überhaupt keine Frist haben, sondern die Aufgabe, die Antwortzeit so gering wie möglich zu gehalten \cite[4]{perf:buttazzo2006soft}.
-		\end{itemize}
-		
-		
-		
-		
-		\subsection{Echtzeitnah}
-			\label{com:near_real_time}
-			\todo{?}
-			
-		\subsection{Funktionale Sicherheit}
+		\section{Funktionale Sicherheit}
 			\label{com:safety}
 			
 		\subsection{Was ist dann ein hochperformantes System}

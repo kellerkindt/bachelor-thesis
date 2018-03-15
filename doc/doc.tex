@@ -104,8 +104,17 @@
 
 \definecolor{codeBackground}{rgb}{.95,0.95,0.95}
 
+\newcounter{reqNumber}
+\setcounter{reqNumber}{1}
+
+\makeatletter
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+\newcommand{\requirement}[3]{\subsection{Anforderung \arabic{reqNumber}: #2}\expandafter\edef\csname#1\endcsname{\arabic{reqNumber}}\label{req:#1}\stepcounter{reqNumber} #3}
+\newcommand{\reqNumberForLabel}[1]{\@nameuse{#1}}
+
 \newcommand{\captionsource}[1]{\caption*{\footnotesize{Quelle: #1}}}
+\makeatother
+
 
 \input{config.fonts.tex}
 \input{config.autoref.tex}
@@ -150,11 +159,16 @@
 		
 	\chapter{Aufgabenstellung}
 	
+	\todo{mec-view server}
+	
+	\todo{rust}
+	
 	\include{sections/requirements}
 	\todo{was man machen soll}
 	
 	\chapter{Systemanalyse}
 		\section{Systemkontextdiagramm}
+		\section{Use-Case}
 		\section{Schnitstellenanalyse}
 		\section{C++ Referenzsystem}
 		\section{Use-Cases}

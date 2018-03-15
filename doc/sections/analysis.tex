@@ -1,0 +1,64 @@
+
+
+\chapter{Systemanalyse}
+\section{Systemkontextdiagramm}
+
+
+
+\begin{figure}[H]
+	\begin{tikzpicture}[node distance=5]
+		\node [draw, rectangle, drop shadow, fill=white] (F) {Fahrzeug};
+		\node [draw, circle, drop shadow, fill=white, text width=3cm, align=center] (C) [below right=of F] {Server};
+		\node [draw, rectangle, drop shadow, fill=white] (S) [below right=of C] {Sensor};
+		
+		\node (ctrl1) [above=of S] {};
+		\node (ctrl2) [above right=of C] {};
+		\node (ctrl3) [right=of C] {};
+	%	\node (ctrl4) [above right=of S] {};
+		\node (ctrl5) [left=of C] {};
+		\node (ctrl6) [below=of ctrl5] {};
+		
+		%
+		% Fahrzeug -> Server
+		%
+		\path[draw, -{Latex[scale=2.0]}, dashed] (F)
+				edge [bend right] node [fill=white] {GeoFence verlassen} (C)
+				edge [bend left]  node [fill=white] {GeoFence betreten} (C);
+				
+		%
+		% Server -> Fahrzeug
+		%
+		\path[draw, -{Latex[scale=2.0]}] (C)
+				edge node [fill=white] {Fusions-Algorithmus Ergebnis} (F);
+				
+		
+		%
+		% Sensor -> Server
+		%		
+		\path[draw, -{Latex[scale=2.0]}, dashed] (S)
+			edge [bend left]  node [fill=white] {GeoFence betreten} (C);
+		\path[draw, -{Latex[scale=2.0]}] (S)
+			edge node [fill=white] {Sensordaten} (C);
+				
+		%
+		% Server -> Fahrzeug
+		%
+		\path[draw, -{Latex[scale=2.0]}, dashed] (C)
+			edge [bend left] node [fill=white] {Wecken} (S)
+			.. controls (ctrl1) and (ctrl3) ..  node [fill=white] {Pausieren} (S);
+				
+				
+		
+		\path[draw, -{Latex[scale=2.0]}] (4, -8) -- (.5, -8) node [pos=.5, above] {Datenfluss};
+		\path[draw, -{Latex[scale=2.0]}, dashed] (4, -9) -- (.5, -9) node [pos=.5, above] {Kontrollfluss};
+			
+	\end{tikzpicture}
+	\centering
+	\label{system_context_diagramm}
+	\caption{Systemkontextdiagramm}
+\end{figure}
+
+\section{Komponentendiagramm oder sowas?}
+\section{Use-Case Diagramme}
+\todo{was wirklich umgesetzt sein wird}
+\section{Schnitstellenanalyse}

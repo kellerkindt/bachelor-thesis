@@ -70,6 +70,7 @@
 
 \addbibresource{sections/asn.bib}
 \addbibresource{sections/rust.bib}
+\addbibresource{sections/performance.bib}
 \addbibresource{general.bib}
 
 %
@@ -145,34 +146,7 @@
 	
 	\include{sections/intro}
 	\include{sections/rust}
-
-	
-	\chapter{Hochperformante, serverbasierte Kommunikationsplattform}
-		\label{com_plattform}
-		\section{Kein Echtzeitsystem}
-			\subsection{Was ist ein Echtzeitsystem}
-				\todo{hard real-time \cite[75]{douglass2003real}}
-				
-				\todo{soft real-time \cite[76]{douglass2003real}}
-			\subsection{Echtzeitnah}
-				\label{com:near_real_time}
-			\subsection{Funktionale Sicherheit}
-				\label{com:safety}
-			\subsection{Was ist dann ein hochperformantes System}
-			\subsection{Low-Latency + Entwurfsmuster + Patterns? + Algorithmen?}
-				\todo{Hochperformant -> parallel?}
-				
-				\todo{Design Pattern, Gamma et al, four important aspects}
-				
-				\todo{Real Time Design Patterns Buch: Ab Seite 141, verschiedene Systempatterns, microkernel \cite[151]{douglass2003real}? channel architektur pattern \cite[167]{douglass2003real}?}
-				
-				\todo{Message Queuing Pattern \cite[207]{douglass2003real}}
-				
-				\todo{Clean Architecture / Clean Code}
-		\section{Serverbasierte Kommunikationsplattform}
-		\section{Protokolle}
-			\include{sections/asn}
-			\subsection{Kurze Erwähnung Protobuf?}
+	\input{sections/performance}
 		
 	\chapter{Aufgabenstellung}
 	

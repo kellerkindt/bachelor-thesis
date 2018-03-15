@@ -54,11 +54,48 @@
 			
 	\end{tikzpicture}
 	\centering
-	\label{system_context_diagramm}
+	\label{system_context}
 	\caption{Systemkontextdiagramm}
 \end{figure}
 
 \section{Komponentendiagramm oder sowas?}
-\section{Use-Case Diagramme}
+\section{Use Case Diagramme}
 \todo{was wirklich umgesetzt sein wird}
+
+\begin{figure}[H]
+	\begin{tikzpicture}[node distance=5]
+		\begin{umlsystem}{Server}
+			\umlusecase[y=2]{GeoFence betreten}
+			\umlusecase[y=0]{GeoFence verlassen}
+		\end{umlsystem}
+		\umlactor[x=-5,y=1]{Fahrzeug}
+		\umlactor[x=5,y=1]{Sensor}
+		\umlassoc{Fahrzeug}{usecase-1}
+		\umlassoc{Fahrzeug}{usecase-2}
+		\umlassoc{Sensor}{usecase-1}
+	\end{tikzpicture}
+	\centering
+	\label{use_case:car}
+	\caption{Use Case Diagramm für den Server}
+\end{figure}
+
+
+\begin{figure}[H]
+	\begin{tikzpicture}[node distance=5]
+		\begin{umlsystem}{Sensor}
+			\umlusecase[y=0]{Pausieren}
+			\umlusecase[y=2]{Wecken}
+		\end{umlsystem} 
+		\umlactor[x=-5,y=1]{Server}
+		\umlassoc{Server}{usecase-1}
+		\umlassoc{Server}{usecase-2} 
+	\end{tikzpicture}
+	\centering
+	\label{use_case:server}
+	\caption{Use Case Diagramm des Servers gegenüber dem Sensor}
+\end{figure}
+
+
 \section{Schnitstellenanalyse}
+\todo{relevant?}
+

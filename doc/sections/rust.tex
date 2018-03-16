@@ -5,7 +5,7 @@
 Rust hat als Ziel, eine sichere (siehe \autoref{rust:guarantees}) und performante Systemprogrammiersprache zu sei.
 Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber keine unnötigen Performanceeinbußen verursachen (siehe \autoref{rust:zero_cost}).
 
-Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie \enquote{dangling pointers}, \enquote{double free} oder \enquote{memory leaks} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert (\autoref{rust:guarantees}).
+Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie vergessene \ccinline{NULL}-Pointer Prüfung, vergessene Fehlerprüfung, \enquote{dangling pointers} oder \enquote{memory leaks} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert (\autoref{rust:guarantees}).
 Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
 
 Diese erlaubt Rust eine zur Laufzeit hohe Ausführgeschwindigkeit zu erreichen.
@@ -322,7 +322,7 @@ Einen Konstruktor gibt es jedoch nicht; lediglich die Konvention, eine statische
 In seltenen Fällen wird auch \rustcinline{Default} implementiert (siehe \autoref{rust:trait:default}), wodurch eine statische Funktion \rustcinline{default()} als Konstruktor ohne Parameter bereitgestellt wird.
 
 Da eine Funktionsüberladung nicht möglich ist, soll bei weiteren Konstruktoren ein sprechender Name verwendet werden.
-Der \rustcinline{Vec<_>} der Standardbibliothek (siehe \autoref{rust:stdlib}) bietet zum Beispiel zusätzlich \rustcinline{Vec::with_capacity(capacity: usize)} an, um einen Vektor mit einer bestimmten Größe zu initialisieren.
+Der \rustcinline{Vec<_>} der Standardbibliothek (siehe \autoref{rust:stdlib}) bietet zum Beispiel zusätzlich \rustcinline{Vec::with_capacity(capacity: usize)} an, um einen Vektor mit einer bestimmten Kapazität zu initialisieren.
 
 Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe \autoref{rust:access_modifier}). 
 
@@ -464,6 +464,61 @@ Als Wildcard für sowohl nicht benötigte Werte, als auch alle weiteren Fälle k
 Weitere Möglichkeiten, Muster zu erkennen sind ab Seite 221 in \cite{rust:orly_programming} in detaillierter Ausführung zu finden.
 Dazu gehören unter anderem die \enquote{guard expression}, \enquote{bindings} und \enquote{ranges}.
 Aufgrund des Umfangs und die Irrelevanz für diese Arbeit wird hier auf eine weitere Vertiefung verzichtet.
+
+\section{Schleifen}
+
+Rust kennt nur die Schleifen \rustcinline{for}, \rustcinline{while} und \rustcinline{loop}.
+Eine \ccinline{do-while} Schleife wie in anderen Programmiersprachen gibt es nicht.
+
+
+Die einfachste Schleife ist \rustcinline{loop \{ \} }: der Rumpf der Schleife ohne Bedingung wiederholt.
+Diesen Schleifentyp gibt es, um auszudrücken was gemeint ist \todo{cite}, also eine Wiederholung ohne Bedingung.
+Somit ist eine auf den ersten Blick unverständliche Formulierung wie \ccinline{while (true) \{ \} } oder \ccinline{for(;;) \{ \} } unnötig.
+Die \rustcinline{loop} Schleife kann zusätzlich bei einem \rustcinline{break} einen Wert zurückgeben, wie in \autoref{rust:loops:loop} in Zeile 9 zu sehen ist.
+
+
+\begin{figure}[H]
+	\rustcinclude
+		{rust:loops:loop}
+		{Beispiel Verwendung einer \rustcinline{loop} Schleife}
+		{sections/rust.loop.rs}
+\end{figure}
+
+
+Die \rustcinline{for} Schleife erwartet immer etwas iterierbares und entspricht damit einer \ccinline{foreach} aus anderen Programmiersprachen.
+Eine inkrementelle Laufvariable, für zum Beispiel die Indexierung eines Arrays, wird durch das Iterieren über einen Zahlenstrahl ermöglicht.
+In \autoref{rust:loops:for} ist dies in Zeile 4 zu sehen, während in Zeile 8 direkt über die Werte des Arrays iteriert wird.
+
+\begin{figure}[H]
+	\rustcinclude
+		{rust:loops:for}
+		{Beispiel Verwendung einer \rustcinline{for} Schleife}
+		{sections/rust.for.rs}
+\end{figure}
+
+
+Die \rustcinline{while} Schleife ist die langweiligste aller Schleifen, da das Verhalten dem aus anderen Programmiersprachen entspricht.
+Der Rumpf wird so lange wiederholt, wie die Bedingung \rustcinline{true} ergibt.
+Das Beispiel in \autoref{rust:loops:while} gibt eine Sekunde lang wiederholend \rustcinline{\"Zeit noch nicht um\"} auf der Konsole aus.
+
+
+\begin{figure}[H]
+	\rustcinclude
+		{rust:loops:while}
+		{Beispiel Verwendung einer \rustcinline{while} Schleife}
+		{sections/rust.while.rs}
+\end{figure}
+
+Auch in \rustcinline{while} Schleifen können verkürzte Musterabgleichungen durchgeführt werden.
+Die Notation ähnelt dem \rustcinline{if let} und ist in \autoref{rust:loops:while:pattern} zu sehen.
+Die eingelesene Zeile wird so lange auf der Konsole wieder ausgegeben, bis beim einlesen ein Fehler auftritt.
+
+\begin{figure}[H]
+	\rustcinclude
+		{rust:loops:while:pattern}
+		{Beispiel Musterabgleichung in einer \rustcinline{while} Schleife}
+		{sections/rust.while.pattern.rs}
+\end{figure}
 
 \section{Attribute}
 \label{rust:attributes}
@@ -626,7 +681,7 @@ Dies ist genau dann, wenn der Geltungsbereich des Eigentümers zu Ende ist.
 Weder ein \gls{gc}, der dies zur Laufzeit nachverfolgt, noch ein manuelles eingreifen durch den Entwickler (zum Beispiel durch \ccinline{free(*void)}, wie in C/C++ üblich) ist nötig.
 
 Falls der Compiler keine ordnungsgemäße Nutzung feststellen kann, wie zum Beispiel eine Referenz die länger als die eigentliche Variable lebt, wird die Kompilation verweigert.
-Der menschliche Faktor als Fehlerquelle wird wieder unterbunden, ohne Laufzeitkosten zu erzeugen (siehe \autoref{rust:guarantee:no_danling_pointer}).
+Der menschliche Faktor als Fehlerquelle wird wieder unterbunden, ohne Laufzeitkosten zu erzeugen (siehe \autoref{rust:guarantee:no_dangling_pointer}).
 
 Im folgenden \autoref{rust:memory:scope} wird Beispielhaft Speicher auf dem Heap allokiert.
 Dieser wird ordnungsgemäß freigegeben, ohne manuell eine Freigabe einzuleiten.
@@ -656,12 +711,25 @@ Ein entsprechender Versuch wird mit einem Compilerfehler bemängelt.
 Die Garantie, nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert (siehe \autoref{rust:scope}).
 Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nötig, weshalb diese Philosophie keinen Laufzeitkosten mit sich bringt.
 
-\rustcinclude
-	{rust:ownership:scope}
-	{Eigentümer und Referenzen von Variablen}
-	{sections/rust.ownership.rs}
+Durch das Eigentümerprinzip wird ein \enquote{dangling pointer} (siehe \autoref{rust:guarantee:no_dangling_pointer}) verhindert.
 
 
+\todo{...}
+Die Vorzüge bei dem Eigentümerprinzip gehen aber über den reinen Einsatz bei Parallelisierungen hinaus.
+Es wird eindeutig klar, ob ein Wert von einer Funktion konsumiert wird oder nicht.
+Ob eine Kopie für einen Funktionsaufruf erstellt werden muss, ist anhand dessen Funktionskopfs ablesbar.
+Dies vermeidet unnötige Kopien.
+Noch viel wichtiger ist aber, dass anhand der statischen Analyse, die Anzahl der \todo{Leihungen} jederzeit klar ist, und somit verhindert wird, dass Speicher freigegeben wird, obwohl dieser noch in Benutzung ist (siehe \autoref{rust:guarantee:no_dangling_pointer}).
+
+\todo{...}
+Dies erlaubt gleichzeitig Optimierungen da Speicherbereich übernommen werden kann, anstatt neue anzufordern und zu kopieren.
+Dies geht aber nur, da dieses Verhalten durch die Deklaration im Funktionsrumpf, sowohl für den Programmierer als auch für den Compiler, eindeutig nachvollziehbar ist.
+
+\todo{...}
+\rustcinline{String::from_utf8(vec: Vec<u8>)} nimmt zum Beispiel einen \rustcinline{Vec<u8>} entgegen und konsumiert diesen.
+Für den Aufrufer ist somit klar, dass dieser nach dem Funktionsaufruf nicht mehr verwendet werden kann, da die Eigentümerschaft der Funktion \rustcinline{from_utf8} übertragen wurde.
+Dies erlaubt der Funktion, den Speicherbereich des \rustcinline{Vec<u8>} für den \rustcinline{String} zu nutzen ohne neuen Speicher zu allokieren oder zu kopieren \todo{proof: \enquote{This method will take care to not copy the vector, for efficiency's sake}} \url{https://doc.rust-lang.org/std/string/struct.String.html#method.from_utf8}.
+In Situationen in denen der \rustcinline{Vec<u8>} weiterhin genutzt werden muss, kann dieser für den Funktionsaufruf mit \rustcinline{clone} geklont werden.
 
 \section{Rust als funktionale Programmiersprache ??}
 
@@ -780,9 +848,46 @@ Dazu muss die Funktion, die den Operator verwendet aber auch ein \rustcinline{Re
 \end{figure}
 
 
+
+\rustcinclude
+{rust:ownership:scope}
+{Eigentümer und Referenzen von Variablen}
+{sections/rust.ownership.rs}
+
 \subsection{No dangling pointer}
-\label{rust:guarantee:no_danling_pointer}
-\todo{src https://www.youtube.com/watch?v=d1uraoHM8Gg}
+\label{rust:guarantee:no_dangling_pointer}
+
+\todo{explain} Eigentümerprinzip (siehe \autoref{rust:ownership})
+
+
+
+\begin{figure}[H]
+	\ccinclude
+	{rust:owner:c_bad_free}
+	{Negativbeispiel: Fehlerhafter Klon \todo{.}}
+	{sections/rust.owner.free.c}
+\end{figure}
+
+\begin{figure}[H]
+	\rustcinclude
+	{rust:owner:rust_bad_free}
+	{Negativbeispiel: Fehlerhafter Klon in Rust\todo{.}}
+	{sections/rust.owner.free.rs}
+\end{figure}
+
+\todo{make better}
+
+Ein äquivalentes Beispiel zu dem C-Beispiel in Rust zu schreiben, ist schwierig.
+Das Feld \enquote{model} in der C-Struktur ist im ersten Fall der Eigentümer der Zeichenkette (Datentyp \rustcinline{String} in Rust) und in zweigen Fall beim Klonen der Leihende (Datentyp \rustcinline{&str} in Rust).
+Dieser Unterschied ist gleichzeitig auch die Fehlerquelle im C-Beispiel.
+
+Im Rust-Beispiel ist die Zeichenkette deswegen in Zeile 19 außerhalb der \rustcinline{erstelle_computer} Funktion, da der Geltungsbereich ansonsten beim Verlassen der Funktion bereits zu Ende wäre.
+Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgehend dem Beispiel aus \autoref{rust:owner:c_bad_free}, zumindest genügend, um zu zeigen, dass der Rust Compiler den Fehler erkennt und die Kompilation abbricht: \textbf{\textcolor{red}{error[E0505]}: cannot move out of `c1` because it is borrowed}
+
+\todo{move to guarantees}
+
+\todo{vorteile klar ob variable konsumiert wird, keine freigeben von verwendeten resourcen, kein unnötiges kopieren, into()}
+
 
 \subsection{Sichere Nebenläufigkeit}
 

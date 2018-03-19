@@ -1,37 +1,39 @@
 
 \section{ASN.1}
 
-Die Notationsform \gls{asn} ermöglicht abstrakte Datentypen und Werte zu beschreiben \cite{asn:layman}.
+\begin{quotation}
+	\textit{\enquote{
+			ASN.1 has a long record of accomplishment, having been in use since 1984. It has evolved over time to meet industry needs, such as PER support for the bandwidth-constrained wireless industry and XML support for easy use of common Web browsers.
+		}}
+	\cite{asn:itu:asn.1}
+\end{quotation}
+
+Die Notationsform \gls{asn} ermöglicht abstrakte Datentypen und Wertebereich zu beschreiben \cite{asn:layman}.
 Die Beschreibungen können anschließend zu Quellcode einer theoretisch\footnote{Es gibt keine Einschränkungen seitens des Standards, aber entsprechende Compiler zu finden erweist sich als schwierig \todo{ref impl Schwierigkeiten mit ASN+Rust}} beliebigen Programmiersprache compiliert werden.
 Beschriebene Datentypen werden dadurch als native Konstrukte dargestellt und können mittels einer der standardisierten (oder auch eigenen \cite{asn:itu:ecn}) Encodierungen serialisiert werden.
 
-Um den Austausch zwischen verschiedenen Anwendungen und Systemen zu ermöglichen, sind von der \todo{ITU} bereits einige Encodierungen standardisiert \cite[8]{asn:itu:x691}.
-Für diese Arbeit ist aber einzig der PER Standard relevant, da der Server diese Encodierung verwenden muss, um mit den Sensoren und den Autos zu kommunizieren (siehe \todo{ref requirements / analyse}).
+Um den Austausch zwischen verschiedenen Anwendungen und Systemen zu ermöglichen, sind durch die \gls{itu}  bereits einige Encodierungen standardisiert \cite[8]{asn:itu:x691}.
+Für diese Arbeit ist aber einzig der PER bzw. uPER Standard relevant, da der Server diese Encodierung verwenden muss, um mit den Sensoren und den Autos zu kommunizieren (Anforderung in \autoref{req:com:asn}).
 
-Die anderen bekannteren Verfahren werden deshalb nur kurz erwähnt:
+Andere, bekanntere Verfahren werden hier nur kurz erwähnt:
 \begin{itemize}
 	\item \textbf{BER} (\underline{B}asic \underline{E}ncoding \underline{R}ules): Flexible binäre Encodierung \cite{asn:wiki:x690}, spezifiziert in X.690 \cite{asn:itu:x690}
-	\item \textbf{CER} (\underline{C}anonical \underline{E}ncoding \underline{R}ules): Reduziert BER mit der Restriktion die Enden von Datenfelder speziell zu Markieren anstatt deren Größe zu übermitteln, eignet sich gut für große Nachrichten \cite{asn:wiki:x690}, spezifiziert in X.690 \cite{asn:itu:x690}
+	\item \textbf{CER} (\underline{C}anonical \underline{E}ncoding \underline{R}ules): Reduziert BER durch die Restriktion, die Enden von Datenfelder speziell zu Markieren anstatt deren Größe zu übermitteln, eignet sich gut für große Nachrichten \cite{asn:wiki:x690}, spezifiziert in X.690 \cite{asn:itu:x690}
 	\item \textbf{DER} (\underline{D}istinguished \underline{E}ncoding \underline{R}ules): Reduziert BER durch die Restriktion Größeninformationen zu Datenfeldern in den Metadaten zu übermitteln, eignet sich gut für kleine Nachrichten \cite{asn:wiki:x690}, spezifiziert in X.690 \cite{asn:itu:x690}
 	\item \textbf{XER} (\underline{X}ML \underline{E}ncoding \underline{R}ules): Beschreibt den Wechsel der Darstellung zwischen ASN.1 und XML, spezifiziert in X.693 \cite{asn:itu:x693}
 \end{itemize}
 
-\todo{isdn} 
+\subsubsection{PER und UPER}
 
-\cite{asn:itu:asn.1}
-\begin{quotation}
-	\textit{\enquote{
-		ASN.1 has a long record of accomplishment, having been in use since 1984. It has evolved over time to meet industry needs, such as PER support for the bandwidth-constrained wireless industry and XML support for easy use of common Web browsers.
-	}}
-	\cite{asn:itu:asn.1}
-\end{quotation}
-
-\subsubsection{PER}
-
-Die \underline{P}acked \underline{E}ncoding \underline{R}ules werden in in X.691 \cite{asn:itu:x691} beschrieben.
-Sie beschreiben eine Encodierung, die genutzt werden kann, um beschriebene Datentypen möglichst kompakt -- also in wenigen Bytes -- zu serialisieren.
+Die \underline{P}acked \underline{E}ncoding \underline{R}ule ist in in X.691 \cite{asn:itu:x691} und ISO/IEC 8825-2 \todo{.} spezifiziert.
+Sie beschreibt eine Encodierung, die Daten kompakt -- also in wenigen Bytes -- serialisiert.
+Zu PER sind mehrere Variationen spezifiziert, für diese Arbeit ist jedoch nur UPER (unaligned PER) von Bedeutung.
+Im Gegensatz zu anderen Variationen bestehen Datenbausteine in UPER nicht aus ganzen Bytes, sondern aus unterschiedlich vielen Bits.
+Eine serialisierte Nachricht ist deswegen nicht N-Bytes sondern N-Bits lang.
+An den resultierenden Bitstring dürfen 0-Bits angehängt werden, um diesen als Bytestring wandeln zu können.
+Durch dieses Verfahren ist die Nachricht noch kürzer darstellbar.
 
 \todo{sources:}
-Für den Einsatz im Mobilfunknetz ist diese Encodierung sehr beliebt, da bei der Übermittlung einer Nachricht kein anderen Kommunikationsteilnehmer auf dieser Frequenz eine weiter Nachricht übermitteln kann.
-Eine kürzere Nachricht blockiert eine Frequenz kürzer, weshalb kürzere Nachrichten einen höheren Durchsatz erlaubt.
-Im Mobilfunkbereich ist dies von besonderer Bedeutung, da das Medium von vielen Teilnehmern gleichzeitig geteilt wird. \todo{michael.refactor\_this\_shit()}
+Für den Einsatz bei Funkverbindungen ist diese Encodierung von Vorteil, da bei der Übermittlung einer Nachricht kein anderen Kommunikationsteilnehmer auf dieser Frequenz etwas übermitteln kann.
+Eine kürzere Nachricht blockiert eine Frequenz kürzer, weshalb kürzere Nachrichten einen höheren Durchsatz erlauben.
+Im Mobilfunkbereich ist dies von besonderer Bedeutung, da das Medium von vielen Teilnehmern gleichzeitig und über eine große Fläche geteilt wird. \todo{michael.refactor\_this\_shit()}

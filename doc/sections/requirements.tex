@@ -25,7 +25,7 @@ Die Bearbeitungszeit des Fusions-Algorithmus zählt nicht dazu.}
 
 \requirement{com:tcp}{TCP Server}{Auf Port \todo{...} müssen auf neue TCP-Verbindungen gehört werden. Jeder Client hat eine eigene TCP Verbindung. Es müssen genügend gleichzeitige Verbindungen möglich sein, um Anforderung \reqNumberForLabel{exec:time} zu erfüllen. Ein Client entspricht einer TCP-Verbindung.}
 
-\requirement{com:asn}{Kommunikationsprotokoll ist ASN.1}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients ist ASN.1. Es werden die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert. Das Kommunikationsverhalten erfüllt die Anforderungen der C++ Referenzimplementation, sprich den Clients ist nicht ersichtlich, ob die Rust oder die Referenzimplementation des Servers ausgeführt wird.}
+\requirement{com:asn}{Kommunikationsprotokoll ist ASN.1/uPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients ist ASN.1 mit der Encodierung uPER. Es werden die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert. Das Kommunikationsverhalten erfüllt die Anforderungen der C++ Referenzimplementation, sprich den Clients ist nicht ersichtlich, ob die Rust oder die Referenzimplementation des Servers ausgeführt wird.}
 
 \requirement{client:sensor}{Client als Sensor}{Ein Client kann sich nach dem Verbindungsaufbau als Sensor registrieren. Ein Client kann sich nicht mehrmals registrieren. Vor einer Registrierung ist der Typ der Clients unbekannt und er wird nicht als Sensor gewertet.}
 

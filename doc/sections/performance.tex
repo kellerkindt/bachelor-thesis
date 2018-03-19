@@ -24,6 +24,15 @@ Je nach Art des Echtzeitsystems, wird diese First jedoch unterschiedlich gewicht
 	Weiche Echtzeitsysteme können sogar überhaupt keine Frist haben, sondern die Aufgabe, die Antwortzeit so gering wie möglich zu gehalten \cite[4]{perf:buttazzo2006soft}.
 \end{itemize}
 
+
+\subsection{Echtzeitnah}
+\label{com:near_real_time}
+
+Der MEC-View Server ist kein Echtzeitsystem, hat jedoch als Anforderung möglichst innerhalb eines gewissen Zeitraums zu reagieren (siehe Anforderung \autoref{req:exec:time}).
+Je nach Interpretation kann es daher höchstens als weiches Echtzeitsystem gewertet werden \todo{bla bla aber daher nur echtzeitnah}
+\todo{?}
+
+
 \section{Mobile Edge Computing}
 
 Mobile Edge Computing bezeichnet cloud aussenstehende (edge) Recheneinheiten (computing) für das Mobilfunknetz \todo{eu norm etsi dings da}.
@@ -32,10 +41,13 @@ Diese Recheneinheiten können Anfragen aus dem Mobilfunknetz der angeschlossenen
 
 \todo{direkt am Funkmast, TCP, nichts erst via Internet -> niedrige Latenz, VMs}
 
+\section{GeoFence}
 
-\subsection{Echtzeitnah}
-	\label{com:near_real_time}
-	\todo{?}
+
+\section{Architekturmuster? oder erst während der Implementation?}
+
+
+
 			
 		\section{Funktionale Sicherheit}
 			\label{com:safety}
@@ -61,3 +73,5 @@ Diese Recheneinheiten können Anfragen aus dem Mobilfunknetz der angeschlossenen
 	\section{Sensordaten?}
 	
 	\section{TCP?}
+	
+	\todo{Kommunikation als Socket, FiFo, Fehlerkorrektur, erneutes senden bei Fehlern, richtige Reiehenfolge...}

@@ -65,14 +65,16 @@
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
 		\begin{umlsystem}{Server}
-			\umlusecase[y=2]{GeoFence betreten}
-			\umlusecase[y=0]{GeoFence verlassen}
+			\umlusecase[y=2,name=u1]{GeoFence betreten}
+			\umlusecase[y=0,name=u2]{GeoFence verlassen}
+			\umlusecase[y=-2,name=u3]{ObjectDetection senden}
 		\end{umlsystem}
 		\umlactor[x=-5,y=1]{Fahrzeug}
 		\umlactor[x=5,y=1]{Sensor}
-		\umlassoc{Fahrzeug}{usecase-1}
-		\umlassoc{Fahrzeug}{usecase-2}
-		\umlassoc{Sensor}{usecase-1}
+		\umlassoc{Fahrzeug}{u1}
+		\umlassoc{Fahrzeug}{u2}
+		\umlassoc{Sensor}{u1}
+		\umlassoc{Sensor}{u3}
 	\end{tikzpicture}
 	\centering
 	\label{use_case:car}
@@ -83,15 +85,28 @@
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
 		\begin{umlsystem}{Sensor}
-			\umlusecase[y=0]{Pausieren}
-			\umlusecase[y=2]{Wecken}
+			\umlusecase[y=0,name=u1]{Pausieren}
+			\umlusecase[y=2,name=u2]{Wecken}
 		\end{umlsystem} 
-		\umlactor[x=-5,y=1]{Server}
-		\umlassoc{Server}{usecase-1}
-		\umlassoc{Server}{usecase-2} 
+		\umlactor[x=-3.5,y=1]{Server}
+		\umlassoc{Server}{u1}
+		\umlassoc{Server}{u2} 
 	\end{tikzpicture}
 	\centering
-	\label{use_case:server}
+	\label{use_case:server_sensor}
+	\caption{Use Case Diagramm des Servers gegenüber dem Sensor}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{tikzpicture}[node distance=5]
+		\begin{umlsystem}{Fahrzeug}
+			\umlusecase[y=0,name=u1]{Umfeldmodell senden}
+		\end{umlsystem} 
+		\umlactor[x=-5,y=0]{Server}
+		\umlassoc{Server}{u1}
+	\end{tikzpicture}
+	\centering
+	\label{use_case:server_vehicle}
 	\caption{Use Case Diagramm des Servers gegenüber dem Sensor}
 \end{figure}
 
@@ -99,3 +114,26 @@
 \section{Schnitstellenanalyse}
 \todo{erwartetes verhalten der sensoren und fahrzeuge}
 
+\begin{figure}[H]
+	\begin{tikzpicture}
+		\begin{umlseqdiag} 
+			\umlobject[x=0,class=Sensor]{c}
+			\umlobject[x=9,class=Server]{s}
+			\begin{umlcall}[dt=5, op={ASN::RegisterSensor(geofence)}, type=asynchron]{c}{s}
+			\end{umlcall}
+			\begin{umlfragment}[type=loop] 
+				\begin{umlfragment}[type=loop, label=!paused] 
+					\begin{umlcall}[dt=5, op={ASN::Detection}, type=asynchron]{c}{s}
+					\end{umlcall}
+				\end{umlfragment}
+				\begin{umlcall}[dt=5, op={ASN::Pause}, type=asynchron]{s}{c}
+				\end{umlcall}
+				\begin{umlcall}[dt=5, op={ASN::Resume}, type=asynchron]{s}{c}
+				\end{umlcall}
+			\end{umlfragment}
+		\end{umlseqdiag}
+	\end{tikzpicture}
+	\centering
+	\label{seq_dia:_}
+	\caption{\todo{Sequenz Diagramm: Anmeldung und Zuweisung zu einem GeoFence eines Sensors}}
+\end{figure}

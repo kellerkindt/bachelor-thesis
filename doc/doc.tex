@@ -171,6 +171,18 @@
 		
 	\chapter{Systementwurf}
 		\section{Architektur / Komponentendiagramme}
+		\begin{tikzpicture}
+			\begin{umlcomponent}{A}
+				\umlbasiccomponent{B}
+				\umlbasiccomponent[y=-3]{Encoder}
+				\umlprovidedinterface[interface=Bpi, distance=2cm, padding=2cm]{B}  
+				\umlprovidedinterface[interface=Cpi, distance=2cm, padding=2cm]{Encoder}  
+			\end{umlcomponent}
+			\umldelegateconnector{A-west-port}{B-west-interface}
+			\umlHVHdelegateconnector[pos stereo=1.5]{A-west-port}{Encoder-west-interface}
+			\umlport{A}{west}
+		\end{tikzpicture} 
+		  
 		\todo{Component diagrams tikz-uml: server, algorithm, encoder/...}		
 		
 		\section{Sequenzdiagramme}

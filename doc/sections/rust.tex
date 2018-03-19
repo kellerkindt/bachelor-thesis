@@ -7,6 +7,7 @@ Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber 
 
 Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie vergessene \ccinline{NULL}-Pointer Prüfung, vergessene Fehlerprüfung, \enquote{dangling pointers} oder \enquote{memory leaks} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert (\autoref{rust:guarantees}).
 Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
+\todo{Anderswo als Best Practice Vorschläge, hier in Regeln erzwungen, ändert nicht viel, erzwingt nur korrekte programmierung}
 
 Diese erlaubt Rust eine zur Laufzeit hohe Ausführgeschwindigkeit zu erreichen.
 Das Eigentümerprinzip (siehe \autoref{rust:ownership}) und die Markierung durch von Datentypen durch Merkmale (siehe \autoref{rust:traits}) vereinfacht es, nebenläufige und sichere Programme zu schreiben.
@@ -100,7 +101,7 @@ Es stehen Versionen in drei verschieden Veröffentlichungskanälen zur Verfügun
 	\item \textbf{nightly}:
 	Version die einmal am Tag mit dem aktuellen Stand des Quellcodes gebaut wird.
 	Experimentelle und nicht fertige Features sind hier zwar enthalten, aber hinter \enquote{feature gates} versteckt.
-	Diese \enquote{Tore} können durch entsprechende Attribute (siehe \autoref{rust:attributes}) geöffnet werden, so ermöglicht (\rustcinline{#[feature(const_fn)]} die Definition von Konstante Funktionen (Stand \today).
+	Diese \enquote{Tore} können durch entsprechende Anmerkungen (siehe \autoref{rust:annotations}) geöffnet werden, so ermöglicht (\rustcinline{#[feature(const_fn)]} die Definition von Konstante Funktionen (Stand \today).
 	
 	\item \textbf{beta}: Alle sechs Wochen wird die aktuellste Nightly zur Beta befördert und es werden nur noch Fehler aus dieser Version getilgt.
 	Dieser Prozess könnte auch als Reifephase bezeichnet werden.
@@ -407,7 +408,7 @@ Im folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibl
 	\item \monospaceinline{Drop}: Verlangt die Implementation einer Funktion, die kurz vor der Speicherfreigabe eines Objekts aufgerufen wird (ähnlich Destruktor aus C++).
 \end{itemize}
 
-Mit dem Attribute \rustcinline{#[derive(..)]} ist eine automatisierte Implementation genannter Merkmale oft möglich, insofern die jeweiligen Bedingungen erfüllt sind.
+Mit der Anmerkung \rustcinline{#[derive(..)]} ist eine automatisierte Implementation genannter Merkmale oft möglich, insofern die jeweiligen Bedingungen erfüllt sind.
 So kann im allgemeinen \rustcinline{#[derive(Clone)]} genutzt werden um eine Datenstruktur oder eine Aufzählung automatisch klonbar zu machen oder \rustcinline{#[derive(Debug)]} um automatisch alle Felder in Text wandeln zu können.
 Ein ergonomisches aber auch Fehler reduzierendes Feature.
 %Dadurch wird der menschliche Faktor als Fehlerquelle für oft genutzte aber im Prinzip einfache Mechanismen ausgeschlossen.
@@ -467,6 +468,10 @@ Aufgrund des Umfangs und die Irrelevanz für diese Arbeit wird hier auf eine wei
 
 \section{Schleifen}
 
+\todo{.}
+\url{https://doc.rust-lang.org/book/second-edition/ch03-05-control-flow.html}
+\url{https://doc.rust-lang.org/book/first-edition/loops.html}
+
 Rust kennt nur die Schleifen \rustcinline{for}, \rustcinline{while} und \rustcinline{loop}.
 Eine \ccinline{do-while} Schleife wie in anderen Programmiersprachen gibt es nicht.
 
@@ -520,13 +525,34 @@ Die eingelesene Zeile wird so lange auf der Konsole wieder ausgegeben, bis beim 
 		{sections/rust.while.pattern.rs}
 \end{figure}
 
-\section{Attribute}
-\label{rust:attributes}
-\todo{Unterscheidung Methode, Datentyp oder main.rs/lib.rs}
+\section{Anmerkungen}
+\label{rust:annotations}
 
-\section{Automatisierte Tests}
+In Rust können Funktionen, Datentypen und manche Codeblöcke mit Anmerkungen (engl. annotations) versehen werden, um dem Compiler weitere Informationen bereit zu stellen.
+Anmerkungen können dabei bestimmte Merkmale automatisiert implementieren (siehe \autoref{rust:traits}), Unit-Tests markieren (siehe \autoref{rust:tests}), Bibliotheken spezifizieren (siehe \autoref{rust:ffi}), \todo{feature gates:} Tore zu Besonderheiten öffnen (siehe \autoref{rust:feature_gates})  oder  Zielplattformen spezifizieren \cite{rust:book:annotation:cfg}.
+
+Eine Anmerkung folgt der Notation \rustcinline{#[<Name>(<optionale Parameter>)]}. So compiliert eine Funktion mit der Anmerkung \rustcinline{#[cfg(unix)]} nur für Unix Systeme, eine Anmerkung \rustcinline{#[cfg(not(unix))]} lässt die Funktion dagegen für alle Systeme compilieren, die nicht ein Unix-System sind.
+Dies ermöglicht zum Beispiel mehrere Funktionen mit dem gleichen Namen aber für unterschiedliche Plattformen zu schreiben.
+Der Compiler übernimmt dann nur die zur Zielplattform passende Funktion.
+
+\section{Unit- und Integrationstests}
 \label{rust:tests}
-\todo{arg1}
+
+Unit-Tests und Integrationstests können in Rust ohne eine weitere Bibliothek durchgeführt werden.
+Für Unit-Tests müssen Module und Funktionen mit entsprechenden Anmerkung versehen sein, für Integrationstests müssen die Tests im Unterordner \rustcinline{tests/} gespeichert sein \cite{rust:book:tests}.
+
+Unit-Tests sind per Konvention immer in der Datei mit der zu testenden Funktionalität zu finden.
+Diese privaten, inneren Module, die konventionell \enquote{tests} benannt sind, werden durch das Attribut \rustcinline{#[cfg(test)]} markiert.
+Durch diese Markierung wird der beinhaltete Code nur beim testen compiliert.
+\rustcinline{cargo test} führt alle auffindbaren Funktionen mit der Anmerkung \rustcinline{#[test]}, leeren Parameterlisten und keinen Rückgabewerte aus.
+Die Makros \rustcinline{assert!(a)}, \rustcinline{assert_eq!(a, b)} und \rustcinline{assert_ne!(a, b)} prüfen Ergebnisse und lösen \rustcinline{panic!}s aus (siehe \autoref{rust:panic}), falls Ergebnisse nicht den erwarteten Werten entsprechen.
+Ein Test gilt als bestanden, wenn keine \rustcinline{panic!} ausgelöst wurde.
+
+Integrationstests unterscheiden sich von Unit-Tests, da sie die eigene, zu testende Crate, als externe Crate betrachten.
+Dadurch kann nur auf öffentliche Bestandteile zugegriffen und unzureichende Zugriffsrechte aufgespürt werden.
+Es gibt keine Test-Module mit der \rustcinline{#[cfg(test)]} Anmerkung innerhalb Integrationstests, da Integrationstests nur beim testen compiliert werden.
+Test-Funktionen sind jedoch weiterhin mit \rustcinline{#[test]} markiert.
+
 
 \section{Namens- und Formatierkonvention / Styleguide}
 
@@ -808,6 +834,9 @@ In vielen fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als
 \subsection{Keine vergessene Fehlerprüfung}
 \label{rust:result}
 
+\label{rust:panic}
+\todo{panic! -> Wenn das boot nicht mehr zu retten ist}
+
 \begin{figure}[H]
 	\ccinclude
 	{rust:result:c_bad_fopen}
@@ -1055,7 +1084,7 @@ Externe Funktionen müssen im Gegensatz zu externen Strukturen immer in einem \r
 		{sections/rust.uper_encode_to_buffer.rs}
 \end{figure}
 
-Wie in \autoref{rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Attributen versehen werden. Zwingend ist bei der Verwendung eines \rustcinline{#[link(..)]} Attributes der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{rust:ffi:uper_encode_to_buffer} die Art der Linkung (dynamisch oder statisch) angegeben werden.
+Wie in \autoref{rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Anmerkungen (sieh \autoref{rust:annotations}) versehen werden. Zwingend ist bei der Verwendung einer \rustcinline{#[link(..)]} Anmerkung der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{rust:ffi:uper_encode_to_buffer} die Art der Linkung (dynamisch oder statisch) angegeben werden.
 
 Die Art der Definition einer externen Funktion unterscheidet sich nicht von einer normalen Funktionsdefinition. Es sollten aber, wie in \autoref{rust:ffi:datatypes} beschrieben, zu C bzw. der externen Sprache kompatiblen Datentypen verwendet werden.
  

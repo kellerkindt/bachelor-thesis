@@ -15,40 +15,37 @@ unter anderem eine \gls{fba}, Risikoabschätzung durch Einstufung nach \glspl{as
 
 \requirement{impl:rust}{Implementation in Rust}{Die Implementation wird in der Programmiersprache Rust vorgenommen.}
 
-\requirement{exec:mec}{Plattform MEC}{Die Implementation des Servers muss auf einem MEC Server mit dem Betriebssystem \todo{Ubuntu 14.04 LTS Server} ausführbar sein.}
+\requirement{exec:mec}{Plattform MEC}{Die Implementation des Servers muss in compilierter Form auf einem MEC Server mit dem Betriebssystem \todo{Ubuntu 16.04 LTS Server} und der Architektur \todo{x86-64} lauffähig sein.}
 
+\requirement{exec:time}{Reaktionszeit des Servers}{Die Implementation des Servers muss Nachrichten von \todo{20} gleichzeitigen Sensoren und \todo{50} gleichzeitigen Fahrzeugen innerhalb von \todo{10ms} beantworten.
+Dies umfasst Nachricht dekodieren, Fusions-Algorithmus darbieten, Resultat enkodieren und versenden.
+Die Bearbeitungszeit des Fusions-Algorithmus zählt nicht dazu.}
 
-\requirement{exec:time}{Reaktionszeit für Ergebnisse des Fusions-Algorithmus}{Die Zeit die der Server für die Weitergabe der Ergebnisse aus dem Fusions-Algorithmus benögtit, soll \todo{trölf} Millisekunden nicht überschreiten.}
+\requirement{exec:realtime}{Kein Echtzeitsystem}{Trotz Anforderung \reqNumberForLabel{exec:time} wird das System nicht als hartes Echtzeitsystem gewertet. Eine Analyse für die maximale Reaktionszeit ist nicht verlangt. Stattdessen wird das System als weiches Echtzeitsystem gewertet, weswegen die durchschnittliche Reaktionszeit die Anforderung \reqNumberForLabel{exec:time} erfüllen muss.}
 
-\requirement{exec:realtime}{Kein Echtzeitsystem}{Trotz Anforderung \reqNumberForLabel{exec:time} wird das System nicht als Echtzeitsystem gewertet. Eine Analyse für die maximale Reaktionszeit ist nicht verlangt.}
+\requirement{com:tcp}{TCP Server}{Auf Port \todo{...} müssen auf neue TCP-Verbindungen gehört werden. Jeder Client hat eine eigene TCP Verbindung. Es müssen genügend gleichzeitige Verbindungen möglich sein, um Anforderung \reqNumberForLabel{exec:time} zu erfüllen. Ein Client entspricht einer TCP-Verbindung.}
 
-\requirement{com:tcp}{TCP Server}{Auf Port \todo{...} werden auf neue TCP Verbindungen gehört. Jeder Client hat eine eigene TCP Verbindung.}
+\requirement{com:asn}{Kommunikationsprotokoll ist ASN.1}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients ist ASN.1. Es werden die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert. Das Kommunikationsverhalten erfüllt die Anforderungen der C++ Referenzimplementation, sprich den Clients ist nicht ersichtlich, ob die Rust oder die Referenzimplementation des Servers ausgeführt wird.}
 
-\requirement{com:asn}{Kommunikationsprotokoll ist ASN.1}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients ist ASN.1. Es werden die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert.}
+\requirement{client:sensor}{Client als Sensor}{Ein Client kann sich nach dem Verbindungsaufbau als Sensor registrieren. Ein Client kann sich nicht mehrmals registrieren. Vor einer Registrierung ist der Typ der Clients unbekannt und er wird nicht als Sensor gewertet.}
 
-\requirement{client:sensor}{Client als Sensor}{Ein Client kann sich nach dem Verbindungsaufbau als Sensor registrieren.}
+\requirement{client:car}{Client als Fahrzeug}{Ein Client kann sich nach dem Verbindungsaufbau als Fahrzeug registrieren. Ein Client kann sich nicht mehrmals registrieren. Vor einer Registrierung ist der Typ der Clients unbekannt und er wird nicht als Fahrzeug gewertet.}
 
-\requirement{client:car}{Client als Fahrzeug}{Ein Client kann sich nach dem Verbindungsaufbau als Fahrzeug registrieren.}
+\requirement{client:geofence}{GeoFence bestimmbar}{Ein Client kann den GeoFence, in dem er sich physikalisch befindet, bestimmen.}
 
-\requirement{client:geofence}{GeoFence bestimmbar}{Ein Client kann das GeoFence in dem er sich physikalisch befindet bekannt zuweisen.}
+\requirement{geofence:state}{GeoFence Unterteilung}{Es wird zwischen aktiven und inaktiven GeoFences unterschieden. Ein GeoFence ist nur dann aktiv, wenn ihm mindestens ein Fahrzeug zugewiesen ist.}
 
-\requirement{geofence:state}{GeoFence Unterteilung}{Es wird zwischen aktiven und inaktiven GeoFences unterschieden. Ein GeoFence ist nur dann aktiv, wenn mindestens ein Fahrzeug zugewiesen ist.}
+\requirement{geofence:sensor:pause}{Sensoren pausieren}{Sensoren werden bei einer Zustandsänderung des zugewiesenen GeoFences zu inaktiv oder bei Zuweisung zu einem inaktiven GeoFence pausiert.}
 
-\requirement{geofence:sensor:pause}{Sensoren pausieren}{Sensoren werden bei der Zustandsänderung des zugewiesenen GeoFences zu inaktiv oder bei Zuweisung zu einem inaktiven GeoFence pausiert.}
-
-\requirement{geofence:sensor:resume}{Sensoren wecken}{Sensoren werden bei der Zustandsänderung des zugewiesenen Geofences zu aktiv oder bei Zuweisung zu einem aktiven GeoFence geweckt.}
+\requirement{geofence:sensor:resume}{Sensoren wecken}{Sensoren werden bei einer Zustandsänderung des zugewiesenen GeoFences zu aktiv oder bei Zuweisung zu einem aktiven GeoFence geweckt.}
 
 \requirement{impl:algorithmus:to}{Sensordaten weitergeben}{Empfangene Sensordaten werden dekodiert und an den Fusions-Algorithmus weitergegeben. \todo{geofence?}}
 
 \requirement{impl:algorithmus:from}{Ergebnisse weitergeben}{Ergebnisse des Fusions-Algorithmus werden enkodiert un an die Fahrzeuge in den entsprechenden GeoFences versendet.}
 
-\requirement{com:count}{Mindestanzahl Clients}{Der Server muss mindestens \todo{..} Sensoren und \todo{..} Fahrzeuge gleichzeitig bedienen können.}
-
-\requirement{exec:time}{Reaktionszeit für Sensordaten}{Die Zeit die der Server für Anforderung \reqNumberForLabel{impl:algorithmus:to} und \reqNumberForLabel{impl:algorithmus:from} zusammen benötigt soll \todo{trölf} Millisekunden nicht überschreiten.}
-
 \requirement{dos:sensor}{Widerstand gegen Sensor DOS}{Die Funktionalität des Servers gegenüber anderen Clients wird durch eine Überflutung von Daten eines Sensors nicht beeinträchtigt. \todo{optional?}}
 
-\requirement{dos:car}{Widerstand gegen Nachrichtenrückstau}{Die Funktionalität des Servers gegenüber anderen Clients wird durch Fahrzeuge, für die sich ein \todo{Nachrichtenrückstau} bildet und von einzelnen langsamen Verbindungen nicht beeinträchtigt. \todo{optional?}}
+\requirement{dos:car}{Widerstand gegen Nachrichtenrückstau}{Die Funktionalität des Servers gegenüber anderen Clients wird durch Fahrzeuge, für die sich ein \todo{Nachrichtenrückstau} bildet und von einzelnen langsamen Verbindungen, nicht beeinträchtigt. \todo{optional?}}
 
 
 \section{Nichtfunktionale Anforderungen}

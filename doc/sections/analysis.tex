@@ -10,6 +10,7 @@
 		\node [draw, rectangle, drop shadow, fill=white] (F) {Fahrzeug};
 		\node [draw, circle, drop shadow, fill=white, text width=3cm, align=center] (C) [below right=of F] {Server};
 		\node [draw, rectangle, drop shadow, fill=white] (S) [below right=of C] {Sensor};
+		\node [draw, rectangle, drop shadow, fill=white] (A) [above right=of C] {Fusions-Algorithmus};
 		
 		\node (ctrl1) [above=of S] {};
 		\node (ctrl2) [above right=of C] {};
@@ -31,6 +32,17 @@
 		\path[draw, -{Latex[scale=2.0]}] (C)
 				edge node [fill=white] {Fusions-Algorithmus Ergebnis} (F);
 				
+		%
+		% Server -> Algorithmus
+		%
+		\path[draw, -{Latex[scale=2.0]}] (C)
+				edge [bend right] node [fill=white] {Sensordaten} (A);
+		
+		%
+		% Algorithmus -> Server
+		%
+		\path[draw, -{Latex[scale=2.0]}] (A)
+				edge [bend right] node [fill=white] {Ergebnis} (C);
 		
 		%
 		% Sensor -> Server
@@ -67,14 +79,17 @@
 		\begin{umlsystem}{Server}
 			\umlusecase[y=2,name=u1]{GeoFence betreten}
 			\umlusecase[y=0,name=u2]{GeoFence verlassen}
-			\umlusecase[y=-2,name=u3]{ObjectDetection senden}
+			\umlusecase[y=-2,name=u3]{Sensordaten senden}
+			\umlusecase[y=-4,name=u4]{Umfeldmodel übergeben}
 		\end{umlsystem}
-		\umlactor[x=-5,y=1]{Fahrzeug}
-		\umlactor[x=5,y=1]{Sensor}
+		\umlactor[x=-6,y=1]{Fahrzeug}
+		\umlactor[x=-6,y=-4]{Fusions-Algorithmus}
+		\umlactor[x=6,y=1]{Sensor}
 		\umlassoc{Fahrzeug}{u1}
 		\umlassoc{Fahrzeug}{u2}
 		\umlassoc{Sensor}{u1}
 		\umlassoc{Sensor}{u3}
+		\umlassoc{Fusions-Algorithmus}{u4}
 	\end{tikzpicture}
 	\centering
 	\label{use_case:car}
@@ -109,6 +124,20 @@
 	\label{use_case:server_vehicle}
 	\caption{Use Case Diagramm des Servers gegenüber dem Sensor}
 \end{figure}
+
+\begin{figure}[H]
+	\begin{tikzpicture}[node distance=5]
+		\begin{umlsystem}{Fusions-Algorithmus}
+			\umlusecase[y=0,name=u1]{Sensordaten übergeben}
+		\end{umlsystem} 
+		\umlactor[x=-5,y=0]{Server}
+		\umlassoc{Server}{u1}
+	\end{tikzpicture}
+	\centering
+	\label{use_case:server_algorithmus}
+	\caption{Use Case Diagramm des Servers gegenüber dem Fusions-Algorithmus}
+\end{figure}
+
 
 
 \section{Schnitstellenanalyse}

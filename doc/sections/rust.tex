@@ -327,6 +327,8 @@ Der \rustcinline{Vec<_>} der Standardbibliothek (siehe \autoref{rust:stdlib}) bi
 
 Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe \autoref{rust:access_modifier}). 
 
+\todo{self, self: \&Self, self: \&mut Self}
+
 \section{Generalisierung durch Traits}
 \label{rust:traits}
 \label{rust:generics}
@@ -759,6 +761,8 @@ Für den Aufrufer ist somit klar, dass dieser nach dem Funktionsaufruf nicht meh
 Dies erlaubt der Funktion, den Speicherbereich des \rustcinline{Vec<u8>} für den \rustcinline{String} zu nutzen ohne neuen Speicher zu allokieren oder zu kopieren \todo{proof: \enquote{This method will take care to not copy the vector, for efficiency's sake}} \url{https://doc.rust-lang.org/std/string/struct.String.html#method.from_utf8}.
 In Situationen in denen der \rustcinline{Vec<u8>} weiterhin genutzt werden muss, kann dieser für den Funktionsaufruf mit \rustcinline{clone} geklont werden.
 
+\todo{verhindert falsches verhalten, kein add / remove while iterating for example}
+
 \section{Rust als funktionale Programmiersprache ??}
 
 \todo{functional programming -> no global state, no exceptions, find literature}
@@ -774,6 +778,8 @@ Vererbung explizit nicht erwünscht, Composition over Inheritance, inheritance d
 
 \todo{prove via design patterns, a few? from faq::  Is Rust object oriented? It is multi-paradigm. Many things you can do in OO languages you can do in Rust, but not everything, and not always using the same abstraction you’re accustomed to.}
 
+
+\todo{Closures Lambdas}
 
 \section{Versprechen von Rust}
 \label{rust:guarantees}

@@ -1,9 +1,10 @@
 
 \chapter{Die Programmiersprache Rust}
+\label{rust}
 
 %Rust ist eine Programmiersprache, die versucht performante -- und daher durch Abstraktionen mit keinem zusätzlichen \enquote{Kosten} \todo{ref zero cost abstractions} -- und sichere Programmierung zu ermöglichen.
 Rust hat als Ziel, eine sichere (siehe \autoref{rust:guarantees}) und performante Systemprogrammiersprache zu sei.
-Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber keine unnötigen Performanceeinbußen verursachen (siehe \autoref{rust:zero_cost}).
+Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber keine unnötigen Performance-Einbußen verursachen (siehe \autoref{rust:zero_cost}).
 
 Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie vergessene \ccinline{NULL}-Pointer Prüfung, vergessene Fehlerprüfung, \enquote{dangling pointers} oder \enquote{memory leaks} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert (\autoref{rust:guarantees}).
 Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
@@ -63,21 +64,21 @@ Auch Federico Mena-Quintero -- Mitbegründer des GNOME-Projekts \cite{rust:gnome
 äußerte in einem Interview mit Golem im Juli 2017 seine Bedenken an der Verwendung der \enquote{feindseligen} Sprache C \cite{rust:c_is_hostile_golem}.
 In Vorträgen vermittelt er seither, wie Bibliotheken durch Implementationen in Rust ersetzt werden können \cite{rust:c_is_hostile_mena}.
 
-Ab 2009 begann Mozilla die Weiterentwicklung finanziell zu fördern, als einfache Tests und die Kernprinzipien demonstriert werden konnten.
-Die Entwicklung der Programmiersprache, des Compilers, des Buchs, von Cargo, von crates.io und von weiteren Bestandteilen findet öffentlich einsehbar auf \gls{github}  unter \url{https://github.com/rust-lang} statt und wird nicht ausschließlich von Mozilla Angestellten koordiniert.
+Ab 2009 begann Mozilla die Weiterentwicklung finanziell zu fördern, als mit einfachen Tests die Kernprinzipien demonstriert werden konnten.
+\todo{Dausmann \enquote{Satz} (zu lang!?): Die Entwicklung der Programmiersprache, des Compilers, des Buchs, von Cargo, von crates.io und von weiteren Bestandteilen findet öffentlich einsehbar auf \gls{github}  unter \url{https://github.com/rust-lang} statt und wird nicht ausschließlich von Mozilla Angestellten koordiniert.}
 Dadurch kann sich jeder an Diskussionen oder Implementation beteiligen, seine Bedenken äußern oder Verbesserungen vorschlagen.
 
-Durch automatisierte Tests (siehe \autoref{rust:tests}) in Kombination mit drei Veröffentlichungskanälen (\enquote{relese}, \enquote{stable} und \enquote{nightly}) und \enquote{feature gates} (siehe \autoref{rust:feature_gates}) wird die Stabilität des Compilers und die der Standardbibliothek (\autoref{rust:stdlib}) gewährleistet.
+Durch automatisierte Tests (siehe \autoref{rust:tests}) in Kombination mit drei Veröffentlichungskanälen (\enquote{release}, \enquote{stable} und \enquote{nightly}) und \enquote{feature gates} (siehe \autoref{rust:feature_gates}) wird die Stabilität des Compilers und die der Standardbibliothek (\autoref{rust:stdlib}) gewährleistet.
 
 Rust ist wahlweise unter MIT oder der Apache Lizenz in Version 2 verfügbar \cite{rust:copyright}.
 
 \section{Anwendungsgebiet}
 
 Das Ziel von Rust ist es, das Designen und Implementieren von sicheren und nebenläufigen Programmen möglich zu machen.
-Gleichzeitig soll der Spagat geschaffen werden, nicht nur ein sicheres aber lediglich theoretisches Konstrukt zu sein, sondern  in der Praxis eine Anwendung zu finden.
+Gleichzeitig soll der Spagat geschaffen werden, nicht nur ein sicheres aber lediglich theoretisches Konstrukt zu sein, sondern  in der Praxis anwendbar zu sein.
 Als Beweis könnte hierbei auf die Umstellung von Firefox auf Rust und Servo -- ein minimaler Webbrowser komplett in Rust geschrieben -- verwiesen werden \cite{rust:faq}.
 
-Interessant ist eine Diskussion von 2009, bei der \enquote{sicher aber nutzlos} und \enquote{unsicher aber brauchbar} Gegenübergestellt wurde.
+Interessant ist eine Diskussion von 2009, bei der \enquote{sicher aber nutzlos} und \enquote{unsicher aber brauchbar} gegenübergestellt wurde.
 Programmiersprachen scheinen auf der Suche nach dem nicht existierende \enquote{Nirvana} zu sein, das sowohl sichere als auch brauchbare Programmierung verspricht \cite[ab ca Minute 58:20]{rust:infoq:null}.
 Rust möchte dieses Nirvana gefunden haben.
 % bei einer Diskussion \footnote{Siehe auch \enquote{unsafe but useful}/\enquote{safe but useless} \cite[ab ca Minute 58:20]{rust:infoq:null}}.
@@ -99,9 +100,9 @@ Diese Unterscheidung wirkt sich auch auf die Stabilisierungsphase und Implementa
 Es stehen Versionen in drei verschieden Veröffentlichungskanälen zur Verfügung:
 \begin{itemize}
 	\item \textbf{nightly}:
-	Version die einmal am Tag mit dem aktuellen Stand des Quellcodes gebaut wird.
+	Version, die einmal am Tag mit dem aktuellen Stand des Quellcodes gebaut wird.
 	Experimentelle und nicht fertige Features sind hier zwar enthalten, aber hinter \enquote{feature gates} versteckt.
-	Diese \enquote{Tore} können durch entsprechende Anmerkungen (siehe \autoref{rust:annotations}) geöffnet werden, so ermöglicht (\rustcinline{#[feature(const_fn)]} die Definition von Konstante Funktionen (Stand \today).
+	Diese \enquote{Tore} können durch entsprechende Anmerkungen (siehe \autoref{rust:annotations}) geöffnet werden, so ermöglicht (\rustcinline{#[feature(const_fn)]} die Definition von konstanten Funktionen (Stand \today).
 	
 	\item \textbf{beta}: Alle sechs Wochen wird die aktuellste Nightly zur Beta befördert und es werden nur noch Fehler aus dieser Version getilgt.
 	Dieser Prozess könnte auch als Reifephase bezeichnet werden.
@@ -115,14 +116,14 @@ Mit Rust wird nicht nur eine Programmiersprache, sondern auch ein umfassendes Ö
 
 Cargo ist vermutlich das größte angebotene Werkzeug.
 Es löst Abhängigkeiten auf, indem es auf das öffentliche Verzeichnis unter \url{https://crates.io} zurückgreift und diese entsprechend herunterlädt und compiliert.
-Zum jetzigen Zeitpunkt (\today) sind über 14.000 Crates öffentliche erreichbar und nutzbar.
+Zum jetzigen Zeitpunkt (\today) sind über 14.000 Crates öffentlich erreichbar und nutzbar.
 Zudem wird durch Crago eine \textit{Cargo.toml} verlangt, in der Metainformationen einer Crate hinterlegt sind.
-Dies Umfasst u.a. Name, Version, Autor, Lizenz und Abhängigkeiten.
+Dies umfasst u.a. Name, Version, Autor, Lizenz und Abhängigkeiten.
 
-Eine Crate kan von jedem veröffentlicht werden, insofern derjenige ein \gls{github}-Konto besitzt, der Name der Crate noch nicht vergeben ist und der Programmcode compiliert.
+Eine Crate kann von jedem veröffentlicht werden, insofern derjenige ein \gls{github}-Konto besitzt, der Name der Crate noch nicht vergeben ist und der Programmcode compiliert.
 Die API-Dokumentation der jeweiligen Crate wird dabei automatisiert auf \url{https://docs.rs} veröffentlicht.
 
-Unter \url{https://www.rust-lang.org} ist die Website von Rust erreichbar und unter \url{https://doc.rust-lang.org} sowohl die API-Dokumentation der Standardbibliothek als auch das Hauseigene Rust Buch in Version 1 und 2.
+Unter \url{https://www.rust-lang.org} ist die Website von Rust erreichbar und unter \url{https://doc.rust-lang.org} sowohl die API-Dokumentation der Standardbibliothek als auch das hauseigene Rust Buch in Version 1 und 2.
 Die Entwicklung findet dagegen auf \gls{github} unter \url{https://github.com/rust-lang} statt.
 
 Kleine Testprogramme und Experimente können auf dem \enquote{Spielplatz} unter \url{https://play.rust-lang.org} compiliert und ausgeführt werden, ohne lokal etwas zu installieren.
@@ -130,10 +131,10 @@ Kleine Testprogramme und Experimente können auf dem \enquote{Spielplatz} unter 
 
 \section{Aufbau eines Projektverzeichnisses}
 
-Der Aufbau eines Rust Projektverzeichnis kann zwischen zwei verschiedenen Arten differenziert werden.
+Der Aufbau eines Rust Projektverzeichnis ist auf zwei verschiedene Arten möglich.
 Zum einen gibt es den klassische Aufbau, in dem lediglich der Programmcode liegt und der Compiler direkt aufgerufen und parametrisiert wird.
 Zum anderen wird der Aufbau als Crate (siehe \autoref{rust:structure:crate}) empfohlen, da dadurch Abhängigkeiten automatisch aufgelöst werden können aber auch Metainformationen bezüglich des Autors, der Version und der Abhängigkeiten hinterlegt werden müssen.
-Ein klassischer Aufbau ist dagegen nur selten anzutreffen.
+Ein klassischer Aufbau ist daher nur selten anzutreffen.
 
 
 \subsection{Klassisch}
@@ -145,16 +146,16 @@ Ein klassischer Aufbau ist dagegen nur selten anzutreffen.
 		{sections/rust.classic.txt}
 \end{wrapfigure}
 
-Das Quelldatei-Verzeichnis sollte entweder eine \textit{main.rs} für Ausführbare Programme oder eine \textit{lib.rs} für Bibliotheken enthalten.
+Das Quelldatei-Verzeichnis sollte entweder eine \textit{main.rs} für ausführbare Programme oder eine \textit{lib.rs} für Bibliotheken enthalten.
 Während der Paketmanager Cargo eine solche Benennung als Standardkonvention erwartet, kann bei manueller Nutzung des Compilers auch ein anderer Name für die Quelldatei vergeben werden.
 
-Der Compiler startet in der Wurzeldatei und lädt weitere Module, die durch \rustcinline{mod module;} gekennzeichnet sind (ähnlich \ccinline{# include "module.h"} in C/C++).
+Der Compiler startet in der Wurzeldatei und lädt weitere Module, die durch \rustcinline{mod module;} gekennzeichnet sind (ähnlich \ccinline{#include "module.h"} in C/C++).
 Ein Modul kann dabei eine weitere Quelldatei oder ein ganzes Verzeichnis sein.
 Ein Verzeichnis wird aber nur als gültiges Modul interpretiert, wenn sich eine \textit{mod.rs} Datei darin befindet.
 Um Datentypen und Funktionen aus einem Modul nutzen zu können, ohne dessen kompletten Pfad jedes mal auszuschreiben, müssen sie durch zum Beispiel \rustcinline{use module::functionality::Data;} in dem aktuellen Namensraum bekannt gemacht werden.
 
 Wie bereits angedeutet, wird in Rust nicht eine \enquote{Klasse}, Datenstruktur oder Aufzählung pro Datei erwartet, sondern eine Quelldatei entspricht einem Modul.
-Diese Umfasst in vielen fällen wenige aber mehrere Datenstrukturen, zugehörige Aufzählung und Fehlertypen.
+Diese umfasst in vielen Fällen wenige aber mehrere Datenstrukturen, zugehörige Aufzählungen und Fehlertypen.
 %Module (Verzeichnisse oder Quelldateien) gesucht wird. , in der Module durch \rustcinline{mod module;} und Quelldateien durch \rustcinline{mod functionality;} \enquote{inkludiert} werden können.
 %Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 
@@ -174,8 +175,8 @@ Eine \enquote{Crate} (dt. Kiste/Kasten) erweitert den klassischen Aufbau um eine
 Durch die Benutzung des Werkzeugs \enquote{Cargo} (dt. Fracht/Ladung) können Abhängigkeiten automatisch aufgelöst, heruntergeladen und compiliert werden.
 
 Eine Crate kann entweder ein ausführbares Programm oder eine Bibliothek sein.
-Davon abhängig is die Wurzeldatei \textit{src/main.rs} (für ein ausführbares Programm) oder \textit{src/lib.rs} (für eine Bibliothek).
-Mit dem erzeuge einer Crate (\rustcinline{cargo new --bin meinProg} bzw. \rustcinline{cargo new --lib meineBib}) wird auch gleichzeitig \gls{git} für das Verzeichnis initialisiert.
+Davon abhängig ist die Wurzeldatei \textit{src/main.rs} (für ein ausführbares Programm) oder \textit{src/lib.rs} (für eine Bibliothek).
+Mit dem Erzeugen einer Crate (\rustcinline{cargo new --bin meinProg} bzw. \rustcinline{cargo new --lib meineBib}) wird auch gleichzeitig \gls{git} für das Verzeichnis initialisiert.
 
 \section{Hello World}
 
@@ -188,7 +189,7 @@ Mit dem erzeuge einer Crate (\rustcinline{cargo new --bin meinProg} bzw. \rustci
 \end{wrapfigure}
 
 Der Programmcode in \autoref{rust:hello_world} gibt auf der Konsole \monospaceinline{Hello World} aus.
-Das \rustcinline{fn} die Funktion \rustcinline{main} definiert und diese der Startpunkt des Programms ist, wird vermutlich wenig überraschend sein.
+Dass \rustcinline{fn} die Funktion \rustcinline{main} definiert und diese der Startpunkt des Programms ist, wird vermutlich wenig überraschend sein.
 Viel überraschender ist vermutlich eher das Ausrufezeichen in Zeile 2, da es auf den ersten Blick dort nicht hingehören sollte.
 In Rust haben Ausrufezeichen und Fragezeichen besondere Bedeutungen, weswegen die Verwendung in Zeile 2 trotzdem richtig ist.
 
@@ -196,7 +197,7 @@ Die Bedeutung des Fragezeichens dient zum schnelleren Auswerten von \rustcinline
 Das Ausrufezeichen kennzeichnet, dass der ansonsten augenscheinliche Funktionsaufruf tatsächlich ein Aufruf einer Makrofunktion ist.
 
 Eine Funktion \rustcinline{println} gibt es nicht, auch keine aus C erwarteten Funktionen wie \ccinline{printf}, \ccinline{fputs} oder \ccinline{sprintf}.
-Eine Ausgabe erfolgt durch das \rustcinline{println!} Makro, welches eine String durch Nutzung des \rustcinline{format!} Makros formatiert und erstellt.
+Eine Ausgabe erfolgt durch das \rustcinline{println!} Makro, welches einen String durch Nutzung des \rustcinline{format!} Makros formatiert und erstellt.
 Daraufhin wird das \rustcinline{writeln!} Makro verwendet, um die formatierte Zeichenkette auf die Standardausgabe zu schreiben.
 
 \section{Einfache Datentypen}
@@ -206,16 +207,16 @@ Die Datentypen in Rust sind im wesentlichen die üblichen  Verdächtigen: \rustc
 
 Ganzzahlige Datentypen mit einem führenden \rustcinline{u} sind vorzeichenlos (\enquote{unsigned}), vorzeichenbehaftete Datentypen (\enquote{signed}) sind dagegen mit einem \rustcinline{i} gekennzeichnet.
 Fließkommazahlen sind stattdessen mit einem führenden \rustcinline{f} (\enquote{floating point}) gekennzeichnet.
-Die darauf folgende Zahl gibt die Anzahl der Bits wieder, die der Datentyp groß ist.
+Die darauf folgende Zahl gibt die Anzahl der Bits wieder, die für den Datentyp verwendet wird.
 Die einzige Ausnahme sind die ganzzahligen Datentypen \rustcinline{usize} und \rustcinline{isize}, da diese immer so groß sind, wie die Architektur der Zielplattform.
 Für die Indexierung eines Arrays oder einer Slice würden andere Datentypen, mit einer fest definierten Größe, keinen Sinn ergeben, da das Maximum an adressierbaren Elementen von der Architektur der Zielplattform abhängig ist.
 
-Durch dieses Schema bei der Bezeichnung der Datentypen wird eine Verwirrung wie zum Beispiel in C unterbunden, wo die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe haben, sondern dies abhängig vom eingesetzten Compiler und der Zielplattform ist \cite[187]{deitel2013c}. Erst ab C99 wurden zusätzliche, aber optionale, ganzzahlige Datentypen mit festen Größe definiert \cite[141]{goll2014c}.
+Durch dieses Schema bei der Bezeichnung der Datentypen wird eine Verwirrung wie zum Beispiel in C unterbunden, wo die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe haben, sondern abhängig vom eingesetzten Compiler und der Zielplattform sind \cite[187]{deitel2013c}. Erst ab C99 wurden zusätzliche, aber optionale, ganzzahlige Datentypen mit festen Größe definiert \cite[141]{goll2014c}.
 
 Konstanten können in Rust direkt einem Datentyp zugewiesen werden, indem dieser angehängt wird: \rustcinline{4711u16} ist vom Datentyp \rustcinline{u16}.
-Unterstriche dürfen an beliebiger stelle Ziffern trennen, um die Lesbarkeit zu erhöhen: \rustcinline{1_000_000_f32}.
+Unterstriche dürfen an beliebiger Stelle Ziffern trennen, um die Lesbarkeit zu erhöhen: \rustcinline{1_000_000_f32}.
 Eine Schreibweise in Binär (\rustcinline{0b0000_1000_u8}), in Hexadezimal (\rustcinline{0xFF_08_u16}) oder in Oktal (\rustcinline{0o64_u8}) ist auch möglich. 
-Konstante Zeichen und Zeichenketten können auch automatisch durch ein vorangestelltes \textit{b} in Bytes gewandelt werden: \rustcinline{b'b'} entspricht \rustcinline{0x62_u8} und \rustcinline{b"abc"} entsricht \rustcinline{&[0x61_u8, 0x62_u8, 0x63_u8]}.
+Konstante Zeichen und Zeichenketten können auch automatisch durch ein vorangestelltes \textit{b} in Bytes gewandelt werden: \rustcinline{b'b'} entspricht \rustcinline{0x62_u8} und \rustcinline{b"abc"} entspricht \rustcinline{&[0x61_u8, 0x62_u8, 0x63_u8]}.
 
 Arrays haben immer eine zur Compilezeit bekannte Größe und müssen auch immer mit einem Wert initialisiert werden (siehe \autoref{rust:no_unitialized_usage}).
 Dynamische Arrays auf dem Stack gibt es (noch? \cite{rust:github:alloca}) nicht,
@@ -223,18 +224,18 @@ stattdessen wird auf die Vektor Implementation der Standardbibliothek verwiesen 
 Die Notation für Arrays ist \rustcinline{[<Füllwert>; <Größe>]}, wobei die Größe ein konstanter Wert sein muss.
 \rustcinline{[0_u8; 128]} steht demnach für ein 128 Byte langes Array vom Datentyp \rustcinline{u8}, das mit 0-en initialisiert ist.
 
-\enquote{Slices} (dt. Scheiben/Stücke) bezeichnet Rust Referenzen auf Arrays oder auf Teilbereiche von Arrays und Slices.
-In einem so genannten \enquote{fat pointer} wird der Startpunkt und die Größe der Slice gespeichert  (siehe auch \autoref{rust:memory_layout:vec_slice}).
+\enquote{Slices} (dt. Scheiben/Stücke) bezeichnet in Rust Referenzen auf Arrays oder auf Teilbereiche von Arrays und Slices.
+In einem so genannten \enquote{fat pointer} wird der Startpunkt und die Größe der Slice gespeichert  (siehe auch \autoref{rust:memory_layout:vec_slice} auf Seite \pageref{rust:memory_layout:vec_slice}).
 Der Compiler kann hierdurch einen Zugriff außerhalb einer Slice oder eines Arrays entweder zur Laufzeit, oder, falls möglich, zur Compilezeit verhindern.
 Ein Buffer-Overflow ist in Rust daher nicht möglich.
 
-Die Notation ähnelt die eines Arrays, aber ohne Größenspezifikation: \rustcinline{&[<Datentyp>]}.
-Eine Slice kann zudem immer nur als eine Referenz angesprochen werden (siehe \autoref{rust:reference}).
+Die Notation ähnelt der eines Arrays, aber ohne Größenspezifikation: \rustcinline{&[<Datentyp>]}.
+Eine Slice kann zudem immer nur über eine eine Referenz angesprochen werden (siehe \autoref{rust:reference}).
 Um eine Slice auf ein Array oder eine andere Slice zu erhalten, muss der Start- und  Endindex des Teilbereiches angegeben werden.
 Falls kein Start- oder Endindex angegeben wird, wird das jeweilige Limit übernommen.
 
 
-Folgendes Beispiel soll die Notation von Arrays und Slices Beispielhaft verdeutlichen:
+Folgendes Beispiel soll die Notation von Arrays und Slices verdeutlichen:
 
 \rustcinclude
 	{rust:slices:example}
@@ -243,13 +244,13 @@ Folgendes Beispiel soll die Notation von Arrays und Slices Beispielhaft verdeutl
 	
 Das in \autoref{rust:slices:example} gezeigte Programm, gibt auf der Konsole \rustcinline{2, 3, 4, } aus.
 
-Variablen werden durch das \rustcinline{let} Schlüsselwort \enquote{gebindet}, das heißt, der Variable wird die Eigentümerschaft über den Wert zugewiesen.
+Variablen werden durch das \rustcinline{let} Schlüsselwort gebunden, das heißt, der Variable wird die Eigentümerschaft über den Wert zugewiesen.
 Ausnahmen können Datentypen mit dem Merkmal \rustcinline{Copy} bilden, da diese ein implizite Kopie erlauben (siehe \autoref{rust:generics}).
 Anstatt eine Variable optional als unveränderlich zu kennzeichnen (\ccinline{const} in C, \javacinline{final} in Java), wird eine Variable in Rust optional als veränderlich gekennzeichnet (\rustcinline{mut}), während standardmäßig Variablen unveränderlich sind.
 
 \subsubsection{Lokale Typinferenz}
 
-Da Rust ein statisches Typensystem mit lokaler Typinferenz ist, muss der Datentyp einer Variable nicht notiert werden, sondern dieser wird automatisch erkannt.
+Da Rust ein statisches Typensystem mit lokaler Typinferenz besitzt, muss der Datentyp einer Variable nicht notiert werden, sondern dieser wird automatisch erkannt.
 Dies gilt aber nur lokal, also innerhalb von Funktionen und Closures, für Parameterlisten und Rückgabewerte von Funktionen müssen die Datentypen explizit angegeben werden (siehe \autoref{rust:fn}).
 
 \rustcinclude
@@ -271,11 +272,12 @@ Die Programmiersprache Rust kennt neben den einfachen Datentypen (\autoref{rust:
 \end{itemize}
 
 Im Vergleich zu C kann ein Eintrag in einem \rustcinline{enum} gleichzeitig Daten wie eine Datenstruktur oder ein Tupel halten, oder lediglich einen Ganzzahlwert repräsentieren.
+
 Mit dem \rustcinline{type} Schlüsselwort können Aliase erstellt oder im Falle von FFI (siehe \autoref{rust:ffi}) aufgelöst werden: \rustcinline{type Vektor = (f32, f32);}
 Felder einer Struktur können zudem mit \rustcinline{pub} oder \rustcinline{pub(crate)} gekennzeichnet werden (siehe \autoref{rust:access_modifier}).
 
 Seit Version 1.19 ist auch der Datentyp \rustcinline{union} in Rust verfügbar \cite{rust:v1.19}.
-Eine \rustcinline{union} kann aber nur in \rustcinline{unsafe}-Blöcken verwendet werden, da der Compiler eine Ordnungsgemäße Nutzung nicht überprüfen kann.
+Eine \rustcinline{union} kann aber nur in \rustcinline{unsafe}-Blöcken verwendet werden, da der Compiler eine ordnungsgemäße Nutzung nicht überprüfen kann.
 Für diese Abschlussarbeit hat der Datentyp aber keine Relevanz und wird daher nicht weiter erwähnt.
 
 \subsubsection{Referenzen}
@@ -286,14 +288,14 @@ In Rust spricht man dann oft davon, den Wert zu \enquote{leihen}, da sich der Ei
 Wie bei Variablen, wird zwischen Referenzen auf unveränderlichen und veränderlichen Werte unterschieden (siehe \autoref{rust:ownership}).
 Die Notation für Referenzen auf unveränderliche Werte ist \rustcinline{&<Datentyp>}.
 Erwartungsgemäß ist \rustcinline{&mut <Datentyp>} die Notation für Referenzen auf veränderliche Werte.
-Referenzen auf Referenzen sind möglich, auch mit unterschiedlichen
-Eine Manuelle Dereferenzierung einer Referenz ist in den allermeisten Fällen nicht nötig, sondern wird vom Compiler vorgenommen.
-In Fällen in denen dies nicht wie erwartet automatisch geschieht, kann eine Manuelle Dereferenzierung durch den \rustcinline{*}-Operator erzwungen werden.
+Referenzen auf Referenzen sind möglich.
+Eine manuelle Dereferenzierung einer Referenz ist in den allermeisten Fällen nicht nötig, sondern wird vom Compiler vorgenommen.
+In Fällen, in denen dies nicht wie erwartet automatisch geschieht, kann eine manuelle Dereferenzierung durch den \rustcinline{*}-Operator erzwungen werden.
 
 \section{Funktionen, Ausdrücke und Statements}
 \label{rust:fn}
 
-Funktionen werden durch \rustcinline{fn} gekennzeichnet, gefolgt mit dem Funktionsnamen, der Parameterliste und zuletzt der Datentyp für den Rückgabewert.
+Funktionen werden durch \rustcinline{fn} gekennzeichnet, gefolgt von dem Funktionsnamen, der Parameterliste und zuletzt der Datentyp für den Rückgabewert.
 Selbst wenn kein expliziter Rückgabetyp angegeben wird, wird formal \rustcinline{()} zurück gegeben; \rustcinline{()} entspricht etwa \ccinline{void} aus bekannten Programmiersprachen.
 Die Parameterliste unterscheidet sich von bekannten Programmiersprachen wie C und Java, indem zuerst der Variablenname und darauf folgend der Datentyp notiert wird.
 
@@ -303,10 +305,10 @@ Die Parameterliste unterscheidet sich von bekannten Programmiersprachen wie C un
 	{sections/rust.fn.add.rs}
 	
 Obwohl in Zeile 2 von \autoref{rust:fn:add} kein \rustcinline{return} zu sehen ist, wird trotzdem das Ergebnis der Addition zurückgegeben.
-Dies liegt daran, da in Rust vieles ein Ausdruck ist und somit einen Rückgabewerte liefert \cite{rust:book:statements}.
+Dies liegt daran, dass in Rust vieles ein Ausdruck ist und somit einen Rückgabewerte liefert \cite{rust:book:statements}.
 Auch ein if-else ist ein Ausdruck und kann einen Rückgabewert haben.
 Ein bedingter Operator (?:) is somit unnötig, da stattdessen ein if-else verwendet werden kann: \rustcinline{let a = if b \{ c \} else \{ d \};}. 
-Auch eine Zeile mit einen Semikolon hat formal einen Rückgabewert: \rustcinline{()}.
+Auch eine Zeile mit einem Semikolon hat formal einen Rückgabewert: \rustcinline{()}.
 
 \section{Implementierung einer Datenstruktur}
 
@@ -339,14 +341,14 @@ Im Rust wird dieser Typ \enquote{Trait} (dt. Merkmal) genannt.
 
 Für Merkmale werden Funktionen in einem entsprechenden \rustcinline{trait <Name> \{ \}} Block ohne Rumpf deklariert.
 Optional kann auch ein Standardrumpf implementiert werden, der bei einer Spezialisierung überschrieben werden darf.
-Auch auf ein Merkmal kann ein Zugriffsmodifikatoren gesetzt werden (siehe \autoref{rust:access_modifier}).
+Auch auf ein Merkmal kann ein Zugriffsmodifikator gesetzt werden (siehe \autoref{rust:access_modifier}).
 
 Die Implementation eines Merkmals wird für jeden Datentyp in einem separaten Block vorgenommen und entspricht der Notation \rustcinline{impl Merkmal for Datentyp \{ fn ... \} }.
 Alternativ können Implementationen auch für ganze Gruppen von anderen Merkmalen vorgenommen werden: \rustcinline{impl<T> Merkmal for T where T: Clone \{ ... \} } (entspricht: \enquote{implementiere \rustcinline{Merkmal} für alle, die \rustcinline{Clone}-bar sind}).
 
 In Zukunft -- oder jetzt in \enquote{nightly} und hinter dem \enquote{feature gate} \rustcinline{specialization} -- wird es möglich sein, ein Standardverhalten für Gruppen zu implementieren und dieses später, für einen spezialisierten Fall, zu überschreiben \cite{rust:github:specialization}.
 
-Merkmale unterscheiden sich in ihrer Handhabung gegenüber anderen Datentypen, da sie im allgemeinen keine bekannte Größe zur Compilezeit haben.
+Merkmale unterscheiden sich in ihrer Handhabung gegenüber anderen Datentypen, da sie im Allgemeinen keine bekannte Größe zur Compilezeit haben.
 Während dies in Programmiersprachen wie Java und C\# automatisch durch die Darstellung abstrahiert und versteckt wird, hat ein Entwickler in Rust mehr Kontrolle über die Handhabung.
 
 Dabei gibt es mehrere Vorgehensweisen:
@@ -362,14 +364,14 @@ Dabei gibt es mehrere Vorgehensweisen:
 	
 	\item Die performanteste Alternative ist eine spezialisierte Funktion.
 	Der Compiler dupliziert automatisch für jeden Datentyp die Funktion, setzt diesen ein und führt Optimierungen für den Datentyp durch (ähnlich einer Templateklasse in C++).
-	In der Notation wird ein lokaler Typ deklariert, der als Bedingung ein oder Mehrere Merkmale implementiert haben muss: \rustcinline{fn foo<T: Bar>(bar: T)}.
+	In der Notation wird ein lokaler Typ deklariert, der als Bedingung ein oder mehrere Merkmale implementiert haben muss: \rustcinline{fn foo<T: Bar>(bar: T)}.
 \end{itemize}
 
 Eine Deklaration \rustcinline{fn foo(bar: Bar)} für das Merkmal \monospaceinline{Bar} ist nicht möglich, da zur Compilezeit eine eindeutige Größe nicht bekannt ist.
 Der zu reservierende Speicher für die Variable kann nicht bestimmt werden, weswegen eine Übergabe über den Stack nicht möglich ist.
 
 
-Im folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibliothek kurz erläutert:
+Im Folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibliothek kurz erläutert:
 \begin{itemize}
 	\item \monospaceinline{Send}: Markiert einen Datentyp als zwischen Threads übertragbar. Automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ Send sind. Manuelle Implementation ist nicht sicher \cite{rust:book:send_sync}.
 	
@@ -378,31 +380,31 @@ Im folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibl
 	
 	\item \monospaceinline{Sync}: Markiert einen Datentype als zwischen Threads synchronisierbar, d.h. mehrere Threads dürfen gleichzeitig lesend darauf zugreifen.
 	\rustcinline{!Sync} verbietet dies hingegen.
-	Automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ Sync sind. Manuelle Implementation ist nicht sicher \cite{rust:book:send_sync}.
+	Automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ \rustcinline{Sync} sind. Manuelle Implementation ist nicht sicher \cite{rust:book:send_sync}.
 	
-	\item \monospaceinline{Sized}: Verlangt eine zu Compilezeit bekannte Größe. \monospaceinline{?Sized} erlaubt dagegen eine unbekannte Größe zur Compilezeit.
+	\item \monospaceinline{Sized}: Verlangt eine zur Compilezeit bekannte Größe. \monospaceinline{?Sized} erlaubt dagegen eine unbekannte Größe zur Compilezeit.
 	
 	\item \monospaceinline{Copy}: Markiert einen Datentyp, der durch einfaches Speicherkopieren (etwa \enquote{memcpy}) vervielfacht werden kann. Verlangt, dass alle beinhalteten Datentypen auch \monospaceinline{Copy} sind.
 	Alle einfachen Datentypen sind bereits \monospaceinline{Copy}.
 	
-	\item \monospaceinline{Clone}: Markiert einen Datentyp der vervielfacht werden kann, dies jedoch nicht durch kopieren des Speichers möglich ist -- zum Beispiel da der Referenzzähler von \rustcinline{Arc} oder \rustcinline{Rc} erhöht werden muss.
+	\item \monospaceinline{Clone}: Markiert einen Datentyp, der vervielfacht werden kann, dies jedoch nicht durch Kopieren des Speichers möglich ist -- zum Beispiel da der Referenzzähler von \rustcinline{Arc} oder \rustcinline{Rc} erhöht werden muss.
 	Stellt die Funktion \rustcinline{clone} bereit, die dafür explizit aufgerufen werden muss.
 	Verlangt für eine automatisierte Implementation, dass alle beinhalteten Datentypen auch \monospaceinline{Clone} sind.
 	Alle einfachen Datentypen sind bereits \monospaceinline{Clone}.
 	
-	\item \monospaceinline{Debug} und \monospaceinline{Display}: Erzwingt die Implementation von Funktionen um einen Datentyp als Text darzustellen. Entweder mit möglichst vielen Zusatzinformationen (\monospaceinline{Debug}) oder schön (\monospaceinline{Display}).
+	\item \monospaceinline{Debug} und \monospaceinline{Display}: Erzwingt die Implementation von Funktionen, um einen Datentyp als Text darzustellen. Entweder mit möglichst vielen Zusatzinformationen (\monospaceinline{Debug}) oder schön (\monospaceinline{Display}).
 	Verlangt für eine automatisierte Implementation, dass alle beinhalteten Datentypen auch \monospaceinline{Debug} bzw \monospaceinline{Display} sind.
 	
-	\item \monospaceinline{Deafult}: Erzwingt die Implementation einer statische Methode \monospaceinline{default()}, die wie ein leerer Standardkonstruktor von Java oder C\# wirkt: Erzeugung einer neuen Instanz mit Standardwerten.
-	Verlangt für eine automatisierte Implementation, dass alle beinhalteten Datentypen auch \monospaceinline{Deafult} sind.
+	\item \monospaceinline{Default}: Erzwingt die Implementation einer statische Methode \monospaceinline{default()}, die wie ein leerer Standardkonstruktor von Java oder C\# wirkt: Erzeugung einer neuen Instanz mit Standardwerten.
+	Verlangt für eine automatisierte Implementation, dass alle beinhalteten Datentypen auch \monospaceinline{Default} sind.
 	
-	\item \rustcinline{PartialEq}: Verlangt die Implementation einer Funktion um mit Instanzen des gleichen Typs verglichen werden zu können.
+	\item \rustcinline{PartialEq}: Verlangt die Implementation einer Funktion, um mit Instanzen des gleichen Typs verglichen werden zu können.
 	Im Vergleich zu \monospaceinline{Eq} erlaubt \monospaceinline{PartialEq}, dass Typen keine volle Äquivalenzrelation haben.
 	Dies ist zum Beispiel für den Vergleich von Fließkommazahlen wichtig, da laut IEE754  \rustcinline{Nan} ungleich zu allem ist, auch zu sich selbst (\rustcinline{Nan != Nan}) \cite{wiki:nan}\cite[272-275]{rust:orly_programming}\cite{rust:doc:partialeq}.
 	
 	\item \rustcinline{Eq}: Erlaubt dem Compiler einen Vergleich auf Bit-Ebene durchzuführen, ungeachtet des Datentyps \cite{rust:doc:eq}.
 	
-	\item \rustcinline{PartialOrd}: Verlangt die Implementation einer Funktion um mit Instanzen des gleichen Typs sortiert werden zu können. Erlaubt aber auch, dass Werte zueinander nicht sortierbar sind.
+	\item \rustcinline{PartialOrd}: Verlangt die Implementation einer Funktion, damit Instanzen des gleichen Typs sortiert werden können. Erlaubt aber auch, dass Werte zueinander nicht sortierbar sind.
 	Dies ist zum Beispiel für Fließkommazahlen wichtig, da laut IEE754  \rustcinline{Nan} nicht sortiert werden kann (weder \rustcinline{Nan <= 0} noch \rustcinline{Nan > 0} ergibt \rustcinline{true}) \cite{wiki:nan}\cite[275-277]{rust:orly_programming}\cite{rust:doc:partialord}.
 	
 	\item \rustcinline{Ord}: Erzwingt im Gegensatz zu \rustcinline{PartialOrd}, dass Werte zueinander immer geordnet werden können.
@@ -411,7 +413,7 @@ Im folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibl
 \end{itemize}
 
 Mit der Anmerkung \rustcinline{#[derive(..)]} ist eine automatisierte Implementation genannter Merkmale oft möglich, insofern die jeweiligen Bedingungen erfüllt sind.
-So kann im allgemeinen \rustcinline{#[derive(Clone)]} genutzt werden um eine Datenstruktur oder eine Aufzählung automatisch klonbar zu machen oder \rustcinline{#[derive(Debug)]} um automatisch alle Felder in Text wandeln zu können.
+So kann im allgemeinen \rustcinline{#[derive(Clone)]} genutzt werden, um eine Datenstruktur oder eine Aufzählung automatisch klonbar zu machen oder \rustcinline{#[derive(Debug)]}, um automatisch alle Felder in Text wandeln zu können.
 Ein ergonomisches aber auch Fehler reduzierendes Feature.
 %Dadurch wird der menschliche Faktor als Fehlerquelle für oft genutzte aber im Prinzip einfache Mechanismen ausgeschlossen.
 
@@ -419,7 +421,7 @@ Ein ergonomisches aber auch Fehler reduzierendes Feature.
 \label{rust:access_modifier}
 
 Zugriffsmodifikatoren erlauben es in Rust, Module, Datenstrukturen, Aufzählungen, Merkmale und Funktionen gegenüber Nutzern einer Crate und anderen Modulen sichtbar zu machen.
-Der standardmäßige Zugriffsmodifikator limitiert die Sichtbarkeit auf das Modul, in dem die Deklaration stattgefunden hat und wird durch keine Notation eines Zugriffsmodifikators erreicht.
+Der standardmäßige Zugriffsmodifikator limitiert die Sichtbarkeit auf das Modul, in dem die Deklaration stattgefunden hat, und wird durch keine Notation eines Zugriffsmodifikators erreicht.
 Um die Sichtbarkeit auf die gesamte Crate zu erhöhen, wird ein \rustcinline{pub(crate)} vorangestellt.
 Mit \rustcinline{pub} ist die Deklaration für alle sichtbar.
 
@@ -430,7 +432,7 @@ Zugriffsmodifikatoren können auch vor \rustcinline{use} Anweisungen geschrieben
 \label{rust:match}
 
 Der \rustcinline{match} Ausdruck ist ein sehr mächtiges Werkzeug in Rust und entspricht einem stark erweiterten \ccinline{switch} aus Programmiersprachen wie C, Java oder C\#.
-Mit ihm ist es nicht nur möglich einen Wert einer Aufzählung aufzulösen sondern Muster inklusive Konstanten zu vergleichen und gleichzeitig auf eventuell beinhaltete Werte zuzugreifen oder diese zu konsumieren.
+Mit ihm ist es nicht nur möglich, einen Wert einer Aufzählung aufzulösen, sondern Muster inklusive Konstanten zu vergleichen und gleichzeitig auf eventuell beinhaltete Werte zuzugreifen oder diese zu konsumieren.
 In einem \rustcinline{match} wird immer der erste kompatible Codepfad ausgeführt.
 
 \rustcinclude
@@ -448,7 +450,7 @@ Die Variable \rustcinline{value} bindet bei dieser Übereinstimmung den Wert, um
 Falls dies nicht nötig wäre, könnte stattdessen auch die Wildcard \rustcinline{_} verwendet werden.
 
 Das \rustcinline{match} Statement von Rust verlangt, dass eine Musterabgleichung immer zu einem Ergebnis führt.
-Dementsprechend müssen entweder alle Varianten eine Aufzählung aufgeführt sein oder ein Standardpfade vorhanden sein \rustcinline{_ => \{ \} }.
+Dementsprechend müssen entweder alle Varianten einer Aufzählung aufgeführt sein oder ein Standardpfade vorhanden sein \rustcinline{_ => \{ \} }.
 Hiermit wird verhindert, dass, nachdem eine Aufzählung um eine Variation erweitert wurde, eine Musterabgleichung nicht um das neue Element ergänzt wurde.
 
 Wenn sogar nur ein konkreter Fall von Bedeutung ist, kann dies in der verkürzten \rustcinline{if let} Schreibweise notiert werden:
@@ -464,7 +466,7 @@ Die Dereferenzierung mit Addition wird somit ermöglicht.
 
 Als Wildcard für sowohl nicht benötigte Werte, als auch alle weiteren Fälle kann \rustcinline{_} verwendet werden: \rustcinline{if let Some(_) = value \{ println!("It's something!"); \} }
 
-Weitere Möglichkeiten, Muster zu erkennen sind ab Seite 221 in \cite{rust:orly_programming} in detaillierter Ausführung zu finden.
+Weitere Möglichkeiten, Muster zu erkennen, sind ab Seite 221 in \cite{rust:orly_programming} in detaillierter Ausführung zu finden.
 Dazu gehören unter anderem die \enquote{guard expression}, \enquote{bindings} und \enquote{ranges}.
 Aufgrund des Umfangs und die Irrelevanz für diese Arbeit wird hier auf eine weitere Vertiefung verzichtet.
 
@@ -518,7 +520,7 @@ Das Beispiel in \autoref{rust:loops:while} gibt eine Sekunde lang wiederholend \
 
 Auch in \rustcinline{while} Schleifen können verkürzte Musterabgleichungen durchgeführt werden.
 Die Notation ähnelt dem \rustcinline{if let} und ist in \autoref{rust:loops:while:pattern} zu sehen.
-Die eingelesene Zeile wird so lange auf der Konsole wieder ausgegeben, bis beim einlesen ein Fehler auftritt.
+Die eingelesene Zeile wird so lange auf der Konsole wieder ausgegeben, bis beim Einlesen ein Fehler auftritt.
 
 \begin{figure}[H]
 	\rustcinclude
@@ -599,15 +601,15 @@ Durch den Fragezeichenoperator kann trotzdem ein ähnliches Verhalten wie beim a
 \label{rust:stdlib}
 
 Das Rust Entwicklerteam ist darum bemüht, die Standardbibliothek sehr leichtgewichtig zu halten.
-Nicht eindeutig als fundamental eingestufte Funktionalitäten werden lieber als Crate auf \url{https://crates.io} angeboten, anstatt sie in die Standardbibliothek zu übernommen \todo{find example again}. 
+Nicht eindeutig als fundamental eingestufte Funktionalitäten werden lieber als Crate auf \url{https://crates.io} angeboten, anstatt sie in die Standardbibliothek zu übernehmen \todo{find example again}. 
 Mit dieser Entscheidung soll auch eine Entwicklung unabhängig von den Releasezyklen von Rust ermöglicht werden \todo{find source again}.
 
-Die Standardbibliothek ist selbst eine Crates, auf die standardmäßige eine Abhängigkeit erstellt wird.
+Die Standardbibliothek ist selbst eine Crate, auf die standardmäßige eine Abhängigkeit erstellt wird.
 Für Fälle, in denen diese Abhängigkeit zu schwergewichtig ist, wie zum Beispiel im Embedded-Bereich, kann diese Abhängigkeit durch das Attribut \rustcinline{#![no_std]} unterbunden werden.
 Daraufhin sind nur noch die in der \rustcinline{core} Crate zur Verfügung gestellten, fundamentalen Sprachkonstrukte verwendbar.
 
 In dieser Abschlussarbeit wird der volle Funktionsumfang der Standardbibliothek genutzt.
-Wichtige aber auch bekannte Datentypen sind hierbei:
+Wichtige, aber auch bekannte Datentypen sind hierbei:
 
 \begin{itemize}
 	\item \textbf{std::vec::Vec}: Ein Vektor (wie eine Liste), bei dem die Werte in einem dynamisch groß allokierten Speicherbereich auf dem Heap liegen.
@@ -678,7 +680,7 @@ Wichtige aber auch bekannte Datentypen sind hierbei:
 	
 	\item \textbf{std::boxed::Box}:
 	Verweis auf einen Speicherbereich auf dem Heap für einen beliebigen Datentyp.
-	Erlaubt es, u.a. Eigentümerschaft über ein unbekannt großen Datentyp zu erlangen, da dies die Größe einer \textbf{Box} nicht beeinflusst (siehe \autoref{rust:generics}).
+	Erlaubt es, u.a. Eigentümerschaft über einen unbekannt großen Datentyp zu erlangen, da dies die Größe einer \textbf{Box} nicht beeinflusst (siehe \autoref{rust:generics}).
 	Eine \textbf{Box} kann mit einem immer gültigen Heap-Pointer aus C und C++ verglichen werden.
 	
 	\item \textbf{std::string::String}: Eine UTF-8 codierte, vergrößer- und verkleinerbare Zeichenkette auf dem Heap.
@@ -700,7 +702,7 @@ Wichtige aber auch bekannte Datentypen sind hierbei:
 \end{itemize}
 
 
-\section{Speichermanagement}
+\section{Speicherverwaltung}
 \label{rust:scope}
 \label{rust:static_analysis}
 
@@ -708,12 +710,12 @@ Rust benutzt ein \enquote{statisches, automatisches Speicher Management -- keine
 Das bedeutet, die Lebenszeit einer Variable wird statisch während der Compilezeit anhand des Geltungsbereichs ermittelt (siehe \autoref{rust:scope}).
 Durch diese statische Analyses findet der Compiler heraus, wann der Speicher einer Variable wieder freigegeben werden muss.
 Dies ist genau dann, wenn der Geltungsbereich des Eigentümers zu Ende ist.
-Weder ein \gls{gc}, der dies zur Laufzeit nachverfolgt, noch ein manuelles eingreifen durch den Entwickler (zum Beispiel durch \ccinline{free(*void)}, wie in C/C++ üblich) ist nötig.
+Weder ein \gls{gc}, der dies zur Laufzeit nachverfolgt, noch ein manuelles Eingreifen durch den Entwickler (zum Beispiel durch \ccinline{free(*void)}, wie in C/C++ üblich) ist nötig.
 
-Falls der Compiler keine ordnungsgemäße Nutzung feststellen kann, wie zum Beispiel eine Referenz die länger als die eigentliche Variable lebt, wird die Kompilation verweigert.
+Falls der Compiler keine ordnungsgemäße Nutzung feststellen kann, wie zum Beispiel eine Referenz, die länger als die eigentliche Variable lebt, wird die Kompilation verweigert.
 Der menschliche Faktor als Fehlerquelle wird wieder unterbunden, ohne Laufzeitkosten zu erzeugen (siehe \autoref{rust:guarantee:no_dangling_pointer}).
 
-Im folgenden \autoref{rust:memory:scope} wird Beispielhaft Speicher auf dem Heap allokiert.
+Im folgenden \autoref{rust:memory:scope} wird beispielhaft Speicher auf dem Heap allokiert.
 Dieser wird ordnungsgemäß freigegeben, ohne manuell eine Freigabe einzuleiten.
 
 \begin{figure}[H]
@@ -736,11 +738,12 @@ Diese Philosophie setzt Rust direkt in der Sprache um, denn in Rust darf ein Wer
 Zusätzlich zu einem immer eindeutig identifizierbaren Eigentümer, kann der Wert auch ausgeliehen werden, um einen kurzzeitigen Zugriff zu erlauben; entweder exklusiv mit sowohl Lese- als auch Schreiberlaubnis, oder mehrfache mit nur Leseerlaubnis.
 
 Eigentümerschaft kann auch übertragen werden, der vorherige Eigentümer kann danach nicht mehr auf den Wert zugreifen.
-Ein entsprechender Versuch wird mit einem Compilerfehler bemängelt.
+Ein entsprechender Versuch wird mit einer Fehlermeldung durch den Compiler bemängelt.
 
 Die Garantie, nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert (siehe \autoref{rust:scope}).
 Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nötig, weshalb diese Philosophie keinen Laufzeitkosten mit sich bringt.
 
+\todo{..}
 Durch das Eigentümerprinzip wird ein \enquote{dangling pointer} (siehe \autoref{rust:guarantee:no_dangling_pointer}) verhindert.
 
 
@@ -797,7 +800,7 @@ Vererbung explizit nicht erwünscht, Composition over Inheritance, inheritance d
 Rust wirbt mit Versprechen und Garantien, die dafür sorgen sollen, typische Fehler zu vermeiden.
 In einer perfekten Welt wären viele dieser Maßnahmen nicht nötig, da perfekte Wesen niemals einen Fehler machen und niemals etwas übersehen würden.
 Programmierer sind aber Menschen, Menschen machen Fehler.
-Deswegen hat Rust einige Interessante Mechaniken eingeführt, bekannte Fehlerquellen zu unterbinden und erzwingt die Einhaltung dieser, indem andere Vorgehensweisen meist ausgeschlossen werden.
+Deswegen hat Rust einige interessante Mechaniken eingeführt, bekannte Fehlerquellen zu unterbinden und erzwingt deren Einhaltung, indem andere Vorgehensweisen meist ausgeschlossen werden.
 
 Dieses Kapitel beschäftigt sich mit den wichtigsten und bekanntesten dieser Mechaniken.
 
@@ -830,12 +833,12 @@ Der Compiler stoppt mit einem Fehler: \enquote{\textbf{\textcolor{red}{error[E03
 Wie in \autoref{rust:no_null} bereits erwähnt, kennt Rust keinen \ccinline{NULL}-Pointer.
 Daher ist es auch nicht möglich, durch Nachlässigkeit auf den falschen Speicher zuzugreifen.
 Eine Referenz ist immer gültig.
-Für fälle, in denen es situationsbedingt keinen gültigen Wert gibt, bietet Rust stattdessen den \rustcinline{Option<_>} Datentyp an.
+Für Fälle, in denen es situationsbedingt keinen gültigen Wert gibt, bietet Rust stattdessen den \rustcinline{Option<_>} Datentyp an.
 \rustcinline{Option<_>} ist eine Aufzählung, die entweder \rustcinline{None} ohne einen Wert, oder \rustcinline{Some(_)} mit einem Wert ist.
 Auf den Wert kann nicht zugegriffen werden, ohne zu prüfen, ob wirklich die Variation \rustcinline{Some(_)} vorliegt.
 Dies kann durch \rustcinline{match} oder verkürzt durch ein \rustcinline{if let Some(wert) = optional \{ /* tu etwas mit wert */ \}} geschehen (siehe \autoref{rust:match}).
 
-In vielen fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als \ccinline{NULL}-Pointer dargestellt werden, weswegen durch diese Abstraktion keine weiteren Laufzeitkosten eingeführt werden \cite[100]{rust:orly_programming} (siehe \autoref{rust:zero_cost}).
+In vielen Fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als \ccinline{NULL}-Pointer dargestellt werden, weswegen durch diese Abstraktion keine weiteren Laufzeitkosten eingeführt werden \cite[100]{rust:orly_programming} (siehe \autoref{rust:zero_cost}).
 
 
 
@@ -855,7 +858,7 @@ In vielen fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als
 In \autoref{rust:result:c_bad_fopen} sind mindestens zwei Fehler versteckt, die aber keinen Compileabbruch auslösen, sondern sich zur Laufzeit zeigen können.
 Der erste Fehler ist eine fehlende Überprüfung des Rückgabewertes von \ccinline{fopen} in Zeile 4.
 Der Rückgabewert kann \ccinline{NULL} sein, falls das Öffnen der Datei fehlgeschlagen ist.
-Der Versuch in die Datei zu schreiben in Zeile 5 kann daraufhin in einen Speicherzugriffsfehler resultieren und das Programm abstürzen lassen.
+Der Versuch in die Datei zu schreiben in Zeile 5 kann daraufhin in einem Speicherzugriffsfehler resultieren und das Programm abstürzen lassen.
 
 In Rust wird weder eine Ausnahme geworfen, noch ein Rückgabewert zurück gegeben, der ohne Prüfung verwendet werden kann:
 
@@ -871,11 +874,11 @@ Auf den eigentlichen Rückgabewert \rustcinline{File} kann nicht ohne eine Fehle
 Eine Fehlerprüfung kann wie in Zeile 5 mit einem \rustcinline{match} oder verkürzt durch ein \rustcinline{if let} wie in Zeile 8 geschehen.
 
 Durch die statische Lebenszeitanalyse (siehe \autoref{rust:static_analysis}) in Rust ist der Geltungsbereich der \rustcinline{mut file} Variable bekannt, deshalb wird in dem Beispiel in Rust in \autoref{rust:result:rust_good_fopen} die Datei auch wieder ordnungsgemäß geschlossen.
-Dies ist im im C Beispiel in \autoref{rust:result:c_bad_fopen} nicht der Fall.
+Dies ist im C Beispiel in \autoref{rust:result:c_bad_fopen} nicht der Fall.
 In einem größeren Programm könnte so zu unbekanntem Zeitpunkt das Limit an gleichzeitig geöffneten Dateien erreicht werden.
 
-Da eine \rustcinline{match} oder ein \rustcinline{if let} für jeden Funktionsaufruf der einen Fehler zurückgeben könnte, sehr umständlich und bereits für kleine Beispiele wie \autoref{rust:result:rust_good_fopen} unübersichtlich wird, kann dies durch den Operator \rustcinline{?} abgekürzt werden.
-Dazu muss die Funktion, die den Operator verwendet aber auch ein \rustcinline{Result} im einem kompatiblen Fehlertyp zurückgeben, wie in \autoref{rust:result:shorthand} zu sehen:
+Da ein \rustcinline{match} oder ein \rustcinline{if let} für jeden Funktionsaufruf, der einen Fehler zurückgeben könnte, sehr umständlich und bereits für kleine Beispiele wie \autoref{rust:result:rust_good_fopen} unübersichtlich wird, kann dies durch den Operator \rustcinline{?} abgekürzt werden.
+Dazu muss die Funktion, die den Operator verwendet aber auch ein \rustcinline{Result} in einem kompatiblen Fehlertyp zurückgeben, wie in \autoref{rust:result:shorthand} zu sehen:
 
 \begin{figure}[H]
 	\rustcinclude
@@ -942,7 +945,7 @@ Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgeh
 \label{rust:zero_cost}
 
 Trotz der vielen verwendeten Abstraktionen möchte Rust dadurch möglichst keine weitere Laufzeitkosten erzeugen.
-Beim übersetzen werden deshalb viele Abstraktionen durch Optimierungen für den Maschinencode unsichtbar.
+Beim Übersetzen werden deshalb viele Abstraktionen durch Optimierungen für den Maschinencode unsichtbar.
 
 Der \rustcinline{Option<_>} Datentyp kann zum Beispiel in vielen Fällen als Pointer dargestellt werden, der bei \ccinline{NULL} \rustcinline{None} und ansonsten \rustcinline{Some(_)} ist \cite[100]{rust:orly_programming}.
 Somit wird eine Überprüfung erzwungen, ohne dabei Laufzeitkosten erzeugt zu haben.
@@ -1022,7 +1025,7 @@ Der Zähler ist im Heap direkt vor dem beinhalteten Wert und nicht in einem extr
 \label{rust:ffi}
 \label{rust:ffi:datatypes}
 
-Rust bietet durch das \gls{ffi} die Möglichkeit, andere (System-)Bibliotheken einzubinden.
+Rust bietet durch das \gls{ffi} \todo{(FFI)} die Möglichkeit, andere (System-)Bibliotheken einzubinden.
 Entsprechende Strukturen und Funktionen werden durch einen \rustcinline{extern} Block
 oder im Falle von Strukturen stattdessen optional mit einem \rustcinline{#[repr(C)]} gekennzeichnet.
 
@@ -1043,7 +1046,7 @@ Dabei gibt es mehrere Möglichkeiten:
 	In diesem Fall können aber nur Referenzen und Raw-Pointer auf die Struktur verwendet werden.
 	\label{rust:ffi:example:enumerate:repr}
 	
-	\item Falls der Aufbau wie in \autoref{rust:ffi:example:enumerate:repr} unbedeutend ist, es soll aber ausdrücklich auf einen externen Datentyp hingewiesen werden, kann dieser in einem \rustcinline{extern \{ \} } Block bekannt gemacht werden: \rustcinline{extern \{ type PositionOffset; \}} \cite{rust:github:extern_type}.
+	\item Falls der Aufbau wie in \autoref{rust:ffi:example:enumerate:repr} unbedeutend ist, es soll aber ausdrücklich auf einen externen Datentyp hingewiesen werden soll, kann dieser in einem \rustcinline{extern \{ \} } Block bekannt gemacht werden: \rustcinline{extern \{ type PositionOffset; \}} \cite{rust:github:extern_type}.
 	Dies ist zum jetzigen Zeitpunkt aber nur in \enquote{nightly} und hinter dem \enquote{feature gate} \monospaceinline{extern_types} möglich.
 	
 	\item Der Inhalt der Struktur ist von Bedeutung, da darauf zugegriffen oder in Rust eine Instanz werden soll. In diesem Fall ist eine komplette Wiedergabe die Struktur unumgänglich:
@@ -1064,7 +1067,7 @@ Dabei gibt es mehrere Möglichkeiten:
 	
 %	C-Pointer werden in Rust \enquote{Raw-Pointer} genannt und \rustcinline{*mut c_long} für  \rustcinline{&mut c_long} bzw. \rustcinline{*const c_long} für \rustcinline{&c_long} geschrieben.
 	
-	Ein C-Pointer \ccinline{*long} wird in Rust \enquote{Raw-Pointer} genannt und entweder \rustcinline{*mut c_long} oder \rustcinline{*const c_long} geschrieben. Der Unterschied ist wie zwischen \rustcinline{&mut c_long} und \rustcinline{&c_long} und dient dem Rust Compiler zum Nachvollziehen, ob ein exklusiver zugriff benötigt wird, oder nicht.
+	Ein C-Pointer \ccinline{*long} wird in Rust \enquote{Raw-Pointer} genannt und entweder \rustcinline{*mut c_long} oder \rustcinline{*const c_long} geschrieben. Der Unterschied ist wie zwischen \rustcinline{&mut c_long} und \rustcinline{&c_long} und dient dem Rust Compiler zum Nachvollziehen, ob ein exklusiver Zugriff benötigt wird, oder nicht.
 	Dies hilft zwar für die Fehlervermeidung durch eventuelle Compilefehler anstatt Laufzeitfehler, ist aber für die C-Funktion unbedeutend \cite{rust:book:raw_ptr}:
 	
 	\begin{figure}[H]
@@ -1092,7 +1095,7 @@ Externe Funktionen müssen im Gegensatz zu externen Strukturen immer in einem \r
 		{sections/rust.uper_encode_to_buffer.rs}
 \end{figure}
 
-Wie in \autoref{rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Anmerkungen (sieh \autoref{rust:annotations}) versehen werden. Zwingend ist bei der Verwendung einer \rustcinline{#[link(..)]} Anmerkung der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{rust:ffi:uper_encode_to_buffer} die Art der Linkung (dynamisch oder statisch) angegeben werden.
+Wie in \autoref{rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Anmerkungen (sieh \autoref{rust:annotations}) versehen werden. Zwingend ist bei der Verwendung einer \rustcinline{#[link(..)]} Anmerkung der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{rust:ffi:uper_encode_to_buffer} die Art der Verlinkung (dynamisch oder statisch) angegeben werden.
 
 Die Art der Definition einer externen Funktion unterscheidet sich nicht von einer normalen Funktionsdefinition. Es sollten aber, wie in \autoref{rust:ffi:datatypes} beschrieben, zu C bzw. der externen Sprache kompatiblen Datentypen verwendet werden.
  

@@ -3,11 +3,11 @@
 
 % Without it being a section, it fits on one page
 \section{Motivation}
-Der Begriff \enquote{autonomes Fahren} hat spätestens seit den Tesla Autos einen allgemeinen Bekanntheitsgrad erreicht. Damit ein Auto selbstständig fahren kann, müssen erst viele Hürden gemeistert werden.
+Der Begriff \enquote{autonomes Fahren} hat spätestens seit den Autos von Tesla einen allgemeinen Bekanntheitsgrad erreicht. Damit ein Auto selbstständig fahren kann, müssen erst viele Hürden gemeistert werden.
 Dazu gehört zum Beispiel das Spur halten, das richtige Interpretieren von Verkehrsschildern und das Navigieren durch komplexe Kreuzungen.
 
 Bevor ein autonomes Fahrzeug Entscheidungen treffen kann, benötigt es ein möglichst genaues Model seines Umfelds.
-Hierzu werden von verschiedene Sensoren wie Front-, Rück- und Seitenkameras und Abstandssensoren Informationen gesammelt und ausgewertet.
+Hierzu werden von verschiedenen Sensoren wie Front-, Rück- und Seitenkameras und Abstandssensoren Informationen gesammelt und ausgewertet.
 Aber vielleicht kann ein Auto nicht immer selbständig genügend Informationen zu seinem Umfeld sammeln? %\todo{(huhuhu Server implied huhuhu)}
 %Diese Arbeit beschäftigt sich mit genau dem Thema, einem selbst fahrendem Auto Informationen zu anderen Teilnehmern an einer Kreuzung zu vermitteln.
 
@@ -24,13 +24,12 @@ Eine Lücke zwischen Autos, wo keine ist; eine freie Fahrbahn, wo ein Radfahrer 
 Ein solches System muss sicher sein -- nicht nur vor Hackern.
 Es muss funktional sicher sein, Redundanzen und Notfallsysteme müssen jederzeit greifen.
 
-Aber was nützt die beste Idee, die ausgeklügelte Strategie gegenüber einer undefinierten Situation in der verwendeten Programmiersprache?
-Wenn nur ein einziges mal vergessen wurde, einen Rückgabewert auf den Fehlerfall zu prüfen?
+\todo{Dausmann \enquote{Satz klingt komisch}: Aber was nützt die beste Idee, die ausgeklügelte Strategie gegenüber einer undefinierten Situation in der verwendeten Programmiersprache?}
+Wenn nur ein einziges Mal vergessen wurde, einen Rückgabewert auf den Fehlerfall zu prüfen?
 Was nützt es, wenn Strategien für das Freigeben von Speicher in Notfallsituationen einen Sonderfall übersehen haben?
 Das System handelt total unvorhersehbar.
 
-Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt; die fehlerhaften Strategien zur Compilezeit findet und die Compilation stoppt.
-Die trotz erzwungener Sicherheitsmaßnahmen, schnell und echtzeitnah reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
+Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt: die fehlerhaften Strategien zur Compilezeit findet und die Compilation stoppt; die trotz erzwungener Sicherheitsmaßnahmen, schnell und echtzeitnah reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
 
 Diese Arbeit soll zeigen, dass Rust genau so eine Programmiersprache ist und sich für sicherheitsrelevante, hoch parallelisierte und echtzeitnahe Anwendungsfälle bestens eignet.
 %Könnte Rust die Antwort sein? \todo{zuuu viele Fragen}
@@ -43,9 +42,9 @@ Diese Arbeit soll zeigen, dass Rust genau so eine Programmiersprache ist und sic
 	\label{test 123}
 	\centering
 	\includegraphics[width=\textwidth]{images/MECView_Arch_de_V1_mod.png}
-	\caption{Übersicht über das Forschungsprojekt \cite{mec:home}}
-	\captionsource{\url{https://www.uni-due.de/~hp0309/images/Arch_de_V1.png} (modifiziert)}
+	\caption[Übersicht über das Forschungsprojekt]{Übersicht über das Forschungsprojekt\protect\footnotemark}
 \end{figure}
+\footnotetext{Quelle: \url{https://www.uni-due.de/~hp0309/images/Arch_de_V1.png} (modifiziert)}
 
 Diese Abschlussarbeit befasst sich mit dem Kommunikationsserver von \gls{mec}-View.
 Das \gls{mec}-View Projekt wird durch das \gls{bmwi} gefördert und befasst sich mit der Thematik hochautomatisierter Fahrzeuge.
@@ -66,27 +65,29 @@ Durch hochgenaue, statische und dynamische Karten von TomTom und den Fahrstrateg
 
 \section{Zielsetzung}
 
+\todo{Dausmann \enquote{Sagen Sie doch zuerst, daß es schon was gibt}}
+
 Das Ziel ist es, eine alternative Implementierung des \gls{mec}-View Servers in Rust zu schaffen.
 Durch die Garantien (\autoref{rust:guarantees}) von Rust wird erhofft, dass der menschliche Faktor als Fehlerquelle gemindert und somit eine fehlertolerantere und sicherere Implementation geschaffen werden kann.
 
 Eine Ähnlichkeit in Struktur und Architektur zu der bestehender C++ Implementation ist explizit nicht vonnöten.
-Eventuelle Spracheigenheiten und einzigartige Features von Rust sollen im vollen Umfang genutzt werden können, ohne durch Auferzwungene und unpassende Architekturmuster benachteiligt zu werden.
-Es ist erwünscht eine kompetitive Implementation in Rust zu schaffen.
+Eventuelle Spracheigenheiten und einzigartige Features von Rust sollen im vollen Umfang genutzt werden können, ohne durch auferzwungene und unpassende Architekturmuster benachteiligt zu werden.
+Es ist erwünscht, eine kompetitive Implementation in Rust zu schaffen.
 
 
 \section{Aufbau der Arbeit}
 
-Diese Arbeit ist im wesentlichen in die folgenden Themengebiete aufgeteilt: Grundlagen, Anforderungs- und Systemanalyse, Systementwurf und Implementation und Auswertung.
+Diese Arbeit ist im Wesentlichen in die folgenden Themengebiete aufgeteilt: Grundlagen, Anforderungs- und Systemanalyse, Systementwurf und Implementation und Auswertung.
 
 Im Themengebiet Grundlagen sollen wesentliche Bestandteile dieser Arbeit erläutert und erklärt werden.
-Hierzu zählt zum einen die Programmiersprache Rust in ihrer Entstehungsgeschichte (siehe \autoref{rust:history}), Garantien  und Sprachfeatures  (siehe \autoref{rust:guarantees}).
-Zum anderen die hochperformante, serverbasierte Kommunikationsplattform mit ihren Protokollen (ab \autoref{com_plattform}) und dem Systemkontext in dem diese betrieben wird.
+Hierzu zählt zum einen die Programmiersprache Rust in ihrer Entstehungsgeschichte, Garantien  und Sprachfeatures  (\autoref{rust}).
+Zum anderen geht es um die hochperformante, serverbasierte Kommunikationsplattform mit ihren Protokollen (\autoref{com_plattform}) und dem Systemkontext, in dem diese betrieben wird.
 
-In der Anforderungs- und Systemanalyse wird der Kontext in dem das System betrieben werden soll genauer betrachtet. Umzusetzende funktionale und nicht-funktionale Anforderungen werden aufgestellt, sowie eine Übersicht von Systemen mit denen das System interagiert wird.
+In der Anforderungs- und Systemanalyse wird der Kontext, in dem der Server betrieben werden soll, genauer betrachtet. Umzusetzende funktionale und nicht-funktionale Anforderungen werden aufgestellt, sowie eine Übersicht über die Systeme geben, mit denen der Server interagiert wird.
 
 Das Themengebiet Systementwurf und Implementation befasst sich mit dem theoretischen und praktischen Lösen der im vorherigen Kapitel aufgestellten Anforderungen. Aufgrund der Tatsache, dass es sich hierbei
 um eine alternative Implementation handelt, wird zur bestehenden C++ Implementation Bezug genommen.
-Auf architektonische Unterschiede im Systementwurf, die sich aufgrund von Sprach- und Bibliotheksunterschiede, werden hier genauer beschrieben.
+Architektonische Unterschiede im Systementwurf, die sich aufgrund von Sprach- und Bibliotheksunterschiede ergeben, werden hier genauer beschrieben.
 
 Zuletzt wird eine Auswertung der Implementation aufgezeigt.
 

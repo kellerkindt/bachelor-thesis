@@ -26,9 +26,11 @@ Je nach Art des Echtzeitsystems, wird diese First jedoch unterschiedlich gewicht
 
 \section{Mobile Edge Computing}
 
-Mobile Edge Computing bezeichnet Recheneinheiten, die am Rande der Cloudinfrastruktur für das Mobilfunknetz eingesetzt werden \cite[4]{etsi:mec}.
+\todo{..}
+Als Mobile Edge Computing (\gls{mec}) werden Recheneinheiten bezeichnet, die eine Cloudähnliche Umgebung am Rande des Mobilfunknetzes schaffen \cite[4]{etsi:mec}.
 Wenn in dieser Arbeit auf MEC Bezug genommen wird, sind damit explizit nahe Funkmasten montierte Recheneinheiten gemeint.
-Dadurch, dass die Recheneinheiten direkt an eine Antenne angeschlossen sind, können sie die Anfragen deutlich schneller beantworten (Latenz kleiner 20ms) als Cloudlösungen (Latenz ca 100ms) \cite[2]{perf:mec:fraunhofer}.
+Dadurch, dass die Recheneinheiten direkt an eine Antenne angeschlossen sind, können sie Anfragen aus dem Abdeckungsbereich der Antenne deutlich schneller beantworten (Latenz kleiner 20ms) als Cloudlösungen (Latenz ca 100ms) \cite[2]{perf:mec:fraunhofer}.
+Hierfür werden die Anfragen aus dem Mobilfunknetz direkt an die Recheneinheit geroutet, anstatt über einen Provider eine Internetverbindung zu einer Cloudlösung aufzubauen.
 
 \todo{direkt am Funkmast, TCP, nichts erst via Internet -> niedrige Latenz, VMs}
 
@@ -60,9 +62,23 @@ Dadurch, dass die Recheneinheiten direkt an eine Antenne angeschlossen sind, kö
 	
 \section{Funktionale Sicherheit}
 \label{com:safety}
-\todo{tdd hilft}
+
+\enquote{Sicherheit} ist im Deutschen kein eindeutiger Begriff.
+Sowohl \enquote{Sichersein vor Gefahr oder Schaden} (\textit{to be safe}), \enquote{Freisein von Fehlern oder Irrtümern} (\textit{to be confident}) oder \enquote{Schutz vor Gefahren, die von außen auf Systeme oder Personen einwirken} (\textit{security}) könnte mit \enquote{sicher sein} gemeint sein \cite[5-6]{safety}.
+Deswegen ist es wichtig, beim Begriff funktionale Sicherheit auf einen gemeinsamen Nenner zu bringen.
+
+Bei funktionaler Sicherheit (\textit{safety}) geht es um die Betriebssicherheit, eine \enquote{Freiheit von unvertretbaren Risiken} \cite[6]{safety}.
+Unvertretbare Risiken sind in erster Linie Personenschäden, weswegen einheitliche Regularien in Normen wie der IEC 61508 bzw der DIN EN 61508 festgehalten sind.
+Für den Automobilbereich wurde die Norm in der ISO 26262 angepasst, um u.a. eine Einzelabnahme eines jeden Fahrzeuges durch eine Gesamtabnahme des Produktes zu ermöglichen \cite[14]{safety}.
+
+\todo{such shiat argument, arguem more rust -> f. safety}
+Obwohl funktionale Sicherheit für das Forschungsprojekt \gls{mec}-View eine nicht irrelevante Rolle spielt, wird in dieser Bachelorarbeit keine Entwicklung nach ISO 26262 vorgenommen.
+Zum einen sollen die Garantien von Rust (siehe \autoref{rust:guarantees}) viele mögliche Fehlerquellen generell ausschließen, zum anderen soll durch die Test-getriebene Entwicklung (siehe \autoref{tdd}) die Fehlerwahrscheinlichkeit weiter reduziert werden.
+Zuletzt ist anzumerken, dass das System nicht für einen Endanwender konzipiert ist, sondern nur durch entsprechendes Fachpersonal betrieben und in Notfallsituationen abgebrochen wird.
+
 	
 \section{Test-Driven Development}
+\label{tdd}
 
 \begin{quotation}
 	\textit{\enquote{Failure is progress.}}
@@ -76,7 +92,7 @@ Dadurch, dass die Recheneinheiten direkt an eine Antenne angeschlossen sind, kö
 Bei der Test-getriebenen Entwicklung werden Tests in den Vordergrund gestellt.
 Die Implementierung einer neuen Funktionalität wird durch neue Tests, die die Anforderung repräsentieren, eingeleitet.
 Erst nachdem ein Test erfolgreich feststellt, dass die geforderte Funktionalität noch nicht vorhanden ist, wird mit der Implementierung begonnen.
-Eine schnelle Implementierung hat hierbei die höchste Priorität und erlaubt temporär auch eine limitierende, stinkende und naïve Vorgehensweise \cite[7]{tdd}.
+Eine schnelle Implementierung hat hierbei die höchste Priorität und erlaubt temporär auch eine limitierende, stinkende und naive Vorgehensweise \cite[7]{tdd}.
 %Der neue Code, der den Test zufriedenstellt, darf hierbei kurzzeitig \enquote{stinken} \todo{cite} und Qualitätsstandards verletzten.
 Direkt im Anschluss wird ein Refactoring\footnote{Verbesserung des Codes und der Struktur ohne Änderung der Funktionalität} durchgeführt, um die Qualitätsstandards wieder einzuhalten.
 Diese drei Phasen werden \enquote{red/green/refactor} bezeichnet:
@@ -87,6 +103,7 @@ Diese drei Phasen werden \enquote{red/green/refactor} bezeichnet:
 	\item \textbf{refactor}: Der neue Code wird aufgeräumt und verbessert um den Qualitätsstandards gerecht zu werden. Ein andauernder Testdurchlauf versichert dabei keine Regression der Funktionalität.
 \end{itemize}
 
+\todo{.. clarify}
 Die Testgröße und der daraus resultierende Umfang der neuen Funktionalität, wird durch die Zuversichtlichkeit des Entwicklers gesteuert \cite[42]{tdd}.
 Eine hohe Zuversichtlichkeit führt zu größeren Tests, während eine hohe Unsicherheit zu vielen kleinen Tests führt.
 Dementsprechend sind komplexe Anforderungen mit vielen Tests abgesichert.

@@ -310,6 +310,8 @@ Auch ein if-else ist ein Ausdruck und kann einen Rückgabewert haben.
 Ein bedingter Operator (?:) is somit unnötig, da stattdessen ein if-else verwendet werden kann: \rustcinline{let a = if b \{ c \} else \{ d \};}. 
 Auch eine Zeile mit einem Semikolon hat formal einen Rückgabewert: \rustcinline{()}.
 
+\todo{closures}
+
 \section{Implementierung einer Datenstruktur}
 
 Zu einer Datenstruktur oder Aufzählung kann ein individuelles Verhalten implementiert werden.
@@ -784,6 +786,8 @@ Vererbung explizit nicht erwünscht, Composition over Inheritance, inheritance d
 
 \todo{Closures Lambdas}
 
+\todo{closures are fast, orly, p.310}
+
 \section{Versprechen von Rust}
 \label{rust:guarantees}
 
@@ -840,8 +844,6 @@ Dies kann durch \rustcinline{match} oder verkürzt durch ein \rustcinline{if let
 
 In vielen Fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als \ccinline{NULL}-Pointer dargestellt werden, weswegen durch diese Abstraktion keine weiteren Laufzeitkosten eingeführt werden \cite[100]{rust:orly_programming} (siehe \autoref{rust:zero_cost}).
 
-
-
 \subsection{Keine vergessene Fehlerprüfung}
 \label{rust:result}
 
@@ -897,6 +899,7 @@ Dazu muss die Funktion, die den Operator verwendet aber auch ein \rustcinline{Re
 \subsection{No dangling pointer}
 \label{rust:guarantee:no_dangling_pointer}
 
+
 \todo{explain} Eigentümerprinzip (siehe \autoref{rust:ownership})
 
 
@@ -928,8 +931,12 @@ Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgeh
 
 \todo{vorteile klar ob variable konsumiert wird, keine freigeben von verwendeten resourcen, kein unnötiges kopieren, into()}
 
+\subsection{Speichersicherheit}
+
 
 \subsection{Sichere Nebenläufigkeit}
+
+\todo{thread safety}
 
 \todo{\enquote{Safety is invisible} \cite[41]{rust:orly_programming}}
 
@@ -1101,50 +1108,48 @@ Die Art der Definition einer externen Funktion unterscheidet sich nicht von eine
  
 \newpage
 
-\section{Kernfeatures}
+%\section{Kernfeatures}
 
-\todo{nothing on heap unless specified (Box, Vec, other container)}
+%\todo{nothing on heap unless specified (Box, Vec, other container)}
+%\todo{closures are fast, orly, p.310}
 
-\todo{closures are fast, orly, p.310}
+%https://www.youtube.com/watch?v=d1uraoHM8Gg \\
+%\todo{no need for a runtime, all static analytics} \\
+%\todo{memory safety} \\
+%\todo{data-race freedom} \\
+%\todo{active community} \\
+%\todo{concurrency: no undefined behavior} \\
+%\todo{ffi binding} \gls{ffi} \\
+%\todo{zero cost abstraction} \\
+%\todo{package manager: cargo} \\
 
-https://www.youtube.com/watch?v=d1uraoHM8Gg \\
-\todo{no need for a runtime, all static analytics} \\
-\todo{memory safety} \\
-\todo{data-race freedom} \\
-\todo{active community} \\
-\todo{concurrency: no undefined behavior} \\
-\todo{ffi binding} \gls{ffi} \\
-\todo{zero cost abstraction} \\
-\todo{package manager: cargo} \\
-
-https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
-\todo{static type system with local type inference } \\
-\todo{explicit notion of mutability } \\
-\todo{zero-cost abstraction *(do not introduce new cost through implementation of abstraction)} \\
-\todo{errors are values not exceptions}
-\todo{no null} \\
-\todo{"static automatic memory management" - no garbage collection } \\
-\todo{often compared to GO and D (~44min)} \\
-
-
-\section{Schwächen}
-
-https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
-\todo{compile-times} \\
-\todo{Rust is a vampire language, it does not reflect at all!} \\
-\todo{depending on the field -> majority of libraries?} \\
+%https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
+%\todo{static type system with local type inference } \\
+%\todo{explicit notion of mutability } \\
+%\todo{zero-cost abstraction *(do not introduce new cost through implementation of abstraction)} \\
+%\todo{errors are values not exceptions}
+%\todo{no null} \\
+%\todo{"static automatic memory management" - no garbage collection } \\
+%\todo{often compared to GO and D (~44min)} \\
 
 
-\section{Performance Fallstricke}
+%\section{Schwächen}
+%https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
+%\todo{compile-times} \\
+%\todo{Rust is a vampire language, it does not reflect at all!} \\
+%\todo{depending on the field -> majority of libraries?} \\
 
-\todo{\cite{rust:performance_pitfalls}}
 
-\section{Beispiele von Verwendung von Rust}
+%\section{Performance Fallstricke}
+%\todo{\cite{rust:performance_pitfalls}}
 
-\todo{firefox} \\
+\section{Beispiele der Verwendung von Rust}
+\todo{relevant?}
 
-https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
-\todo{GTK binding heavily to rust} \\
+Der womöglich bekannteste Einsatzzweck von Rust ist im Webbrowser Firefox.
+Mehrere Versuche die Layoutberechnung in C++ zu parallelisieren sind aufgrund schwer auffindbaren Fehlern abgebrochen worden \cite{rust:example:firefox}.
+Eine Parallelisierung im aktuellen Projekt \enquote{Quantum} in Rust is dagegen mit ersten Erfolgen gekrönt \cite{rust:example:firefox_heise}
 
-\todo{unstable}
-\todo{ffi}
+Dropbox erreicht bereits \enquote{Hunderten Millionen von Geräten} mit Rust und das GNOME Projekt ermöglicht die Integration von Rust Code \cite{rust:example:two_years}.
+%https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
+%\todo{GTK binding heavily to rust} \\

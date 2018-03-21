@@ -40,9 +40,6 @@ Dadurch, dass die Recheneinheiten direkt an eine Antenne angeschlossen sind, kö
 
 
 			
-		\section{Funktionale Sicherheit}
-			\label{com:safety}
-			\todo{tdd hilft}
 			
 		\subsection{Was ist dann ein hochperformantes System}
 		\subsection{Low-Latency + Entwurfsmuster + Patterns? + Algorithmen?}
@@ -62,11 +59,48 @@ Dadurch, dass die Recheneinheiten direkt an eine Antenne angeschlossen sind, kö
 		
 	\input{sections/asn}
 	
-\section{Test Driven Development}
+	
+\section{Funktionale Sicherheit}
+\label{com:safety}
+\todo{tdd hilft}
+	
+\section{Test-Driven Development}
 
-\todo{p.11, shift of practice in p.13, \enquote{Make it run, make it good} p.24, no changes unless enough motivation p.34, tests run -> not broken anything p.37, never interrupt an interruption p.41, TDD is a steering process, unsure -> smaller steps, sure -> bigger steps p.42, Test First can reduce stress p.127}
+\begin{quotation}
+	\textit{\enquote{Failure is progress.}}
+	\cite[5]{tdd}
+\end{quotation}
+\begin{quotation}
+	\textit{\enquote{Make it run, make it good.}}
+	\cite[24]{tdd}
+\end{quotation}
 
-\todo{Learning Test p.136 for tokio?}
+Bei der Test-getriebenen Entwicklung werden Tests in den Vordergrund gestellt.
+Die Implementierung einer neuen Funktionalität wird durch neue Tests, die die Anforderung repräsentieren, eingeleitet.
+Erst nachdem ein Test erfolgreich feststellt, dass die geforderte Funktionalität noch nicht vorhanden ist, wird mit der Implementierung begonnen.
+Eine schnelle Implementierung hat hierbei die höchste Priorität und erlaubt temporär auch eine limitierende, stinkende und naïve Vorgehensweise \cite[7]{tdd}.
+%Der neue Code, der den Test zufriedenstellt, darf hierbei kurzzeitig \enquote{stinken} \todo{cite} und Qualitätsstandards verletzten.
+Direkt im Anschluss wird ein Refactoring\footnote{Verbesserung des Codes und der Struktur ohne Änderung der Funktionalität} durchgeführt, um die Qualitätsstandards wieder einzuhalten.
+Diese drei Phasen werden \enquote{red/green/refactor} bezeichnet:
+
+\begin{itemize}
+	\item \textbf{red}: Ein neuer Test wird erstellt, dieser stellt erfolgreich die Abwesenheit der Funktionalität fest, eine rote Fehlermeldung ist zu sehen.
+	\item \textbf{green}: Der Test wird durch neuen Code zufriedengestellt; eine positive Ausgabe bestätigt dies. Eine schnelle Implementierung wird hierbei temporär einer hochwertigen bevorzugt \cite[24]{tdd}, da ein erfolgreicher Test das Selbstvertrauen beim Refactorn stärke und helfen würde, Fehlerhafte Tests zu finden \cite[152]{tdd}.
+	\item \textbf{refactor}: Der neue Code wird aufgeräumt und verbessert um den Qualitätsstandards gerecht zu werden. Ein andauernder Testdurchlauf versichert dabei keine Regression der Funktionalität.
+\end{itemize}
+
+Die Testgröße und der daraus resultierende Umfang der neuen Funktionalität, wird durch die Zuversichtlichkeit des Entwicklers gesteuert \cite[42]{tdd}.
+Eine hohe Zuversichtlichkeit führt zu größeren Tests, während eine hohe Unsicherheit zu vielen kleinen Tests führt.
+Dementsprechend sind komplexe Anforderungen mit vielen Tests abgesichert.
+Bei Änderungen kann man sich deshalb auf das Sicherheitsnetz aus Tests verlassen, die einen Defekt umgehend detektieren.
+
+%\todo{manchmal stellt man beim erstellen des tests fest, dass die Anforderung blöd ist}
+Test-getriebene Entwicklung verändert auch die Vorgehensweise bei der Implementation von Anforderungen. Anstatt zu fragen \enquote{Wie würde ich das Implementieren?}, wird überlegt \enquote{Wie würde ich das Testen?} \cite[39]{tdd}, womit auch implizit gefragt wird, wie die äußeren Schnittstelle idealerweise aussehen sollen \cite[4]{tdd}.
+
+
+%\todo{p.11, shift of practice in p.13, \enquote{Make it run, make it good} p.24, no changes unless enough motivation p.34, tests run -> not broken anything p.37, never interrupt an interruption p.41, TDD is a steering process, unsure -> smaller steps, sure -> bigger steps p.42, Test First can reduce stress p.127}
+
+%\todo{mention stress reduction?}
 	
 	\section{Sensordaten?}
 	

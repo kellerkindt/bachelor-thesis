@@ -1,10 +1,12 @@
 
-\chapter{Hochperformante, serverbasierte Kommunikationsplattform}
+%\chapter{Hochperformante, serverbasierte Kommunikationsplattform}
+\chapter{\todo{Der Rest}}
 \label{com_plattform}
 
 Dieses Kapitel erläutert den Begriff \enquote{hochperformante, serverbasierte Kommunikationsplattform} und vermittelt Basiswissen hierzu.
 
 \section{Echtzeitsysteme}
+\label{real_time_systems}
 Echtzeitsysteme zeichnen sich im allgemeinen dadurch aus, eine Aufgabe in einem zuvor vorgegebenen Zeitraum bearbeiten zu können.
 Es existiert zu einer Aufgabe also immer eine Frist.
 Bei der Bewertung der Richtigkeit eines Systems, wird die Fähigkeit, eine Frist einhalten zu können, auch bewertet \cite[2]{perf:buttazzo2006soft}.
@@ -21,7 +23,7 @@ Je nach Art des Echtzeitsystems, wird diese First jedoch unterschiedlich gewicht
 	\item Bei einem weichen Echtzeitsystem resultiert die Überschreitung des vorgegebenes Zeitraums nicht in eine Katastrophe.
 	Es wird die durchschnittliche Reaktionszeit dem Zeitraum bis zur Frist gegenübergestellt, eine seltene und unter last auftretende Überschreitung wird in kauf genommen \cite[76]{douglass2003real}.
 	Das System führt in so einem Fall weiterhin seine Aufgaben aus, die Performance wird aber \todo{abgewertet} eingestuft.
-	Weiche Echtzeitsysteme können sogar überhaupt keine Frist haben, sondern die Aufgabe, die Antwortzeit so gering wie möglich zu gehalten \cite[4]{perf:buttazzo2006soft}.
+%	Weiche Echtzeitsysteme können sogar überhaupt keine Frist haben, sondern die Aufgabe, die Antwortzeit so gering wie möglich zu gehalten \cite[4]{perf:buttazzo2006soft}.
 \end{itemize}
 
 \section{Mobile Edge Computing}
@@ -37,44 +39,11 @@ Hierfür werden die Anfragen aus dem Mobilfunknetz direkt an die Recheneinheit g
 
 \section{Architekturmuster? oder erst während der Implementation?}
 
+%\subsection{Was ist dann ein hochperformantes System}
+%\section{Serverbasierte Kommunikationsplattform: MEC}
 
-
-			
-			
-		\subsection{Was ist dann ein hochperformantes System}
-		\subsection{Low-Latency + Entwurfsmuster + Patterns? + Algorithmen?}
-			\todo{Hochperformant -> parallel?}
-			
-			\todo{Design Pattern, Gamma et al, four important aspects}
-			
-			\todo{Real Time Design Patterns Buch: Ab Seite 141, verschiedene Systempatterns, microkernel \cite[151]{douglass2003real}? channel architektur pattern \cite[167]{douglass2003real}?}
-			
-			\todo{Message Queuing Pattern \cite[207]{douglass2003real}}
-			
-			\todo{Clean Architecture / Clean Code}
-			
-	\section{Serverbasierte Kommunikationsplattform: MEC}
-	
 		
-		
-	\input{sections/asn}
-	
-	
-\section{Funktionale Sicherheit}
-\label{com:safety}
-
-\enquote{Sicherheit} ist im Deutschen kein eindeutiger Begriff.
-Sowohl \enquote{Sichersein vor Gefahr oder Schaden} (\textit{to be safe}), \enquote{Freisein von Fehlern oder Irrtümern} (\textit{to be confident}) oder \enquote{Schutz vor Gefahren, die von außen auf Systeme oder Personen einwirken} (\textit{security}) könnte mit \enquote{sicher sein} gemeint sein \cite[5-6]{safety}.
-Deswegen ist es wichtig, beim Begriff funktionale Sicherheit auf einen gemeinsamen Nenner zu bringen.
-
-Bei funktionaler Sicherheit (\textit{safety}) geht es um die Betriebssicherheit, eine \enquote{Freiheit von unvertretbaren Risiken} \cite[6]{safety}.
-Unvertretbare Risiken sind in erster Linie Personenschäden, weswegen einheitliche Regularien in Normen wie der IEC 61508 bzw der DIN EN 61508 festgehalten sind.
-Für den Automobilbereich wurde die Norm in der ISO 26262 angepasst, um u.a. eine Einzelabnahme eines jeden Fahrzeuges durch eine Gesamtabnahme des Produktes zu ermöglichen \cite[14]{safety}.
-
-\todo{such shiat argument, arguem more rust -> f. safety}
-Obwohl funktionale Sicherheit für das Forschungsprojekt \gls{mec}-View eine nicht irrelevante Rolle spielt, wird in dieser Bachelorarbeit keine Entwicklung nach ISO 26262 vorgenommen.
-Zum einen sollen die Garantien von Rust (siehe \autoref{rust:guarantees}) viele mögliche Fehlerquellen generell ausschließen, zum anderen soll durch die Test-getriebene Entwicklung (siehe \autoref{tdd}) die Fehlerwahrscheinlichkeit weiter reduziert werden.
-Zuletzt ist anzumerken, dass das System nicht für einen Endanwender konzipiert ist, sondern nur durch entsprechendes Fachpersonal betrieben und in Notfallsituationen abgebrochen wird.
+\input{sections/asn}
 
 	
 \section{Test-Driven Development}
@@ -84,10 +53,10 @@ Zuletzt ist anzumerken, dass das System nicht für einen Endanwender konzipiert 
 	\textit{\enquote{Failure is progress.}}
 	\cite[5]{tdd}
 \end{quotation}
-\begin{quotation}
-	\textit{\enquote{Make it run, make it good.}}
-	\cite[24]{tdd}
-\end{quotation}
+%\begin{quotation}
+%	\textit{\enquote{Make it run, make it good.}}
+%	\cite[24]{tdd}
+%\end{quotation}
 
 Bei der Test-getriebenen Entwicklung werden Tests in den Vordergrund gestellt.
 Die Implementierung einer neuen Funktionalität wird durch neue Tests, die die Anforderung repräsentieren, eingeleitet.
@@ -116,9 +85,27 @@ Test-getriebene Entwicklung verändert auch die Vorgehensweise bei der Implement
 %\todo{p.11, shift of practice in p.13, \enquote{Make it run, make it good} p.24, no changes unless enough motivation p.34, tests run -> not broken anything p.37, never interrupt an interruption p.41, TDD is a steering process, unsure -> smaller steps, sure -> bigger steps p.42, Test First can reduce stress p.127}
 
 %\todo{mention stress reduction?}
+
+
+\section{Funktionale Sicherheit}
+\label{com:safety}
+
+\enquote{Sicherheit} ist im Deutschen kein eindeutiger Begriff.
+Sowohl \enquote{Sichersein vor Gefahr oder Schaden} (\textit{to be safe}), \enquote{Freisein von Fehlern oder Irrtümern} (\textit{to be confident}) oder \enquote{Schutz vor Gefahren, die von außen auf Systeme oder Personen einwirken} (\textit{security}) könnte mit \enquote{sicher sein} gemeint sein \cite[5-6]{safety}.
+Deswegen ist es wichtig, beim Begriff funktionale Sicherheit auf einen gemeinsamen Nenner zu bringen.
+
+Bei funktionaler Sicherheit (\textit{safety}) geht es um die Betriebssicherheit, eine \enquote{Freiheit von unvertretbaren Risiken} \cite[6]{safety}.
+Unvertretbare Risiken sind in erster Linie Personenschäden, weswegen einheitliche Regularien in Normen wie der IEC 61508 bzw der DIN EN 61508 festgehalten sind.
+Für den Automobilbereich wurde die Norm in der ISO 26262 angepasst, um u.a. eine Einzelabnahme eines jeden Fahrzeuges durch eine Gesamtabnahme des Produktes zu ermöglichen \cite[14]{safety}.
+
+\todo{such shiat argument, arguem more rust -> f. safety}
+Obwohl funktionale Sicherheit für das Forschungsprojekt \gls{mec}-View eine nicht irrelevante Rolle spielt, wird in dieser Bachelorarbeit keine Entwicklung nach ISO 26262 vorgenommen.
+Zum einen sollen die Garantien von Rust (siehe \autoref{rust:guarantees}) viele mögliche Fehlerquellen generell ausschließen, zum anderen soll durch die Test-getriebene Entwicklung (siehe \autoref{tdd}) die Fehlerwahrscheinlichkeit weiter reduziert werden.
+Zuletzt ist anzumerken, dass das System nicht für einen Endanwender konzipiert ist, sondern nur durch entsprechendes Fachpersonal betrieben und in Notfallsituationen abgebrochen wird.
+
 	
-	\section{Sensordaten?}
+%\section{Sensordaten?}
 	
-	\section{TCP?}
+%\section{TCP?}
 	
-	\todo{Kommunikation als Socket, FiFo, Fehlerkorrektur, erneutes senden bei Fehlern, richtige Reiehenfolge...}
+%\todo{Kommunikation als Socket, FiFo, Fehlerkorrektur, erneutes senden bei Fehlern, richtige Reiehenfolge...}

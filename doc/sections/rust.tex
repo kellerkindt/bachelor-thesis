@@ -65,7 +65,8 @@ Auch Federico Mena-Quintero -- Mitbegründer des GNOME-Projekts \cite{rust:gnome
 In Vorträgen vermittelt er seither, wie Bibliotheken durch Implementationen in Rust ersetzt werden können \cite{rust:c_is_hostile_mena}.
 
 Ab 2009 begann Mozilla die Weiterentwicklung finanziell zu fördern, als mit einfachen Tests die Kernprinzipien demonstriert werden konnten.
-\todo{Dausmann \enquote{Satz} (zu lang!?): Die Entwicklung der Programmiersprache, des Compilers, des Buchs, von Cargo, von crates.io und von weiteren Bestandteilen findet öffentlich einsehbar auf \gls{github}  unter \url{https://github.com/rust-lang} statt und wird nicht ausschließlich von Mozilla Angestellten koordiniert.}
+Die Entwicklung der Programmiersprache, des Compilers, des Buchs, von Cargo, von crates.io und von weiteren Bestandteilen findet öffentlich einsehbar auf \gls{github}  unter \url{https://github.com/rust-lang} statt.
+\todo{Zu den Entwicklern und Koordinatoren zählen nicht nur Mozilla Angestellte.}
 Dadurch kann sich jeder an Diskussionen oder Implementation beteiligen, seine Bedenken äußern oder Verbesserungen vorschlagen.
 
 Durch automatisierte Tests (siehe \autoref{rust:tests}) in Kombination mit drei Veröffentlichungskanälen (\enquote{release}, \enquote{stable} und \enquote{nightly}) und \enquote{feature gates} (siehe \autoref{rust:feature_gates}) wird die Stabilität des Compilers und die der Standardbibliothek (\autoref{rust:stdlib}) gewährleistet.
@@ -311,6 +312,11 @@ Ein bedingter Operator (?:) is somit unnötig, da stattdessen ein if-else verwen
 Auch eine Zeile mit einem Semikolon hat formal einen Rückgabewert: \rustcinline{()}.
 
 \todo{closures}
+
+\todo{Closures Lambdas}
+
+\todo{closures are fast, orly, p.310}
+
 
 \section{Implementierung einer Datenstruktur}
 
@@ -784,6 +790,11 @@ In Situationen in denen der \rustcinline{Vec<u8>} weiterhin genutzt werden muss,
 
 \todo{prove via code}
 
+\todo{Closures Lambdas}
+
+\todo{closures are fast, orly, p.310}
+
+
 \section{Rust als Objekt-Orientierte Programmiersprache ??}
 \label{rust:oop}
 
@@ -793,10 +804,6 @@ Vererbung explizit nicht erwünscht, Composition over Inheritance, inheritance d
 
 \todo{prove via design patterns, a few? from faq::  Is Rust object oriented? It is multi-paradigm. Many things you can do in OO languages you can do in Rust, but not everything, and not always using the same abstraction you’re accustomed to.}
 
-
-\todo{Closures Lambdas}
-
-\todo{closures are fast, orly, p.310}
 
 \section{Versprechen von Rust}
 \label{rust:guarantees}

@@ -226,7 +226,7 @@ Die Notation für Arrays ist \rustcinline{[<Füllwert>; <Größe>]}, wobei die G
 
 \enquote{Slices} (dt. Scheiben/Stücke) bezeichnet in Rust Referenzen auf Arrays oder auf Teilbereiche von Arrays und Slices.
 In einem so genannten \enquote{fat pointer} wird der Startpunkt und die Größe der Slice gespeichert  (siehe auch \autoref{rust:memory_layout:vec_slice} auf Seite \pageref{rust:memory_layout:vec_slice}).
-Der Compiler kann hierdurch einen Zugriff außerhalb einer Slice oder eines Arrays entweder zur Laufzeit, oder, falls möglich, zur Compilezeit verhindern.
+Der Compiler kann hierdurch einen Zugriff außerhalb einer Slice oder eines Arrays entweder zur Laufzeit, oder, falls möglich, zur Compilezeit verhindern (siehe \autoref{rust:zero_cost}).
 Ein Buffer-Overflow ist in Rust daher nicht möglich.
 
 Die Notation ähnelt der eines Arrays, aber ohne Größenspezifikation: \rustcinline{&[<Datentyp>]}.
@@ -341,7 +341,7 @@ Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe 
 Ähnlich wie Java oder C\# bietet Rust durch einen eigenen Typ die Möglichkeit, ein gewünschtes Erscheinungsbild zu generalisieren, ohne gleichzeitig eine Implementation vorzugeben.
 Im Rust wird dieser Typ \enquote{Trait} (dt. Merkmal) genannt.
 
-Für Merkmale werden Funktionen in einem entsprechenden \rustcinline{trait <Name> \{ \}} Block ohne Rumpf deklariert.
+Für Merkmale werden Funktionen in einem entsprechenden \rustcinline{trait <Name> \{ \}}-Block ohne Rumpf deklariert.
 Optional kann auch ein Standardrumpf implementiert werden, der bei einer Spezialisierung überschrieben werden darf.
 Auch auf ein Merkmal kann ein Zugriffsmodifikator gesetzt werden (siehe \autoref{rust:access_modifier}).
 
@@ -585,18 +585,19 @@ Test-Funktionen sind jedoch weiterhin mit \rustcinline{#[test]} markiert.
 \label{rust:no_null}
 
 Rust kennt \ccinline{NULL}(-Pointer) nicht und erlaubt auch keine nicht initialisierte Variablen (siehe \autoref{rust:no_unitialized_usage}), bietet aber einen \rustcinline{Option<_>}-Datentyp als Ersatz an.
-Dieser Datentyp erzwingt eine Prüfung vor dem Zugriff auf den optionalen Wert (siehe \autoref{rust:no_null_detail}).
+Dieser Datentyp erzwingt eine Prüfung vor dem Zugriff auf den optionalen Wert (siehe \autoref{rust:guarantee:no_null}).
 
 Für die Fehlerbehandlung wird nicht auf ein Exception-Handling zurückgegriffen, sondern ein eigener Datentyp angeboten, der entweder den Rückgabewert enthält, oder aber einen Fehler: \rustcinline{Result<_, _>} (siehe \autoref{rust:result}).
 
 Durch den Fragezeichenoperator kann trotzdem ein ähnliches Verhalten wie beim auftreten einer Ausnahme in Java oder C++ erzielt werden (siehe \autoref{rust:result}).
 
 
-\section{Besorgter Compiler}
-\label{rust:worried_compiler}
-\todo{many warnings}
 
-\todo{remove?}
+
+%\section{Besorgter Compiler}
+%\label{rust:worried_compiler}
+%\todo{many warnings}
+%\todo{remove?}
 
 
 \section{Standardbibliothek}
@@ -768,6 +769,8 @@ In Situationen in denen der \rustcinline{Vec<u8>} weiterhin genutzt werden muss,
 
 \todo{verhindert falsches verhalten, kein add / remove while iterating for example}
 
+\todo{vorteile klar ob variable konsumiert wird, keine freigeben von verwendeten resourcen, kein unnötiges kopieren, into()}
+
 \section{Rust als funktionale Programmiersprache ??}
 
 \todo{functional programming -> no global state, no exceptions, find literature}
@@ -826,7 +829,7 @@ Der Compiler stoppt mit einem Fehler: \enquote{\textbf{\textcolor{red}{error[E03
 
 
 \subsection{Keine vergessene Null-Pointer Prüfung}
-\label{rust:no_null_detail}
+\label{rust:guarantee:no_null}
 
 \begin{quotation}
 	\textit{\enquote{I call it my billion-dollar mistake. It was the invention of the null reference in 1965}}
@@ -899,8 +902,14 @@ Dazu muss die Funktion, die den Operator verwendet aber auch ein \rustcinline{Re
 \subsection{No dangling pointer}
 \label{rust:guarantee:no_dangling_pointer}
 
+\todo{.}
+Durch die Einhaltung des Eigentümerprinzips wird die typische Fehlerquelle aus C und C++ verhindert, bei der durch einen Pointer auf bereits deallokierten Speicher zugegriffen wird.
+Ein Verhalten ist hierbei nicht vorhersehbar. Es könnte einfach nur auf den als \enquote{frei} markierten Speicherbereich zugegriffen werden, der noch die vorherigen Werte enthält.
+Es könnte aber auch auf den nun neu zugewiesenen Speicherbereiche geschrieben und dabei Werte anderer Datenstrukturen überschrieben werden.
+Im besten Fall hat das Betriebssystem die Speicherseite dem Programm bereits entzogen und das Programm stürzt einfach nur ab.
 
-\todo{explain} Eigentümerprinzip (siehe \autoref{rust:ownership})
+Im Beispiel in \autoref{rust:owner:c_bad_free} wird durch eine Fehlerhafte Implementierung der Funktion \ccinline{klone_computer} ein \enquote{dangling pointer} in C provoziert.
+Daraufhin wird versucht, mit dem gleichen Beispiel in \autoref{rust:owner:rust_bad_free} ein \enquote{dangling pointer} in Rust zu provozieren.
 
 
 
@@ -918,35 +927,40 @@ Dazu muss die Funktion, die den Operator verwendet aber auch ein \rustcinline{Re
 	{sections/rust.owner.free.rs}
 \end{figure}
 
-\todo{make better}
-
+\todo{.}
 Ein äquivalentes Beispiel zu dem C-Beispiel in Rust zu schreiben, ist schwierig.
-Das Feld \enquote{model} in der C-Struktur ist im ersten Fall der Eigentümer der Zeichenkette (Datentyp \rustcinline{String} in Rust) und in zweigen Fall beim Klonen der Leihende (Datentyp \rustcinline{&str} in Rust).
+Das Feld \enquote{model} in der C-Struktur ist im ersten Fall der Eigentümer der Zeichenkette (Datentyp \rustcinline{String} in Rust) und in zweiten Fall beim Klonen der Entleiher (Datentyp \rustcinline{&str} in Rust).
 Dieser Unterschied ist gleichzeitig auch die Fehlerquelle im C-Beispiel.
 
 Im Rust-Beispiel ist die Zeichenkette deswegen in Zeile 19 außerhalb der \rustcinline{erstelle_computer} Funktion, da der Geltungsbereich ansonsten beim Verlassen der Funktion bereits zu Ende wäre.
 Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgehend dem Beispiel aus \autoref{rust:owner:c_bad_free}, zumindest genügend, um zu zeigen, dass der Rust Compiler den Fehler erkennt und die Kompilation abbricht: \textbf{\textcolor{red}{error[E0505]}: cannot move out of `c1` because it is borrowed}
 
-\todo{move to guarantees}
-
-\todo{vorteile klar ob variable konsumiert wird, keine freigeben von verwendeten resourcen, kein unnötiges kopieren, into()}
-
 \subsection{Speichersicherheit}
+\label{rust:guarantee:memory_safety}
 
+
+In Rust werden verschiedene Arten von Speichersicherheit Garantiert. Zum einen, wird niemals auf einen \ccinline{NULL}-Pointer zugegriffen (siehe \autoref{rust:guarantee:no_null}), zum anderen wird niemals auf einen bereits deallokierten Speicherbereich zugegriffen (siehe \autoref{rust:guarantee:no_dangling_pointer}).
+
+Die Speichersicherheit umfasst aber Zugriffe auf Puffer. So ist es nicht möglich einen Pufferüberlauf zu provozieren, da die Größe von einem Array und einer Slice immer bekannt ist.
+Der Compiler erzwingt eine Grenzüberprüfung beim Zugriff zur Laufzeit, falls die Einhaltung statisch nicht ersichtlich ist (\autoref{rust:zero_cost}).
+
+Ein Datenwettlauf wird auch, durch Anwendung des Eigentümerprinzips, verhindert (siehe \autoref{rust:guarantee:thread_safety}).
 
 \subsection{Sichere Nebenläufigkeit}
+\label{rust:guarantee:thread_safety}
 
-\todo{thread safety}
+Eine sichere Nebenläufigkeit wird in Rust durch das Eigentümerprinzip (siehe \autoref{rust:ownership}) in Kombination mit den \rustcinline{Send} und \rustcinline{Sync} Merkmalen (siehe \autoref{rust:traits}) erreicht.
+Dabei ist diese sichere Nebenläufigkeit meist unsichtbar \cite[41]{rust:orly_programming}, da der Compiler eine unsichere und damit syntaktisch falsche Verwendung nicht übersetzt.
+Ein Rust Programm das compiliert, ist daher, in vielerlei Hinsicht, sicher in der Nebenläufigkeit.
+Einzig ein \enquote{Deadlock} kann nicht statisch ermittelt und verhindert werden.
 
-\todo{\enquote{Safety is invisible} \cite[41]{rust:orly_programming}}
+Eine Wettlaufsituation (englisch \enquote{race condition}) um einen Wert ist in Rust nicht möglich.
+Das Eigentümer- und Leihprinzip verhindert dies, denn es kann nur exklusiv schreibend auf einen Wert zugegriffen werden (siehe \autoref{rust:ownership}).
+Für einen Datenwettlauf muss dagegen, gleichzeitig zu einem schreibenden, ein lesender Zugriff erfolgen.
 
-\todo{Send, Sync, No dataraces weil Ownership \autoref{rust:ownership}, Channel, Mutex, RwLock}
-
-\todo{Datarace benötigt immer einen schreibenden + min einen lesenden gleichzeitig}
-
-
-\todo{Mutex, RwLock -- immer mit Result}
-
+Datentypen, die einen gemeinsamen Zugriff auf veränderliche Werte ermöglichen (\rustcinline{Mutex}, \rustcinline{RwLock} und im erweiterten Sinne \enquote{channels}), liefern immer ein Ergebnis ob der Versuch, einen exklusiven Schreib- oder Lesezugriff zu erhalten, geklappt hat.
+Eine mögliche Fehlersituation ist ein Thread, bei dem eine \rustcinline{panic!} (siehe \autoref{rust:panic}) aufgetreten ist, während dieser einen exklusiven Schreibzugriff auf den geschützten Wert hatte.
+In diesem Fall wird ein \rustcinline{PoisonError} zurückgegeben, der einen direkten Zugriff auf den Wert verhindert und vermittelt, dass der geschützte Wert vermutlich in keinem konsistenten Zustand mehr ist.
 
 \subsection{Zero Cost Abstraction}
 \label{rust:zero_cost}
@@ -956,6 +970,8 @@ Beim Übersetzen werden deshalb viele Abstraktionen durch Optimierungen für den
 
 Der \rustcinline{Option<_>} Datentyp kann zum Beispiel in vielen Fällen als Pointer dargestellt werden, der bei \ccinline{NULL} \rustcinline{None} und ansonsten \rustcinline{Some(_)} ist \cite[100]{rust:orly_programming}.
 Somit wird eine Überprüfung erzwungen, ohne dabei Laufzeitkosten erzeugt zu haben.
+
+\todo{bounds check compiler optmization}
 
 Ein weiteres Beispiel sind die Referenzzählertypen \rustcinline{Rc} und \rustcinline{Arc<_>}.
 Der Zähler ist im Heap direkt vor dem beinhalteten Wert und nicht in einem extra Speicherbereich, weshalb ein weiterer, indirekter Speicherzugriff mit Laufzeitkosten verhindert werden kann.

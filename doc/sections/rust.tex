@@ -591,7 +591,14 @@ Für die Fehlerbehandlung wird nicht auf ein Exception-Handling zurückgegriffen
 
 Durch den Fragezeichenoperator kann trotzdem ein ähnliches Verhalten wie beim auftreten einer Ausnahme in Java oder C++ erzielt werden (siehe \autoref{rust:result}).
 
-
+\todo{.}
+Ein besonderer Fehler ist eine Panik.
+Eine Panik bedeutet in den meisten Fällen einen Logikfehler, weswegen dieser nicht wie ein normaler Fehler behandelt wird.
+Eine Panik kann beim Zugriffsversuch außerhalb der Grenzen einer Slice oder eines Arrays, beim Teilen durch 0 oder auch bei einem \rustcinline{.unwrap()} ausgelöst werden.
+Eine Panik durchläuft daraufhin, wie eine Exception in C\#, Java oder C++, rückwärts alle Funktionsaufrufe und gibt den Speicher geordnet wieder frei, bis zuletzt der panische Thread endet.
+Falls dies im Main-Thread auftritt wird danach der Prozess beendet.
+Auch, wenn beim freigeben des Speichers, durch zum Beispiel eine eigene \rustcinline{Drop} Implementierung (siehe \autoref{rust:traits}), eine weitere Panik auftritt, wird der Prozess beendet (genannt \rustcinline{abort}).
+\cite[145-147]{rust:orly_programming}
 
 
 %\section{Besorgter Compiler}

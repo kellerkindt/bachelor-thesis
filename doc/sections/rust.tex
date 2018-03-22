@@ -717,11 +717,15 @@ Wichtige, aber auch bekannte Datentypen sind hierbei:
 	Dies ist zwar mit höheren Laufzeitkosten verbunden, erlaubt es aber, dass eine \textbf{Arc} Instanz zwischen Threads übertragen werden kann.
 	Mehrere Threads können daher lesend auf den beinhalteten Wert zugreifen.
 	
-	\item \textbf{std::sync::Mutex}: \todo{?} Schützt Daten anstatt Code
-	\item \textbf{std::sync::RwLock}: \todo{?} Erlaubt mehrfach lesend oder einmal schreibend
-	\item \textbf{std::net::TcpStream}: \todo{?} 
-	\item \textbf{Module std::thread}: \todo{?}
-	\item \textbf{std::collections::HashMap}: \todo{?}
+	\item \textbf{std::sync::Mutex}: Versichert einen exklusiven Zugriff auf den beinhalteten Wert. \todo{threads}
+	In Rust schützt eine \textbf{Mutex} anstatt einem bestimmten Codeabschnitt, den beinhalteten Wert.
+	Ein Zugriff ist erst nach einem erfolgreichen \todo{lock} möglich.
+	
+	\item \textbf{std::sync::RwLock}: Erlaubt mehreren Threads gleichzeitig lesend oder einem Thread schreibend auf den beinhalteten Wert zuzugreifen. Wie bei einer \textbf{Mutex} kann erst nach einem erfolgreichen \todo{lock} auf den geschützten Wert zugegriffen werden.
+	
+	%\item \textbf{std::net::TcpStream}: \todo{?} 
+	%\item \textbf{Module std::thread}: \todo{?}
+	%\item \textbf{std::collections::HashMap}: \todo{?}
 	
 \end{itemize}
 

@@ -332,12 +332,16 @@ Einen Konstruktor gibt es jedoch nicht; lediglich die Konvention, eine statische
 	
 In seltenen Fällen wird auch \rustcinline{Default} implementiert (siehe \autoref{rust:trait:default}), wodurch eine statische Funktion \rustcinline{default()} als Konstruktor ohne Parameter bereitgestellt wird.
 
-Da eine Funktionsüberladung nicht möglich ist, soll bei weiteren Konstruktoren ein sprechender Name verwendet werden.
+Da eine Funktionsüberladung nicht möglich ist, sollen stattdessen sprechende Name verwendet werden.
 Der \rustcinline{Vec<_>} der Standardbibliothek (siehe \autoref{rust:stdlib}) bietet zum Beispiel zusätzlich \rustcinline{Vec::with_capacity(capacity: usize)} an, um einen Vektor mit einer bestimmten Kapazität zu initialisieren.
 
-Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe \autoref{rust:access_modifier}). 
+Funktionen die sich auf eine Instanz beziehen, haben als ersten Parameter die Variable \rustcinline{self} (konsumierend), \rustcinline{&self} (lesend leihend) oder \rustcinline{&mut self} (exklusiv leihend) deklariert.
+Die \rustcinline{self}-Variable entspricht dabei dem \ccinline{this} aus C, C\# oder Java:
+\rustcinline{fn x_eq_y(&self) -> bool \{ self.x == self.y \}}.
+Ein großgeschriebenes \rustcinline{Self} bezieht sich auf den eigenen Typ, deshalb könnte die Funktion aus \autoref{rust:struct:impl} auch folgende Signatur haben: \rustcinline{pub fn new(x: f32, y: f32) -> Self ...}.
+Dies ist aber selten und oft nur in generischem Code anzutreffen (siehe \autoref{rust:traits}).
 
-\todo{self, self: \&Self, self: \&mut Self}
+Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe \autoref{rust:access_modifier}).
 
 \section{Generalisierung durch Traits}
 \label{rust:traits}

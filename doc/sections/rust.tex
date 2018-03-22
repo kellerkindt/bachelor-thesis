@@ -605,14 +605,14 @@ Für die Fehlerbehandlung wird nicht auf ein Exception-Handling zurückgegriffen
 
 Durch den Fragezeichenoperator kann trotzdem ein ähnliches Verhalten wie beim auftreten einer Ausnahme in Java oder C++ erzielt werden (siehe \autoref{rust:result}).
 
+\label{rust:panic}
 \todo{.}
 Ein besonderer Fehler ist eine Panik.
-Eine Panik bedeutet in den meisten Fällen einen Logikfehler, weswegen dieser nicht wie ein normaler Fehler behandelt wird.
-Eine Panik kann beim Zugriffsversuch außerhalb der Grenzen einer Slice oder eines Arrays, beim Teilen durch 0 oder auch bei einem \rustcinline{.unwrap()} ausgelöst werden.
+Eine Panik bedeutet in den meisten Fällen einen Logikfehler im Programmcode, weswegen dieser nicht wie ein normaler Fehler behandelt wird.
+Eine Panik kann zum Beispiel beim Zugriffsversuch außerhalb der Grenzen einer Slice oder eines Arrays, beim Teilen durch 0 oder auch bei einem \rustcinline{.unwrap()} ausgelöst werden.
 Eine Panik durchläuft daraufhin, wie eine Exception in C\#, Java oder C++, rückwärts alle Funktionsaufrufe und gibt den Speicher geordnet wieder frei, bis zuletzt der panische Thread endet.
 Falls dies im Main-Thread auftritt wird danach der Prozess beendet.
-Auch, wenn beim freigeben des Speichers, durch zum Beispiel eine eigene \rustcinline{Drop} Implementierung (siehe \autoref{rust:traits}), eine weitere Panik auftritt, wird der Prozess beendet (genannt \rustcinline{abort}).
-\cite[145-147]{rust:orly_programming}
+Auch, wenn beim freigeben des Speichers, durch zum Beispiel eine eigene \rustcinline{Drop} Implementation (siehe \autoref{rust:traits}), eine weitere Panik auftritt, wird der Prozess beendet (dies wird \rustcinline{abort} genannt) \cite[145-147]{rust:orly_programming}.
 
 
 %\section{Besorgter Compiler}
@@ -793,7 +793,7 @@ Ein typisches Problem, die Modifikation einer Kollektion während einer Iteratio
 \todo{Einen exklusiven Zugriff auf eine Kollektion zu erhalten -- um einen Wert einzufügen, zu entfernen oder zu ändern, wenn über diese iteriert wird, ist nicht möglich, da der Iterator die Kollektion bereits lesend geliehen hat.}
 Anstatt das eine \ccinline{ConcurrentModificationException} zur Laufzeit geworfen wird, unterbindet dies der Rustcompiler durch eine Fehlermeldung \cite[116]{rust:orly_programming}.
 
-\section{Rust als funktionale Programmiersprache ??}
+\section{\todo{zu viel + unnötig?} Rust als funktionale Programmiersprache ??s}
 
 \todo{functional programming -> no global state, no exceptions, find literature}
 
@@ -804,7 +804,7 @@ Anstatt das eine \ccinline{ConcurrentModificationException} zur Laufzeit geworfe
 \todo{closures are fast, orly, p.310}
 
 
-\section{Rust als Objekt-Orientierte Programmiersprache ??}
+\section{\todo{zu viel + unnötig?} Rust als Objekt-Orientierte Programmiersprache ??}
 \label{rust:oop}
 
 Vererbung explizit nicht erwünscht, Composition over Inheritance, inheritance dissallows static sizes, enum allow passing by value
@@ -872,9 +872,6 @@ In vielen Fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als
 
 \subsection{Keine vergessene Fehlerprüfung}
 \label{rust:result}
-
-\label{rust:panic}
-\todo{panic! -> Wenn das boot nicht mehr zu retten ist}
 
 \begin{figure}[H]
 	\ccinclude

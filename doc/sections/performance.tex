@@ -1,9 +1,9 @@
 
 %\chapter{Hochperformante, serverbasierte Kommunikationsplattform}
-\chapter{\todo{Der Rest}}
+\chapter{\todo{\enquote{Systemrelevant}?}}
 \label{com_plattform}
 
-Dieses Kapitel erläutert den Begriff \enquote{hochperformante, serverbasierte Kommunikationsplattform} und vermittelt Basiswissen hierzu.
+Dieses Kapitel erläutert weitere, relevante Themen die zur Umsetzung der \enquote{hochperformante, serverbasierte Kommunikationsplattform} wichtig sind.
 
 \section{Echtzeitsysteme}
 \label{real_time_systems}
@@ -91,17 +91,17 @@ Test-getriebene Entwicklung verändert auch die Vorgehensweise bei der Implement
 \label{com:safety}
 
 \enquote{Sicherheit} ist im Deutschen kein eindeutiger Begriff.
-Sowohl \enquote{Sichersein vor Gefahr oder Schaden} (\textit{to be safe}), \enquote{Freisein von Fehlern oder Irrtümern} (\textit{to be confident}) oder \enquote{Schutz vor Gefahren, die von außen auf Systeme oder Personen einwirken} (\textit{security}) könnte mit \enquote{sicher sein} gemeint sein \cite[5-6]{safety}.
-Deswegen ist es wichtig, beim Begriff funktionale Sicherheit auf einen gemeinsamen Nenner zu bringen.
+Sowohl \enquote{Sichersein vor Gefahr oder Schaden} (\textit{to be safe}), \enquote{Freisein von Fehlern oder Irrtümern} (\textit{to be confident}) oder \enquote{Schutz vor Gefahren, die von außen auf Systeme oder Personen einwirken} (\textit{security}) könnten mit \enquote{sicher sein} gemeint sein \cite[5-6]{safety}.
+Deswegen ist es wichtig, den Begriff \enquote{funktionale Sicherheit} kurz zu ergründen.
 
 Bei funktionaler Sicherheit (\textit{safety}) geht es um die Betriebssicherheit, eine \enquote{Freiheit von unvertretbaren Risiken} \cite[6]{safety}.
 Unvertretbare Risiken sind in erster Linie Personenschäden, weswegen einheitliche Regularien in Normen wie der IEC 61508 bzw der DIN EN 61508 festgehalten sind.
-Für den Automobilbereich wurde die Norm in der ISO 26262 angepasst, um u.a. eine Einzelabnahme eines jeden Fahrzeuges durch eine Gesamtabnahme des Produktes zu ermöglichen \cite[14]{safety}.
+Für den Automobilbereich wurde die Norm in der ISO 26262 angepasst, um u.a. eine Einzelabnahme eines jeden Fahrzeuges, durch eine Gesamtabnahme des Produktes zu ermöglichen \cite[14]{safety}.
 
 \todo{such shiat argument, arguem more rust -> f. safety}
-Obwohl funktionale Sicherheit für das Forschungsprojekt \gls{mec}-View eine nicht irrelevante Rolle spielt, wird in dieser Bachelorarbeit keine Entwicklung nach ISO 26262 vorgenommen.
+Obwohl funktionale Sicherheit für das Forschungsprojekt \gls{mec}-View eine nicht irrelevante Rolle Bedeutung hat, wird in dieser Bachelorarbeit keine Entwicklung nach ISO 26262 vorgenommen.
 Zum einen sollen die Garantien von Rust (siehe \autoref{rust:guarantees}) viele mögliche Fehlerquellen generell ausschließen, zum anderen soll durch die Test-getriebene Entwicklung (siehe \autoref{tdd}) die Fehlerwahrscheinlichkeit weiter reduziert werden.
-Zuletzt ist anzumerken, dass das System nicht für einen Endanwender konzipiert ist, sondern nur durch entsprechendes Fachpersonal betrieben und in Notfallsituationen abgebrochen wird.
+Zuletzt ist anzumerken, dass das System nicht für einen Endanwender konzipiert ist, sondern nur durch entsprechendes Fachpersonal betrieben und in Notfallsituationen eingegriffen wird.
 
 	
 %\section{Sensordaten?}

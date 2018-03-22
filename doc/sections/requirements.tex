@@ -1,16 +1,6 @@
 
 \chapter{Anforderungen}
 
-\todo{
-	irrelevant?
-Safety / Funktionale Sicherheit
-Da bei Fehlern möglicherweise andere Verkehrsteilnehmer zu Schaden kommen können, müssen diverse Sicherheitsrichtlinien beachtet werden. Die Industrienorm ISO 26262 beschreibt dabei verschiedene Vorgehensweisen,
-unter anderem eine \gls{fba}, Risikoabschätzung durch Einstufung nach \glspl{asil} und beschreibt Gegenmaßnahmen.}
-
-\todo{asn}
-
-\todo{mobile edge computer -> ubuntu linux}
-
 \section{Funktionale Anforderungen}
 
 \requirement{impl:rust}{Implementation in Rust}{Die Implementation wird in der Programmiersprache Rust vorgenommen.}
@@ -42,6 +32,8 @@ Die Bearbeitungszeit des Fusions-Algorithmus zählt nicht dazu.}
 \requirement{impl:algorithmus:to}{Sensordaten weitergeben}{Empfangene Sensordaten werden dekodiert und an den Fusions-Algorithmus weitergegeben. \todo{geofence?}}
 
 \requirement{impl:algorithmus:from}{Ergebnisse weitergeben}{Ergebnisse des Fusions-Algorithmus werden enkodiert un an die Fahrzeuge in den entsprechenden GeoFences versendet.}
+
+\requirement{impl:algorithmus}{Fusions-Algorithmus implementieren}{Für den Testbetrieb soll der beispielhafte Fusions-Algorithmus aus der C++ Referenzimplementierung auch in Rust umgesetzt werden. Ob die Einbindung einer externen Bibliothek als Fusions-Algorithmus möglich ist, soll überprüft werden.}
 
 \requirement{dos:sensor}{Widerstand gegen Sensor DOS}{Die Funktionalität des Servers gegenüber anderen Clients wird durch eine Überflutung von Daten eines Sensors nicht beeinträchtigt. \todo{optional?}}
 

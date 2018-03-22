@@ -986,7 +986,8 @@ Beim Übersetzen werden deshalb viele Abstraktionen durch Optimierungen für den
 Der \rustcinline{Option<_>} Datentyp kann zum Beispiel in vielen Fällen als Pointer dargestellt werden, der bei \ccinline{NULL} \rustcinline{None} und ansonsten \rustcinline{Some(_)} ist \cite[100]{rust:orly_programming}.
 Somit wird eine Überprüfung erzwungen, ohne dabei Laufzeitkosten erzeugt zu haben.
 
-\todo{bounds check compiler optmization}
+% no good source available, would need to compare debug asm vs release asm (Lpanic_bounds_check_loc)
+%\todo{bounds check compiler optmization}
 
 Ein weiteres Beispiel sind die Referenzzählertypen \rustcinline{Rc} und \rustcinline{Arc<_>}.
 Der Zähler ist im Heap direkt vor dem beinhalteten Wert und nicht in einem extra Speicherbereich, weshalb ein weiterer, indirekter Speicherzugriff mit Laufzeitkosten verhindert werden kann.
@@ -1136,9 +1137,21 @@ Externe Funktionen müssen im Gegensatz zu externen Strukturen immer in einem \r
 Wie in \autoref{rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Anmerkungen (sieh \autoref{rust:annotations}) versehen werden. Zwingend ist bei der Verwendung einer \rustcinline{#[link(..)]} Anmerkung der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{rust:ffi:uper_encode_to_buffer} die Art der Verlinkung (dynamisch oder statisch) angegeben werden.
 
 Die Art der Definition einer externen Funktion unterscheidet sich nicht von einer normalen Funktionsdefinition. Es sollten aber, wie in \autoref{rust:ffi:datatypes} beschrieben, zu C bzw. der externen Sprache kompatiblen Datentypen verwendet werden.
- 
-\newpage
 
+
+\section{Beispiele der Verwendung von Rust}
+\todo{relevant?}
+
+Der womöglich bekannteste Einsatzzweck von Rust ist im Webbrowser Firefox.
+Mehrere Versuche die Layoutberechnung in C++ zu parallelisieren sind aufgrund schwer auffindbaren Fehlern abgebrochen worden \cite{rust:example:firefox}.
+Eine Parallelisierung im aktuellen Projekt \enquote{Quantum} in Rust is dagegen mit ersten Erfolgen gekrönt \cite{rust:example:firefox_heise}
+
+Dropbox erreicht bereits \enquote{Hunderten Millionen von Geräten} mit Rust und das GNOME Projekt ermöglicht die Integration von Rust Code \cite{rust:example:two_years}.
+%https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
+%\todo{GTK binding heavily to rust} \\
+
+
+ 
 %\section{Kernfeatures}
 
 %\todo{nothing on heap unless specified (Box, Vec, other container)}
@@ -1173,14 +1186,3 @@ Die Art der Definition einer externen Funktion unterscheidet sich nicht von eine
 
 %\section{Performance Fallstricke}
 %\todo{\cite{rust:performance_pitfalls}}
-
-\section{Beispiele der Verwendung von Rust}
-\todo{relevant?}
-
-Der womöglich bekannteste Einsatzzweck von Rust ist im Webbrowser Firefox.
-Mehrere Versuche die Layoutberechnung in C++ zu parallelisieren sind aufgrund schwer auffindbaren Fehlern abgebrochen worden \cite{rust:example:firefox}.
-Eine Parallelisierung im aktuellen Projekt \enquote{Quantum} in Rust is dagegen mit ersten Erfolgen gekrönt \cite{rust:example:firefox_heise}
-
-Dropbox erreicht bereits \enquote{Hunderten Millionen von Geräten} mit Rust und das GNOME Projekt ermöglicht die Integration von Rust Code \cite{rust:example:two_years}.
-%https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
-%\todo{GTK binding heavily to rust} \\

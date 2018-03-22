@@ -77,16 +77,19 @@
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
 		\begin{umlsystem}{Server}
+			\umlusecase[y=4,name=u0]{Verbindung aufbauen}
 			\umlusecase[y=2,name=u1]{GeoFence betreten}
 			\umlusecase[y=0,name=u2]{GeoFence verlassen}
 			\umlusecase[y=-2,name=u3]{Sensordaten senden}
 			\umlusecase[y=-4,name=u4]{Umfeldmodel übergeben}
 		\end{umlsystem}
-		\umlactor[x=-6,y=1]{Fahrzeug}
+		\umlactor[x=-6,y=2]{Fahrzeug}
 		\umlactor[x=-6,y=-4]{Fusions-Algorithmus}
 		\umlactor[x=6,y=1]{Sensor}
+		\umlassoc{Fahrzeug}{u0}
 		\umlassoc{Fahrzeug}{u1}
 		\umlassoc{Fahrzeug}{u2}
+		\umlassoc{Sensor}{u0}
 		\umlassoc{Sensor}{u1}
 		\umlassoc{Sensor}{u3}
 		\umlassoc{Fusions-Algorithmus}{u4}

@@ -7,7 +7,7 @@ Rust hat als Ziel, eine sichere (siehe \autoref{rust:guarantees}) und performant
 Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber keine unnötigen Performance-Einbußen verursachen (siehe \autoref{rust:zero_cost}).
 
 Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie vergessene \ccinline{NULL}-Pointer Prüfung, vergessene Fehlerprüfung, \enquote{dangling pointers} oder \enquote{memory leaks} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert (\autoref{rust:guarantees}).
-Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
+Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Kompilation überprüft und erzwungen.
 \todo{Anderswo als Best Practice Vorschläge, hier in Regeln erzwungen, ändert nicht viel, erzwingt nur korrekte programmierung}
 
 Diese erlaubt Rust eine zur Laufzeit hohe Ausführgeschwindigkeit zu erreichen.
@@ -771,30 +771,27 @@ Ein entsprechender Versuch wird mit einer Fehlermeldung durch den Compiler bemä
 Die Garantie, nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert (siehe \autoref{rust:scope}).
 Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nötig, weshalb diese Philosophie keinen Laufzeitkosten mit sich bringt.
 
-\todo{..}
-Durch das Eigentümerprinzip wird ein \enquote{dangling pointer} (siehe \autoref{rust:guarantee:no_dangling_pointer}) verhindert.
+\begin{figure}[H]
+	\rustcinclude
+		{rust:ownership:scope}
+		{Eigentümer und Referenzen von Variablen}
+		{sections/rust.ownership.rs}
+\end{figure}
 
+Das Beispiel in \autoref{rust:ownership:scope} zeigt verschieden Möglichkeiten und Beschränkungen beim verleihen und übertragen von Werten.
 
-\todo{...}
-Die Vorzüge bei dem Eigentümerprinzip gehen aber über den reinen Einsatz bei Parallelisierungen hinaus.
-Es wird eindeutig klar, ob ein Wert von einer Funktion konsumiert wird oder nicht.
-Ob eine Kopie für einen Funktionsaufruf erstellt werden muss, ist anhand dessen Funktionskopfs ablesbar.
-Dies vermeidet unnötige Kopien.
-Noch viel wichtiger ist aber, dass anhand der statischen Analyse, die Anzahl der \todo{Leihungen} jederzeit klar ist, und somit verhindert wird, dass Speicher freigegeben wird, obwohl dieser noch in Benutzung ist (siehe \autoref{rust:guarantee:no_dangling_pointer}).
+Das Eigentümerprinzip unterbindet automatisch einen \enquote{dangling pointer} (siehe \autoref{rust:guarantee:no_dangling_pointer}) und kann Optimierungen erlauben, die, bei ansonsten unzureichend detaillierten Nachforschung in der jeweiligen API Dokumentation, schnell zu Laufzeitfehlern führen kann.
+Am Funktionskopf ist zum Beispiel eindeutig ablesbar, ob ein Wert von einer Funktion konsumiert wird.
+Falls der Wert in solch einem Fall weiterhin benötigt wird, muss eine Kopie veranlasst werden.
+Eine falsche Nutzung der API wird durch einen Compilerfehler bemängelt, anstatt eines zur Laufzeit unerwarteten Verhaltens.
 
-\todo{...}
-Dies erlaubt gleichzeitig Optimierungen da Speicherbereich übernommen werden kann, anstatt neue anzufordern und zu kopieren.
-Dies geht aber nur, da dieses Verhalten durch die Deklaration im Funktionsrumpf, sowohl für den Programmierer als auch für den Compiler, eindeutig nachvollziehbar ist.
-
-\todo{...}
 \rustcinline{String::from_utf8(vec: Vec<u8>)} nimmt zum Beispiel einen \rustcinline{Vec<u8>} entgegen und konsumiert diesen.
-Für den Aufrufer ist somit klar, dass dieser nach dem Funktionsaufruf nicht mehr verwendet werden kann, da die Eigentümerschaft der Funktion \rustcinline{from_utf8} übertragen wurde.
-Dies erlaubt der Funktion, den Speicherbereich des \rustcinline{Vec<u8>} für den \rustcinline{String} zu nutzen ohne neuen Speicher zu allokieren oder zu kopieren \todo{proof: \enquote{This method will take care to not copy the vector, for efficiency's sake}} \url{https://doc.rust-lang.org/std/string/struct.String.html#method.from_utf8}.
-In Situationen in denen der \rustcinline{Vec<u8>} weiterhin genutzt werden muss, kann dieser für den Funktionsaufruf mit \rustcinline{clone} geklont werden.
+Der Aufrufer kann danach nicht mehr auf den diesen Zugreifen, da die Eigentümerschaft an die Funktion \rustcinline{from_utf8} übertragen wurde.
+Dies erlaubt der Funktion, den Speicherbereich des \rustcinline{Vec<u8>} für den \rustcinline{String} wiederzuverwenden ohne neuen Speicher zu allokieren oder zu kopieren \cite{rust:string:from_utf8}.
 
-\todo{verhindert falsches verhalten, kein add / remove while iterating for example}
-
-\todo{vorteile klar ob variable konsumiert wird, keine freigeben von verwendeten resourcen, kein unnötiges kopieren, into()}
+Ein typisches Problem, die Modifikation einer Kollektion während einer Iteration, wird auch durch das Eigentümerprinzip verhindert.
+\todo{Einen exklusiven Zugriff auf eine Kollektion zu erhalten -- um einen Wert einzufügen, zu entfernen oder zu ändern, wenn über diese iteriert wird, ist nicht möglich, da der Iterator die Kollektion bereits lesend geliehen hat.}
+Anstatt das eine \ccinline{ConcurrentModificationException} zur Laufzeit geworfen wird, unterbindet dies der Rustcompiler durch eine Fehlermeldung \cite[116]{rust:orly_programming}.
 
 \section{Rust als funktionale Programmiersprache ??}
 
@@ -919,11 +916,6 @@ Dazu muss die Funktion, die den Operator verwendet aber auch ein \rustcinline{Re
 \end{figure}
 
 
-
-\rustcinclude
-{rust:ownership:scope}
-{Eigentümer und Referenzen von Variablen}
-{sections/rust.ownership.rs}
 
 \subsection{No dangling pointer}
 \label{rust:guarantee:no_dangling_pointer}

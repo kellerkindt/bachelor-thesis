@@ -482,18 +482,17 @@ Aufgrund des Umfangs und die Irrelevanz für diese Arbeit wird hier auf eine wei
 
 \section{Schleifen}
 
-\todo{.}
-\url{https://doc.rust-lang.org/book/second-edition/ch03-05-control-flow.html}
-\url{https://doc.rust-lang.org/book/first-edition/loops.html}
+%\todo{.}
+%\url{https://doc.rust-lang.org/book/second-edition/ch03-05-control-flow.html}
+%\url{https://doc.rust-lang.org/book/first-edition/loops.html}
 
 Rust kennt die Schleifen \rustcinline{for}, \rustcinline{while} und \rustcinline{loop}.
-Eine \ccinline{do-while} Schleife wie in anderen Programmiersprachen gibt es nicht.
-
-
-Die einfachste Schleife ist \rustcinline{loop \{ \} }: der Rumpf der Schleife wird ohne Bedingung wiederholt.
-Diesen Schleifentyp gibt es, um \enquote{auszudrücken was gemeint ist} \todo{cite}, also eine Wiederholung ohne Bedingung.
-Somit ist eine, auf den ersten Blick unverständliche, Formulierung wie \ccinline{while (true) \{ \} } oder \ccinline{for(;;) \{ \} } unnötig.
-Die \rustcinline{loop}-Schleife kann zusätzlich bei einem \rustcinline{break} einen Wert zurückgeben, wie in \autoref{rust:loops:loop} in Zeile 9 zu sehen ist.
+Eine \ccinline{do-while} Schleife wie in anderen Programmiersprachen gibt es dagegen nicht.
+Die einfachste dieser Schleife ist \rustcinline{loop \{ \} }, da der Rumpf der Schleife ohne Bedingung wiederholt wird.
+Durch diesen Schleifentyp wird dem Compiler mehr über den eigentlichen Verwendungszweck mitgeteilt und bei der Codeanalyse anders bewertet als eine \rustcinline{while true \{ \} } Schleife \cite{rust:book:loops}.
+%Diesen Schleifentyp gibt es, um \enquote{auszudrücken was gemeint ist} \todo{cite}, also eine Wiederholung ohne Bedingung.
+Somit ist eine, auf den ersten Blick unverständliche Formulierung wie \ccinline{while (true) \{ \} } oder \ccinline{for(;;) \{ \} } unnötig.
+\autoref{rust:loops:loop} zeigt, dass eine \rustcinline{loop}-Schleife zusätzlich auch einen Wert zurück geben kann (\rustcinline{break} in Zeile 9).
 
 
 \begin{figure}[H]
@@ -569,29 +568,34 @@ Test-Funktionen sind jedoch weiterhin mit \rustcinline{#[test]} markiert.
 
 
 \section{Namenskonvention und Formatierung}
-\todo{relevant?}
+\label{rust:styleguide}
 
 Rust bietet einen offiziellen Styleguide, der u.a. eine Namenskonvention für Funktionen, Datentypen, Variationen und Variablen beinhaltet \cite{rust:styleguide:naming}.
 Auch über die Formatierung und Einrückungen werden bevorzugte Arten aufgezeigt \cite{rust:styleguide}.
 
-
-\rustcinclude
-	{rust:styleguide:bad}
-	{Beispiel für nicht Styleguide konformer Aufzählung}
-	{sections/rust.styleguide.bad.rs}
+\begin{figure}[H]
+	\rustcinclude
+		{rust:styleguide:bad}
+		{Beispiel für eine nicht konforme Aufzählung}
+		{sections/rust.styleguide.bad.rs}
+\end{figure}
 
 Der Compiler überprüft einige dieser Konventionen und warnt bei Nichteinhaltung.
-Das Beispiel in \autoref{rust:styleguide:bad} führt dabei zu den folgenden Warnungen:
+Das Beispiel in \autoref{rust:styleguide:bad} führt dabei zu den Warnungen in \autoref{rust:styleguide:bad_output}.
+Von einer weiteren Vertiefung der verschiedenen Konventionen wird hier abgesehen, da diese sehr ausführlich und mit sprechenden Beispielen auf der offiziellen Website erklärt werden.
 
-\begin{small}
-	\textbf{\textcolor{orange}{[warning]}: type `MY\_ENUM` should have a camel case name such as `MyEnum`}
-	\textbf{\textcolor{orange}{[warning]}: variant `AN\_ENTRY` should have a camel case name such as `AnEntry`}
-	\textbf{\textcolor{orange}{[warning]}: variant `ANOTHER\_ENTRY` should have a camel case name such as `AnotherEntry`}
-	warning: unused variable: `a`
-\end{small}
+\begin{figure}[H]
+	\begin{tcolorbox}[colback=codeBackground,boxrule=0pt,arc=0pt]
+	\begin{scriptsize}
+		\textbf{\textcolor{orange}{[warning]}: type `MY\_ENUM` should have a camel case name such as `MyEnum`} \\
+		\textbf{\textcolor{orange}{[warning]}: variant `AN\_ENTRY` should have a camel case name such as `AnEntry`} \\
+		\textbf{\textcolor{orange}{[warning]}: variant `ANOTHER\_ENTRY` should have a camel case name such as `AnotherEntry`}
+	\end{scriptsize}
+	\end{tcolorbox}
+	\caption{Hinweise des Compilers bezüglich der Aufzählung aus \autoref{rust:styleguide:bad}}
+	\label{rust:styleguide:bad_output}
+\end{figure}
 
-Von einer weiteren Vertiefung wird hier abgesehen.
-Bei der Implementierung des Servers wird versucht, die Benennung und Formatierung konform umzusetzen.
 
 \section{Niemals nichts und niemals unbehandelte Ausnahmen}
 \label{rust:no_null}

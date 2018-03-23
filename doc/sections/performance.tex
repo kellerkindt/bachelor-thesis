@@ -28,17 +28,16 @@ Je nach Art des Echtzeitsystems, wird diese First jedoch unterschiedlich gewicht
 
 \section{Mobile Edge Computing}
 
-\todo{..}
-Als Mobile Edge Computing (\gls{mec}) werden Recheneinheiten bezeichnet, die eine Cloudähnliche Umgebung am Rande des Mobilfunknetzes schaffen \cite[4]{etsi:mec}.
-Wenn in dieser Arbeit auf MEC Bezug genommen wird, sind damit explizit nahe Funkmasten montierte Recheneinheiten gemeint.
+\todo{refactor text}
+
+Mobile Edge Computing (\gls{mec}) bezeichnet Recheneinheiten, die eine Cloudähnliche Umgebung am Rande des Mobilfunknetzes schaffen \cite[4]{etsi:mec}.
+Wenn in dieser Arbeit auf MEC Bezug genommen wird, sind damit explizit direkt an Funkmasten montierte Recheneinheiten gemeint.
 Dadurch, dass die Recheneinheiten direkt an eine Antenne angeschlossen sind, können sie Anfragen aus dem Abdeckungsbereich der Antenne deutlich schneller beantworten (Latenz kleiner 20ms) als Cloudlösungen (Latenz ca 100ms) \cite[2]{perf:mec:fraunhofer}.
-Hierfür werden die Anfragen aus dem Mobilfunknetz direkt an die Recheneinheit geroutet, anstatt über einen Provider eine Internetverbindung zu einer Cloudlösung aufzubauen.
+Hierfür werden die Anfragen aus dem Mobilfunknetz direkt an die Recheneinheit weitergeleitet, anstatt über einen Provider eine Internetverbindung zu einer Cloudlösung aufzubauen.
+In dem \gls{mec}-View Projekt wird eine VM in einer \gls{mec} Recheneinheit ausgeführt und die Verbindungen zu den Sensoren und dem Fahrzeuge \todo{durchgeschleust}.
 
-\todo{direkt am Funkmast, TCP, nichts erst via Internet -> niedrige Latenz, VMs}
 
-
-\section{Architekturmuster? oder erst während der Implementation?}
-
+%\section{Architekturmuster? oder erst während der Implementation?}
 %\subsection{Was ist dann ein hochperformantes System}
 %\section{Serverbasierte Kommunikationsplattform: MEC}
 
@@ -72,11 +71,10 @@ Diese drei Phasen werden \enquote{red/green/refactor} bezeichnet:
 	\item \textbf{refactor}: Der neue Code wird aufgeräumt und verbessert um den Qualitätsstandards gerecht zu werden. Ein andauernder Testdurchlauf versichert dabei keine Regression der Funktionalität.
 \end{itemize}
 
-\todo{.. clarify}
 Die Testgröße und der daraus resultierende Umfang der neuen Funktionalität, wird durch die Zuversichtlichkeit des Entwicklers gesteuert \cite[42]{tdd}.
-Eine hohe Zuversichtlichkeit führt zu größeren Tests, während eine hohe Unsicherheit zu vielen kleinen Tests führt.
-Dementsprechend sind komplexe Anforderungen mit vielen Tests abgesichert.
-Bei Änderungen kann man sich deshalb auf das Sicherheitsnetz aus Tests verlassen, die einen Defekt umgehend detektieren.
+Eine hohe Zuversicht führe zu größeren Tests, die etwas mehr Funktionalität auf einmal prüfen, während eine hohe Unsicherheit zu vielen kleinen Tests führen würden.
+Daraus Resultiert, dass gerade komplexe Algorithmen mit vielen Tests abgesichert sein sollten.
+Bestehende Tests bilden ein Sicherheitsnetz, mit dem Defekte Änderungen umgehend detektiert werden können.
 
 %\todo{manchmal stellt man beim erstellen des tests fest, dass die Anforderung blöd ist}
 Test-getriebene Entwicklung verändert auch die Vorgehensweise bei der Implementation von Anforderungen. Anstatt zu fragen \enquote{Wie würde ich das Implementieren?}, wird überlegt \enquote{Wie würde ich das Testen?} \cite[39]{tdd}, womit auch implizit gefragt wird, wie die äußeren Schnittstelle idealerweise aussehen sollen \cite[4]{tdd}.
@@ -97,11 +95,15 @@ Deswegen ist es wichtig, den Begriff \enquote{funktionale Sicherheit} kurz zu er
 Bei funktionaler Sicherheit (\textit{safety}) geht es um die Betriebssicherheit, eine \enquote{Freiheit von unvertretbaren Risiken} \cite[6]{safety}.
 Unvertretbare Risiken sind in erster Linie Personenschäden, weswegen einheitliche Regularien in Normen wie der IEC 61508 bzw der DIN EN 61508 festgehalten sind.
 Für den Automobilbereich wurde die Norm in der ISO 26262 angepasst, um u.a. eine Einzelabnahme eines jeden Fahrzeuges, durch eine Gesamtabnahme des Produktes zu ermöglichen \cite[14]{safety}.
+\todo{Erwähnung?: Einstufung (A)SIL -> Gegenmaßnahmen}
 
-\todo{such shiat argument, arguem more rust -> f. safety}
-Obwohl funktionale Sicherheit für das Forschungsprojekt \gls{mec}-View eine nicht irrelevante Rolle Bedeutung hat, wird in dieser Bachelorarbeit keine Entwicklung nach ISO 26262 vorgenommen.
-Zum einen sollen die Garantien von Rust (siehe \autoref{rust:guarantees}) viele mögliche Fehlerquellen generell ausschließen, zum anderen soll durch die Test-getriebene Entwicklung (siehe \autoref{tdd}) die Fehlerwahrscheinlichkeit weiter reduziert werden.
-Zuletzt ist anzumerken, dass das System nicht für einen Endanwender konzipiert ist, sondern nur durch entsprechendes Fachpersonal betrieben und in Notfallsituationen eingegriffen wird.
+Durch die Test-getriebene Entwicklung und der Verwendung von Rust und dessen Garantien (siehe \autoref{rust:guarantees}), sollen Fehler reduziert und eine möglichst sichere Implementierung geschaffen werden.
+Eine Entwicklung nach ISO 26262 findet nicht statt, da dies zum Einen nicht durch das Forschungsprojekt gefordert ist und zum Anderen den Umfang dieser Bachelorarbeit überschreitet.
+
+%\todo{such shiat argument, arguemnt: more rust -> f. safety}
+%Obwohl funktionale Sicherheit für das Forschungsprojekt \gls{mec}-View eine nicht irrelevante Rolle Bedeutung hat, wird in dieser Bachelorarbeit keine Entwicklung nach ISO 26262 vorgenommen.
+%Zum einen sollen die Garantien von Rust (siehe \autoref{rust:guarantees}) viele mögliche Fehlerquellen generell ausschließen, zum anderen soll durch die Test-getriebene Entwicklung (siehe \autoref{tdd}) die Fehlerwahrscheinlichkeit weiter reduziert werden.
+%Zuletzt ist anzumerken, dass das System nicht für einen Endanwender konzipiert ist, sondern nur durch entsprechendes Fachpersonal betrieben und in Notfallsituationen eingegriffen wird.
 
 	
 %\section{Sensordaten?}

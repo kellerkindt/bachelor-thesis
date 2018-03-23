@@ -33,7 +33,10 @@ Eine serialisierte Nachricht ist deswegen nicht N-Bytes sondern N-Bits lang.
 An den resultierenden Bitstring dürfen 0-Bits angehängt werden, um diesen als Bytestring wandeln zu können.
 Durch dieses Verfahren ist die Nachricht noch kürzer darstellbar.
 
-\todo{sources:}
-Für den Einsatz bei Funkverbindungen ist diese Encodierung von Vorteil, da bei der Übermittlung einer Nachricht kein anderen Kommunikationsteilnehmer auf dieser Frequenz etwas übermitteln kann.
-Eine kürzere Nachricht blockiert eine Frequenz kürzer, weshalb kürzere Nachrichten einen höheren Durchsatz erlauben.
-Im Mobilfunkbereich ist dies von besonderer Bedeutung, da das Medium von vielen Teilnehmern gleichzeitig und über eine große Fläche geteilt wird. \todo{michael.refactor\_this\_shit()}
+Für Funkverbindungen ist dies von besonderer Bedeutung, da alle Teilnehmer das gleiche Übertragungsmedium teilen.
+Das Einsparen von wenigen Bytes pro Nachricht und je Teilnehmer ermöglicht einen höheren Gesamtdurchsatz.
+\todo{Einsparung = (Einsparung pro Nachricht) * (Anzahl Teilnehmer)}
+%\todo{refactor, sources:}
+%Für den Einsatz bei Funkverbindungen ist diese Encodierung von Vorteil, da bei der Übermittlung einer Nachricht kein anderen Kommunikationsteilnehmer auf dieser Frequenz etwas übermitteln kann.
+%Eine kürzere Nachricht blockiert eine Frequenz kürzer, weshalb kürzere Nachrichten einen höheren Durchsatz erlauben.
+%Im Mobilfunkbereich ist dies von besonderer Bedeutung, da das Medium von vielen Teilnehmern gleichzeitig und über eine große Fläche geteilt wird.

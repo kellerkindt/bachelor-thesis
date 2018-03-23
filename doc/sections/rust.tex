@@ -312,7 +312,7 @@ Dies liegt daran, dass in Rust vieles ein Ausdruck ist und somit einen Rückgabe
 Auch ein if-else ist ein Ausdruck und kann einen Rückgabewert haben.
 Ein bedingter Operator (?:) is somit unnötig, da stattdessen ein if-else verwendet werden kann: \rustcinline{let a = if b \{ c \} else \{ d \};}.
 
-\todo{Closures Lambdas: großes Thema, nur anschneiden? ... es gibt etwas wie Lambdas, nennt sich Closures... besonders weil move / Eigentümerschaft übernehmen, Fn/FnMut/FnOnce + Notation nicht erwähnten?}
+\todo{Closures Lambdas: großes Thema, nur anschneiden? ... es gibt etwas wie Lambdas, nennt sich Closures... besonders weil move / Eigentümerschaft übernehmen, Fn/FnMut/FnOnce + Notation, nicht erwähnen?}
 
 \todo{closures are fast, orly, p.310}
 
@@ -464,12 +464,14 @@ Das \rustcinline{match} Statement von Rust verlangt, dass eine Musterabgleichung
 Dementsprechend müssen entweder alle Varianten einer Aufzählung aufgeführt sein oder ein Standardpfade vorhanden sein \rustcinline{_ => \{ \} }.
 Hiermit wird verhindert, dass, nachdem eine Aufzählung um eine Variation erweitert wurde, eine Musterabgleichung nicht um das neue Element ergänzt wurde.
 
-Wenn sogar nur ein konkreter Fall von Bedeutung ist, kann dies in der verkürzten \rustcinline{if let} Schreibweise notiert werden:
+Wenn nur ein konkreter Fall von Bedeutung ist, kann dies in der verkürzten \rustcinline{if let} Schreibweise notiert werden:
 
-\rustcinclude
-	{rust:match:iflet}
-	{Vereinfachte \rustcinline{if let} Ausdruck}
-	{sections/rust.match.iflet.rs}
+\begin{figure}[H]
+	\rustcinclude
+		{rust:match:iflet}
+		{Vereinfachte \rustcinline{if let} Ausdruck}
+		{sections/rust.match.iflet.rs}
+\end{figure}
 
 Ein weiterer Unterschied von \autoref{rust:match:iflet} gegenüber \autoref{rust:match:large} ist in Zeile 3 das Schlüsselwort \rustcinline{ref}, wodurch der Konsum des Wertes verhindert wird.
 Das Schlüsselwort \rustcinline{mut} erlaubt zudem eine Änderung des Wertes, weswegen \rustcinline{value} in Zeile 4 vom Typ \rustcinline{&mut u32} ist.
@@ -917,8 +919,7 @@ Dazu muss die Funktion, die den Operator verwendet aber auch ein \rustcinline{Re
 \subsection{No dangling pointer}
 \label{rust:guarantee:no_dangling_pointer}
 
-\todo{.}
-Durch die Einhaltung des Eigentümerprinzips wird die typische Fehlerquelle aus C und C++ verhindert, bei der durch einen Pointer auf bereits deallokierten Speicher zugegriffen wird.
+Durch das Eigentümerprinzip wird eine typische Fehlerquelle aus C und C++ verhindert, bei der durch einen Pointer auf bereits deallokierten Speicher zugegriffen wird.
 Ein Verhalten ist hierbei nicht vorhersehbar. Es könnte einfach nur auf den als \enquote{frei} markierten Speicherbereich zugegriffen werden, der noch die vorherigen Werte enthält.
 Es könnte aber auch auf den nun neu zugewiesenen Speicherbereiche geschrieben und dabei Werte anderer Datenstrukturen überschrieben werden.
 Im besten Fall hat das Betriebssystem die Speicherseite dem Programm bereits entzogen und das Programm stürzt einfach nur ab.
@@ -942,13 +943,12 @@ Daraufhin wird versucht, mit dem gleichen Beispiel in \autoref{rust:owner:rust_b
 	{sections/rust.owner.free.rs}
 \end{figure}
 
-\todo{.}
 Ein äquivalentes Beispiel zu dem C-Beispiel in Rust zu schreiben, ist schwierig.
-Das Feld \enquote{model} in der C-Struktur ist im ersten Fall der Eigentümer der Zeichenkette (Datentyp \rustcinline{String} in Rust) und in zweiten Fall beim Klonen der Entleiher (Datentyp \rustcinline{&str} in Rust).
+Das Feld \enquote{model} in der C-Struktur ist beim erstellen der Eigentümer der Zeichenkette (Datentyp \rustcinline{String} in Rust) und beim Klonen der Entleiher (Datentyp \rustcinline{&str} in Rust).
+Im Rust-Beispiel ist die Zeichenkette deswegen in Zeile 19 außerhalb der \rustcinline{erstelle_computer}-Funktion, da der Geltungsbereich ansonsten beim Verlassen der Funktion bereits zu Ende wäre und das Leihen an die Datenstruktur nicht möglich wäre.
 Dieser Unterschied ist gleichzeitig auch die Fehlerquelle im C-Beispiel.
 
-Im Rust-Beispiel ist die Zeichenkette deswegen in Zeile 19 außerhalb der \rustcinline{erstelle_computer} Funktion, da der Geltungsbereich ansonsten beim Verlassen der Funktion bereits zu Ende wäre.
-Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgehend dem Beispiel aus \autoref{rust:owner:c_bad_free}, zumindest genügend, um zu zeigen, dass der Rust Compiler den Fehler erkennt und die Kompilation abbricht: \textbf{\textcolor{red}{error[E0505]}: cannot move out of `c1` because it is borrowed}
+Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgehend dem Beispiel aus \autoref{rust:owner:c_bad_free}, zumindest genügend, um zu zeigen, dass der Rust Compiler den Fehler erkennt und die Kompilation abbricht: \textbf{\textcolor{red}{error[E0505]}: cannot move out of `c1` because it is borrowed} (für Zeile 25).
 
 \subsection{Speichersicherheit}
 \label{rust:guarantee:memory_safety}

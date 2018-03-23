@@ -720,10 +720,10 @@ Wichtige, aber auch bekannte Datentypen sind hierbei:
 	Mehrere Threads können daher lesend auf den beinhalteten Wert zugreifen.
 	
 	\item \textbf{std::sync::Mutex}: Versichert einen Threadübergreifenden, exklusiven Zugriff auf den beinhalteten Wert.
-	In Rust schützt eine \textbf{Mutex} anstatt einem bestimmten Codeabschnitt, den beinhalteten Wert.
-	Ein Zugriff ist erst nach einem erfolgreichen \todo{lock} möglich.
+	In Rust schützt eine \textbf{Mutex} anstatt einem bestimmten Codeabschnitt, die beinhalteten Daten \cite[486]{rust:orly_programming}.
+	Ein Zugriff darauf ist erst möglich, nachdem andere Threads ausgesperrt werden konnten.
 	
-	\item \textbf{std::sync::RwLock}: Erlaubt mehreren Threads gleichzeitig lesend oder einem Thread schreibend auf den beinhalteten Wert zuzugreifen. Wie bei einer \textbf{Mutex} kann erst nach einem erfolgreichen \todo{lock} auf den geschützten Wert zugegriffen werden.
+	\item \textbf{std::sync::RwLock}: Erlaubt mehreren Threads gleichzeitig lesend oder einem Thread schreibend auf den beinhalteten Wert zuzugreifen. Wie bei einer \textbf{Mutex} kann erst nach einem erfolgreichen aussperren aller anderer Threads auf den geschützten Wert zugegriffen werden.
 	
 	%\item \textbf{std::net::TcpStream}: \todo{?} 
 	%\item \textbf{Module std::thread}: \todo{?}
@@ -791,9 +791,10 @@ Eine falsche Nutzung der API wird durch einen Compilerfehler bemängelt, anstatt
 Der Aufrufer kann danach nicht mehr auf den diesen Zugreifen, da die Eigentümerschaft an die Funktion \rustcinline{from_utf8} übertragen wurde.
 Dies erlaubt der Funktion, den Speicherbereich des \rustcinline{Vec<u8>} für den \rustcinline{String} wiederzuverwenden ohne neuen Speicher zu allokieren oder zu kopieren \cite{rust:string:from_utf8}.
 
-Ein typisches Problem, die Modifikation einer Kollektion während einer Iteration, wird auch durch das Eigentümerprinzip verhindert.
-\todo{Einen exklusiven Zugriff auf eine Kollektion zu erhalten -- um einen Wert einzufügen, zu entfernen oder zu ändern, wenn über diese iteriert wird, ist nicht möglich, da der Iterator die Kollektion bereits lesend geliehen hat.}
-Anstatt das eine \ccinline{ConcurrentModificationException} zur Laufzeit geworfen wird, unterbindet dies der Rustcompiler durch eine Fehlermeldung \cite[116]{rust:orly_programming}.
+Das typische Problem, die Modifikation einer Kollektion während einer Iteration, wird durch das Eigentümerprinzip schon prinzipiell ausgeschlossen.
+Ein Wert kann während einer Iteration nicht hinzugefügt oder entfernt werden.
+Es kann kein exklusiver Zugriff für die Kollektion erlangt werden kann, da für die Kollektion bereits lesend (oder exklusiv) an die Iteration verliehen ist.
+Eine \javacinline{ConcurrentModificationException} (Java) oder  wird deshalb nicht benötigt \cite[116]{rust:orly_programming}.
 
 \section{\todo{zu viel + unnötig?} Rust als funktionale Programmiersprache ??s}
 
@@ -976,6 +977,8 @@ Für einen Datenwettlauf muss dagegen, gleichzeitig zu einem schreibenden, ein l
 Datentypen, die einen gemeinsamen Zugriff auf veränderliche Werte ermöglichen (\rustcinline{Mutex}, \rustcinline{RwLock} und im erweiterten Sinne \enquote{channels}), liefern immer ein Ergebnis ob der Versuch, einen exklusiven Schreib- oder Lesezugriff zu erhalten, geklappt hat.
 Eine mögliche Fehlersituation ist ein Thread, bei dem eine \rustcinline{panic!} (siehe \autoref{rust:panic}) aufgetreten ist, während dieser einen exklusiven Schreibzugriff auf den geschützten Wert hatte.
 In diesem Fall wird ein \rustcinline{PoisonError} zurückgegeben, der einen direkten Zugriff auf den Wert verhindert und vermittelt, dass der geschützte Wert vermutlich in keinem konsistenten Zustand mehr ist.
+
+\todo{Mutex+RwLock: *Guard -> niemals vergessen lock zu lösen}
 
 \subsection{Zero Cost Abstraction}
 \label{rust:zero_cost}

@@ -33,7 +33,13 @@ Die Bearbeitungszeit des Fusions-Algorithmus zählt nicht dazu.}
 
 \requirement{impl:algorithmus:from}{Ergebnisse weitergeben}{Ergebnisse des Fusions-Algorithmus werden enkodiert un an die Fahrzeuge in den entsprechenden GeoFences versendet.}
 
-\requirement{impl:algorithmus}{Fusions-Algorithmus implementieren}{Für den Testbetrieb soll der beispielhafte Fusions-Algorithmus aus der C++ Referenzimplementierung auch in Rust umgesetzt werden. Ob die Einbindung einer externen Bibliothek als Fusions-Algorithmus möglich ist, soll überprüft werden.}
+\requirement{impl:algorithmus}{Fusions-Algorithmus}{Für den Testbetrieb soll der Fusions-Algorithmus aus der C++ Referenzimplementierung (\enquote{SampleAlgorithm}) auch in Rust umgesetzt werden. Dieser Fusions-Algorithmus ist eine \enquote{dummy} Implementation, d.h. eingehende Daten werden nach einem einfachen Schema wieder verschickt. Ob die Einbindung einer externen Bibliothek als Fusions-Algorithmus möglich ist, soll überprüft werden.}
+
+\requirement{impl:roadclearance}{Road-Clearance}{\todo{...}}
+
+\requirement{impl:config}{Konfigurationsdateien}{\todo{/etc/MECViewServer/...}}
+
+\requirement{impl:args}{Startparameter}{\todo{sample: send\_delay\_ms, sensor\_timeout\_ms, environment\_frame\_file, ...}}
 
 \requirement{dos:sensor}{Widerstand gegen Sensor DOS}{Die Funktionalität des Servers gegenüber anderen Clients wird durch eine Überflutung von Daten eines Sensors nicht beeinträchtigt. \todo{optional? relevant?}}
 

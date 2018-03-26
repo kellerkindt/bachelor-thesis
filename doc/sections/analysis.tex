@@ -8,7 +8,7 @@
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
 		\node [draw, rectangle, drop shadow, fill=white] (F) {Fahrzeug};
-		\node [draw, circle, drop shadow, fill=white, text width=3cm, align=center] (C) [below right=of F] {Server};
+		\node [draw, circle, drop shadow, fill=white, text width=3cm, align=center] (C) [below right=of F] {MEC-Server};
 		\node [draw, rectangle, drop shadow, fill=white] (S) [below right=of C] {Sensor};
 		\node [draw, rectangle, drop shadow, fill=white] (A) [above right=of C] {Fusions-Algorithmus};
 		
@@ -20,32 +20,32 @@
 		\node (ctrl6) [below=of ctrl5] {};
 		
 		%
-		% Fahrzeug -> Server
+		% Fahrzeug -> MEC-Server
 		%
 		\path[draw, -{Latex[scale=2.0]}, dashed] (F)
 				edge [bend right] node [fill=white] {GeoFence verlassen} (C)
 				edge [bend left]  node [fill=white] {GeoFence betreten} (C);
 				
 		%
-		% Server -> Fahrzeug
+		% MEC-Server -> Fahrzeug
 		%
 		\path[draw, -{Latex[scale=2.0]}] (C)
 				edge node [fill=white] {Fusions-Algorithmus Ergebnis} (F);
 				
 		%
-		% Server -> Algorithmus
+		% MEC-Server -> Algorithmus
 		%
 		\path[draw, -{Latex[scale=2.0]}] (C)
 				edge [bend right] node [fill=white] {Sensordaten} (A);
 		
 		%
-		% Algorithmus -> Server
+		% Algorithmus -> MEC-Server
 		%
 		\path[draw, -{Latex[scale=2.0]}] (A)
 				edge [bend right] node [fill=white] {Ergebnis} (C);
 		
 		%
-		% Sensor -> Server
+		% Sensor -> MEC-Server
 		%		
 		\path[draw, -{Latex[scale=2.0]}, dashed] (S)
 			edge [bend left]  node [fill=white] {GeoFence betreten} (C);
@@ -53,7 +53,7 @@
 			edge node [fill=white] {Sensordaten} (C);
 				
 		%
-		% Server -> Fahrzeug
+		% MEC-Server -> Fahrzeug
 		%
 		\path[draw, -{Latex[scale=2.0]}, dashed] (C)
 			edge [bend left] node [fill=white] {Wecken} (S)
@@ -76,7 +76,7 @@
 
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
-		\begin{umlsystem}{Server}
+		\begin{umlsystem}{MEC-Server}
 			\umlusecase[y=4,name=u0]{Verbindung aufbauen}
 			\umlusecase[y=2,name=u1]{GeoFence betreten}
 			\umlusecase[y=0,name=u2]{GeoFence verlassen}
@@ -96,7 +96,7 @@
 	\end{tikzpicture}
 	\centering
 	\label{use_case:car}
-	\caption{Use Case Diagramm für den Server}
+	\caption{Use Case Diagramm für den MEC-Server}
 \end{figure}
 
 
@@ -106,13 +106,13 @@
 			\umlusecase[y=0,name=u1]{Pausieren}
 			\umlusecase[y=2,name=u2]{Wecken}
 		\end{umlsystem} 
-		\umlactor[x=-3.5,y=1]{Server}
-		\umlassoc{Server}{u1}
-		\umlassoc{Server}{u2} 
+		\umlactor[x=-3.5,y=1]{MEC-Server}
+		\umlassoc{MEC-Server}{u1}
+		\umlassoc{MEC-Server}{u2} 
 	\end{tikzpicture}
 	\centering
 	\label{use_case:server_sensor}
-	\caption{Use Case Diagramm des Servers gegenüber dem Sensor}
+	\caption{Use Case Diagramm des MEC-Servers gegenüber dem Sensor}
 \end{figure}
 
 \begin{figure}[H]
@@ -120,12 +120,12 @@
 		\begin{umlsystem}{Fahrzeug}
 			\umlusecase[y=0,name=u1]{Umfeldmodell senden}
 		\end{umlsystem} 
-		\umlactor[x=-5,y=0]{Server}
-		\umlassoc{Server}{u1}
+		\umlactor[x=-5,y=0]{MEC-Server}
+		\umlassoc{MEC-Server}{u1}
 	\end{tikzpicture}
 	\centering
 	\label{use_case:server_vehicle}
-	\caption{Use Case Diagramm des Servers gegenüber dem Sensor}
+	\caption{Use Case Diagramm des MEC-Servers gegenüber dem Sensor}
 \end{figure}
 
 \begin{figure}[H]
@@ -133,15 +133,16 @@
 		\begin{umlsystem}{Fusions-Algorithmus}
 			\umlusecase[y=0,name=u1]{Sensordaten übergeben}
 		\end{umlsystem} 
-		\umlactor[x=-5,y=0]{Server}
-		\umlassoc{Server}{u1}
+		\umlactor[x=-5,y=0]{MEC-Server}
+		\umlassoc{MEC-Server}{u1}
 	\end{tikzpicture}
 	\centering
 	\label{use_case:server_algorithmus}
-	\caption{Use Case Diagramm des Servers gegenüber dem Fusions-Algorithmus}
+	\caption{Use Case Diagramm des MEC-Servers gegenüber dem Fusions-Algorithmus}
 \end{figure}
 
 
+\section{Nachrichten}
 
 \section{Schnitstellenanalyse}
 \todo{erwartetes verhalten der sensoren und fahrzeuge}
@@ -150,8 +151,43 @@
 	\begin{tikzpicture}
 		\begin{umlseqdiag} 
 			\umlobject[x=0,class=Sensor]{c}
-			\umlobject[x=9,class=Server]{s}
-			\begin{umlcall}[dt=5, op={ASN::RegisterSensor(geofence)}, type=asynchron]{c}{s}
+			\umlobject[x=11,class=MEC-Server]{s}
+			\begin{umlcall}[dt=4, op={ClientRegistration\{type  = sensor, ..\}}, type=asynchron]{c}{s}
+			\end{umlcall}
+			\begin{umlcall}[dt=5, op={InitMessage\{..\}}, type=asynchron]{c}{s}
+			\end{umlcall}
+			\begin{umlfragment}[type=loop] 
+				\begin{umlfragment}[type=opt, label=!paused, inner xsep=5] 
+					\begin{umlcall}[dt=9, op={SensorFrame\{..\}} / SensorIdleFrame\{..\}, type=asynchron]{c}{s}
+					\end{umlcall}
+				\end{umlfragment}
+				\begin{umlfragment}
+					\begin{umlcall}[dt=9, op={UpdateSubscription\{subscription-status = unsubscribed, ..\}}, type=asynchron]{s}{c}
+						\begin{umlcallself}[op={pause()}]{c}
+						\end{umlcallself}
+					\end{umlcall}
+				\end{umlfragment}
+				\begin{umlfragment}
+					\begin{umlcall}[dt=9, op={UpdateSubscription\{subscription-status = subscribed, ..\}}, type=asynchron]{s}{c}
+						\begin{umlcallself}[op={resume()}]{c}
+						\end{umlcallself}
+					\end{umlcall}
+				\end{umlfragment}
+			\end{umlfragment}
+		\end{umlseqdiag}
+	\end{tikzpicture}
+	\centering
+	\label{seq_dia:_}
+	\caption{\todo{Sequenz Diagramm: Anmeldung und Zuweisung zu einem GeoFence eines Sensors}}
+\end{figure}
+
+
+\begin{figure}[H]
+	\begin{tikzpicture}
+		\begin{umlseqdiag} 
+			\umlobject[x=0,class=Fahrzeug]{c}
+			\umlobject[x=13,class=MEC-Server]{s}
+			\begin{umlcall}[dt=5, op={UpdateSubscription\{subscription-status  = subscribed, ..\}}, type=asynchron]{c}{s}
 			\end{umlcall}
 			\begin{umlfragment}[type=loop] 
 				\begin{umlfragment}[type=loop, label=!paused] 
@@ -166,6 +202,6 @@
 		\end{umlseqdiag}
 	\end{tikzpicture}
 	\centering
-	\label{seq_dia:_}
-	\caption{\todo{Sequenz Diagramm: Anmeldung und Zuweisung zu einem GeoFence eines Sensors}}
+	\label{seq_dia:vehicle}
+	\caption{\todo{Sequenz Diagramm: Anmeldung und Übermittlung an ein Fahrzeug}}
 \end{figure}

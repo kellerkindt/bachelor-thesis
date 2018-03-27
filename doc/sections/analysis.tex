@@ -10,12 +10,12 @@
 		\node [draw, rectangle, drop shadow, fill=white] (F) {Fahrzeug};
 		\node [draw, circle, drop shadow, fill=white, text width=3cm, align=center] (C) [below right=of F] {MEC-Server};
 		\node [draw, rectangle, drop shadow, fill=white] (S) [below right=of C] {Sensor};
-		\node [draw, rectangle, drop shadow, fill=white] (A) [above right=of C] {Fusions-Algorithmus};
+%		\node [draw, rectangle, drop shadow, fill=white] (A) [above right=of C] {Fusions-Algorithmus};
 		
 		\node (ctrl1) [above=of S] {};
 		\node (ctrl2) [above right=of C] {};
 		\node (ctrl3) [right=of C] {};
-	%	\node (ctrl4) [above right=of S] {};
+		\node (ctrl4) [below=of F] {};
 		\node (ctrl5) [left=of C] {};
 		\node (ctrl6) [below=of ctrl5] {};
 		
@@ -23,41 +23,42 @@
 		% Fahrzeug -> MEC-Server
 		%
 		\path[draw, -{Latex[scale=2.0]}, dashed] (F)
-				edge [bend right] node [fill=white] {GeoFence verlassen} (C)
-				edge [bend left]  node [fill=white] {GeoFence betreten} (C);
+				edge [bend right] node [fill=white] {deabonnieren} (C)
+				edge [bend left]  node [fill=white] {abonnieren} (C);
 				
 		%
 		% MEC-Server -> Fahrzeug
 		%
 		\path[draw, -{Latex[scale=2.0]}] (C)
-				edge node [fill=white] {Fusions-Algorithmus Ergebnis} (F);
+				edge node [fill=white] {EnvironmentFrame} (F)
+				.. controls (ctrl4) and (ctrl5) ..  node [fill=white] {Sektoren} (F);
 				
 		%
 		% MEC-Server -> Algorithmus
 		%
-		\path[draw, -{Latex[scale=2.0]}] (C)
-				edge [bend right] node [fill=white] {Sensordaten} (A);
+%		\path[draw, -{Latex[scale=2.0]}] (C)
+%				edge [bend right] node [fill=white] {SensorFrame} (A);
 		
 		%
 		% Algorithmus -> MEC-Server
 		%
-		\path[draw, -{Latex[scale=2.0]}] (A)
-				edge [bend right] node [fill=white] {Ergebnis} (C);
+%		\path[draw, -{Latex[scale=2.0]}] (A)
+%				edge [bend right] node [fill=white] {EnvironmentFrame} (C);
 		
 		%
 		% Sensor -> MEC-Server
 		%		
-		\path[draw, -{Latex[scale=2.0]}, dashed] (S)
-			edge [bend left]  node [fill=white] {GeoFence betreten} (C);
+%		\path[draw, -{Latex[scale=2.0]}, dashed] (S);
+			
 		\path[draw, -{Latex[scale=2.0]}] (S)
-			edge node [fill=white] {Sensordaten} (C);
+			edge node [fill=white] {Sensor(Idle)Frame} (C);
 				
 		%
-		% MEC-Server -> Fahrzeug
+		% MEC-Server -> Sensor
 		%
 		\path[draw, -{Latex[scale=2.0]}, dashed] (C)
-			edge [bend left] node [fill=white] {Wecken} (S)
-			.. controls (ctrl1) and (ctrl3) ..  node [fill=white] {Pausieren} (S);
+			edge [bend left]  node [fill=white] {abonnieren} (S)
+			edge [bend right] node [fill=white] {deabonnieren} (S);
 				
 				
 		
@@ -70,29 +71,30 @@
 	\caption{Systemkontextdiagramm}
 \end{figure}
 
-\section{Komponentendiagramm oder sowas?}
 \section{Use Case Diagramme}
 \todo{was wirklich umgesetzt sein wird}
 
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
 		\begin{umlsystem}{MEC-Server}
-			\umlusecase[y=4,name=u0]{Verbindung aufbauen}
-			\umlusecase[y=2,name=u1]{GeoFence betreten}
-			\umlusecase[y=0,name=u2]{GeoFence verlassen}
-			\umlusecase[y=-2,name=u3]{Sensordaten senden}
-			\umlusecase[y=-4,name=u4]{Umfeldmodel übergeben}
+%			\umlusecase[y=4,name=u0]{Verbindung aufbauen}
+			\umlusecase[y=2,name=u1]{abonnieren}
+			\umlusecase[y=0,name=u2]{deabonnieren}
+			\umlusecase[y=-2,name=u3]{SensorFrame zusenden}
+			\umlusecase[y=-4,name=u4]{SensorIdleFrame zusenden}
+%			\umlusecase[y=-4,name=u4]{Umfeldmodel übergeben}
 		\end{umlsystem}
-		\umlactor[x=-6,y=2]{Fahrzeug}
-		\umlactor[x=-6,y=-4]{Fusions-Algorithmus}
-		\umlactor[x=6,y=1]{Sensor}
-		\umlassoc{Fahrzeug}{u0}
+		\umlactor[x=-5.5,y=1]{Fahrzeug}
+%		\umlactor[x=-6,y=-4]{Fusions-Algorithmus}
+		\umlactor[x=5.5,y=-3]{Sensor}
+%		\umlassoc{Fahrzeug}{u0}
 		\umlassoc{Fahrzeug}{u1}
 		\umlassoc{Fahrzeug}{u2}
-		\umlassoc{Sensor}{u0}
-		\umlassoc{Sensor}{u1}
+%		\umlassoc{Sensor}{u0}
+%		\umlassoc{Sensor}{u1}
 		\umlassoc{Sensor}{u3}
-		\umlassoc{Fusions-Algorithmus}{u4}
+		\umlassoc{Sensor}{u4}
+%		\umlassoc{Fusions-Algorithmus}{u4}
 	\end{tikzpicture}
 	\centering
 	\label{use_case:car}
@@ -103,10 +105,10 @@
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
 		\begin{umlsystem}{Sensor}
-			\umlusecase[y=0,name=u1]{Pausieren}
-			\umlusecase[y=2,name=u2]{Wecken}
+			\umlusecase[y=0,name=u1]{deabonnieren}
+			\umlusecase[y=2,name=u2]{abonnieren}
 		\end{umlsystem} 
-		\umlactor[x=-3.5,y=1]{MEC-Server}
+		\umlactor[x=-4.5,y=1]{MEC-Server}
 		\umlassoc{MEC-Server}{u1}
 		\umlassoc{MEC-Server}{u2} 
 	\end{tikzpicture}
@@ -118,28 +120,30 @@
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
 		\begin{umlsystem}{Fahrzeug}
-			\umlusecase[y=0,name=u1]{Umfeldmodell senden}
+			\umlusecase[y=0,name=u1]{EnvironmentFrame zusenden}
+			\umlusecase[y=2,name=u2]{Sektoren zusenden}
 		\end{umlsystem} 
-		\umlactor[x=-5,y=0]{MEC-Server}
+		\umlactor[x=-6,y=1]{MEC-Server}
 		\umlassoc{MEC-Server}{u1}
+		\umlassoc{MEC-Server}{u2}
 	\end{tikzpicture}
 	\centering
 	\label{use_case:server_vehicle}
 	\caption{Use Case Diagramm des MEC-Servers gegenüber dem Sensor}
 \end{figure}
 
-\begin{figure}[H]
-	\begin{tikzpicture}[node distance=5]
-		\begin{umlsystem}{Fusions-Algorithmus}
-			\umlusecase[y=0,name=u1]{Sensordaten übergeben}
-		\end{umlsystem} 
-		\umlactor[x=-5,y=0]{MEC-Server}
-		\umlassoc{MEC-Server}{u1}
-	\end{tikzpicture}
-	\centering
-	\label{use_case:server_algorithmus}
-	\caption{Use Case Diagramm des MEC-Servers gegenüber dem Fusions-Algorithmus}
-\end{figure}
+%\begin{figure}[H]
+%	\begin{tikzpicture}[node distance=5]
+%		\begin{umlsystem}{Fusions-Algorithmus}
+%			\umlusecase[y=0,name=u1]{Sensordaten übergeben}
+%		\end{umlsystem} 
+%		\umlactor[x=-5,y=0]{MEC-Server}
+%		\umlassoc{MEC-Server}{u1}
+%	\end{tikzpicture}
+%	\centering
+%	\label{use_case:server_algorithmus}
+%	\caption{Use Case Diagramm des MEC-Servers gegenüber dem Fusions-Algorithmus}
+%\end{figure}
 
 
 \section{Nachrichten}
@@ -224,8 +228,8 @@ Die RoadClearanceFrame-Nachricht wird vom Server an das Fahrzeug versendet und k
 
 \subsection{SensorIdleFrame}
 
-\todo{richtig?}
-Die SensorIdleFrame-Nachricht wird vom Sensor an den Server versendet, wenn keine Objekte erkannt wurden aber das Zeitlimit für \todo{schweigen} erreicht wurde.
+Die SensorIdleFrame-Nachricht wird vom Sensor in regelmäßigen Zeitintervallen an den Server versendet, wenn der Sensor nicht abonniert ist.
+Die Anwesenheit des Sensors wird somit festgestellt.
 
 \subsection{UpdateStatus}
 
@@ -246,100 +250,172 @@ Die SensorIdleFrame-Nachricht wird vom Sensor an den Server versendet, wenn kein
 %	\caption{Aufbau eines WebSocket-Frames \cite[28]{ieft:websockets}}
 %	\label{figure:websockets:frame}
 %\end{figure}
-\todo{alternativ:}
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\draw[green!2,fill] (0,0) rectangle (2,-3);
-		\draw[red!6,fill] (2,0) rectangle (6,-3);
-		\draw[green!8,fill] (6,0) rectangle (14,-3);
-		\draw[red!2,fill] (14,0) rectangle (16,-3);
-		
-		\draw[gray!40, very thin] (0,0) -- (16,0);
-		\draw[gray!40, very thin] (0,-2) -- (16,-2);
-		\draw (2,0) -- (14,0);
-		\draw (2,-2) -- (14,-2);
-		\draw[gray!40, very thin] (2,-3) -- (2,0.2);
-		\draw (2,0.5) node {0};
-		\draw (3,-1) node {Länge $n$};
-%		\draw (3,-1.7) node {\rustcinline{u32}};
-		\draw[gray!40, very thin] (4,-2) -- (4,0.2);
-		\draw (4,0.5) node {32};
-		\draw (5,-1) node {Id};
-%		\draw (5,-1.7) node {\rustcinline{u32}};
-		\draw[gray!40, very thin] (6,-3) -- (6,0.2);
-		\draw (6,0.5) node {64};
-		\draw[gray!40, very thin] (14,-3) -- (14,0.2);
-		\draw (14,0.5) node {$64 + n$};
-		\draw (10,-1) node {ASN.1 Nachricht};
-		
-		\draw (4,-2.5) node {Kopf};
-		\draw (10,-2.5) node {Korpus};
-	\end{tikzpicture}
-	\label{message:structure_alt}
-	\caption{Aufbau einer Nachricht auf dem Datenstrom}
-\end{figure}
+%\todo{alternativ:}
+%\begin{figure}[H]
+%	\centering
+%	\begin{tikzpicture}
+%		\draw[green!2,fill] (0,0) rectangle (2,-3);
+%		\draw[red!6,fill] (2,0) rectangle (6,-3);
+%		\draw[green!8,fill] (6,0) rectangle (14,-3);
+%		\draw[red!2,fill] (14,0) rectangle (16,-3);
+%		
+%		\draw[gray!40, very thin] (0,0) -- (16,0);
+%		\draw[gray!40, very thin] (0,-2) -- (16,-2);
+%		\draw (2,0) -- (14,0);
+%		\draw (2,-2) -- (14,-2);
+%		\draw[gray!40, very thin] (2,-3) -- (2,0.2);
+%		\draw (2,0.5) node {0};
+%		\draw (3,-1) node {Länge $n$};
+%%		\draw (3,-1.7) node {\rustcinline{u32}};
+%		\draw[gray!40, very thin] (4,-2) -- (4,0.2);
+%		\draw (4,0.5) node {32};
+%		\draw (5,-1) node {Id};
+%%		\draw (5,-1.7) node {\rustcinline{u32}};
+%		\draw[gray!40, very thin] (6,-3) -- (6,0.2);
+%		\draw (6,0.5) node {64};
+%		\draw[gray!40, very thin] (14,-3) -- (14,0.2);
+%		\draw (14,0.5) node {$64 + n$};
+%		\draw (10,-1) node {ASN.1 Nachricht};
+%		
+%		\draw (4,-2.5) node {Kopf};
+%		\draw (10,-2.5) node {Korpus};
+%	\end{tikzpicture}
+%	\label{message:structure_alt}
+%	\caption{Aufbau einer Nachricht auf dem Datenstrom}
+%\end{figure}
 
 
-\section{Schnitstellenanalyse}
+\section{Schnittstellenanalyse}
 
-\todo{erwartetes verhalten der sensoren und fahrzeuge}
 
 \begin{figure}[H]
 	\begin{tikzpicture}
 		\begin{umlseqdiag} 
-			\umlobject[x=0,class=Sensor]{c}
-			\umlobject[x=11,class=MEC-Server]{s}
-			\begin{umlcall}[dt=4, op={ClientRegistration\{type  = sensor, ..\}}, type=asynchron]{c}{s}
+			\umlactor[x=0,no ddots]{Sensor}
+			\umlactor[x=11,no ddots]{MEC-Server}
+			\begin{umlcall}[dt=4, op={ClientRegistration\{type = sensor, ..\}}, type=asynchron]{Sensor}{MEC-Server}
+				\begin{umlcall}[dt=5, op={UpdateSubscription\{subscription-status = unsubscribe, ..\}}, type=asynchron]{MEC-Server}{Sensor}
+				\end{umlcall}
 			\end{umlcall}
-			\begin{umlcall}[dt=5, op={InitMessage\{..\}}, type=asynchron]{c}{s}
+			
+			\begin{umlfragment}[type=loop]
+				\begin{umlcall}[dt=7, op={SensorIdleFrame\{..\}}, type=asynchron]{Sensor}{MEC-Server}
+				\end{umlcall}
+			\end{umlfragment}
+			
+			\begin{umlcall}[dt=7, op={UpdateSubscription\{subscription-status = subscribe, ..\}}, type=asynchron]{MEC-Server}{Sensor}
 			\end{umlcall}
-			\begin{umlfragment}[type=loop] 
-				\begin{umlfragment}[type=opt, label=!paused, inner xsep=5] 
-					\begin{umlcall}[dt=9, op={SensorFrame\{..\}} / SensorIdleFrame\{..\}, type=asynchron]{c}{s}
-					\end{umlcall}
-				\end{umlfragment}
-				\begin{umlfragment}
-					\begin{umlcall}[dt=9, op={UpdateSubscription\{subscription-status = unsubscribed, ..\}}, type=asynchron]{s}{c}
-						\begin{umlcallself}[op={pause()}]{c}
-						\end{umlcallself}
-					\end{umlcall}
-				\end{umlfragment}
-				\begin{umlfragment}
-					\begin{umlcall}[dt=9, op={UpdateSubscription\{subscription-status = subscribed, ..\}}, type=asynchron]{s}{c}
-						\begin{umlcallself}[op={resume()}]{c}
-						\end{umlcallself}
-					\end{umlcall}
-				\end{umlfragment}
+			
+			\begin{umlfragment}[type=loop]
+				\begin{umlcall}[dt=7, op={SensorFrame\{..\}}, type=asynchron]{Sensor}{MEC-Server}
+				\end{umlcall}
+			\end{umlfragment}
+			
+			\begin{umlcall}[dt=7, op={UpdateSubscription\{subscription-status = unsubscribe, ..\}}, type=asynchron]{MEC-Server}{Sensor}
+			\end{umlcall}
+			
+			\begin{umlfragment}[type=loop]
+				\begin{umlcall}[dt=7, op={SensorIdleFrame\{..\}}, type=asynchron]{Sensor}{MEC-Server}
+				\end{umlcall}
 			\end{umlfragment}
 		\end{umlseqdiag}
 	\end{tikzpicture}
 	\centering
-	\label{seq_dia:_}
-	\caption{\todo{Sequenz Diagramm: Anmeldung und Zuweisung zu einem GeoFence eines Sensors}}
+	\label{seq_dia:sensor}
+	\caption{Kommunikation zwischen Sensor und MEC-Server}
 \end{figure}
 
 
 \begin{figure}[H]
 	\begin{tikzpicture}
 		\begin{umlseqdiag} 
-			\umlobject[x=0,class=Fahrzeug]{c}
-			\umlobject[x=13,class=MEC-Server]{s}
-			\begin{umlcall}[dt=5, op={UpdateSubscription\{subscription-status  = subscribed, ..\}}, type=asynchron]{c}{s}
+			\umlactor[x=0,no ddots]{Fahrzeug}
+			\umlactor[x=11,no ddots]{MEC-Server}
+			\begin{umlcall}[dt=4, op={ClientRegistration\{type = vehicle, ..\}}, type=asynchron]{Fahrzeug}{MEC-Server}
+				\begin{umlcall}[dt=5, op={InitMessage\{..\}}, type=asynchron]{MEC-Server}{Fahrzeug}
+				\end{umlcall}
+			\end{umlcall}
+			\begin{umlcall}[dt=5, op={UpdateSubscription\{subscription-status = subscribe, ..\}}, type=asynchron]{Fahrzeug}{MEC-Server}
 			\end{umlcall}
 			\begin{umlfragment}[type=loop] 
-				\begin{umlfragment}[type=loop, label=!paused] 
-					\begin{umlcall}[dt=5, op={ASN::Detection}, type=asynchron]{c}{s}
-					\end{umlcall}
-				\end{umlfragment}
-				\begin{umlcall}[dt=5, op={ASN::Pause}, type=asynchron]{s}{c}
-				\end{umlcall}
-				\begin{umlcall}[dt=5, op={ASN::Resume}, type=asynchron]{s}{c}
+				\begin{umlcall}[dt=8, op={EnvironmentFrame\{..\}}, type=asynchron]{MEC-Server}{Fahrzeug}
 				\end{umlcall}
 			\end{umlfragment}
+			
+			\begin{umlcall}[dt=6, op={UpdateSubscription\{subscription-status = unsubscribe, ..\}}, type=asynchron]{Fahrzeug}{MEC-Server}
+			\end{umlcall}
 		\end{umlseqdiag}
 	\end{tikzpicture}
 	\centering
 	\label{seq_dia:vehicle}
-	\caption{\todo{Sequenz Diagramm: Anmeldung und Übermittlung an ein Fahrzeug}}
+	\caption{Kommunikation zwischen Fahrzeug und MEC-Server}
+\end{figure}
+
+
+\begin{figure}[H]
+	\begin{tikzpicture}
+		\begin{umlseqdiag} 
+			\umlactor[x=0,no ddots]{Sensor}
+			\umlactor[x=6,no ddots]{MEC-Server}
+			\umlactor[x=12,no ddots]{Fahrzeug}
+			
+			
+			\begin{umlcall}[dt=5, op={register}, type=asynchron]{Sensor}{MEC-Server}
+				\begin{umlcall}[dt=5, op={unsubscribe}, type=asynchron]{MEC-Server}{Sensor}
+				\end{umlcall}
+			\end{umlcall}
+			
+			
+			\begin{umlfragment}[type=loop] 
+				\begin{umlcall}[dt=6,op={SensorIdleFrame}, type=asynchron]{Sensor}{MEC-Server}
+				\end{umlcall}
+			\end{umlfragment}
+			
+			\begin{umlcall}[dt=28,op={register}, type=asynchron]{Fahrzeug}{MEC-Server}
+				\begin{umlcall}[dt=5,op={InitMessage}, type=asynchron]{MEC-Server}{Fahrzeug}
+				\end{umlcall}
+				\begin{umlcall}[dt=0,op={subscribe}, type=asynchron]{MEC-Server}{Sensor}
+				\end{umlcall}
+			\end{umlcall}
+			
+			\begin{umlfragment}[type=loop] 
+				\begin{umlcall}[dt=8, op={SensorFrame}, type=asynchron]{Sensor}{MEC-Server}
+				\end{umlcall}
+			\end{umlfragment}
+			
+			\begin{umlcall}[dt=14,op={subscribe}, type=asynchron]{Fahrzeug}{MEC-Server}
+			\end{umlcall}
+			
+			\begin{umlfragment}[type=loop] 
+				\begin{umlcall}[dt=15,op={SensorFrame}, type=asynchron]{Sensor}{MEC-Server}
+					\begin{umlcall}[dt=2, op={EnvironmentFrame}, type=asynchron]{MEC-Server}{Fahrzeug}
+					\end{umlcall}
+				\end{umlcall}
+			\end{umlfragment}
+			
+			\begin{umlcall}[dt=8,op={unsubscribe}, type=asynchron]{Fahrzeug}{MEC-Server}
+			\end{umlcall}
+			
+			
+			\begin{umlfragment}[type=loop] 
+				\begin{umlcall}[dt=15, op={SensorFrame}, type=asynchron]{Sensor}{MEC-Server}
+				\end{umlcall}
+			\end{umlfragment}
+			
+			\umlsdnode[dt=11]{Fahrzeug}
+			\draw[dashed] (-2,-16.5) -- (14,-16.5);
+			\draw (9.225,-16.25) node {Fahrzeug trennt die Verbindung};
+
+			\begin{umlcall}[dt=8,op={unsubscribe}, type=asynchron]{MEC-Server}{Sensor}
+			\end{umlcall}
+			
+			\begin{umlfragment}[type=loop] 
+				\begin{umlcall}[dt=6,op={SensorIdleFrame}, type=asynchron]{Sensor}{MEC-Server}
+				\end{umlcall}
+			\end{umlfragment}
+		\end{umlseqdiag}
+	\end{tikzpicture}
+	\centering
+	\label{seq_dia:both}
+	\caption{Interaktion des MEC-Servers mit einem Fahrzeug und einem Sensor}
 \end{figure}

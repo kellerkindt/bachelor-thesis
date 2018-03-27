@@ -180,17 +180,29 @@
 		
 	\chapter{Systementwurf}
 		\section{Architektur / Komponentendiagramme}
-		\begin{tikzpicture}
-			\begin{umlcomponent}{A}
-				\umlbasiccomponent{B}
-				\umlbasiccomponent[y=-3]{Encoder}
-				\umlprovidedinterface[interface=Bpi, distance=2cm, padding=2cm]{B}  
-				\umlprovidedinterface[interface=Cpi, distance=2cm, padding=2cm]{Encoder}  
-			\end{umlcomponent}
-			\umldelegateconnector{A-west-port}{B-west-interface}
-			\umlHVHdelegateconnector[pos stereo=1.5]{A-west-port}{Encoder-west-interface}
-			\umlport{A}{west}
-		\end{tikzpicture} 
+		\begin{figure}[H]
+			\centering
+			\begin{tikzpicture}
+				\begin{umlcomponent}{MEC-Server}
+					\umlbasiccomponent[x=3,y=4]{Server}
+					\umlprovidedinterface[interface=TcpListener]{Server}
+					
+					
+					\umlbasiccomponent[x=9,y=5]{Fusions-Algorithmus}
+%					\umlbasiccomponent[x=1,y=5]{Sektor-Abonnement}
+					\umlbasiccomponent[x=6,y=0]{Client-Connection}
+					
+					\umlHVassemblyconnector[interface=FaQ,arm2=-2]{Client-Connection}{Fusions-Algorithmus}
+%					\umlHVassemblyconnector[interface=SaQ,arm2=-2]{Client-Connection}{Sektor-Abonnement}
+					
+					\umlHVassemblyconnector[interface=CQ,last arm]{Fusions-Algorithmus}{Client-Connection}
+					\umlHVassemblyconnector[last arm]{Server}{Client-Connection}
+%					\umlHVassemblyconnector[last arm]{Sektor-Abonnement}{Client-Connection}
+				\end{umlcomponent}
+				\umlHVHdelegateconnector{MEC-Server-west-port}{Server-west-interface}
+				\umlport{MEC-Server}{west}
+			\end{tikzpicture} 
+		\end{figure}
 		  
 		\todo{Component diagrams tikz-uml: server, algorithm, encoder/...}		
 		

@@ -144,7 +144,145 @@
 
 \section{Nachrichten}
 
+
+\begin{wrapfigure}{R}[-1.5em]{.5\textwidth}
+	\centering
+	\begin{bytefield}[bitwidth=.45em,bitheight=.7em]{32}
+		\bitheader{0,31} \\
+		
+		\begin{rightwordgroup}{Kopf}
+			\wordbox{4}{ASN.1 Nachrichtenlänge \textbf{$n$}} \\
+			\wordbox{4}{ASN.1 Nachrichtentyp}
+		\end{rightwordgroup} \\
+		
+		\begin{rightwordgroup}{Länge in\\\textbf{$n$} Bytes}
+			\wordbox[lrt]{8}{ASN.1 Nachricht} \\
+			\skippedwords \\
+			\wordbox[lrb]{2}{}
+		\end{rightwordgroup}
+	\end{bytefield}
+	\caption{ASN.1 Nachricht mit Header}
+	\label{message:structure}
+\end{wrapfigure}
+
+Eine ASN.1 Nachricht wird, wie in \autoref{message:structure} zu sehen, mit  vorangestellten Kopfdaten versendet.
+Diese Kopfdaten enthalten die Länge der ASN.1 Nachricht und dessen Typ, der bei der Dekodierung beim Empfängers bekannt sein muss.
+Die Nachrichtenlänge und der Nachrichtentyp werden als 32-Bit lange und vorzeichenlose Ganzzahlen übermittelt und entsprechen damit dem Datentyp \rustcinline{u32} in Rust.
+Sie werden als \enquote{Big-Endian} auf dem Datenstrom dargestellt.
+
+Die Nachrichtenlänge gibt die Länge der ASN.1 Nachricht in Bytes an.
+
+Für den Nachrichtentyp sind nur die in \autoref{message:types} gelisteten Werte gültig und werden im Anschluss erklärt.
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{r|l|l}
+		Typ & ASN.1 Nachrichtentyp & Sichtweise des Servers \\
+		\hline
+		0 & Nicht definiert & -- \\
+		1 & ClientRegistration & eingehend \\
+		2 & SensorFrame & eingehend \\
+		3 & EnvironmentFrame & ausgehend \\
+		4 & UpdateSubscription & bidirektional \\
+		5 & InitMessage & ausgehend \\
+		6 & RoadClearanceFrame & ausgehend \\
+		7 & SensorIdleFrame & eingehend \\
+		8 & UpdateStatus & \todo{eingehend} \\
+	\end{tabular}
+	\caption{Gültige ASN.1 Nachrichtentypen}
+	\label{message:types}
+\end{figure}
+
+\subsection{ClientRegistration}
+\label{msg:client_registration}
+
+Die ClientRegistration-Nachricht sendet der Client nach dem Verbindungsaufbau dem Server zu, um mitzuteilen, ob es sich um einen Sensor oder ein Fahrzeug handelt.
+
+\subsection{SensorFrame}
+\label{msg:sensor_frame}
+
+Die SensorFrame-Nachricht wird vom Sensor an den Server versendet und beschreibt Objekte, die der Sensor erkannt hat.
+
+\subsection{EnvironmentFrame}
+\label{msg:environment_frame}
+
+Die EnvironmentFrame-Nachricht wird vom Server an das Fahrzeug versendet und enthält das Ergebnis des Fusions-Algorithmus.
+
+\subsection{UpdateSubscription}
+
+Die UpdateSubscription-Nachricht wird vom Server an den Sensor oder vom Fahrzeug an den Server gesendet.
+Der Sensor versendet bei einer Anmeldung erkannte Objekte (siehe \autoref{msg:sensor_frame}), während der Server dem Fahrzeug die Ergebnisse aus dem Fusions-Algorithmus (siehe \autoref{msg:environment_frame}) zusendet.
+Bei einer Abmeldung wird das Versenden der Nachrichten eingestellt.
+
+\subsection{InitMessage}
+
+Die InitMessage-Nachricht wird vom Server nach einer Fahrzeuganmeldung (siehe \automark{ClientRegistration}) an das Fahrzeug gesendet und beinhaltet Koordinaten über die Sektoren, die die Sensoren beobachten.
+
+\subsection{RoadClearanceFrame}
+
+Die RoadClearanceFrame-Nachricht wird vom Server an das Fahrzeug versendet und kann Verkehrs-, Wetter- und andere Informationen über die Sektoren enthalten.
+
+\subsection{SensorIdleFrame}
+
+\todo{richtig?}
+Die SensorIdleFrame-Nachricht wird vom Sensor an den Server versendet, wenn keine Objekte erkannt wurden aber das Zeitlimit für \todo{schweigen} erreicht wurde.
+
+\subsection{UpdateStatus}
+
+\todo{huh?}
+
+
+%\begin{figure}[H]
+%	\centering
+%	\begin{bytefield}[bitwidth=.25em,bitheight=2em]{128}
+%		\bitheader{0,32,64} \\
+%		
+%		\bitbox{32}{Länge $n$}
+%		\bitbox{32}{Nachricht Id}
+%		\bitbox{64}{ASN.1 Nachricht der Länge $n$}
+%		%		\skippedbits
+%		%		\bitbox[tbr]{32}{}
+%	\end{bytefield}
+%	\caption{Aufbau eines WebSocket-Frames \cite[28]{ieft:websockets}}
+%	\label{figure:websockets:frame}
+%\end{figure}
+\todo{alternativ:}
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\draw[green!2,fill] (0,0) rectangle (2,-3);
+		\draw[red!6,fill] (2,0) rectangle (6,-3);
+		\draw[green!8,fill] (6,0) rectangle (14,-3);
+		\draw[red!2,fill] (14,0) rectangle (16,-3);
+		
+		\draw[gray!40, very thin] (0,0) -- (16,0);
+		\draw[gray!40, very thin] (0,-2) -- (16,-2);
+		\draw (2,0) -- (14,0);
+		\draw (2,-2) -- (14,-2);
+		\draw[gray!40, very thin] (2,-3) -- (2,0.2);
+		\draw (2,0.5) node {0};
+		\draw (3,-1) node {Länge $n$};
+%		\draw (3,-1.7) node {\rustcinline{u32}};
+		\draw[gray!40, very thin] (4,-2) -- (4,0.2);
+		\draw (4,0.5) node {32};
+		\draw (5,-1) node {Id};
+%		\draw (5,-1.7) node {\rustcinline{u32}};
+		\draw[gray!40, very thin] (6,-3) -- (6,0.2);
+		\draw (6,0.5) node {64};
+		\draw[gray!40, very thin] (14,-3) -- (14,0.2);
+		\draw (14,0.5) node {$64 + n$};
+		\draw (10,-1) node {ASN.1 Nachricht};
+		
+		\draw (4,-2.5) node {Kopf};
+		\draw (10,-2.5) node {Korpus};
+	\end{tikzpicture}
+	\label{message:structure_alt}
+	\caption{Aufbau einer Nachricht auf dem Datenstrom}
+\end{figure}
+
+
 \section{Schnitstellenanalyse}
+
 \todo{erwartetes verhalten der sensoren und fahrzeuge}
 
 \begin{figure}[H]

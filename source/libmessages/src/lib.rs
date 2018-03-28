@@ -1,4 +1,4 @@
-extern crate libmessages_sys;
+pub extern crate libmessages_sys as raw;
 
 
 #[cfg(test)]
@@ -6,7 +6,7 @@ mod tests {
     use std::ptr;
     use std::mem;
     use std::os::raw;
-    use libmessages_sys::*;
+    use raw::*;
 
     #[test]
     fn do_not_panic() {

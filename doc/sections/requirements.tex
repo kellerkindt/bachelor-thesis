@@ -21,17 +21,15 @@ Die Bearbeitungszeit des Fusions-Algorithmus zählt nicht dazu.}
 
 \requirement{client:car}{Client als Fahrzeug}{Ein Client kann sich nach dem Verbindungsaufbau als Fahrzeug registrieren. Ein Client kann sich nicht mehrmals registrieren. Vor einer Registrierung ist der Typ der Clients unbekannt und er wird nicht als Fahrzeug gewertet.}
 
-\requirement{client:geofence}{GeoFence bestimmbar}{Ein Client kann den GeoFence, in dem er sich physikalisch befindet, bestimmen.}
+\requirement{client:sectors}{Sektoren übertragen}{Der Server übermittelt dem Fahrzeug nach Registrierung alle bekannten Sektoren.}
 
-\requirement{geofence:state}{GeoFence Unterteilung}{Es wird zwischen aktiven und inaktiven GeoFences unterschieden. Ein GeoFence ist nur dann aktiv, wenn ihm mindestens ein Fahrzeug zugewiesen ist.}
+\requirement{sensor:pause}{Sensoren abonnieren}{Sensoren werden bei keinem verbunden Fahrzeug abonniert.}
 
-\requirement{geofence:sensor:pause}{Sensoren pausieren}{Sensoren werden bei einer Zustandsänderung des zugewiesenen GeoFences zu inaktiv oder bei Zuweisung zu einem inaktiven GeoFence pausiert.}
+\requirement{sensor:resume}{Sensoren deabonnieren}{Sensoren werden bei verbunden Fahrzeugen deabonniert.}
 
-\requirement{geofence:sensor:resume}{Sensoren wecken}{Sensoren werden bei einer Zustandsänderung des zugewiesenen GeoFences zu aktiv oder bei Zuweisung zu einem aktiven GeoFence geweckt.}
+\requirement{impl:algorithmus:to}{Sensordaten weitergeben}{Empfangene Sensordaten werden dekodiert und an den Fusions-Algorithmus übergeben.}
 
-\requirement{impl:algorithmus:to}{Sensordaten weitergeben}{Empfangene Sensordaten werden dekodiert und an den Fusions-Algorithmus weitergegeben. \todo{geofence?}}
-
-\requirement{impl:algorithmus:from}{Ergebnisse weitergeben}{Ergebnisse des Fusions-Algorithmus werden enkodiert un an die Fahrzeuge in den entsprechenden GeoFences versendet.}
+\requirement{impl:algorithmus:from}{Ergebnisse weitergeben}{Ergebnisse des Fusions-Algorithmus werden enkodiert un an die Fahrzeuge versendet.}
 
 \requirement{impl:algorithmus}{Fusions-Algorithmus}{Für den Testbetrieb soll der Fusions-Algorithmus aus der C++ Referenzimplementierung (\enquote{SampleAlgorithm}) auch in Rust umgesetzt werden. Dieser Fusions-Algorithmus ist eine \enquote{dummy} Implementation, d.h. eingehende Daten werden nach einem einfachen Schema wieder verschickt. Ob die Einbindung einer externen Bibliothek als Fusions-Algorithmus möglich ist, soll überprüft werden.}
 

@@ -113,6 +113,8 @@ Es stehen Versionen in drei verschieden Veröffentlichungskanälen zur Verfügun
 
 \subsection{Ökosystem}
 
+\todo{https://github.com/rust-lang-nursery}
+
 Mit Rust wird nicht nur eine Programmiersprache, sondern auch ein umfassendes Ökosystem angeboten.
 
 Cargo ist hierbei vermutlich das größte angebotene Werkzeug.
@@ -430,6 +432,8 @@ Ein ergonomisches aber auch Fehler reduzierendes Feature.
 
 \section{Zugriffsmodifikatoren}
 \label{rust:access_modifier}
+
+\todo{pub(super), pub(foo::bar)}
 
 Zugriffsmodifikatoren erlauben es in Rust, Module, Datenstrukturen, Aufzählungen, Merkmale und Funktionen gegenüber Nutzern einer Crate und anderen Modulen sichtbar zu machen.
 Der standardmäßige Zugriffsmodifikator limitiert die Sichtbarkeit auf das Modul, in dem die Deklaration stattgefunden hat, und wird durch keine Notation eines Zugriffsmodifikators erreicht.
@@ -796,15 +800,19 @@ Ein Wert kann während einer Iteration nicht hinzugefügt oder entfernt werden.
 Es kann kein exklusiver Zugriff für die Kollektion erlangt werden kann, da für die Kollektion bereits lesend (oder exklusiv) an die Iteration verliehen ist.
 Eine \javacinline{ConcurrentModificationException} (Java) oder  wird deshalb nicht benötigt \cite[116]{rust:orly_programming}.
 
-\section{\todo{zu viel + unnötig?} Rust als funktionale Programmiersprache ??s}
+\section{Closures}
+
+\todo{Closures/Lambdas, Fn, FnOnce, FnMut}
+
+\todo{closures are fast, orly, p.310}
+
+\todo{Rust 1.25: impl Trait}
+
+\section{Rust als funktionale Programmiersprache ??s}
 
 \todo{functional programming -> no global state, no exceptions, find literature}
 
 \todo{prove via code}
-
-\todo{Closures Lambdas}
-
-\todo{closures are fast, orly, p.310}
 
 
 \section{\todo{zu viel + unnötig?} Rust als Objekt-Orientierte Programmiersprache ??}

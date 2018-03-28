@@ -1,0 +1,10 @@
+[package]
+name = "testing"
+version = "0.1.0"
+authors = ["Michael Watzko <michael@watzko.de>"]
+
+[dependencies]
+log = "0.4.1"
+log4rs = "0.8.0"
+tokio = "0.1.4"
+futures = "0.1.19"

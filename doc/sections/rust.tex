@@ -458,11 +458,10 @@ Closures sind zudem sehr performant (siehe \autoref{rust:zero_cost}), weswegen e
 \section{Zugriffsmodifikatoren}
 \label{rust:access_modifier}
 
-\todo{pub(super), pub(foo::bar)}
-
 Zugriffsmodifikatoren erlauben es in Rust, Module, Datenstrukturen, Aufzählungen, Merkmale und Funktionen gegenüber Nutzern einer Crate und anderen Modulen sichtbar zu machen.
 Der standardmäßige Zugriffsmodifikator limitiert die Sichtbarkeit auf das Modul, in dem die Deklaration stattgefunden hat, und wird durch keine Notation eines Zugriffsmodifikators erreicht.
 Um die Sichtbarkeit auf die gesamte Crate zu erhöhen, wird ein \rustcinline{pub(crate)} vorangestellt.
+\todo{..} \rustcinline{pub(super)} macht einen entsprechenden Typ dagegen nur für das hierarchisch darüber liegende Modul Sichtbar und mit \rustcinline{pub(foo::bar)} kann die Sichtbarkeit auch auf ein spezifiziertes Modul limitiert werden.
 Mit \rustcinline{pub} ist die Deklaration für alle sichtbar.
 
 Zugriffsmodifikatoren können auch vor \rustcinline{use} Anweisungen geschrieben werden, um entsprechende Datentypen zusätzlich unter einem neuen Namensraum bekannt zu machen.
@@ -825,19 +824,11 @@ Ein Wert kann während einer Iteration nicht hinzugefügt oder entfernt werden.
 Es kann kein exklusiver Zugriff für die Kollektion erlangt werden kann, da für die Kollektion bereits lesend (oder exklusiv) an die Iteration verliehen ist.
 Eine \javacinline{ConcurrentModificationException} (Java) oder  wird deshalb nicht benötigt \cite[116]{rust:orly_programming}.
 
-\section{Closures}
-
-\todo{Closures/Lambdas, Fn, FnOnce, FnMut}
-
-\todo{closures are fast, orly, p.310}
-
-\todo{Rust 1.25: impl Trait}
-
 \section{Rust als funktionale Programmiersprache ??s}
 
 \todo{functional programming -> no global state, no exceptions, find literature}
 
-\todo{prove via code}
+\todo{prove via code / closures}
 
 
 \section{\todo{zu viel + unnötig?} Rust als Objekt-Orientierte Programmiersprache ??}
@@ -1008,8 +999,23 @@ Das Eigentümer- und Leihprinzip verhindert dies, denn es kann nur exklusiv schr
 Für einen Datenwettlauf muss dagegen, gleichzeitig zu einem schreibenden, ein lesender Zugriff erfolgen.
 
 Datentypen, die einen gemeinsamen Zugriff auf veränderliche Werte ermöglichen (\rustcinline{Mutex}, \rustcinline{RwLock} und im erweiterten Sinne \enquote{channels}), liefern immer ein Ergebnis ob der Versuch, einen exklusiven Schreib- oder Lesezugriff zu erhalten, geklappt hat.
+\todo{shiat: }
 Eine mögliche Fehlersituation ist ein Thread, bei dem eine \rustcinline{panic!} (siehe \autoref{rust:panic}) aufgetreten ist, während dieser einen exklusiven Schreibzugriff auf den geschützten Wert hatte.
 In diesem Fall wird ein \rustcinline{PoisonError} zurückgegeben, der einen direkten Zugriff auf den Wert verhindert und vermittelt, dass der geschützte Wert vermutlich in keinem konsistenten Zustand mehr ist.
+
+\todo{..}
+Ähnlich wie in C++ mit \ccinline{local_guard}, wird auch in Rust der exklusive Zugriff durch eine lokale Variable ermöglicht.
+Besonders ist hierbei jedoch, dass auf den geschützten Wert nur über diese lokale Sperre zugegriffen werden kann und diese automatisch bei Freigabe der Variable aufgehoben wird.
+Somit kann nicht vergessen werden, die Sperre zu erlangen oder diese freizugeben:
+
+\begin{figure}[H]
+	\rustcinclude
+		{test}
+		{test2}
+		{sections/rust.lock.rs}
+\end{figure}
+
+\todo{interrior mutability pattern}
 
 \todo{Mutex+RwLock: *Guard -> niemals vergessen lock zu lösen}
 
@@ -1104,6 +1110,8 @@ Der Zähler ist im Heap direkt vor dem beinhalteten Wert und nicht in einem extr
 Durch das Eigentümerprinzip (siehe \autoref{rust:ownership}) und die statische Laufzeitanalyse (siehe \autoref{rust:static_analysis}), sind Closures (siehe \autoref{rust:closures}) so sicher wie ähnliche Sprachkonstrukte in Programmiersprachen mit \gls{gc} und so performant wie Lambdas in Programmiersprachen wie C++.
 Closures können sogar schneller als Funktionspointer sein \cite [310]{rust:orly_programming}, da ein \todo{Inlining} möglich ist und da sie auf dem Stack allokiert werden können.
 Der Compiler kann diese und weitere umfassende Optimierungen durchführen, da ihm der genaue Typ bekannt ist.
+
+\todo{impl Trait since 1.26: ergonmisch ohne perfomance impact}
 
 \todo{zero cost: no heap, type explicit -> faaaaaast(er than function pointer p.310), impl Trait, }
 \todo{closures are fast, orly, p.310}

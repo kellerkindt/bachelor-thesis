@@ -72,6 +72,11 @@ mod test {
     use super::*;
 
     #[test]
+    fn err_on_invalid_type_t_into_variant() {
+        assert_eq!(Err(()), AsnClientAdapter::variant_from_client_type_t(0xFF as ClientType_t));
+    }
+
+    #[test]
     fn client_type_t_into_variant_sensor() {
         assert_eq!(Ok(client::Variant::Sensor), AsnClientAdapter::variant_from_client_type_t(CLIENT_TYPE_SENSOR));
     }

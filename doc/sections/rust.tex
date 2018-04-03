@@ -321,9 +321,6 @@ Dies liegt daran, dass in Rust vieles ein Ausdruck ist und somit einen Rückgabe
 Auch ein if-else ist ein Ausdruck und kann einen Rückgabewert haben.
 Ein bedingter Operator (?:) is somit unnötig, da stattdessen ein if-else verwendet werden kann: \rustcinline{let a = if b \{ c \} else \{ d \};}.
 
-\todo{Closures Lambdas: großes Thema, nur anschneiden? ... es gibt etwas wie Lambdas, nennt sich Closures... besonders weil move / Eigentümerschaft übernehmen, Fn/FnMut/FnOnce + Notation, nicht erwähnen?}
-
-\todo{closures are fast, orly, p.310}
 
 
 \section{Implementierung einer Datenstruktur}
@@ -436,6 +433,27 @@ Mit der Anmerkung \rustcinline{#[derive(..)]} ist eine automatisierte Implementa
 So kann im allgemeinen \rustcinline{#[derive(Clone)]} genutzt werden, um eine Datenstruktur oder eine Aufzählung automatisch klonbar zu machen oder \rustcinline{#[derive(Debug)]}, um automatisch alle Felder in Text wandeln zu können.
 Ein ergonomisches aber auch Fehler reduzierendes Feature.
 %Dadurch wird der menschliche Faktor als Fehlerquelle für oft genutzte aber im Prinzip einfache Mechanismen ausgeschlossen.
+
+\subsection{Closure}
+\label{rust:closures}
+
+\todo{..}
+Mit Closures bietet Rust einen entsprechenden Sprachkonstrukt um Lambdas wie in Programmiersprachen wie Java, JavaScripit, C\# und C++ darstellen zu können.
+Übergabeparameter befinden sich in der Notation zwischen zwei senkrechten Strichen, deren Typ nicht explizit angegeben werden müssen, da der Compiler diese meist ableiten kann.
+In geschweiften klammern ist anschließend der Rumpf zu finden.
+Wenn der Rumpf nur eine Zeile groß ist, sind die geschweiften Klammern optional: \rustcinline{let adder = \|a, b\| a + b;}.
+Der Aufruf unterscheidet sich dabei nicht von einem normalen Funktionsaufruf: \rustcinline{let sum = adder(1, 2);}.
+
+Eine Closure entspricht automatisch einem der folgenden Merkmale:
+\begin{itemize}
+	\item \rustcinline{Fn<Args>} mit \rustcinline{fn call(&self, arg: Args) -> Self::Output}: Ein mehrfacher Aufruf ist möglich, ohne das Nebeneffekte auftreten, die die Eigenreferenz unveränderlich ist.
+	\item \rustcinline{FnMut<Args>} mit \rustcinline{fn call_mut(&mut self, arg: Args) -> Self::Output}: Da die Eigenreferenz veränderlich ist, können Nebeneffekte auftreten.
+	\item \rustcinline{FnOnce<Args>} mit \rustcinline{fn call_once(self, arg: Args) -> Self::Output}: Ein Aufruf ist wegen des Eigenkonsums nur einmalig möglich.
+\end{itemize}
+
+Closures sind zudem sehr performant (siehe \autoref{rust:zero_cost}), weswegen eine Anwendung selbst in Zeitkritischen Anwendungsfällen problemlos möglich ist \cite[310]{rust:orly_programming}.
+
+
 
 \section{Zugriffsmodifikatoren}
 \label{rust:access_modifier}
@@ -1001,11 +1019,17 @@ In diesem Fall wird ein \rustcinline{PoisonError} zurückgegeben, der einen dire
 Trotz der vielen verwendeten Abstraktionen möchte Rust dadurch möglichst keine weitere Laufzeitkosten erzeugen.
 Beim Übersetzen werden deshalb viele Abstraktionen durch Optimierungen für den Maschinencode unsichtbar.
 
+\subsection{Optional}
+\label{rust:zero_cost:optional}
+
 Der \rustcinline{Option<_>} Datentyp kann zum Beispiel in vielen Fällen als Pointer dargestellt werden, der bei \ccinline{NULL} \rustcinline{None} und ansonsten \rustcinline{Some(_)} ist \cite[100]{rust:orly_programming}.
 Somit wird eine Überprüfung erzwungen, ohne dabei Laufzeitkosten erzeugt zu haben.
 
 % no good source available, would need to compare debug asm vs release asm (Lpanic_bounds_check_loc)
 %\todo{bounds check compiler optmization}
+
+\subsection{Referenzzähler}
+\label{rust:zero_cost:refcounter}
 
 Ein weiteres Beispiel sind die Referenzzählertypen \rustcinline{Rc} und \rustcinline{Arc<_>}.
 Der Zähler ist im Heap direkt vor dem beinhalteten Wert und nicht in einem extra Speicherbereich, weshalb ein weiterer, indirekter Speicherzugriff mit Laufzeitkosten verhindert werden kann.
@@ -1074,7 +1098,15 @@ Der Zähler ist im Heap direkt vor dem beinhalteten Wert und nicht in einem extr
 	\caption{Speicherlayout Rc \cite[90-91]{rust:orly_programming}}
 \end{figure}
 
+\subsection{Closures}
+\label{rust:zero_cost:closures}
 
+Durch das Eigentümerprinzip (siehe \autoref{rust:ownership}) und die statische Laufzeitanalyse (siehe \autoref{rust:static_analysis}), sind Closures (siehe \autoref{rust:closures}) so sicher wie ähnliche Sprachkonstrukte in Programmiersprachen mit \gls{gc} und so performant wie Lambdas in Programmiersprachen wie C++.
+Closures können sogar schneller als Funktionspointer sein \cite [310]{rust:orly_programming}, da ein \todo{Inlining} möglich ist und da sie auf dem Stack allokiert werden können.
+Der Compiler kann diese und weitere umfassende Optimierungen durchführen, da ihm der genaue Typ bekannt ist.
+
+\todo{zero cost: no heap, type explicit -> faaaaaast(er than function pointer p.310), impl Trait, }
+\todo{closures are fast, orly, p.310}
 
 \section{Einbinden von externen Bibliotheken}
 

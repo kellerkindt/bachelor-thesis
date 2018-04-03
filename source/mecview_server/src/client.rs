@@ -1,67 +1,31 @@
 
-use std::sync::Arc;
-
-use libmessages::Message;
-use libmessages::raw::ClientType;
-use libmessages::raw::ClientType_t;
-use libmessages::raw::ClientRegistration;
-
-use futures::Stream;
-use futures::future::Future;
-use futures::sync::mpsc::SendError;
-use futures::sync::mpsc::Receiver;
+use async::CommandProcessor;
 
 pub struct Client {
     variant: Variant,
 }
 
 impl Client {
-    pub fn process_all(mut self, mut receiver: Receiver<Arc<Message>>) -> impl Future<Item=(),Error=()>  {
-        receiver.for_each(move |message| {
-            self.process(message)
-        })
-    }
-
-    pub fn process(&mut self, message: Arc<Message>) -> Result<(), ()> {
-        match self.variant {
-            Variant::Unknown => self.process_message_on_variant_unknown(message),
-            Variant::Sensor  => Err(()),
-            Variant::Vehicle => Err(()),
-        }
-    }
-
-    fn process_message_on_variant_unknown(&mut self, message: Arc<Message>) -> Result<(), ()> {
-        match *message {
-            Message::Registration(registration) => {
-                self.update_variant(registration.type_)
-            },
-            _ => {
-                error!("Invalid message: {:?}", message);
-                Err(())
-            }
-        }
-    }
-
-    fn update_variant(&mut self, client_type: ClientType_t) -> Result<(), ()> {
-        match ClientType::from(client_type) {
-            Some(ClientType::ClientType_sensor) => {
-                self.set_variant(Variant::Sensor);
-                Ok(())
-            },
-            Some(ClientType::ClientType_vehicle) => {
-                self.set_variant(Variant::Vehicle);
-                Ok(())
-            },
-            _ => {
-                error!("Invalid ClientType_t: {:?}", client_type);
-                Err(())
-            }
-        }
+    fn process_command_on_variant_unknown(&mut self, command: Command) -> Result<(), ()> {
+        match command {
+            Command::UpdateVariant(variant) => self.set_variant(variant),
+        };
+        Ok(())
     }
 
     fn set_variant(&mut self, variant: Variant) {
         trace!("Client is now a {:?}", variant);
         self.variant = variant;
+    }
+}
+
+impl CommandProcessor<Command> for Client {
+    fn process_command(&mut self, command: Command) -> Result<(), ()> {
+        match self.variant {
+            Variant::Unknown => self.process_command_on_variant_unknown(command),
+            Variant::Sensor  => Err(()),
+            Variant::Vehicle => Err(()),
+        }
     }
 }
 
@@ -80,7 +44,10 @@ pub enum Variant {
     Vehicle,
 }
 
-
+#[derive(Debug, Clone)]
+pub enum Command {
+    UpdateVariant(Variant),
+}
 
 #[cfg(test)]
 mod test {
@@ -92,18 +59,26 @@ mod test {
     }
 
     #[test]
-    fn test_update_for_client_type_sensor() {
-        test_update_for_client_type(Variant::Sensor, ClientType::ClientType_sensor);
+    fn test_update_variant_cannot_change_if_not_unknown() {
+        let mut client = Client::default();
+        client.variant = Variant::Vehicle;
+        assert_eq!(Err(()), client.process_command(Command::UpdateVariant(Variant::Vehicle)));
+        assert_eq!(Err(()), client.process_command(Command::UpdateVariant(Variant::Sensor)));
     }
 
     #[test]
-    fn test_update_for_client_type_vehicle() {
-        test_update_for_client_type(Variant::Vehicle, ClientType::ClientType_vehicle);
+    fn test_update_variant_for_client_type_sensor() {
+        test_update_variant_for_client_type(Variant::Sensor);
     }
 
-    fn test_update_for_client_type(variant: Variant, client_type: ClientType) {
+    #[test]
+    fn test_update_variant_for_client_type_vehicle() {
+        test_update_variant_for_client_type(Variant::Vehicle);
+    }
+
+    fn test_update_variant_for_client_type(variant: Variant) {
         let mut client = Client::default();
-        assert_eq!(Ok(()), client.update_variant(client_type as ClientType_t));
+        assert_eq!(Ok(()), client.process_command(Command::UpdateVariant(variant)));
         assert_eq!(variant, client.variant);
     }
 }

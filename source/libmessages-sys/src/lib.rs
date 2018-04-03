@@ -22,8 +22,12 @@ mod test {
     use super::*;
 
     #[test]
-    fn client_type_t_into_client_type() {
+    fn client_type_t_into_client_type_sensor() {
         assert_eq!(ClientType::ClientType_sensor, ClientType::from(CLIENT_TYPE_SENSOR));
+    }
+
+    #[test]
+    fn client_type_t_into_client_type_vehicle() {
         assert_eq!(ClientType::ClientType_vehicle, ClientType::from(CLIENT_TYPE_VEHICLE));
     }
 }

@@ -1,5 +1,11 @@
 pub extern crate libmessages_sys as raw;
 
+#[derive(Debug)]
+pub enum Message {
+    Registration(raw::ClientRegistration),
+}
+
+
 
 #[cfg(test)]
 mod tests {

@@ -2,9 +2,26 @@ pub extern crate libmessages_sys as raw;
 
 #[derive(Debug)]
 pub enum Message {
-    Registration(raw::ClientRegistration),
+    Registration(Box<raw::ClientRegistration>),
 }
 
+impl Drop for Message {
+    fn drop(&mut self) {
+        unsafe {
+            match self {
+                Message::Registration(ref mut registration) => asn_free(&mut raw::asn_DEF_ClientRegistration, ::std::mem::replace(registration, ::std::mem::uninitialized())),
+            };
+        }
+    }
+}
+
+unsafe fn asn_free<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, value: Box<T>) {
+    asn_type.free_struct.expect("free_struct is NULL, is the library not loaded?")(
+        asn_type as *mut raw::asn_TYPE_descriptor_t,
+        Box::into_raw(value) as *mut ::std::os::raw::c_void,
+        0 as ::std::os::raw::c_int
+    );
+}
 
 
 #[cfg(test)]

@@ -24,16 +24,16 @@ impl Client {
 
     pub fn process(&mut self, message: Arc<Message>) -> Result<(), ()> {
         match self.variant {
-            Variant::Unknown => self.message_on_variant_unknown(message),
+            Variant::Unknown => self.process_message_on_variant_unknown(message),
             Variant::Sensor  => Err(()),
             Variant::Vehicle => Err(()),
         }
     }
 
-    fn message_on_variant_unknown(&mut self, message: Arc<Message>) -> Result<(), ()> {
+    fn process_message_on_variant_unknown(&mut self, message: Arc<Message>) -> Result<(), ()> {
         match *message {
             Message::Registration(registration) => {
-                self.update_variant_for_client_type(registration.type_)
+                self.update_variant(registration.type_)
             },
             _ => {
                 error!("Invalid message: {:?}", message);
@@ -42,7 +42,7 @@ impl Client {
         }
     }
 
-    fn update_variant_for_client_type(&mut self, client_type: ClientType_t) -> Result<(), ()> {
+    fn update_variant(&mut self, client_type: ClientType_t) -> Result<(), ()> {
         match ClientType::from(client_type) {
             Some(ClientType::ClientType_sensor) => {
                 self.set_variant(Variant::Sensor);
@@ -103,7 +103,7 @@ mod test {
 
     fn test_update_for_client_type(variant: Variant, client_type: ClientType) {
         let mut client = Client::default();
-        assert_eq!(Ok(()), client.update_variant_for_client_type(client_type as ClientType_t));
+        assert_eq!(Ok(()), client.update_variant(client_type as ClientType_t));
         assert_eq!(variant, client.variant);
     }
 }

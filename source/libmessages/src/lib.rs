@@ -88,7 +88,7 @@ mod tests {
 
         let config = Config::builder()
             .appender(Appender::builder().build("stdout", Box::new(appender)))
-            .build(Root::builder().appender("stdout").build(LevelFilter::Trace))
+            .build(Root::builder().appender("stdout").build(LevelFilter::Warn))
             .unwrap();
 
         let _ = log4rs::init_config(config);
@@ -159,7 +159,15 @@ mod tests {
         trace!("result: {:?}", message);
         match message.expect("Message decoding failed") {
             Message::SensorFrame(ref frame) => {
-                assert_eq!(0 as ::std::os::raw::c_int, frame.object_detections.list.count)
+                assert_eq!(0 as ::std::os::raw::c_int, frame.object_detections.list.count);
+                assert_eq!(100, frame.header.timestamp);
+                assert_eq!(1, frame.envelope.version);
+                assert_eq!(raw::SensorType_SensorType_lidar as SensorType_t, frame.envelope.sensor_type);
+                assert_eq!(0, frame.envelope.sender_id);
+                assert_eq!(2, frame.envelope.pole_id);
+                assert_eq!(484010822, frame.envelope.reference_point.latitude);
+                assert_eq!(99876076, frame.envelope.reference_point.longitude);
+                assert_eq!(256000, frame.envelope.reference_point.altitude);
             },
             _ => panic!("Wrong message variant")
         }

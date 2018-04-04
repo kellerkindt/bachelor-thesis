@@ -12,6 +12,7 @@ extern crate log4rs;
 pub enum Message {
     Registration(Box<raw::ClientRegistration>),
     UpdateSubscription(Box<raw::UpdateSubscription>),
+    SensorFrame(Box<raw::SensorFrame>),
 }
 
 
@@ -28,6 +29,12 @@ impl Message {
         }))
     }
 
+    pub fn decode_sensor_frame(buffer: &[u8]) -> Result<Message, ()> {
+        Ok(Message::SensorFrame(unsafe {
+            asn::uper_decode(&mut raw::asn_DEF_SensorFrame, buffer)?
+        }))
+    }
+
     pub fn encode(&self, target: &mut [u8]) -> Result<usize, ()> {
         match self {
             Message::Registration(ref registration) => unsafe {
@@ -35,6 +42,9 @@ impl Message {
             },
             Message::UpdateSubscription(ref subscription) => unsafe {
                 asn::uper_encode(&mut raw::asn_DEF_UpdateSubscription, subscription.as_ref(), target)
+            },
+            Message::SensorFrame(ref frame) => unsafe {
+                asn::uper_encode(&mut raw::asn_DEF_SensorFrame, frame.as_ref(), target)
             }
         }
     }
@@ -44,8 +54,9 @@ impl Drop for Message {
     fn drop(&mut self) {
         unsafe {
             match self {
-                Message::Registration(ref registration) => asn::free_content(&mut raw::asn_DEF_ClientRegistration, registration.as_ref()),
-                Message::UpdateSubscription(ref subscription) => asn::free_content(&mut raw::asn_DEF_UpdateSubscription, subscription.as_ref()),
+                Message::Registration(ref value) => asn::free_content(&mut raw::asn_DEF_ClientRegistration, value.as_ref()),
+                Message::UpdateSubscription(ref value) => asn::free_content(&mut raw::asn_DEF_UpdateSubscription, value.as_ref()),
+                Message::SensorFrame(ref value) => asn::free_content(&mut raw::asn_DEF_SensorFrame, value.as_ref()),
             };
         }
     }
@@ -99,11 +110,67 @@ mod tests {
     }
 
     #[test]
+    fn encode_sensor_frame() {
+        init_logger();
+        let frame = Message::SensorFrame(unsafe {
+            let mut frame = Box::new(mem::zeroed::<SensorFrame>());
+            raw::asn_set_empty(&mut frame.object_detections as *mut _ as *mut ::std::os::raw::c_void);
+            frame.header.timestamp = 100;
+            frame.envelope.version = 1;
+            frame.envelope.sensor_type = raw::SensorType_SensorType_lidar as SensorType_t;
+            frame.envelope.sender_id = 0;
+            frame.envelope.pole_id = 2;
+            frame.envelope.reference_point.latitude = 484010822;
+            frame.envelope.reference_point.longitude = 99876076;
+            frame.envelope.reference_point.altitude = 256000;
+            frame
+        });
+        test_encode(frame, &[
+            0x00, 0x00, 0x00, 0xc8, 0x02, 0x00, 0x15, 0x27, 0xe5, 0x44, 0x67, 0x13, 0xdc, 0xee, 0xc4,
+            0x97, 0xc8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00,
+        ]);
+    }
+
+    #[test]
+    fn decode_sensor_frame() {
+        init_logger();
+        let message = Message::decode_sensor_frame(&[
+            0x00, 0x00, 0x00, 0xc8, 0x02, 0x00, 0x15, 0x27, 0xe5, 0x44, 0x67, 0x13, 0xdc, 0xee, 0xc4,
+            0x97, 0xc8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00,
+        ]);
+        trace!("result: {:?}", message);
+        match message.expect("Message decoding failed") {
+            Message::SensorFrame(ref frame) => {
+                assert_eq!(0 as ::std::os::raw::c_int, frame.object_detections.list.count)
+            },
+            _ => panic!("Wrong message variant")
+        }
+    }
+
+    #[test]
     fn encode_update_subscription() {
         init_logger();
         let subscription = Message::UpdateSubscription(unsafe {
             let mut subscription = Box::new(mem::zeroed::<UpdateSubscription>());
-            subscription.subscription_status = SubscriptionStatus::SubscriptionStatus_subscribed as SubscriptionStatus_t;
+            subscription.subscription_status = SubscriptionStatus_SubscriptionStatus_subscribed as SubscriptionStatus_t;
             subscription.message_period = ptr::null_mut();
             subscription
         });
@@ -117,7 +184,7 @@ mod tests {
         trace!("result: {:?}", message);
         match message.expect("Message decoding failed") {
             Message::UpdateSubscription(ref sub) => {
-                assert_eq!(SubscriptionStatus::SubscriptionStatus_subscribed as SubscriptionStatus_t, sub.subscription_status);
+                assert_eq!(SubscriptionStatus_SubscriptionStatus_subscribed as SubscriptionStatus_t, sub.subscription_status);
                 assert_eq!(ptr::null_mut(), sub.message_period);
             },
             _ => panic!("Wrong message variant")
@@ -129,7 +196,7 @@ mod tests {
         init_logger();
         let registration = Message::Registration(unsafe {
             let mut registration = Box::new(mem::zeroed::<ClientRegistration>());
-            registration.type_ = ClientType::ClientType_vehicle as ClientType_t;
+            registration.type_ = ClientType_ClientType_vehicle as ClientType_t;
             registration.covered_area           = ptr::null_mut();
             registration.minimum_message_period = ptr::null_mut();
             registration
@@ -145,7 +212,7 @@ mod tests {
         assert!(message.is_ok());
         match message.expect("Message decoding failed") {
             Message::Registration(ref reg) => {
-                assert_eq!(ClientType::ClientType_vehicle as ClientType_t, reg.type_);
+                assert_eq!(ClientType_ClientType_vehicle as ClientType_t, reg.type_);
                 assert_eq!(ptr::null_mut(), reg.covered_area);
                 assert_eq!(ptr::null_mut(), reg.minimum_message_period);
             },

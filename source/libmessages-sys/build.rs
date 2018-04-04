@@ -7,14 +7,22 @@ use std::fs::FileType;
 use std::path::Path;
 use std::io::Write;
 
+const LIBRARY_FILE  : &'static str = "libmessage.a";
+const BINDINGS_FILE : &'static str = "src/bindings.rs";
 
 fn main() {
-    let headers = compile_sdk("cpp/MECViewServerSDK-Build/proto/", "libmessage.a");
+    if !Path::new(LIBRARY_FILE).exists() || !Path::new(BINDINGS_FILE).exists() {
+        let headers = compile_sdk("cpp/MECViewServerSDK-Build/proto/", LIBRARY_FILE);
 
-    let main_header = "cpp/wrapper/wrapper.h";
+        if !Path::new(BINDINGS_FILE).exists() {
+            let headers = compile_sdk("cpp/MECViewServerSDK-Build/proto/", LIBRARY_FILE);
 
-    generate_main_header(&headers, main_header);
-    generate_bindings("cpp/MECViewServerSDK-Build/proto/", main_header, "src/bindings.rs");
+            let main_header = "cpp/wrapper/wrapper.h";
+
+            generate_main_header(&headers, main_header);
+            generate_bindings("cpp/MECViewServerSDK-Build/proto/", main_header, BINDINGS_FILE);
+        }
+    }
 
     println!("cargo:rustc-link-search=native={}", ".");
     println!("cargo:rustc-flags=-l dylib=stdc++");

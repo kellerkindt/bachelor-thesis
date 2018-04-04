@@ -1,5 +1,7 @@
 pub extern crate libmessages_sys as raw;
 
+mod asn;
+
 #[macro_use]
 extern crate log;
 
@@ -14,14 +16,14 @@ pub enum Message {
 impl Message {
     pub fn decode_client_registration(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::Registration(unsafe {
-            asn_uper_decode(&mut raw::asn_DEF_ClientRegistration, buffer)?
+            asn::uper_decode(&mut raw::asn_DEF_ClientRegistration, buffer)?
         }))
     }
 
     pub fn encode(&self, target: &mut [u8]) -> Result<usize, ()> {
         match self {
             Message::Registration(ref registration) => unsafe {
-                asn_uper_encode(&mut raw::asn_DEF_ClientRegistration, registration.as_ref(), target)
+                asn::uper_encode(&mut raw::asn_DEF_ClientRegistration, registration.as_ref(), target)
             }
         }
     }
@@ -31,63 +33,13 @@ impl Drop for Message {
     fn drop(&mut self) {
         unsafe {
             match self {
-                Message::Registration(ref registration) => asn_free_content(&mut raw::asn_DEF_ClientRegistration, registration.as_ref()),
+                Message::Registration(ref registration) => asn::free_content(&mut raw::asn_DEF_ClientRegistration, registration.as_ref()),
             };
         }
     }
 }
 
 
-unsafe fn asn_free_content<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, value: &T) {
-    asn_free(asn_type, value, true)
-}
-
-unsafe fn asn_free<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, value: &T, only_content: bool) {
-    trace!("asn_free type {:?}", asn_type);
-    asn_type.free_struct.expect("free_struct is NULL, is the library not loaded?")(
-        asn_type as *mut raw::asn_TYPE_descriptor_t,
-        value as *const T as *mut ::std::os::raw::c_void,
-        if only_content {1} else {0} as ::std::os::raw::c_int,
-    );
-    trace!("freed");
-}
-
-unsafe fn asn_uper_encode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, value: &T, buffer: &mut [u8]) -> Result<usize, ()> {
-    let result = raw::uper_encode_to_buffer(
-        asn_type as *mut raw::asn_TYPE_descriptor_t,
-        value as *const T as *const ::std::os::raw::c_void as *mut ::std::os::raw::c_void,
-        buffer.as_mut_ptr() as *mut ::std::os::raw::c_void,
-        buffer.len()
-    );
-
-    if result.encoded < 0 {
-        trace!("{:?}", result);
-        Err(())
-    } else {
-        trace!("fine");
-        Ok(result.encoded as usize)
-    }
-}
-
-
-unsafe fn asn_uper_decode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, buffer: &[u8]) -> Result<Box<T>, ()> {
-    let mut pointer : *mut T = ::std::ptr::null_mut();
-    let result = raw::uper_decode_complete(
-        ::std::ptr::null_mut(),
-        asn_type as *mut raw::asn_TYPE_descriptor_t,
-        (&mut pointer as *mut *mut T) as *mut *mut ::std::os::raw::c_void,
-        buffer.as_ptr() as *mut ::std::os::raw::c_void,
-        buffer.len(),
-    );
-
-    if result.code != raw::asn_dec_rval_code_e::RC_OK {
-        trace!("{:?}", result);
-        Err(())
-    } else {
-        trace!("fine");
-        Ok(Box::from_raw(pointer))
-    }
-}
 
 
 #[cfg(test)]
@@ -98,7 +50,7 @@ mod tests {
     use raw::*;
     use super::*;
 
-    fn init_logger() {
+    pub fn init_logger() {
         use log::LevelFilter;
         use log4rs::config::Config;
         use log4rs::config::Root;
@@ -153,30 +105,5 @@ mod tests {
         if let Message::Registration(ref reg) = message {
             assert_eq!(ClientType::ClientType_vehicle as ClientType_t, reg.type_);
         }*/
-    }
-
-    #[test]
-    fn do_not_panic() {
-        init_logger();
-        unsafe {
-            let mut buffer = [0u8; 32];
-            let mut p = mem::zeroed::<PositionOffset>();
-            p.position_north = 77 as raw::c_long;
-            p.position_east = 77 as raw::c_long;
-            p.std_dev_position_east = ptr::null_mut();
-            p.std_dev_position_north = ptr::null_mut();
-
-            trace!("{:?}", uper_encode_to_buffer(
-                &mut asn_DEF_PositionOffset as *mut asn_TYPE_descriptor_s,
-                &mut p as *mut _ as *mut raw::c_void,
-                buffer.as_mut_ptr() as *mut raw::c_void,
-                buffer.len() as usize
-            ));
-            let mut string = String::new();
-            for byte in buffer.iter() {
-                string.push_str(&format!("{:02x} ", byte));
-            }
-            trace!("{}", string)
-        }
     }
 }

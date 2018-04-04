@@ -14,6 +14,7 @@ pub enum Message {
     UpdateSubscription(Box<raw::UpdateSubscription>),
     SensorFrame(Box<raw::SensorFrame>),
     EnvironmentFrame(Box<raw::EnvironmentFrame>),
+    RoadClearanceFrame(Box<raw::RoadClearanceFrame>),
 }
 
 
@@ -42,6 +43,12 @@ impl Message {
         }))
     }
 
+    pub fn decode_road_clearance_frame(buffer: &[u8]) -> Result<Message, ()> {
+        Ok(Message::RoadClearanceFrame(unsafe {
+            asn::uper_decode(&mut raw::asn_DEF_RoadClearanceFrame, buffer)?
+        }))
+    }
+
     pub fn encode(&self, target: &mut [u8]) -> Result<usize, ()> {
         match self {
             Message::Registration(ref registration) => unsafe {
@@ -56,6 +63,9 @@ impl Message {
             Message::EnvironmentFrame(ref frame) => unsafe {
                 asn::uper_encode(&mut raw::asn_DEF_EnvironmentFrame, frame.as_ref(), target)
             },
+            Message::RoadClearanceFrame(ref frame) => unsafe {
+                asn::uper_encode(&mut raw::asn_DEF_RoadClearanceFrame, frame.as_ref(), target)
+            },
         }
     }
 }
@@ -69,6 +79,7 @@ impl Drop for Message {
                 Message::UpdateSubscription(ref value) => asn::free_content(&mut raw::asn_DEF_UpdateSubscription, value.as_ref()),
                 Message::SensorFrame(ref value) => asn::free_content(&mut raw::asn_DEF_SensorFrame, value.as_ref()),
                 Message::EnvironmentFrame(ref value) => asn::free_content(&mut raw::asn_DEF_EnvironmentFrame, value.as_ref()),
+                Message::RoadClearanceFrame(ref value) => asn::free_content(&mut raw::asn_DEF_RoadClearanceFrame, value.as_ref()),
             };
         }
     }
@@ -122,17 +133,76 @@ mod tests {
     }
 
     #[test]
+    fn encode_road_clearance_frame() {
+        init_logger();
+        let frame = Message::RoadClearanceFrame(unsafe {
+            let mut frame = Box::new(mem::zeroed::<RoadClearanceFrame>());
+            frame.header.timestamp = 300;
+            frame.envelope.version = 2;
+            frame.envelope.reference_point.latitude = 484010822;
+            frame.envelope.reference_point.longitude = 99876076;
+            frame.envelope.reference_point.altitude = 256000;
+            frame.envelope.server_id = 0;
+            raw::asn_set_empty(&mut frame.road_sections as *mut _ as *mut ::std::os::raw::c_void);
+            frame
+        });
+        test_encode(frame, &[
+            0x00, 0x00, 0x02, 0x58, 0x02, 0x04, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7, 0x3b,
+            0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+        ]);
+    }
+
+    #[test]
+    fn decode_road_clearance_frame() {
+        init_logger();
+        let message = Message::decode_road_clearance_frame(&[
+            0x00, 0x00, 0x02, 0x58, 0x02, 0x04, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7, 0x3b,
+            0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+        ]);
+        match message.expect("Decoding failed") {
+            Message::RoadClearanceFrame(ref frame) => {
+                assert_eq!(300, frame.header.timestamp);
+                assert_eq!(2, frame.envelope.version);
+                assert_eq!(484010822, frame.envelope.reference_point.latitude);
+                assert_eq!(99876076, frame.envelope.reference_point.longitude);
+                assert_eq!(256000, frame.envelope.reference_point.altitude);
+                assert_eq!(0, frame.envelope.server_id);
+                assert_eq!(0, frame.road_sections.list.count);
+            },
+            _ => panic!("Wrong message variant")
+        }
+    }
+
+    #[test]
     fn encode_environment_frame() {
         init_logger();
         let frame = Message::EnvironmentFrame(unsafe {
             let mut frame = Box::new(mem::zeroed::<EnvironmentFrame>());
-            raw::asn_set_empty(&mut frame.object_detections as *mut _ as *mut ::std::os::raw::c_void);
             frame.header.timestamp = 200;
             frame.envelope.version = 1;
             frame.envelope.reference_point.latitude = 484010822;
             frame.envelope.reference_point.longitude = 99876076;
             frame.envelope.reference_point.altitude = 256000;
             frame.envelope.server_id = 0;
+            raw::asn_set_empty(&mut frame.object_detections as *mut _ as *mut ::std::os::raw::c_void);
             raw::asn_set_empty(&mut frame.envelope.error_codes as *mut _ as *mut ::std::os::raw::c_void);
             frame
         });

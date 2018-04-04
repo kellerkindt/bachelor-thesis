@@ -24,6 +24,7 @@ pub unsafe fn uper_encode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, value: &
 
     trace!("result: {:?} for type: {:?}", result, asn_type);
     if result.encoded < 0 {
+        warn!("Encoding failed: {:?}", result);
         Err(())
     } else {
         trace!("fine");
@@ -43,7 +44,7 @@ pub unsafe fn uper_decode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, buffer: 
 
     trace!("result: {:?} for type: {:?}", result, asn_type);
     if result.code != raw::asn_dec_rval_code_e_RC_OK{
-        trace!("{:?}", result);
+        warn!("Decoding failed: {:?}", result);
         Err(())
     } else {
         trace!("fine");

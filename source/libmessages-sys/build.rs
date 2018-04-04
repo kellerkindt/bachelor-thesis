@@ -15,8 +15,6 @@ fn main() {
         let headers = compile_sdk("cpp/MECViewServerSDK-Build/proto/", LIBRARY_FILE);
 
         if !Path::new(BINDINGS_FILE).exists() {
-            let headers = compile_sdk("cpp/MECViewServerSDK-Build/proto/", LIBRARY_FILE);
-
             let main_header = "cpp/wrapper/wrapper.h";
 
             generate_main_header(&headers, main_header);
@@ -46,6 +44,7 @@ fn compile_sdk(sdk_dir: &str, out: &str) -> Vec<String> {
                                 if str.ends_with(".c") {
                                     gcc_build.file(str);
                                 } else if str.ends_with(".h") {
+                                    println!("Found header file: {}", str);
                                     headers.push(str.into());
                                 }
                             }

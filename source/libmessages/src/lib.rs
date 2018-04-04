@@ -15,6 +15,7 @@ pub enum Message {
     SensorFrame(Box<raw::SensorFrame>),
     EnvironmentFrame(Box<raw::EnvironmentFrame>),
     RoadClearanceFrame(Box<raw::RoadClearanceFrame>),
+    UpdateStatus(Box<raw::UpdateStatus>),
 }
 
 
@@ -49,6 +50,12 @@ impl Message {
         }))
     }
 
+    pub fn decode_update_status(buffer: &[u8]) -> Result<Message, ()> {
+        Ok(Message::UpdateStatus(unsafe {
+            asn::uper_decode(&mut raw::asn_DEF_UpdateStatus, buffer)?
+        }))
+    }
+
     pub fn encode(&self, target: &mut [u8]) -> Result<usize, ()> {
         match self {
             Message::Registration(ref registration) => unsafe {
@@ -66,6 +73,9 @@ impl Message {
             Message::RoadClearanceFrame(ref frame) => unsafe {
                 asn::uper_encode(&mut raw::asn_DEF_RoadClearanceFrame, frame.as_ref(), target)
             },
+            Message::UpdateStatus(ref status) => unsafe {
+                asn::uper_encode(&mut raw::asn_DEF_UpdateStatus, status.as_ref(), target)
+            },
         }
     }
 }
@@ -80,6 +90,7 @@ impl Drop for Message {
                 Message::SensorFrame(ref value) => asn::free_content(&mut raw::asn_DEF_SensorFrame, value.as_ref()),
                 Message::EnvironmentFrame(ref value) => asn::free_content(&mut raw::asn_DEF_EnvironmentFrame, value.as_ref()),
                 Message::RoadClearanceFrame(ref value) => asn::free_content(&mut raw::asn_DEF_RoadClearanceFrame, value.as_ref()),
+                Message::UpdateStatus(ref status) => asn::free_content(&mut raw::asn_DEF_UpdateStatus, status.as_ref()),
             };
         }
     }
@@ -130,6 +141,37 @@ mod tests {
         }
         assert_eq!(Ok(should_be.len()), result);
         assert_eq!(should_be, &buffer[..]);
+    }
+
+    #[test]
+    fn encode_update_status() {
+        init_logger();
+        let status = Message::UpdateStatus(unsafe {
+            let mut status = Box::new(mem::zeroed::<UpdateStatus>());
+            status.ip_address.size = 0;
+            status.sensor_status = raw::ConnectionStatus_ConnectionStatus_disconnected as ConnectionStatus_t;
+            status
+        });
+        test_encode(status, &[
+            0x40, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        ]);
+    }
+
+    #[test]
+    fn decode_update_status() {
+        init_logger();
+        let message = Message::decode_update_status(&[
+            0x40, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        ]);
+        match message.expect("Decoding failed") {
+            Message::UpdateStatus(ref status) => {
+                assert_eq!(0, status.ip_address.size);
+                assert_eq!(raw::ConnectionStatus_ConnectionStatus_disconnected as ConnectionStatus_t, status.sensor_status);
+            },
+            _ => panic!("Wrong message variant")
+        }
     }
 
     #[test]

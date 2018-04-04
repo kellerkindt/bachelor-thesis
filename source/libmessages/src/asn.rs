@@ -63,7 +63,7 @@ mod tests {
 
 
     #[test]
-    fn do_not_panic() {
+    fn library_link_valid_do_not_panic() {
         init_logger();
         unsafe {
             let mut buffer = [0u8; 32];

@@ -3,6 +3,10 @@ name = "libmessages"
 version = "0.1.0"
 authors = ["Michael Watzko <michael@watzko.de>"]
 
+[dependencies]
+log = "0.4.1"
+log4rs = "0.8.0"
+
 [dependencies.libmessages-sys]
 version = "0.1.0"
 path = "../libmessages-sys/"

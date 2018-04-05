@@ -77,7 +77,12 @@ fn generate_bindings(include: &str, header: &str, out: &str) {
         .header(header)
         // not supported/test fails (not needed?, via indirect include)
         .blacklist_type("max_align_t")
+        .opaque_type("asn_struct_ctx_s")
+        .opaque_type("asn_struct_ctx_t")
         .rustfmt_bindings(true)
+        .impl_debug(true)
+        .impl_partialeq(true)
+        .generate_comments(true)
         .generate()
             .unwrap()
             .write_to_file(out).expect("Couldn't write bindings!");

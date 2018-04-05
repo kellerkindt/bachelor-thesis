@@ -102,11 +102,7 @@ impl Decoder for AsnCodec {
 
             if src.len() >= total_size {
                 let buffer = src.split_to(total_size);
-                let result = match message_type {
-                    0x01 => Message::decode_client_registration(&buffer[ASN_HEADER_SIZE..]),
-                    _ => Err(())
-                };
-                match result {
+                match Message::decode(message_type, &buffer[ASN_HEADER_SIZE..]) {
                     Err(_) => Err(Error::from(ErrorKind::InvalidData)),
                     Ok(message) => Ok(Some(message)),
                 }
@@ -127,13 +123,6 @@ impl Encoder for AsnCodec {
     type Error = Error;
 
     fn encode(&mut self, item: <Self as Encoder>::Item, dst: &mut BytesMut) -> Result<(), <Self as Encoder>::Error> {
-        let message_type = match item {
-            Message::Registration(_) => 0x01_u32,
-            _ => {
-                error!("Unknown message type: {:?}", item);
-                return Err(Error::from(ErrorKind::InvalidData));
-            }
-        };
 
         let mut buffer = [0u8; 1024*1024]; // TODO
         let message_size = match item.encode(&mut buffer[..]) {
@@ -144,7 +133,7 @@ impl Encoder for AsnCodec {
         let total_size = ASN_HEADER_SIZE + message_size as usize;
         dst.reserve(total_size);
         dst.put_u32::<NetworkEndian>(message_size);
-        dst.put_u32::<NetworkEndian>(message_type);
+        dst.put_u32::<NetworkEndian>(item.type_id());
         let slice = &buffer[..message_size as usize];
         dst.put_slice(slice);
         Ok(())

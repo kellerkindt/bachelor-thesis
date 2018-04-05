@@ -102,6 +102,7 @@ fn main() {
     thread::sleep_ms(10_000);
 }
 
+use std::fmt::Debug;
 
 use async::Sink;
 use async::Stream;
@@ -117,7 +118,7 @@ const CHANNEL_BUFFER_SIZE_ADAPTER : usize = 2;
 
 /// Spawns a new `Client` that listens for commands on the returned `async::Sender`
 /// and uses the given `async::Sender` to send messages to the underlying remote client
-fn spawn_new_client<M: Send+'static>(adapter: async::Sender<adapter::Command<M>>) -> async::Sender<client::Command> {
+fn spawn_new_client<M: Debug+Send+'static>(adapter: async::Sender<adapter::Command<M>>) -> async::Sender<client::Command> {
     let (sender, receiver) = async::channel(CHANNEL_BUFFER_SIZE_CLIENT);
     let mut client = Client::new(adapter);
     async::spawn(receiver.for_each(move |command| {

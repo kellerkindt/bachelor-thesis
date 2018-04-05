@@ -3,20 +3,22 @@ use std::io::Error;
 use std::io::ErrorKind;
 
 use async::Sender;
+use async::Sink;
+use async::sink::Wait;
 use async::CommandProcessor;
 
 use adapter;
 
-pub struct Client<M> {
-    remote:  Sender<adapter::Command<M>>,
+pub struct Client<M: ::std::fmt::Debug> {
+    remote:  Wait<Sender<adapter::Command<M>>>,
     variant: Variant,
 }
 
-impl<M> Client<M> {
+impl<M: ::std::fmt::Debug> Client<M> {
 
     pub fn new(remote: Sender<adapter::Command<M>>) -> Client<M> {
         Client {
-            remote,
+            remote: remote.wait(),
             variant: Variant::Unknown,
         }
     }
@@ -46,7 +48,7 @@ impl<M> Client<M> {
     }
 
     fn on_new_environment_model(&mut self, model: M) -> Result<(), Error> {
-        trace!("New EnvironmentModel: {:?}");
+        trace!("New EnvironmentModel: {:?}", model);
         // self.remote.send(model) oder sowas
         // TODO
         Ok(())
@@ -58,7 +60,7 @@ impl<M> Client<M> {
     }
 }
 
-impl<M> CommandProcessor<Command> for Client<M> {
+impl<M: ::std::fmt::Debug> CommandProcessor<Command> for Client<M> {
     fn process_command(&mut self, command: Command) -> Result<(), Error> {
         match self.variant {
             Variant::Unknown => {

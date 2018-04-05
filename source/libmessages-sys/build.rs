@@ -3,22 +3,25 @@ extern crate gcc;
 extern crate bindgen;
 
 use std::fs;
-use std::fs::FileType;
 use std::path::Path;
+use std::path::PathBuf;
 use std::io::Write;
+use std::env;
 
 const LIBRARY_FILE  : &'static str = "libmessage.a";
-const BINDINGS_FILE : &'static str = "src/bindings.rs";
+const BINDINGS_FILE : &'static str = "bindings.rs";
 
 fn main() {
-    if !Path::new(LIBRARY_FILE).exists() || !Path::new(BINDINGS_FILE).exists() {
+    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+
+    if !Path::new(LIBRARY_FILE).exists() || !out_path.join(BINDINGS_FILE).exists() {
         let headers = compile_sdk("cpp/MECViewServerSDK-Build/proto/", LIBRARY_FILE);
 
-        if !Path::new(BINDINGS_FILE).exists() {
+        if !out_path.join(BINDINGS_FILE).exists() {
             let main_header = "cpp/wrapper/wrapper.h";
 
             generate_main_header(&headers, main_header);
-            generate_bindings("cpp/MECViewServerSDK-Build/proto/", main_header, BINDINGS_FILE);
+            generate_bindings("cpp/MECViewServerSDK-Build/proto/", main_header, out_path.join(BINDINGS_FILE).as_path().to_str().unwrap());
         }
     }
 
@@ -55,7 +58,7 @@ fn compile_sdk(sdk_dir: &str, out: &str) -> Vec<String> {
 
             gcc_build
                 .include(sdk_dir)
-                .compile("libmessages.a");
+                .compile(out);
         }
     }
 
@@ -63,17 +66,20 @@ fn compile_sdk(sdk_dir: &str, out: &str) -> Vec<String> {
 }
 
 fn generate_main_header(headers: &[String], out: &str) {
-    fs::create_dir(Path::new(out).parent().unwrap());
+    let _ = fs::create_dir(Path::new(out).parent().unwrap());
     let mut file = fs::File::create(Path::new(out)).unwrap();
 
     for header in headers.iter() {
-        writeln!(file, "#include <{}>", header.split("/").last().unwrap());
+        let _ = writeln!(file, "#include <{}>", header.split("/").last().unwrap());
     }
 }
 
 fn generate_bindings(include: &str, header: &str, out: &str) {
     bindgen::Builder::default()
         .clang_arg(format!("-I{}", include))
-        .header(header).generate().unwrap()
-        .write_to_file(out).expect("Couldn't write bindings!");
+        .header(header)
+        .rustfmt_bindings(true)
+        .generate()
+            .unwrap()
+            .write_to_file(out).expect("Couldn't write bindings!");
 }

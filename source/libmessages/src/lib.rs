@@ -15,6 +15,7 @@ pub enum Message {
     SensorFrame(Box<raw::SensorFrame>),
     EnvironmentFrame(Box<raw::EnvironmentFrame>),
     RoadClearanceFrame(Box<raw::RoadClearanceFrame>),
+    SensorIdleFrame(Box<raw::SensorIdleFrame>),
     UpdateStatus(Box<raw::UpdateStatus>),
     InitMessage(Box<raw::InitMessage>),
 }
@@ -51,6 +52,12 @@ impl Message {
         }))
     }
 
+    pub fn decode_sensor_idle_frame(buffer: &[u8]) -> Result<Message, ()> {
+        Ok(Message::SensorIdleFrame(unsafe {
+            asn::uper_decode(&mut raw::asn_DEF_SensorIdleFrame, buffer)?
+        }))
+    }
+
     pub fn decode_update_status(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::UpdateStatus(unsafe {
             asn::uper_decode(&mut raw::asn_DEF_UpdateStatus, buffer)?
@@ -61,6 +68,33 @@ impl Message {
         Ok(Message::InitMessage(unsafe {
             asn::uper_decode(&mut raw::asn_DEF_InitMessage, buffer)?
         }))
+    }
+
+    pub fn type_id(&self) -> u32 {
+        match self {
+            Message::Registration(_)        => 1,
+            Message::SensorFrame(_)         => 2,
+            Message::EnvironmentFrame(_)    => 3,
+            Message::UpdateSubscription(_)  => 4,
+            Message::InitMessage(_)         => 5,
+            Message::RoadClearanceFrame(_)  => 6,
+            Message::SensorIdleFrame(_)     => 7,
+            Message::UpdateStatus(_)        => 8,
+        }
+    }
+
+    pub fn decode(type_id: u32, buffer: &[u8]) -> Result<Message, ()> {
+        match type_id {
+            1 => Self::decode_client_registration(buffer),
+            2 => Self::decode_sensor_frame(buffer),
+            3 => Self::decode_environment_frame(buffer),
+            4 => Self::decode_update_subscription(buffer),
+            5 => Self::decode_init_message(buffer),
+            6 => Self::decode_road_clearance_frame(buffer),
+            7 => Self::decode_sensor_idle_frame(buffer),
+            8 => Self::decode_update_status(buffer),
+            _ => Err(())
+        }
     }
 
     pub fn encode(&self, target: &mut [u8]) -> Result<usize, ()> {
@@ -79,6 +113,9 @@ impl Message {
             },
             Message::RoadClearanceFrame(ref frame) => unsafe {
                 asn::uper_encode(&mut raw::asn_DEF_RoadClearanceFrame, frame.as_ref(), target)
+            },
+            Message::SensorIdleFrame(ref frame) => unsafe {
+                asn::uper_encode(&mut raw::asn_DEF_SensorIdleFrame, frame.as_ref(), target)
             },
             Message::UpdateStatus(ref status) => unsafe {
                 asn::uper_encode(&mut raw::asn_DEF_UpdateStatus, status.as_ref(), target)
@@ -100,6 +137,7 @@ impl Drop for Message {
                 Message::SensorFrame(ref value) => asn::free_content(&mut raw::asn_DEF_SensorFrame, value.as_ref()),
                 Message::EnvironmentFrame(ref value) => asn::free_content(&mut raw::asn_DEF_EnvironmentFrame, value.as_ref()),
                 Message::RoadClearanceFrame(ref value) => asn::free_content(&mut raw::asn_DEF_RoadClearanceFrame, value.as_ref()),
+                Message::SensorIdleFrame(ref value) => asn::free_content(&mut raw::asn_DEF_SensorIdleFrame, value.as_ref()),
                 Message::UpdateStatus(ref status) => asn::free_content(&mut raw::asn_DEF_UpdateStatus, status.as_ref()),
                 Message::InitMessage(ref init) => asn::free_content(&mut raw::asn_DEF_InitMessage, init.as_ref()),
             };
@@ -146,9 +184,9 @@ mod tests {
         if let Ok(count) = result {
             let mut string = String::new();
             for byte in buffer[..count].iter() {
-                string.push_str(&format!("{:02x} ", byte));
+                string.push_str(&format!("0x{:02x}, ", byte));
             }
-            trace!("{}", string);
+            debug!("{}", string);
         }
         assert_eq!(Ok(should_be.len()), result);
         assert_eq!(should_be, &buffer[..]);
@@ -241,6 +279,39 @@ mod tests {
             Message::UpdateStatus(ref status) => {
                 assert_eq!(0, status.ip_address.size);
                 assert_eq!(raw::ConnectionStatus_ConnectionStatus_disconnected as ConnectionStatus_t, status.sensor_status);
+            },
+            _ => panic!("Wrong message variant")
+        }
+    }
+
+    #[test]
+    fn encode_sensor_idle_frame() {
+        init_logger();
+        let frame = Message::SensorIdleFrame(unsafe {
+            let mut frame = Box::new(mem::zeroed::<raw::SensorIdleFrame>());
+            frame.version = 2;
+            frame.pole_id = 3;
+            frame.sender_id = 4;
+            frame
+        });
+        test_encode(frame, &[
+            0x02, 0x08, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00,
+        ]);
+    }
+
+    #[test]
+    fn decode_sensor_idle_frame() {
+        init_logger();
+        let message = Message::decode_sensor_idle_frame(&[
+            0x02, 0x08, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00,
+        ]);
+        match message.expect("Decoding failed") {
+            Message::SensorIdleFrame(ref frame) => {
+                assert_eq!(2, frame.version);
+                assert_eq!(3, frame.pole_id);
+                assert_eq!(4, frame.sender_id);
             },
             _ => panic!("Wrong message variant")
         }

@@ -72,21 +72,18 @@ fn main() {
     let listener : TcpListener = TcpListener::bind(&"0.0.0.0:5500".parse::<SocketAddr>().unwrap()).unwrap();
 
     runtime.spawn(listener.incoming().for_each(move |stream : TcpStream| {
+        info!("Client connected from {}", stream.peer_addr().unwrap());
 
 
-        let (send, receive) : (async::Sender<adapter::Command<libmessages::Message>>, _) = async::channel(CHANNEL_BUFFER_SIZE_CLIENT);
-        let client  = spawn_new_client(send);
+        let (adapter, client_rx) : (async::Sender<adapter::Command<libmessages::Message>>, _) = async::channel(CHANNEL_BUFFER_SIZE_CLIENT);
+        let client  = spawn_new_client(adapter);
 
-        println!("new connection");
-        let (sink, stream) = stream.framed(::adapter::asn::AsnCodec()).split();
-        spawn_adapter(stream, adapter::asn::AsnClientAdapter::new(client));
+        let (encoder, decoder) = stream.framed(::adapter::asn::AsnCodec()).split();
+        spawn_adapter(decoder, adapter::asn::AsnClientAdapter::new(client));
 
         let message : Message = Message::decode_client_registration(&[0x20, 0x00, 0x00]).unwrap();
-        sink.send(message).wait().unwrap();
+        encoder.send(message).wait().unwrap();
 
-
-
-        println!("new connection end");
         Ok(())
     }).then(|r| match r {
         Err(_) => Err(()),

@@ -123,10 +123,13 @@ impl Encoder for AsnCodec {
     type Error = Error;
 
     fn encode(&mut self, item: <Self as Encoder>::Item, dst: &mut BytesMut) -> Result<(), <Self as Encoder>::Error> {
-
+        trace!("Trying to encode: {:?}", item);
         let mut buffer = [0u8; 1024*1024]; // TODO
         let message_size = match item.encode(&mut buffer[..]) {
-            Err(_) => return Err(Error::from(ErrorKind::Other)),
+            Err(_) => {
+                trace!("Failed to encode: {:?}", item);
+                return Err(Error::from(ErrorKind::Other))
+            },
             Ok(size) => size as u32
         };
 
@@ -136,6 +139,7 @@ impl Encoder for AsnCodec {
         dst.put_u32::<NetworkEndian>(item.type_id());
         let slice = &buffer[..message_size as usize];
         dst.put_slice(slice);
+        trace!("Successfully Encoded: {:?}", item);
         Ok(())
     }
 }

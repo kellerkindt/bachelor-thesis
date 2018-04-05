@@ -72,18 +72,19 @@ fn main() {
     let listener : TcpListener = TcpListener::bind(&"0.0.0.0:5500".parse::<SocketAddr>().unwrap()).unwrap();
 
     runtime.spawn(listener.incoming().for_each(move |stream : TcpStream| {
+
+
+        let (send, receive) : (async::Sender<adapter::Command<libmessages::Message>>, _) = async::channel(CHANNEL_BUFFER_SIZE_CLIENT);
+        let client  = spawn_new_client(send);
+
         println!("new connection");
         let (sink, stream) = stream.framed(::adapter::asn::AsnCodec()).split();
-        ::tokio::spawn(stream.for_each(|message| {
-            println!("New message: {:?}", message);
-            Ok(())
-        }).then(|r| match r {
-            Err(_) => Err(()),
-            Ok(()) => Ok(()),
-        }));
+        spawn_adapter(stream, adapter::asn::AsnClientAdapter::new(client));
 
         let message : Message = Message::decode_client_registration(&[0x20, 0x00, 0x00]).unwrap();
         sink.send(message).wait().unwrap();
+
+
 
         println!("new connection end");
         Ok(())
@@ -101,15 +102,33 @@ fn main() {
 
 
 use async::Stream;
+use async::Future;
 use async::CommandProcessor;
+
+use client::Client;
 
 const CHANNEL_BUFFER_SIZE_CLIENT: usize = 2;
 
-fn spawn_new_client(adapter: async::Sender<adapter::Command<libmessages::Message>>) -> async::Sender<client::Command> {
+/// Spawns a new `Client` that listens for commands on the returned `async::Sender`
+/// and uses the given `async::Sender` to send messages to the underlying remote client
+fn spawn_new_client<M: Send+'static>(adapter: async::Sender<adapter::Command<M>>) -> async::Sender<client::Command> {
     let (sender, receiver) = async::channel(CHANNEL_BUFFER_SIZE_CLIENT);
-    let mut client = client::Client::new(adapter);
-    async::spawn(receiver.for_each(move |command : client::Command| {
-        client.process_command(command)
+    let mut client = Client::new(adapter);
+    async::spawn(receiver.for_each(move |command| {
+        match client.process_command(command) {
+            Err(_) => Err(()),
+            Ok(()) => Ok(())
+        }
     }));
     sender
+}
+
+/// Spawns the given adapter to handle messages from the given `Stream`
+fn spawn_adapter<M, S: async::Stream<Item=M,Error=::std::io::Error>+Send+'static, A: async::CommandProcessor<adapter::Command<M>>+Send+'static>(stream: S, mut adapter: A) {
+    async::spawn(stream.for_each(move |message| {
+        adapter.process_command(adapter::Command::ProcessMessage(message))
+    }).then(|r| match r {
+        Err(_) => Err(()),
+        Ok(()) => Ok(())
+    }));
 }

@@ -1,4 +1,7 @@
 
+use std::io::Error;
+use std::io::ErrorKind;
+
 use async::Sender;
 use async::CommandProcessor;
 
@@ -18,23 +21,23 @@ impl<M> Client<M> {
         }
     }
 
-    fn process_command_on_variant_unknown(&mut self, command: Command) -> Result<(), ()> {
+    fn process_command_on_variant_unknown(&mut self, command: Command) -> Result<(), Error> {
         match command {
             Command::UpdateVariant(variant) => self.set_variant(variant),
         };
         Ok(())
     }
 
-    fn process_command_on_variant_sensor(&mut self, command: Command) -> Result<(), ()> {
+    fn process_command_on_variant_sensor(&mut self, command: Command) -> Result<(), Error> {
         match command {
-            Command::UpdateVariant(_) => return Err(()),
+            Command::UpdateVariant(_) => return Err(Error::from(ErrorKind::InvalidInput)),
         };
         Ok(())
     }
 
-    fn process_command_on_variant_vehicle(&mut self, command: Command) -> Result<(), ()> {
+    fn process_command_on_variant_vehicle(&mut self, command: Command) -> Result<(), Error> {
         match command {
-            Command::UpdateVariant(_) => return Err(()),
+            Command::UpdateVariant(_) => return Err(Error::from(ErrorKind::InvalidInput)),
         };
         Ok(())
     }
@@ -46,7 +49,7 @@ impl<M> Client<M> {
 }
 
 impl<M> CommandProcessor<Command> for Client<M> {
-    fn process_command(&mut self, command: Command) -> Result<(), ()> {
+    fn process_command(&mut self, command: Command) -> Result<(), Error> {
         match self.variant {
             Variant::Unknown => self.process_command_on_variant_unknown(command),
             Variant::Sensor  => self.process_command_on_variant_sensor(command),

@@ -37,7 +37,7 @@ impl AsnClientAdapter {
         }
     }
 
-    fn process_message(&mut self, message: Message) -> Result<(), ()> {
+    fn process_message(&mut self, message: Message) -> Result<(), Error> {
         match message {
             Message::Registration(ref registration) => {
                 self.send_client(client::Command::UpdateVariant(
@@ -46,38 +46,35 @@ impl AsnClientAdapter {
             },
             _ => {
                 error!("Not implemented: {:?}", message);
-                Err(())
+                Err(Error::from(ErrorKind::InvalidInput))
             }
         }
     }
 
-    fn send_client(&mut self, command: client::Command) -> Result<(), ()> {
+    fn send_client(&mut self, command: client::Command) -> Result<(), Error> {
         // this blocks since its is important to know whether the client
         // is still alive and to have a bit back pressure on flooding requests
         match self.client.clone().send(command).wait() {
             Ok(_) => Ok(()),
-            Err(e) => {
-                error!("Failed to send command: {:?}", e);
-                Err(())
-            }
+            Err(_) => Err(Error::from(ErrorKind::UnexpectedEof))
         }
     }
 
-    fn variant_from_client_registration(r: &ClientRegistration) -> Result<client::Variant, ()> {
+    fn variant_from_client_registration(r: &ClientRegistration) -> Result<client::Variant, Error> {
         Self::variant_from_client_type_t(r.type_)
     }
 
-    fn variant_from_client_type_t(t: ClientType_t) -> Result<client::Variant, ()> {
+    fn variant_from_client_type_t(t: ClientType_t) -> Result<client::Variant, Error> {
         match t {
             CLIENT_TYPE_SENSOR  => Ok(client::Variant::Sensor),
             CLIENT_TYPE_VEHICLE => Ok(client::Variant::Vehicle),
-            _ => Err(()),
+            _ => Err(Error::from(ErrorKind::InvalidInput)),
         }
     }
 }
 
 impl CommandProcessor<Command<Message>> for AsnClientAdapter {
-    fn process_command(&mut self, command: Command<Message>) -> Result<(), ()> {
+    fn process_command(&mut self, command: Command<Message>) -> Result<(), Error> {
         match command {
             Command::ProcessMessage(message) => self.process_message(message),
         }

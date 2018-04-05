@@ -1,11 +1,23 @@
 
+use async::Sender;
 use async::CommandProcessor;
 
-pub struct Client {
+use adapter;
+
+pub struct Client<M> {
+    adapter: Sender<adapter::Command<M>>,
     variant: Variant,
 }
 
-impl Client {
+impl<M> Client<M> {
+
+    pub fn new(adapter: Sender<adapter::Command<M>>) -> Client<M> {
+        Client {
+            adapter,
+            variant: Variant::Unknown,
+        }
+    }
+
     fn process_command_on_variant_unknown(&mut self, command: Command) -> Result<(), ()> {
         match command {
             Command::UpdateVariant(variant) => self.set_variant(variant),
@@ -33,20 +45,12 @@ impl Client {
     }
 }
 
-impl CommandProcessor<Command> for Client {
+impl<M> CommandProcessor<Command> for Client<M> {
     fn process_command(&mut self, command: Command) -> Result<(), ()> {
         match self.variant {
             Variant::Unknown => self.process_command_on_variant_unknown(command),
             Variant::Sensor  => self.process_command_on_variant_sensor(command),
             Variant::Vehicle => self.process_command_on_variant_vehicle(command),
-        }
-    }
-}
-
-impl Default for Client {
-    fn default() -> Self {
-        Client {
-            variant: Variant::Unknown,
         }
     }
 }

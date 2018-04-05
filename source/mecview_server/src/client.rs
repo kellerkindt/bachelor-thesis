@@ -22,26 +22,32 @@ impl<M> Client<M> {
     }
 
     fn init_as_sensor(&mut self) -> Result<(), Error> {
+        trace!("Initializing as sensor");
         // TODO
         Ok(())
     }
 
     fn init_as_vehicle(&mut self) -> Result<(), Error> {
+        trace!("Initializing as vehicle");
         // TODO
         Ok(())
     }
 
     fn subscribe_to_environment_model(&mut self) -> Result<(), Error> {
+        trace!("Subscribing to environment model");
         // TODO
         Ok(())
     }
 
     fn unsubscribe_from_environment_model(&mut self) -> Result<(), Error> {
+        trace!("Unsubscribing from environment model");
         // TODO
         Ok(())
     }
 
-    fn on_new_environment_model(&mut self) -> Result<(), Error> {
+    fn on_new_environment_model(&mut self, model: M) -> Result<(), Error> {
+        trace!("New EnvironmentModel: {:?}");
+        // self.remote.send(model) oder sowas
         // TODO
         Ok(())
     }

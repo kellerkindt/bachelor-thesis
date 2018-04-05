@@ -8,37 +8,41 @@ use async::CommandProcessor;
 use adapter;
 
 pub struct Client<M> {
-    adapter: Sender<adapter::Command<M>>,
+    remote:  Sender<adapter::Command<M>>,
     variant: Variant,
 }
 
 impl<M> Client<M> {
 
-    pub fn new(adapter: Sender<adapter::Command<M>>) -> Client<M> {
+    pub fn new(remote: Sender<adapter::Command<M>>) -> Client<M> {
         Client {
-            adapter,
+            remote,
             variant: Variant::Unknown,
         }
     }
 
-    fn process_command_on_variant_unknown(&mut self, command: Command) -> Result<(), Error> {
-        match command {
-            Command::UpdateVariant(variant) => self.set_variant(variant),
-        };
+    fn init_as_sensor(&mut self) -> Result<(), Error> {
+        // TODO
         Ok(())
     }
 
-    fn process_command_on_variant_sensor(&mut self, command: Command) -> Result<(), Error> {
-        match command {
-            Command::UpdateVariant(_) => return Err(Error::from(ErrorKind::InvalidInput)),
-        };
+    fn init_as_vehicle(&mut self) -> Result<(), Error> {
+        // TODO
         Ok(())
     }
 
-    fn process_command_on_variant_vehicle(&mut self, command: Command) -> Result<(), Error> {
-        match command {
-            Command::UpdateVariant(_) => return Err(Error::from(ErrorKind::InvalidInput)),
-        };
+    fn subscribe_to_environment_model(&mut self) -> Result<(), Error> {
+        // TODO
+        Ok(())
+    }
+
+    fn unsubscribe_from_environment_model(&mut self) -> Result<(), Error> {
+        // TODO
+        Ok(())
+    }
+
+    fn on_new_environment_model(&mut self) -> Result<(), Error> {
+        // TODO
         Ok(())
     }
 
@@ -51,9 +55,29 @@ impl<M> Client<M> {
 impl<M> CommandProcessor<Command> for Client<M> {
     fn process_command(&mut self, command: Command) -> Result<(), Error> {
         match self.variant {
-            Variant::Unknown => self.process_command_on_variant_unknown(command),
-            Variant::Sensor  => self.process_command_on_variant_sensor(command),
-            Variant::Vehicle => self.process_command_on_variant_vehicle(command),
+            Variant::Unknown => {
+                if let Command::UpdateVariant(variant) = command {
+                    self.set_variant(variant);
+                    match variant {
+                        Variant::Sensor  => self.init_as_sensor(),
+                        Variant::Vehicle => self.init_as_vehicle(),
+                        _ => Err(Error::from(ErrorKind::InvalidInput)),
+                    }
+                } else {
+                    Err(Error::from(ErrorKind::InvalidInput))
+                }
+            },
+            Variant::Sensor => {
+                match command {
+                    Command::SensorIsIdle => Ok(()), // great... I guess
+                    _ => Err(Error::from(ErrorKind::InvalidInput)),
+                }
+            },
+            Variant::Vehicle => match command {
+                Command::Subscribe => self.subscribe_to_environment_model(),
+                Command::Unsubscribe => self.unsubscribe_from_environment_model(),
+                _ => Err(Error::from(ErrorKind::InvalidInput)),
+            },
         }
     }
 }
@@ -68,6 +92,9 @@ pub enum Variant {
 #[derive(Debug, Clone)]
 pub enum Command {
     UpdateVariant(Variant),
+    SensorIsIdle,
+    Subscribe,
+    Unsubscribe,
 }
 
 #[cfg(test)]

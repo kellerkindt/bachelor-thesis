@@ -13,6 +13,20 @@ impl Client {
         Ok(())
     }
 
+    fn process_command_on_variant_sensor(&mut self, command: Command) -> Result<(), ()> {
+        match command {
+            Command::UpdateVariant(_) => return Err(()),
+        };
+        Ok(())
+    }
+
+    fn process_command_on_variant_vehicle(&mut self, command: Command) -> Result<(), ()> {
+        match command {
+            Command::UpdateVariant(_) => return Err(()),
+        };
+        Ok(())
+    }
+
     fn set_variant(&mut self, variant: Variant) {
         trace!("Client is now a {:?}", variant);
         self.variant = variant;
@@ -23,8 +37,8 @@ impl CommandProcessor<Command> for Client {
     fn process_command(&mut self, command: Command) -> Result<(), ()> {
         match self.variant {
             Variant::Unknown => self.process_command_on_variant_unknown(command),
-            Variant::Sensor  => Err(()),
-            Variant::Vehicle => Err(()),
+            Variant::Sensor  => self.process_command_on_variant_sensor(command),
+            Variant::Vehicle => self.process_command_on_variant_vehicle(command),
         }
     }
 }

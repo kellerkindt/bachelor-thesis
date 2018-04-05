@@ -4,24 +4,21 @@ extern crate bindgen;
 
 use std::fs;
 use std::path::Path;
-use std::path::PathBuf;
 use std::io::Write;
-use std::env;
 
 const LIBRARY_FILE  : &'static str = "libmessage.a";
-const BINDINGS_FILE : &'static str = "bindings.rs";
+const BINDINGS_FILE : &'static str = "src/bindings.rs";
 
 fn main() {
-    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
 
-    if !Path::new(LIBRARY_FILE).exists() || !out_path.join(BINDINGS_FILE).exists() {
+    if !Path::new(LIBRARY_FILE).exists() || !Path::new(BINDINGS_FILE).exists() {
         let headers = compile_sdk("cpp/MECViewServerSDK-Build/proto/", LIBRARY_FILE);
 
-        if !out_path.join(BINDINGS_FILE).exists() {
+        if !Path::new(BINDINGS_FILE).exists() {
             let main_header = "cpp/wrapper/wrapper.h";
 
             generate_main_header(&headers, main_header);
-            generate_bindings("cpp/MECViewServerSDK-Build/proto/", main_header, out_path.join(BINDINGS_FILE).as_path().to_str().unwrap());
+            generate_bindings("cpp/MECViewServerSDK-Build/proto/", main_header, Path::new(BINDINGS_FILE).to_str().unwrap());
         }
     }
 

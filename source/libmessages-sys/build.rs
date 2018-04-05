@@ -78,6 +78,8 @@ fn generate_bindings(include: &str, header: &str, out: &str) {
     bindgen::Builder::default()
         .clang_arg(format!("-I{}", include))
         .header(header)
+        // not supported/test fails (not needed?, via indirect include)
+        .blacklist_type("max_align_t")
         .rustfmt_bindings(true)
         .generate()
             .unwrap()

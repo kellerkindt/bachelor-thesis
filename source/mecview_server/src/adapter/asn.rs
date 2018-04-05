@@ -7,6 +7,7 @@ use std::io::ErrorKind;
 use async::Sink;
 use async::Future;
 use async::Sender;
+use async::sink::Wait;
 use async::CommandProcessor;
 
 use io::Encoder;
@@ -26,13 +27,15 @@ const CLIENT_TYPE_SENSOR  : ClientType_t = ClientType_ClientType_sensor  as Clie
 const CLIENT_TYPE_VEHICLE : ClientType_t = ClientType_ClientType_vehicle as ClientType_t;
 
 
-pub struct AsnClientAdapter {
-    client: Sender<client::Command>,
+pub struct AsnClientAdapter<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> {
+    encoder: Wait<E>,
+    client:  Sender<client::Command>,
 }
 
-impl AsnClientAdapter {
-    pub fn new(client: Sender<client::Command>) -> AsnClientAdapter {
+impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapter<E> {
+    pub fn new(encoder: E, client: Sender<client::Command>) -> AsnClientAdapter<E> {
         AsnClientAdapter {
+            encoder: encoder.wait(),
             client,
         }
     }
@@ -73,10 +76,14 @@ impl AsnClientAdapter {
     }
 }
 
-impl CommandProcessor<Command<Message>> for AsnClientAdapter {
+impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> CommandProcessor<Command<Message>> for AsnClientAdapter<E> {
     fn process_command(&mut self, command: Command<Message>) -> Result<(), Error> {
         match command {
             Command::ProcessMessage(message) => self.process_message(message),
+            Command::SendMessage(message) => match self.encoder.send(message) {
+                Ok(_) => Ok(()),
+                Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
+            }
         }
     }
 }
@@ -98,10 +105,17 @@ impl Decoder for AsnCodec {
             let total_size = ASN_HEADER_SIZE + message_size;
 
             if src.len() >= total_size {
+                debug!("Trying to decode, size={}, type={}", message_type, message_size);
                 let buffer = src.split_to(total_size);
                 match Message::decode(message_type, &buffer[ASN_HEADER_SIZE..]) {
-                    Err(_) => Err(Error::from(ErrorKind::InvalidData)),
-                    Ok(message) => Ok(Some(message)),
+                    Err(_) => {
+                        debug!("Failed to decode");
+                        Err(Error::from(ErrorKind::InvalidData))
+                    },
+                    Ok(message) => {
+                        debug!("Successfully decoded: {:?}", message);
+                        Ok(Some(message))
+                    },
                 }
             } else {
                 let src_capacity = src.capacity();

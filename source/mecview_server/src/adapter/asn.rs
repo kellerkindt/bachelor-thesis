@@ -1,31 +1,29 @@
 
-
-use io;
 use client;
 
+use std::io::Error;
+use std::io::ErrorKind;
 
 use async::Sink;
-use async::Async;
 use async::Future;
 use async::Sender;
-use async::Stream;
 use async::CommandProcessor;
 
-use io::AsyncRead;
-use io::net::TcpStream;
+use io::Encoder;
+use io::Decoder;
 
 use libmessages::Message;
-use libmessages::raw::ClientType;
-use libmessages::raw::ClientType_t;
+use libmessages::raw::*;
 
+use bytes::BufMut;
 use bytes::BytesMut;
 use byteorder::ByteOrder;
 use byteorder::NetworkEndian;
 
 use adapter::Command;
 
-const CLIENT_TYPE_SENSOR  : ClientType_t = ClientType::ClientType_sensor  as ClientType_t;
-const CLIENT_TYPE_VEHICLE : ClientType_t = ClientType::ClientType_vehicle as ClientType_t;
+const CLIENT_TYPE_SENSOR  : ClientType_t = ClientType_ClientType_sensor  as ClientType_t;
+const CLIENT_TYPE_VEHICLE : ClientType_t = ClientType_ClientType_vehicle as ClientType_t;
 
 
 pub struct AsnClientAdapter {
@@ -43,8 +41,12 @@ impl AsnClientAdapter {
         match message {
             Message::Registration(ref registration) => {
                 self.send_client(client::Command::UpdateVariant(
-                    Self::variant_from_client_type_t(unsafe {(*registration).type_})?
+                    Self::variant_from_client_registration(registration)?
                 ))
+            },
+            _ => {
+                error!("Not implemented: {:?}", message);
+                Err(())
             }
         }
     }
@@ -59,6 +61,10 @@ impl AsnClientAdapter {
                 Err(())
             }
         }
+    }
+
+    fn variant_from_client_registration(r: &ClientRegistration) -> Result<client::Variant, ()> {
+        Self::variant_from_client_type_t(r.type_)
     }
 
     fn variant_from_client_type_t(t: ClientType_t) -> Result<client::Variant, ()> {
@@ -80,77 +86,114 @@ impl CommandProcessor<Command<Message>> for AsnClientAdapter {
 
 const ASN_HEADER_SIZE : usize = 8;
 
-struct AsnDecoder {
-    buffer: BytesMut,
-    socket: TcpStream,
-}
+pub struct AsnCodec();
 
-impl AsnDecoder {
-    fn fill_buffer(&mut self) -> Result<Async<()>, io::Error> {
-        loop {
-            self.buffer.reserve(ASN_HEADER_SIZE);
 
-            let _ = try_ready!(self.socket.read_buf(&mut self.buffer));
-
-            if self.buffer.len() >= ASN_HEADER_SIZE {
-                break;
-            }
-        }
-
-        let message_size = NetworkEndian::read_u32(&self.buffer[..4]);
-        let message_size_with_header = message_size as usize + ASN_HEADER_SIZE;
-
-        if message_size_with_header < self.buffer.len() {
-            if self.buffer.capacity() < message_size_with_header {
-                let new_to_reserve = message_size_with_header - self.buffer.capacity();
-                self.buffer.reserve(new_to_reserve);
-            }
-            loop {
-                if 0 == try_ready!(self.socket.read_buf(&mut self.buffer)) {
-                    break;
-                }
-            }
-        }
-        return Ok(Async::Ready(()));
-    }
-}
-
-impl Stream for AsnDecoder {
+impl Decoder for AsnCodec {
     type Item = Message;
-    type Error = io::Error;
+    type Error = Error;
 
-    fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
-        let is_ready = self.fill_buffer()?.is_ready();
-        if is_ready {
-            let message_size = NetworkEndian::read_u32(&self.buffer[0..4]);
-            let message_type = NetworkEndian::read_u32(&self.buffer[4..8]);
+    fn decode(&mut self, src: &mut BytesMut) -> Result<Option<<Self as Decoder>::Item>, <Self as Decoder>::Error> {
+        trace!("len: {}", src.len());
+        if src.len() > ASN_HEADER_SIZE {
+            let message_size = NetworkEndian::read_u32(&src[0..4]) as usize;
+            let message_type = NetworkEndian::read_u32(&src[4..8]);
+            let total_size = ASN_HEADER_SIZE + message_size;
 
-
-            unsafe {
-                let mut reg : *mut ::libmessages::raw::ClientRegistration = 0 as *mut ::libmessages::raw::ClientRegistration;
-                let result = ::libmessages::raw::uper_decode(
-                    0 as *mut ::libmessages::raw::asn_codec_ctx_s,
-                    &mut ::libmessages::raw::asn_DEF_ClientRegistration as *mut ::libmessages::raw::asn_TYPE_descriptor_s,
-                    &mut (reg as *mut ::std::os::raw::c_void),
-                    self.buffer[8..].as_ptr() as *mut ::std::os::raw::c_void,
-                    message_size as usize,
-                    0,
-                    0
-                );
+            if src.len() >= total_size {
+                let buffer = src.split_to(total_size);
+                let result = match message_type {
+                    0x01 => Message::decode_client_registration(&buffer[ASN_HEADER_SIZE..]),
+                    _ => Err(())
+                };
+                match result {
+                    Err(_) => Err(Error::from(ErrorKind::InvalidData)),
+                    Ok(message) => Ok(Some(message)),
+                }
+            } else {
+                let src_capacity = src.capacity();
+                src.reserve((message_size + ASN_HEADER_SIZE) - src_capacity);
+                Ok(None)
             }
-
-            Ok(Async::Ready(None))
         } else {
-            Ok(Async::NotReady)
+            src.reserve(ASN_HEADER_SIZE);
+            Ok(None)
         }
     }
 }
+
+impl Encoder for AsnCodec {
+    type Item = Message;
+    type Error = Error;
+
+    fn encode(&mut self, item: <Self as Encoder>::Item, dst: &mut BytesMut) -> Result<(), <Self as Encoder>::Error> {
+        let message_type = match item {
+            Message::Registration(_) => 0x01_u32,
+            _ => {
+                error!("Unknown message type: {:?}", item);
+                return Err(Error::from(ErrorKind::InvalidData));
+            }
+        };
+
+        let mut buffer = [0u8; 1024*1024]; // TODO
+        let message_size = match item.encode(&mut buffer[..]) {
+            Err(_) => return Err(Error::from(ErrorKind::Other)),
+            Ok(size) => size as u32
+        };
+
+        let total_size = ASN_HEADER_SIZE + message_size as usize;
+        dst.reserve(total_size);
+        dst.put_u32::<NetworkEndian>(message_size);
+        dst.put_u32::<NetworkEndian>(message_type);
+        let slice = &buffer[..message_size as usize];
+        dst.put_slice(slice);
+        Ok(())
+    }
+}
+
 
 
 
 #[cfg(test)]
 mod test {
     use super::*;
+
+    #[test]
+    fn test_encode_simple() {
+        use ::bytes::BytesMut;
+        use ::std::io::Cursor;
+
+        let mut buf = BytesMut::with_capacity(1024);
+        AsnCodec().encode(Message::decode_client_registration(&[0x20, 0x00, 0x00]).unwrap(), &mut buf).unwrap();
+        assert_eq!(&[
+            0x00, 0x00, 0x00, 0x03, // length
+            0x00, 0x00, 0x00, 0x01, // type
+            0x20, 0x00, 0x00        // message
+        ], &buf[..11]);
+    }
+
+    #[test]
+    fn test_decode_underflow() {
+        let mut buffer = BytesMut::with_capacity(ASN_HEADER_SIZE-1);
+        assert!(AsnCodec().decode(&mut buffer).unwrap().is_none());
+    }
+
+    #[test]
+    fn test_decode_simple() {
+        use ::bytes::BytesMut;
+        use ::std::io::Cursor;
+
+        let mut buf = BytesMut::with_capacity(1024);
+        buf.put_slice(&[
+            0x00, 0x00, 0x00, 0x03, // length
+            0x00, 0x00, 0x00, 0x01, // type
+            0x20, 0x00, 0x00        // message
+        ]);
+        let message = AsnCodec().decode(&mut buf).unwrap().unwrap();
+        let mut buffer = [0u8; 10];
+        assert_eq!(Ok(3), message.encode(&mut buffer[..]));
+        assert_eq!(&[0x20, 0x00, 0x00], &buffer[..3])
+    }
 
     #[test]
     fn err_on_invalid_type_t_into_variant() {

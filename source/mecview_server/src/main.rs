@@ -4,6 +4,7 @@ extern crate log;
 extern crate log4rs;
 
 extern crate tokio;
+extern crate tokio_io;
 
 #[macro_use]
 extern crate futures;
@@ -35,7 +36,11 @@ mod io {
     pub use tokio::io::AsyncRead;
     pub use tokio::io::AsyncWrite;
 
+    pub use tokio_io::codec::Encoder;
+    pub use tokio_io::codec::Decoder;
+
     pub mod net {
         pub use tokio::net::TcpStream;
+        pub use tokio::net::TcpListener;
     }
 }

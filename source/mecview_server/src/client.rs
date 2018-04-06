@@ -25,33 +25,54 @@ impl<M: ::std::fmt::Debug> Client<M> {
 
     fn init_as_sensor(&mut self) -> Result<(), Error> {
         trace!("Initializing as sensor");
-        // TODO
-        Ok(())
+        self.unsubscribe()
     }
 
     fn init_as_vehicle(&mut self) -> Result<(), Error> {
         trace!("Initializing as vehicle");
         // TODO
-        Ok(())
+        unimplemented!()
     }
 
     fn subscribe_to_environment_model(&mut self) -> Result<(), Error> {
         trace!("Subscribing to environment model");
         // TODO
-        Ok(())
+        unimplemented!()
     }
 
     fn unsubscribe_from_environment_model(&mut self) -> Result<(), Error> {
         trace!("Unsubscribing from environment model");
         // TODO
-        Ok(())
+        unimplemented!()
     }
 
     fn on_new_environment_model(&mut self, model: M) -> Result<(), Error> {
         trace!("New EnvironmentModel: {:?}", model);
         // self.remote.send(model) oder sowas
         // TODO
-        Ok(())
+        unimplemented!()
+    }
+
+    fn unsubscribe(&mut self) -> Result<(), Error> {
+        self.send_adapter(adapter::Command::Unsubscribe)
+    }
+
+    fn subscribe(&mut self) -> Result<(), Error> {
+        self.send_adapter(adapter::Command::Subscribe)
+    }
+
+    fn send_adapter(&mut self, command: adapter::Command<M>) -> Result<(), Error> {
+        trace!("Going to send command {:?}", command);
+        match self.remote.send(command) {
+            Ok(_) => {
+                trace!("Command sent successful");
+                Ok(())
+            },
+            Err(e) => {
+                error!("Error while sending command to adapter: {:?}", e);
+                Err(Error::from(ErrorKind::UnexpectedEof))
+            }
+        }
     }
 
     fn set_variant(&mut self, variant: Variant) {

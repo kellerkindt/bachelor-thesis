@@ -28,9 +28,9 @@ use io::net::TcpListener;
 use libmessages::Message;
 
 
-const CHANNEL_BUFFER_SIZE_SERVER  : usize = 2;
-const CHANNEL_BUFFER_SIZE_CLIENT  : usize = 2;
-const CHANNEL_BUFFER_SIZE_ADAPTER : usize = 2;
+const CHANNEL_BUFFER_SIZE_SERVER  : usize = 10;
+const CHANNEL_BUFFER_SIZE_CLIENT  : usize = 10;
+const CHANNEL_BUFFER_SIZE_ADAPTER : usize = 10;
 
 pub struct Server {
     address: SocketAddr,
@@ -68,8 +68,15 @@ impl Server {
         Ok(())
     }
 
-    fn handle_client(&mut self, client: TcpStream) {
+    fn handle_new_client(&mut self, client: TcpStream) {
         info!("Client connected from {}", client.peer_addr().unwrap());
+
+        if client.set_nodelay(true).is_err() {
+            warn!("TCP nodelay couldn't be set");
+        }
+        if client.set_keepalive(Some(::std::time::Duration::from_millis(1_000))).is_err() {
+            warn!("TCP keepalive couldn't be set");
+        }
 
         let (adapter_tx, adapter_rx) : (Sender<adapter::Command<Message>>, _) = channel(CHANNEL_BUFFER_SIZE_ADAPTER);
         let client_tx  = self.spawn_new_client(adapter_tx.clone());
@@ -111,7 +118,7 @@ impl Server {
         }));
     }
 
-    fn spawn_decoder_adapter_adapter<M: Send+'static, S: Stream<Item=M,Error=Error>+Send+'static>(&mut self, encoder: S, adapter: Sender<adapter::Command<M>>) {
+    fn spawn_decoder_adapter_adapter<M: Debug+Send+'static, S: Stream<Item=M,Error=Error>+Send+'static>(&mut self, encoder: S, adapter: Sender<adapter::Command<M>>) {
         let mut adapter = adapter.wait();
         self.runtime.spawn(encoder.for_each(move |message| {
             match adapter.send(adapter::Command::ProcessMessage(message)) {
@@ -142,7 +149,7 @@ impl Server {
 impl CommandProcessor<Command> for Server {
     fn process_command(&mut self, command: Command) -> Result<(), Error> {
         match command {
-            Command::AcceptStream(stream) => self.handle_client(stream),
+            Command::AcceptStream(stream) => self.handle_new_client(stream),
         };
         Ok(())
     }

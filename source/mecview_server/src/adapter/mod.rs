@@ -4,7 +4,10 @@ pub mod asn;
 use client;
 use async::Sender;
 
-pub enum Command<M> {
+#[derive(Debug)]
+pub enum Command<M: ::std::fmt::Debug> {
     ProcessMessage(M),
     SendMessage(M),
+    Unsubscribe,
+    Subscribe,
 }

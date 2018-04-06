@@ -29,14 +29,14 @@ const CLIENT_TYPE_VEHICLE : ClientType_t = ClientType_ClientType_vehicle as Clie
 
 pub struct AsnClientAdapter<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> {
     encoder: Wait<E>,
-    client:  Sender<client::Command>,
+    client:  Wait<Sender<client::Command>>,
 }
 
 impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapter<E> {
     pub fn new(encoder: E, client: Sender<client::Command>) -> AsnClientAdapter<E> {
         AsnClientAdapter {
             encoder: encoder.wait(),
-            client,
+            client:  client.wait(),
         }
     }
 
@@ -57,7 +57,7 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapte
     fn send_client(&mut self, command: client::Command) -> Result<(), Error> {
         // this blocks since its is important to know whether the client
         // is still alive and to have a bit back pressure on flooding requests
-        match self.client.clone().send(command).wait() {
+        match self.client.send(command) {
             Ok(_) => Ok(()),
             Err(_) => Err(Error::from(ErrorKind::UnexpectedEof))
         }
@@ -74,6 +74,21 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapte
             _ => Err(Error::from(ErrorKind::InvalidInput)),
         }
     }
+
+    fn subscribe_remote(&mut self) -> Result<(), Error> {
+        self.update_subscription(SubscriptionStatus_SubscriptionStatus_subscribed as SubscriptionStatus_t)
+    }
+
+    fn unsubscribe_remote(&mut self) -> Result<(), Error> {
+        self.update_subscription(SubscriptionStatus_SubscriptionStatus_unsubscribed as SubscriptionStatus_t)
+    }
+
+    fn update_subscription(&mut self, status: SubscriptionStatus_t) -> Result<(), Error> {
+        let mut update = UpdateSubscription::default();
+        update.subscription_status = status;
+        self.encoder.send(Message::UpdateSubscription(Box::new(update)))?;
+        self.encoder.flush()
+    }
 }
 
 impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> CommandProcessor<Command<Message>> for AsnClientAdapter<E> {
@@ -83,7 +98,9 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> CommandProcesso
             Command::SendMessage(message) => match self.encoder.send(message) {
                 Ok(_) => Ok(()),
                 Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
-            }
+            },
+            Command::Subscribe => self.subscribe_remote(),
+            Command::Unsubscribe => self.unsubscribe_remote(),
         }
     }
 }
@@ -150,7 +167,7 @@ impl Encoder for AsnCodec {
         dst.put_u32::<NetworkEndian>(item.type_id());
         let slice = &buffer[..message_size as usize];
         dst.put_slice(slice);
-        trace!("Successfully Encoded: {:?}", item);
+        trace!("Successfully Encoded {} bytes: {:?}", message_size, item);
         Ok(())
     }
 }

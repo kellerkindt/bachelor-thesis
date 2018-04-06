@@ -172,8 +172,8 @@ mod test {
         assert_eq!(&[
             0x00, 0x00, 0x00, 0x03, // length
             0x00, 0x00, 0x00, 0x01, // type
-            0x20, 0x00, 0x00        // message
-        ], &buf[..11]);
+            0x20                    // message
+        ], &buf[..9]);
     }
 
     #[test]
@@ -191,12 +191,12 @@ mod test {
         buf.put_slice(&[
             0x00, 0x00, 0x00, 0x03, // length
             0x00, 0x00, 0x00, 0x01, // type
-            0x20, 0x00, 0x00        // message
+            0x20,                   // message
         ]);
         let message = AsnCodec().decode(&mut buf).unwrap().unwrap();
         let mut buffer = [0u8; 10];
-        assert_eq!(Ok(3), message.encode(&mut buffer[..]));
-        assert_eq!(&[0x20, 0x00, 0x00], &buffer[..3])
+        assert_eq!(Ok(1), message.encode(&mut buffer[..]));
+        assert_eq!(&[0x20], &buffer[..1])
     }
 
     #[test]

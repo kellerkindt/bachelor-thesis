@@ -28,3 +28,67 @@ unsafe impl Sync for UpdateStatus {}
 
 unsafe impl Send for InitMessage {}
 unsafe impl Sync for InitMessage {}
+
+impl Default for ClientRegistration {
+    fn default() -> Self {
+        unsafe {
+            ::std::mem::zeroed()
+        }
+    }
+}
+
+impl Default for UpdateSubscription {
+    fn default() -> Self {
+        unsafe {
+            ::std::mem::zeroed()
+        }
+    }
+}
+
+impl Default for SensorFrame {
+    fn default() -> Self {
+        unsafe {
+            ::std::mem::zeroed()
+        }
+    }
+}
+
+impl Default for EnvironmentFrame {
+    fn default() -> Self {
+        unsafe {
+            ::std::mem::zeroed()
+        }
+    }
+}
+
+impl Default for RoadClearanceFrame {
+    fn default() -> Self {
+        unsafe {
+            ::std::mem::zeroed()
+        }
+    }
+}
+
+impl Default for SensorIdleFrame {
+    fn default() -> Self {
+        unsafe {
+            ::std::mem::zeroed()
+        }
+    }
+}
+
+impl Default for UpdateStatus {
+    fn default() -> Self {
+        unsafe {
+            ::std::mem::zeroed()
+        }
+    }
+}
+
+impl Default for InitMessage {
+    fn default() -> Self {
+        unsafe {
+            ::std::mem::zeroed()
+        }
+    }
+}

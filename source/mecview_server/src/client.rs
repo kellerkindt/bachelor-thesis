@@ -25,13 +25,12 @@ impl<M: ::std::fmt::Debug> Client<M> {
 
     fn init_as_sensor(&mut self) -> Result<(), Error> {
         trace!("Initializing as sensor");
-        self.unsubscribe()
+        self.remote_unsubscribe()
     }
 
     fn init_as_vehicle(&mut self) -> Result<(), Error> {
         trace!("Initializing as vehicle");
-        // TODO
-        unimplemented!()
+        self.remote_init()
     }
 
     fn subscribe_to_environment_model(&mut self) -> Result<(), Error> {
@@ -53,15 +52,19 @@ impl<M: ::std::fmt::Debug> Client<M> {
         unimplemented!()
     }
 
-    fn unsubscribe(&mut self) -> Result<(), Error> {
-        self.send_adapter(adapter::Command::Unsubscribe)
+    fn remote_init(&mut self) -> Result<(), Error> {
+        self.remote_send(adapter::Command::RemoteInit)
     }
 
-    fn subscribe(&mut self) -> Result<(), Error> {
-        self.send_adapter(adapter::Command::Subscribe)
+    fn remote_unsubscribe(&mut self) -> Result<(), Error> {
+        self.remote_send(adapter::Command::RemoteUnsubscribe)
     }
 
-    fn send_adapter(&mut self, command: adapter::Command<M>) -> Result<(), Error> {
+    fn remote_subscribe(&mut self) -> Result<(), Error> {
+        self.remote_send(adapter::Command::RemoteSubscribe)
+    }
+
+    fn remote_send(&mut self, command: adapter::Command<M>) -> Result<(), Error> {
         trace!("Going to send command {:?}", command);
         match self.remote.send(command) {
             Ok(_) => {

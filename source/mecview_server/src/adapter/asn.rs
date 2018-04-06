@@ -45,7 +45,7 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapte
     fn process_message(&mut self, message: Message) -> Result<(), Error> {
         match message {
             Message::Registration(ref registration) => {
-                self.send_client(client::Command::UpdateVariant(
+                self.remote_send(client::Command::UpdateVariant(
                     variant_from_client_registration(registration)?
                 ))
             },
@@ -56,7 +56,7 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapte
         }
     }
 
-    fn send_client(&mut self, command: client::Command) -> Result<(), Error> {
+    fn remote_send(&mut self, command: client::Command) -> Result<(), Error> {
         // this blocks since its is important to know whether the client
         // is still alive and to have a bit back pressure on flooding requests
         match self.client.send(command) {
@@ -65,18 +65,24 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapte
         }
     }
 
-    fn subscribe_remote(&mut self) -> Result<(), Error> {
-        self.update_subscription(SubscriptionStatus_SubscriptionStatus_subscribed as SubscriptionStatus_t)
+    fn remote_subscribe_remote(&mut self) -> Result<(), Error> {
+        self.remote_update_subscription(SubscriptionStatus_SubscriptionStatus_subscribed as SubscriptionStatus_t)
     }
 
-    fn unsubscribe_remote(&mut self) -> Result<(), Error> {
-        self.update_subscription(SubscriptionStatus_SubscriptionStatus_unsubscribed as SubscriptionStatus_t)
+    fn remote_unsubscribe_remote(&mut self) -> Result<(), Error> {
+        self.remote_update_subscription(SubscriptionStatus_SubscriptionStatus_unsubscribed as SubscriptionStatus_t)
     }
 
-    fn update_subscription(&mut self, status: SubscriptionStatus_t) -> Result<(), Error> {
+    fn remote_update_subscription(&mut self, status: SubscriptionStatus_t) -> Result<(), Error> {
         let mut update = UpdateSubscription::default();
         update.subscription_status = status;
         self.encoder.send(Message::UpdateSubscription(Box::new(update)))?;
+        self.encoder.flush()
+    }
+
+    fn remote_init(&mut self) -> Result<(), Error> {
+        let mut init = InitMessage::default();
+        self.encoder.send(Message::InitMessage(Box::new(init)))?;
         self.encoder.flush()
     }
 }
@@ -85,12 +91,13 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> CommandProcesso
     fn process_command(&mut self, command: Command<Message>) -> Result<(), Error> {
         match command {
             Command::ProcessMessage(message) => self.process_message(message),
-            Command::SendMessage(message) => match self.encoder.send(message) {
+            Command::RemoteSend(message) => match self.encoder.send(message) {
                 Ok(_) => Ok(()),
                 Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
             },
-            Command::Subscribe => self.subscribe_remote(),
-            Command::Unsubscribe => self.unsubscribe_remote(),
+            Command::RemoteSubscribe => self.remote_subscribe_remote(),
+            Command::RemoteUnsubscribe => self.remote_unsubscribe_remote(),
+            Command::RemoteInit => self.remote_init(),
         }
     }
 }

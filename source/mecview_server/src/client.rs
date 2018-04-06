@@ -130,17 +130,23 @@ pub enum Command {
 mod test {
     use super::*;
 
+    #[derive(Debug)]
+    struct M;
+
     #[test]
     fn test_default_variant_is_unknown() {
-        assert_eq!(Variant::Unknown, Client::default().variant);
+        let (sender, receiver) = ::async::channel(2);
+        let mut client : Client<M> = Client::new(sender);
+        assert_eq!(Variant::Unknown, client.variant);
     }
 
     #[test]
     fn test_update_variant_cannot_change_if_not_unknown() {
-        let mut client = Client::default();
+        let (sender, receiver) = ::async::channel(2);
+        let mut client : Client<M> = Client::new(sender);
         client.variant = Variant::Vehicle;
-        assert_eq!(Err(()), client.process_command(Command::UpdateVariant(Variant::Vehicle)));
-        assert_eq!(Err(()), client.process_command(Command::UpdateVariant(Variant::Sensor)));
+        assert!(client.process_command(Command::UpdateVariant(Variant::Vehicle)).is_err());
+        assert!(client.process_command(Command::UpdateVariant(Variant::Sensor)).is_err());
     }
 
     #[test]
@@ -154,8 +160,9 @@ mod test {
     }
 
     fn test_update_variant_for_client_type(variant: Variant) {
-        let mut client = Client::default();
-        assert_eq!(Ok(()), client.process_command(Command::UpdateVariant(variant)));
+        let (sender, receiver) = ::async::channel(2);
+        let mut client : Client<M> = Client::new(sender);
+        assert_eq!((), client.process_command(Command::UpdateVariant(variant)).unwrap());
         assert_eq!(variant, client.variant);
     }
 }

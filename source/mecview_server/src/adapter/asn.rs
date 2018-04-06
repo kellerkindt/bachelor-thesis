@@ -26,6 +26,8 @@ use adapter::Command;
 const CLIENT_TYPE_SENSOR  : ClientType_t = ClientType_ClientType_sensor  as ClientType_t;
 const CLIENT_TYPE_VEHICLE : ClientType_t = ClientType_ClientType_vehicle as ClientType_t;
 
+const ASN_HEADER_SIZE : usize = 8;
+
 
 pub struct AsnClientAdapter<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> {
     encoder: Wait<E>,
@@ -44,7 +46,7 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapte
         match message {
             Message::Registration(ref registration) => {
                 self.send_client(client::Command::UpdateVariant(
-                    Self::variant_from_client_registration(registration)?
+                    variant_from_client_registration(registration)?
                 ))
             },
             _ => {
@@ -60,18 +62,6 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapte
         match self.client.send(command) {
             Ok(_) => Ok(()),
             Err(_) => Err(Error::from(ErrorKind::UnexpectedEof))
-        }
-    }
-
-    fn variant_from_client_registration(r: &ClientRegistration) -> Result<client::Variant, Error> {
-        Self::variant_from_client_type_t(r.type_)
-    }
-
-    fn variant_from_client_type_t(t: ClientType_t) -> Result<client::Variant, Error> {
-        match t {
-            CLIENT_TYPE_SENSOR  => Ok(client::Variant::Sensor),
-            CLIENT_TYPE_VEHICLE => Ok(client::Variant::Vehicle),
-            _ => Err(Error::from(ErrorKind::InvalidInput)),
         }
     }
 
@@ -105,10 +95,22 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> CommandProcesso
     }
 }
 
-const ASN_HEADER_SIZE : usize = 8;
+
+
+fn variant_from_client_registration(r: &ClientRegistration) -> Result<client::Variant, Error> {
+    variant_from_client_type_t(r.type_)
+}
+
+fn variant_from_client_type_t(t: ClientType_t) -> Result<client::Variant, Error> {
+    match t {
+        CLIENT_TYPE_SENSOR  => Ok(client::Variant::Sensor),
+        CLIENT_TYPE_VEHICLE => Ok(client::Variant::Vehicle),
+        _ => Err(Error::from(ErrorKind::InvalidInput)),
+    }
+}
+
 
 pub struct AsnCodec();
-
 
 impl Decoder for AsnCodec {
     type Item = Message;
@@ -187,7 +189,7 @@ mod test {
         let mut buf = BytesMut::with_capacity(1024);
         AsnCodec().encode(Message::decode_client_registration(&[0x20, 0x00, 0x00]).unwrap(), &mut buf).unwrap();
         assert_eq!(&[
-            0x00, 0x00, 0x00, 0x03, // length
+            0x00, 0x00, 0x00, 0x01, // length
             0x00, 0x00, 0x00, 0x01, // type
             0x20                    // message
         ], &buf[..9]);
@@ -206,7 +208,7 @@ mod test {
 
         let mut buf = BytesMut::with_capacity(1024);
         buf.put_slice(&[
-            0x00, 0x00, 0x00, 0x03, // length
+            0x00, 0x00, 0x00, 0x01, // length
             0x00, 0x00, 0x00, 0x01, // type
             0x20,                   // message
         ]);
@@ -218,16 +220,16 @@ mod test {
 
     #[test]
     fn err_on_invalid_type_t_into_variant() {
-        assert_eq!(Err(()), AsnClientAdapter::variant_from_client_type_t(0xFF as ClientType_t));
+        assert!(variant_from_client_type_t(0xFF as ClientType_t).is_err());
     }
 
     #[test]
     fn client_type_t_into_variant_sensor() {
-        assert_eq!(Ok(client::Variant::Sensor), AsnClientAdapter::variant_from_client_type_t(CLIENT_TYPE_SENSOR));
+        assert_eq!(client::Variant::Sensor, variant_from_client_type_t(CLIENT_TYPE_SENSOR).unwrap());
     }
 
     #[test]
     fn client_type_t_into_variant_vehicle() {
-        assert_eq!(Ok(client::Variant::Vehicle), AsnClientAdapter::variant_from_client_type_t(CLIENT_TYPE_VEHICLE));
+        assert_eq!(client::Variant::Vehicle, variant_from_client_type_t(CLIENT_TYPE_VEHICLE).unwrap());
     }
 }

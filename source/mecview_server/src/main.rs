@@ -71,11 +71,14 @@ fn main() {
     let server = server::Server::new("0.0.0.0:5500".parse::<SocketAddr>().unwrap()).unwrap();
     let server = server.start();
 
-    thread::sleep_ms(1_000);
-    let stream = TcpStream::connect(&"0.0.0.0:5500".parse::<SocketAddr>().unwrap()).wait().unwrap();
-    let (sink, stream) = stream.framed(::adapter::asn::AsnCodec()).split();
-    let sink = sink.send(Message::decode_client_registration(&[0x20]).unwrap()).wait().unwrap();
-    let sink = sink.send(Message::decode_client_registration(&[0x20]).unwrap()).wait().unwrap();
+    /*{
+        thread::sleep_ms(1_000);
+
+        let stream = TcpStream::connect(&"0.0.0.0:5500".parse::<SocketAddr>().unwrap()).wait().unwrap();
+        let (sink, stream) = stream.framed(::adapter::asn::AsnCodec()).split();
+        let sink = sink.send(Message::decode_client_registration(&[0x20]).unwrap()).wait().unwrap();
+        let sink = sink.send(Message::decode_client_registration(&[0x20]).unwrap()).wait().unwrap();
+    }*/
 
     let time_wait = 100;
     for i in 0..time_wait {

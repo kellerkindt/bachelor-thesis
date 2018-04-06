@@ -132,14 +132,14 @@ impl Drop for Message {
         unsafe {
             match self {
                 // free only content, since the box will free the struct itself
-                Message::Registration(ref value) => asn::free_content(&mut raw::asn_DEF_ClientRegistration, value.as_ref()),
-                Message::UpdateSubscription(ref value) => asn::free_content(&mut raw::asn_DEF_UpdateSubscription, value.as_ref()),
-                Message::SensorFrame(ref value) => asn::free_content(&mut raw::asn_DEF_SensorFrame, value.as_ref()),
-                Message::EnvironmentFrame(ref value) => asn::free_content(&mut raw::asn_DEF_EnvironmentFrame, value.as_ref()),
-                Message::RoadClearanceFrame(ref value) => asn::free_content(&mut raw::asn_DEF_RoadClearanceFrame, value.as_ref()),
-                Message::SensorIdleFrame(ref value) => asn::free_content(&mut raw::asn_DEF_SensorIdleFrame, value.as_ref()),
-                Message::UpdateStatus(ref status) => asn::free_content(&mut raw::asn_DEF_UpdateStatus, status.as_ref()),
-                Message::InitMessage(ref init) => asn::free_content(&mut raw::asn_DEF_InitMessage, init.as_ref()),
+                Message::Registration(ref value) => raw::free_content(&mut raw::asn_DEF_ClientRegistration, value.as_ref()),
+                Message::UpdateSubscription(ref value) => raw::free_content(&mut raw::asn_DEF_UpdateSubscription, value.as_ref()),
+                Message::SensorFrame(ref value) => raw::free_content(&mut raw::asn_DEF_SensorFrame, value.as_ref()),
+                Message::EnvironmentFrame(ref value) => raw::free_content(&mut raw::asn_DEF_EnvironmentFrame, value.as_ref()),
+                Message::RoadClearanceFrame(ref value) => raw::free_content(&mut raw::asn_DEF_RoadClearanceFrame, value.as_ref()),
+                Message::SensorIdleFrame(ref value) => raw::free_content(&mut raw::asn_DEF_SensorIdleFrame, value.as_ref()),
+                Message::UpdateStatus(ref status) => raw::free_content(&mut raw::asn_DEF_UpdateStatus, status.as_ref()),
+                Message::InitMessage(ref init) => raw::free_content(&mut raw::asn_DEF_InitMessage, init.as_ref()),
             };
         }
     }

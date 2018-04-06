@@ -28,7 +28,8 @@ pub unsafe fn uper_encode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, value: &
         Err(())
     } else {
         trace!("fine");
-        Ok(result.encoded as usize)
+        // encoded is the length in BITS not bytes...
+        Ok((result.encoded as usize + 7) / 8)
     }
 }
 

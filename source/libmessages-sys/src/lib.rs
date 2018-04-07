@@ -10,6 +10,7 @@ mod bindings;
 pub use bindings::*;
 
 
+
 unsafe impl Send for ClientRegistration {}
 unsafe impl Sync for ClientRegistration {}
 
@@ -21,14 +22,13 @@ impl Default for ClientRegistration {
     }
 }
 
-/*
 impl Drop for ClientRegistration {
     fn drop(&mut self) {
         unsafe {
             free_content(&mut asn_DEF_ClientRegistration, self);
         }
     }
-}*/
+}
 
 
 
@@ -43,14 +43,13 @@ impl Default for UpdateSubscription {
     }
 }
 
-/*
 impl Drop for UpdateSubscription {
     fn drop(&mut self) {
         unsafe {
             free_content(&mut asn_DEF_UpdateSubscription, self);
         }
     }
-}*/
+}
 
 
 
@@ -67,14 +66,13 @@ impl Default for SensorFrame {
     }
 }
 
-/*
 impl Drop for SensorFrame {
     fn drop(&mut self) {
         unsafe {
             free_content(&mut asn_DEF_SensorFrame, self);
         }
     }
-}*/
+}
 
 
 
@@ -92,7 +90,6 @@ impl Default for EnvironmentFrame {
     }
 }
 
-/*
 impl Drop for EnvironmentFrame {
     fn drop(&mut self) {
         unsafe {
@@ -100,7 +97,6 @@ impl Drop for EnvironmentFrame {
         }
     }
 }
-*/
 
 
 
@@ -117,7 +113,6 @@ impl Default for RoadClearanceFrame {
     }
 }
 
-/*
 impl Drop for RoadClearanceFrame {
     fn drop(&mut self) {
         unsafe {
@@ -125,7 +120,7 @@ impl Drop for RoadClearanceFrame {
         }
     }
 }
-*/
+
 
 
 unsafe impl Send for SensorIdleFrame {}
@@ -139,7 +134,6 @@ impl Default for SensorIdleFrame {
     }
 }
 
-/*
 impl Drop for SensorIdleFrame {
     fn drop(&mut self) {
         unsafe {
@@ -147,7 +141,7 @@ impl Drop for SensorIdleFrame {
         }
     }
 }
-*/
+
 
 
 unsafe impl Send for UpdateStatus {}
@@ -161,7 +155,6 @@ impl Default for UpdateStatus {
     }
 }
 
-/*
 impl Drop for UpdateStatus {
     fn drop(&mut self) {
         unsafe {
@@ -169,7 +162,7 @@ impl Drop for UpdateStatus {
         }
     }
 }
-*/
+
 
 
 unsafe impl Send for InitMessage {}
@@ -186,7 +179,6 @@ impl Default for InitMessage {
     }
 }
 
-/*
 impl Drop for InitMessage {
     fn drop(&mut self) {
         unsafe {
@@ -194,7 +186,7 @@ impl Drop for InitMessage {
         }
     }
 }
-*/
+
 
 
 pub unsafe fn free_content<T>(asn_type: &mut asn_TYPE_descriptor_t, value: &T) {

@@ -11,6 +11,9 @@ const BINDINGS_FILE : &'static str = "src/bindings.rs";
 
 fn main() {
 
+    println!("cargo:rustc-link-search=native={}", ".");
+    println!("cargo:rustc-flags=-l dylib=stdc++");
+
     if !Path::new(LIBRARY_FILE).exists() || !Path::new(BINDINGS_FILE).exists() {
         let headers = compile_sdk("cpp/MECViewServerSDK-Build/proto/", LIBRARY_FILE);
 
@@ -21,9 +24,6 @@ fn main() {
             generate_bindings("cpp/MECViewServerSDK-Build/proto/", main_header, Path::new(BINDINGS_FILE).to_str().unwrap());
         }
     }
-
-    println!("cargo:rustc-link-search=native={}", ".");
-    println!("cargo:rustc-flags=-l dylib=stdc++");
 }
 
 fn compile_sdk(sdk_dir: &str, out: &str) -> Vec<String> {
@@ -44,7 +44,6 @@ fn compile_sdk(sdk_dir: &str, out: &str) -> Vec<String> {
                                 if str.ends_with(".c") {
                                     gcc_build.file(str);
                                 } else if str.ends_with(".h") {
-                                    println!("Found header file: {}", str);
                                     headers.push(str.into());
                                 }
                             }
@@ -74,6 +73,8 @@ fn generate_main_header(headers: &[String], out: &str) {
 fn generate_bindings(include: &str, header: &str, out: &str) {
     bindgen::Builder::default()
         .clang_arg(format!("-I{}", include))
+        // fix for link error, see rust-lang-nursery/rust-bindgen/issues/1046
+        .trust_clang_mangling(false)
         .header(header)
         // not supported/test fails (not needed?, via indirect include)
         .blacklist_type("max_align_t")
@@ -81,6 +82,7 @@ fn generate_bindings(include: &str, header: &str, out: &str) {
         .opaque_type("asn_struct_ctx_t")
         .rustfmt_bindings(true)
         .impl_debug(true)
+        .derive_copy(false)
         .impl_partialeq(true)
         .generate_comments(true)
         .generate()

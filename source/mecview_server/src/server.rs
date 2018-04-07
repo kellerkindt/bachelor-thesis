@@ -84,7 +84,7 @@ impl Server {
 
         let (encoder, decoder) = client.framed(adapter::asn::AsnCodec()).split();
 
-        self.spawn_new_asn_adapter(encoder, adapter_rx, client_tx);
+        self.spawn_new_asn_adapter(encoder, adapter_tx.clone(), adapter_rx, client_tx);
         self.spawn_decoder_adapter_adapter(decoder, adapter_tx);
     }
 
@@ -93,39 +93,44 @@ impl Server {
     fn spawn_new_client<M: Debug+Send+'static>(&mut self, adapter: Sender<adapter::Command<M>>) -> Sender<client::Command> {
         let (sender, receiver) = channel(CHANNEL_BUFFER_SIZE_CLIENT);
         let mut client = Client::new(adapter);
+        let mut shutdown_sender = sender.clone();
         self.runtime.spawn(receiver.for_each(move |command| {
             match client.process_command(command) {
                 Ok(()) => Ok(()),
                 Err(e) => {
                     error!("Error while processing client command: {:?}", e);
-                    let _ = client.process_command(client::Command::Shutdown);
                     Err(())
                 },
             }
+        }).then(move |r| {
+            let _ = shutdown_sender.try_send(client::Command::Shutdown);
+            r
         }));
         sender
     }
 
 
-    fn spawn_new_asn_adapter<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static>(&mut self, encoder: E, commands: Receiver<adapter::Command<Message>>, client: Sender<client::Command>) {
+    fn spawn_new_asn_adapter<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static>(&mut self, encoder: E, mut sender: Sender<adapter::Command<Message>>, receiver: Receiver<adapter::Command<Message>>, client: Sender<client::Command>) {
         let mut adapter = AsnClientAdapter::new(encoder, client);
-        self.runtime.spawn(commands.for_each(move |command| {
+        self.runtime.spawn(receiver.for_each( move|command| {
             match adapter.process_command(command) {
                 Ok(()) => Ok(()),
                 Err(e) => {
                     error!("Error while processing adapter command: {:?}", e);
-                    let _ = adapter.process_command(adapter::Command::Shutdown);
                     Err(())
                 },
             }
+        }).then(move |r| {
+            let _ = sender.try_send(adapter::Command::Shutdown);
+            r
         }));
     }
 
     fn spawn_decoder_adapter_adapter<M: Debug+Send+'static, S: Stream<Item=M,Error=Error>+Send+'static>(&mut self, encoder: S, adapter: Sender<adapter::Command<M>>) {
-        let mut adapter2 = adapter.clone().wait();
-        let mut adapter = adapter.wait();
+        let mut adapter2 = adapter.clone();
+        let mut adapter = adapter;
         self.runtime.spawn(encoder.for_each(move |message| {
-            match adapter.send(adapter::Command::ProcessMessage(message)) {
+            match adapter.try_send(adapter::Command::ProcessMessage(message)) {
                 Ok(()) => Ok(()),
                 Err(e) => {
                     error!("Error while enqueuing encoder message into adapter: {:?}", e);
@@ -133,7 +138,7 @@ impl Server {
                 },
             }
         }).then(move|r| {
-            let _ = adapter2.send(adapter::Command::Shutdown);
+            let _ = adapter2.try_send(adapter::Command::Shutdown);
             match r {
                 Err(_) => Err(()),
                 Ok(_) => Ok(()),

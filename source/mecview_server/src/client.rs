@@ -18,7 +18,7 @@ impl<M: ::std::fmt::Debug> Client<M> {
 
     pub fn new(remote: Sender<adapter::Command<M>>) -> Client<M> {
         Client {
-            remote: remote,
+            remote,
             variant: Variant::Unknown,
         }
     }

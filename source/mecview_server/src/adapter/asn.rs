@@ -60,7 +60,7 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapte
         trace!("Trying to send command to client: {:?}", command);
         match self.client.try_send(command) {
             Ok(_) => {
-                trace!("Send successfully");
+                trace!("Sent successfully");
                 Ok(())
             },
             Err(e) => {

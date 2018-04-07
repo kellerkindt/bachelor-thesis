@@ -11,4 +11,5 @@ pub enum Command<M: ::std::fmt::Debug> {
     RemoteUnsubscribe,
     RemoteSubscribe,
     RemoteInit,
+    Shutdown,
 }

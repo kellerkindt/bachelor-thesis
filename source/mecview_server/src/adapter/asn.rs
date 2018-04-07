@@ -31,21 +31,21 @@ const ASN_HEADER_SIZE : usize = 8;
 
 pub struct AsnClientAdapter<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> {
     encoder: Wait<E>,
-    client:  Wait<Sender<client::Command>>,
+    client:  Sender<client::Command>,
 }
 
 impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapter<E> {
     pub fn new(encoder: E, client: Sender<client::Command>) -> AsnClientAdapter<E> {
         AsnClientAdapter {
             encoder: encoder.wait(),
-            client:  client.wait(),
+            client,
         }
     }
 
     fn process_message(&mut self, message: Message) -> Result<(), Error> {
         match message {
             Message::Registration(ref registration) => {
-                self.remote_send(client::Command::UpdateVariant(
+                self.client_send(client::Command::UpdateVariant(
                     variant_from_client_registration(registration)?
                 ))
             },
@@ -56,12 +56,17 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapte
         }
     }
 
-    fn remote_send(&mut self, command: client::Command) -> Result<(), Error> {
-        // this blocks since its is important to know whether the client
-        // is still alive and to have a bit back pressure on flooding requests
-        match self.client.send(command) {
-            Ok(_) => Ok(()),
-            Err(_) => Err(Error::from(ErrorKind::UnexpectedEof))
+    fn client_send(&mut self, command: client::Command) -> Result<(), Error> {
+        trace!("Trying to send command to client: {:?}", command);
+        match self.client.try_send(command) {
+            Ok(_) => {
+                trace!("Send successfully");
+                Ok(())
+            },
+            Err(e) => {
+                error!("Failed to send command to client: {:?}", e);
+                Err(Error::from(ErrorKind::UnexpectedEof))
+            }
         }
     }
 
@@ -76,14 +81,26 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapte
     fn remote_update_subscription(&mut self, status: SubscriptionStatus_t) -> Result<(), Error> {
         let mut update = UpdateSubscription::default();
         update.subscription_status = status;
-        self.encoder.send(Message::UpdateSubscription(Box::new(update)))?;
-        self.encoder.flush()
+        self.remote_send(Message::UpdateSubscription(Box::new(update)))
     }
 
     fn remote_init(&mut self) -> Result<(), Error> {
         let mut init = InitMessage::default();
-        self.encoder.send(Message::InitMessage(Box::new(init)))?;
+        self.remote_send(Message::InitMessage(Box::new(init)))
+    }
+
+    fn remote_send(&mut self, message: Message) -> Result<(), Error> {
+        self.encoder.send(message)?;
         self.encoder.flush()
+    }
+
+    fn shutdown(&mut self) -> Result<(), Error> {
+        trace!("Received shutdown request");
+        // ignore errors
+        let _ = self.encoder.close();
+        let _ = self.client.try_send(client::Command::Shutdown);
+        let _ = self.client.close();
+        Ok(())
     }
 }
 
@@ -91,13 +108,11 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> CommandProcesso
     fn process_command(&mut self, command: Command<Message>) -> Result<(), Error> {
         match command {
             Command::ProcessMessage(message) => self.process_message(message),
-            Command::RemoteSend(message) => match self.encoder.send(message) {
-                Ok(_) => Ok(()),
-                Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
-            },
+            Command::RemoteSend(message) => self.remote_send(message),
             Command::RemoteSubscribe => self.remote_subscribe_remote(),
             Command::RemoteUnsubscribe => self.remote_unsubscribe_remote(),
             Command::RemoteInit => self.remote_init(),
+            Command::Shutdown => self.shutdown(),
         }
     }
 }
@@ -131,15 +146,15 @@ impl Decoder for AsnCodec {
             let total_size = ASN_HEADER_SIZE + message_size;
 
             if src.len() >= total_size {
-                debug!("Trying to decode, size={}, type={}", message_type, message_size);
+                trace!("Trying to decode, size={}, type={}", message_size, message_type);
                 let buffer = src.split_to(total_size);
                 match Message::decode(message_type, &buffer[ASN_HEADER_SIZE..]) {
-                    Err(_) => {
-                        debug!("Failed to decode");
+                    Err(e) => {
+                        warn!("Failed to decode message size={}, type={}: {:?}", message_size, message_type, e);
                         Err(Error::from(ErrorKind::InvalidData))
                     },
                     Ok(message) => {
-                        debug!("Successfully decoded: {:?}", message);
+                        trace!("Successfully decoded: {:?}", message);
                         Ok(Some(message))
                     },
                 }

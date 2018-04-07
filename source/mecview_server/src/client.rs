@@ -10,7 +10,7 @@ use async::CommandProcessor;
 use adapter;
 
 pub struct Client<M: ::std::fmt::Debug> {
-    remote:  Wait<Sender<adapter::Command<M>>>,
+    remote:  Sender<adapter::Command<M>>,
     variant: Variant,
 }
 
@@ -18,7 +18,7 @@ impl<M: ::std::fmt::Debug> Client<M> {
 
     pub fn new(remote: Sender<adapter::Command<M>>) -> Client<M> {
         Client {
-            remote: remote.wait(),
+            remote: remote,
             variant: Variant::Unknown,
         }
     }
@@ -66,7 +66,7 @@ impl<M: ::std::fmt::Debug> Client<M> {
 
     fn remote_send(&mut self, command: adapter::Command<M>) -> Result<(), Error> {
         trace!("Going to send command {:?}", command);
-        match self.remote.send(command) {
+        match self.remote.try_send(command) {
             Ok(_) => {
                 trace!("Command sent successful");
                 Ok(())
@@ -82,10 +82,20 @@ impl<M: ::std::fmt::Debug> Client<M> {
         trace!("Client is now a {:?}", variant);
         self.variant = variant;
     }
+
+    fn shutdown(&mut self) {
+        trace!("Received shutdown");
+        let _ = self.remote_send(adapter::Command::Shutdown);
+        let _ = self.remote.close();
+    }
 }
 
 impl<M: ::std::fmt::Debug> CommandProcessor<Command> for Client<M> {
     fn process_command(&mut self, command: Command) -> Result<(), Error> {
+        if let Command::Shutdown = command {
+            self.shutdown();
+            return Err(Error::from(ErrorKind::UnexpectedEof));
+        }
         match self.variant {
             Variant::Unknown => {
                 if let Command::UpdateVariant(variant) = command {
@@ -127,6 +137,7 @@ pub enum Command {
     SensorIsIdle,
     Subscribe,
     Unsubscribe,
+    Shutdown,
 }
 
 #[cfg(test)]

@@ -74,6 +74,7 @@ impl Server {
         if client.set_nodelay(true).is_err() {
             warn!("TCP nodelay couldn't be set");
         }
+
         if client.set_keepalive(Some(::std::time::Duration::from_millis(1_000))).is_err() {
             warn!("TCP keepalive couldn't be set");
         }
@@ -97,6 +98,7 @@ impl Server {
                 Ok(()) => Ok(()),
                 Err(e) => {
                     error!("Error while processing client command: {:?}", e);
+                    let _ = client.process_command(client::Command::Shutdown);
                     Err(())
                 },
             }
@@ -112,6 +114,7 @@ impl Server {
                 Ok(()) => Ok(()),
                 Err(e) => {
                     error!("Error while processing adapter command: {:?}", e);
+                    let _ = adapter.process_command(adapter::Command::Shutdown);
                     Err(())
                 },
             }
@@ -119,6 +122,7 @@ impl Server {
     }
 
     fn spawn_decoder_adapter_adapter<M: Debug+Send+'static, S: Stream<Item=M,Error=Error>+Send+'static>(&mut self, encoder: S, adapter: Sender<adapter::Command<M>>) {
+        let mut adapter2 = adapter.clone().wait();
         let mut adapter = adapter.wait();
         self.runtime.spawn(encoder.for_each(move |message| {
             match adapter.send(adapter::Command::ProcessMessage(message)) {
@@ -128,9 +132,12 @@ impl Server {
                     Err(Error::from(ErrorKind::UnexpectedEof))
                 },
             }
-        }).then(|r| match r {
-            Err(_) => Err(()),
-            Ok(_) => Ok(()),
+        }).then(move|r| {
+            let _ = adapter2.send(adapter::Command::Shutdown);
+            match r {
+                Err(_) => Err(()),
+                Ok(_) => Ok(()),
+            }
         }));
     }
 

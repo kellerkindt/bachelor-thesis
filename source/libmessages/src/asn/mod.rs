@@ -4,6 +4,27 @@ pub extern crate libmessages_sys as raw;
 pub use self::message::*;
 
 
+
+
+pub fn uper_encode_to_new_buffer<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, value: &T) -> Result<Vec<u8>, ()> {
+    let mut pointer : *mut u8 = ::std::ptr::null_mut();
+    let result = unsafe {
+        raw::uper_encode_to_new_buffer(
+            asn_type as *mut raw::asn_TYPE_descriptor_t,
+            0 as *mut raw::asn_per_constraints_s,
+            value as *const T as *mut T as *mut ::std::os::raw::c_void,
+            (&mut pointer as *mut *mut u8) as *mut *mut ::std::os::raw::c_void,
+        )
+    };
+    if result < 0 {
+        Err(())
+    } else {
+        Ok(unsafe {
+            Vec::from_raw_parts(pointer, result as usize, result as usize)
+        })
+    }
+}
+
 pub unsafe fn uper_encode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, value: &T, buffer: &mut [u8]) -> Result<usize, ()> {
     let result = raw::uper_encode_to_buffer(
         asn_type as *mut raw::asn_TYPE_descriptor_t,

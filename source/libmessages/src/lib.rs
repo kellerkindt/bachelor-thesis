@@ -7,19 +7,21 @@ extern crate log;
 extern crate log4rs;
 
 
-pub struct RawMessage {
+pub struct RawMessage<T: ?Sized> {
     identifier: u32,
     bytes: Vec<u8>,
+    _t: ::std::marker::PhantomData<T>
 }
 
-impl RawMessage {
-    pub fn new(identifier: u32, bytes: Vec<u8>) -> Result<RawMessage, ()> {
+impl<T: ?Sized> RawMessage<T> {
+    pub(crate) fn new(identifier: u32, bytes: Vec<u8>) -> Result<RawMessage<T>, ()> {
         if bytes.len() > ::std::u32::MAX as usize {
             Err(())
         } else {
             Ok(RawMessage {
                 identifier,
-                bytes
+                bytes,
+                _t: ::std::marker::PhantomData,
             })
         }
     }

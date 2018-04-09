@@ -1,9 +1,17 @@
 
-use RawMessage;
 use asn;
 use asn::raw;
 
-const MAX_MESSAGE_SIZE : usize = 32 * 1024;
+use RawMessage;
+
+const TYPE_ID_REGISTRATION         : u32 = 1;
+const TYPE_ID_SENSOR_FRAME         : u32 = 2;
+const TYPE_ID_ENVIRONMENT_FRAME    : u32 = 3;
+const TYPE_ID_UPDATE_SUBSCRIPTION  : u32 = 4;
+const TYPE_ID_INIT_MESSAGE         : u32 = 5;
+const TYPE_ID_ROAD_CLEARANCE_FRAME : u32 = 6;
+const TYPE_ID_SENSOR_IDLE_FRAME    : u32 = 7;
+const TYPE_ID_UPDATE_STATUS        : u32 = 8;
 
 #[derive(Debug)]
 pub enum Message {
@@ -20,128 +28,253 @@ pub enum Message {
 
 impl Message {
     pub fn decode_client_registration(buffer: &[u8]) -> Result<Message, ()> {
-        Ok(Message::Registration(unsafe {
-            asn::uper_decode(&mut raw::asn_DEF_ClientRegistration, buffer)?
-        }))
+        Ok(Message::Registration(
+            <raw::ClientRegistration as AsnMessage>::decode_from_buffer(buffer)?
+        ))
     }
 
     pub fn decode_update_subscription(buffer: &[u8]) -> Result<Message, ()> {
-        Ok(Message::UpdateSubscription(unsafe {
-            asn::uper_decode(&mut raw::asn_DEF_UpdateSubscription, buffer)?
-        }))
+        Ok(Message::UpdateSubscription(
+            <raw::UpdateSubscription as AsnMessage>::decode_from_buffer(buffer)?
+        ))
     }
 
     pub fn decode_sensor_frame(buffer: &[u8]) -> Result<Message, ()> {
-        Ok(Message::SensorFrame(unsafe {
-            asn::uper_decode(&mut raw::asn_DEF_SensorFrame, buffer)?
-        }))
+        Ok(Message::SensorFrame(
+            <raw::SensorFrame as AsnMessage>::decode_from_buffer(buffer)?
+        ))
     }
 
     pub fn decode_environment_frame(buffer: &[u8]) -> Result<Message, ()> {
-        Ok(Message::EnvironmentFrame(unsafe {
-            asn::uper_decode(&mut raw::asn_DEF_EnvironmentFrame, buffer)?
-        }))
+        Ok(Message::EnvironmentFrame(
+            <raw::EnvironmentFrame as AsnMessage>::decode_from_buffer(buffer)?
+        ))
     }
 
     pub fn decode_road_clearance_frame(buffer: &[u8]) -> Result<Message, ()> {
-        Ok(Message::RoadClearanceFrame(unsafe {
-            asn::uper_decode(&mut raw::asn_DEF_RoadClearanceFrame, buffer)?
-        }))
+        Ok(Message::RoadClearanceFrame(
+            <raw::RoadClearanceFrame as AsnMessage>::decode_from_buffer(buffer)?
+        ))
     }
 
     pub fn decode_sensor_idle_frame(buffer: &[u8]) -> Result<Message, ()> {
-        Ok(Message::SensorIdleFrame(unsafe {
-            asn::uper_decode(&mut raw::asn_DEF_SensorIdleFrame, buffer)?
-        }))
+        Ok(Message::SensorIdleFrame(
+            <raw::SensorIdleFrame as AsnMessage>::decode_from_buffer(buffer)?
+        ))
     }
 
     pub fn decode_update_status(buffer: &[u8]) -> Result<Message, ()> {
-        Ok(Message::UpdateStatus(unsafe {
-            asn::uper_decode(&mut raw::asn_DEF_UpdateStatus, buffer)?
-        }))
+        Ok(Message::UpdateStatus(
+            <raw::UpdateStatus as AsnMessage>::decode_from_buffer(buffer)?
+        ))
     }
 
     pub fn decode_init_message(buffer: &[u8]) -> Result<Message, ()> {
-        Ok(Message::InitMessage(unsafe {
-            asn::uper_decode(&mut raw::asn_DEF_InitMessage, buffer)?
-        }))
+        Ok(Message::InitMessage(
+            <raw::InitMessage as AsnMessage>::decode_from_buffer(buffer)?
+        ))
     }
 
     pub fn type_id(&self) -> u32 {
         match self {
-            Message::Registration(_)        => 1,
-            Message::SensorFrame(_)         => 2,
-            Message::EnvironmentFrame(_)    => 3,
-            Message::UpdateSubscription(_)  => 4,
-            Message::InitMessage(_)         => 5,
-            Message::RoadClearanceFrame(_)  => 6,
-            Message::SensorIdleFrame(_)     => 7,
-            Message::UpdateStatus(_)        => 8,
+            Message::Registration(_)        => <raw::ClientRegistration as AsnMessage>::type_id(),
+            Message::SensorFrame(_)         => <raw::SensorFrame        as AsnMessage>::type_id(),
+            Message::EnvironmentFrame(_)    => <raw::EnvironmentFrame   as AsnMessage>::type_id(),
+            Message::UpdateSubscription(_)  => <raw::UpdateSubscription as AsnMessage>::type_id(),
+            Message::InitMessage(_)         => <raw::InitMessage        as AsnMessage>::type_id(),
+            Message::RoadClearanceFrame(_)  => <raw::RoadClearanceFrame as AsnMessage>::type_id(),
+            Message::SensorIdleFrame(_)     => <raw::SensorIdleFrame    as AsnMessage>::type_id(),
+            Message::UpdateStatus(_)        => <raw::UpdateStatus       as AsnMessage>::type_id(),
         }
     }
 
     pub fn decode(type_id: u32, buffer: &[u8]) -> Result<Message, ()> {
         match type_id {
-            1 => Self::decode_client_registration(buffer),
-            2 => Self::decode_sensor_frame(buffer),
-            3 => Self::decode_environment_frame(buffer),
-            4 => Self::decode_update_subscription(buffer),
-            5 => Self::decode_init_message(buffer),
-            6 => Self::decode_road_clearance_frame(buffer),
-            7 => Self::decode_sensor_idle_frame(buffer),
-            8 => Self::decode_update_status(buffer),
+            TYPE_ID_REGISTRATION            => Self::decode_client_registration(buffer),
+            TYPE_ID_SENSOR_FRAME            => Self::decode_sensor_frame(buffer),
+            TYPE_ID_ENVIRONMENT_FRAME       => Self::decode_environment_frame(buffer),
+            TYPE_ID_UPDATE_SUBSCRIPTION     => Self::decode_update_subscription(buffer),
+            TYPE_ID_INIT_MESSAGE            => Self::decode_init_message(buffer),
+            TYPE_ID_ROAD_CLEARANCE_FRAME    => Self::decode_road_clearance_frame(buffer),
+            TYPE_ID_SENSOR_IDLE_FRAME       => Self::decode_sensor_idle_frame(buffer),
+            TYPE_ID_UPDATE_STATUS           => Self::decode_update_status(buffer),
             _ => Err(())
         }
     }
 
     pub fn encode(&self, target: &mut [u8]) -> Result<usize, ()> {
         match self {
-            Message::Registration(ref registration) => unsafe {
-                asn::uper_encode(&mut raw::asn_DEF_ClientRegistration, registration.as_ref(), target)
-            },
-            Message::UpdateSubscription(ref subscription) => unsafe {
-                asn::uper_encode(&mut raw::asn_DEF_UpdateSubscription, subscription.as_ref(), target)
-            },
-            Message::SensorFrame(ref frame) => unsafe {
-                asn::uper_encode(&mut raw::asn_DEF_SensorFrame, frame.as_ref(), target)
-            },
-            Message::EnvironmentFrame(ref frame) => unsafe {
-                asn::uper_encode(&mut raw::asn_DEF_EnvironmentFrame, frame.as_ref(), target)
-            },
-            Message::RoadClearanceFrame(ref frame) => unsafe {
-                asn::uper_encode(&mut raw::asn_DEF_RoadClearanceFrame, frame.as_ref(), target)
-            },
-            Message::SensorIdleFrame(ref frame) => unsafe {
-                asn::uper_encode(&mut raw::asn_DEF_SensorIdleFrame, frame.as_ref(), target)
-            },
-            Message::UpdateStatus(ref status) => unsafe {
-                asn::uper_encode(&mut raw::asn_DEF_UpdateStatus, status.as_ref(), target)
-            },
-            Message::InitMessage(ref status) => unsafe {
-                asn::uper_encode(&mut raw::asn_DEF_InitMessage, status.as_ref(), target)
-            },
+            Message::Registration(ref v)        => v.encode_to(target),
+            Message::UpdateSubscription(ref v)  => v.encode_to(target),
+            Message::SensorFrame(ref v)         => v.encode_to(target),
+            Message::EnvironmentFrame(ref v)    => v.encode_to(target),
+            Message::RoadClearanceFrame(ref v)  => v.encode_to(target),
+            Message::SensorIdleFrame(ref v)     => v.encode_to(target),
+            Message::UpdateStatus(ref v)        => v.encode_to(target),
+            Message::InitMessage(ref v)         => v.encode_to(target),
         }
     }
-}
 
-impl Into<Result<RawMessage, ()>> for Message {
-    fn into(self) -> Result<RawMessage, ()> {
-        let identifier = self.type_id();
-        let mut buffer = vec![0u8; MAX_MESSAGE_SIZE];
-        let size = self.encode(&mut buffer[..])?;
+    pub fn encode_to_new_buffer(&self) -> Result<Vec<u8>, ()> {
+        match self {
+            Message::Registration(v)        => v.encode_to_new_buffer(),
+            Message::UpdateSubscription(v)  => v.encode_to_new_buffer(),
+            Message::SensorFrame(v)         => v.encode_to_new_buffer(),
+            Message::EnvironmentFrame(v)    => v.encode_to_new_buffer(),
+            Message::RoadClearanceFrame(v)  => v.encode_to_new_buffer(),
+            Message::SensorIdleFrame(v)     => v.encode_to_new_buffer(),
+            Message::UpdateStatus(v)        => v.encode_to_new_buffer(),
+            Message::InitMessage(v)         => v.encode_to_new_buffer(),
+        }
+    }
+
+    pub fn into_raw(self) -> Result<RawMessage<Message>, ()> {
         RawMessage::new(
-            identifier,
-            buffer
+            self.type_id(),
+            self.encode_to_new_buffer()?,
         )
     }
 }
 
-impl Into<Result<Message, ()>> for RawMessage {
-    fn into(self) -> Result<Message, ()> {
-        Message::decode(self.identifier, self.bytes())
+pub trait AsnMessage {
+
+    fn type_id() -> u32;
+
+    fn type_def() -> &'static mut raw::asn_TYPE_descriptor_t;
+
+    fn encode_to(&self, buffer: &mut [u8]) -> Result<usize, ()> where Self: Sized {
+        unsafe {
+            asn::uper_encode(
+                Self::type_def(),
+                self,
+                buffer
+            )
+        }
+    }
+
+    fn encode_to_new_buffer(&self) -> Result<Vec<u8>, ()> where Self: Sized {
+        asn::uper_encode_to_new_buffer(
+            Self::type_def(),
+            self
+        )
+    }
+
+    fn encode(&self) -> Result<RawMessage<Self>, ()> where Self: Sized {
+        RawMessage::new(
+            Self::type_id(),
+            self.encode_to_new_buffer()?
+        )
+    }
+
+    fn decode_from_buffer(buffer: &[u8]) -> Result<Box<Self>, ()> where Self: Sized {
+        unsafe {
+            asn::uper_decode(
+                Self::type_def(),
+                buffer
+            )
+        }
+    }
+
+    fn decode(raw: &RawMessage<Self>) -> Result<Box<Self>, ()> where Self: Sized {
+        Self::decode_from_buffer(raw.bytes())
     }
 }
 
+impl AsnMessage for raw::ClientRegistration {
+    fn type_id() -> u32 {
+        TYPE_ID_REGISTRATION
+    }
+
+    fn type_def() -> &'static mut raw::asn_TYPE_descriptor_t {
+        unsafe {
+            &mut raw::asn_DEF_ClientRegistration
+        }
+    }
+}
+
+impl AsnMessage for raw::SensorFrame {
+    fn type_id() -> u32 {
+        TYPE_ID_SENSOR_FRAME
+    }
+
+    fn type_def() -> &'static mut raw::asn_TYPE_descriptor_t {
+        unsafe {
+            &mut raw::asn_DEF_SensorFrame
+        }
+    }
+}
+
+impl AsnMessage for raw::EnvironmentFrame {
+    fn type_id() -> u32 {
+        TYPE_ID_ENVIRONMENT_FRAME
+    }
+
+    fn type_def() -> &'static mut raw::asn_TYPE_descriptor_t {
+        unsafe {
+            &mut raw::asn_DEF_EnvironmentFrame
+        }
+    }
+}
+
+impl AsnMessage for raw::UpdateSubscription {
+    fn type_id() -> u32 {
+        TYPE_ID_UPDATE_SUBSCRIPTION
+    }
+
+    fn type_def() -> &'static mut raw::asn_TYPE_descriptor_t {
+        unsafe {
+            &mut raw::asn_DEF_UpdateSubscription
+        }
+    }
+}
+
+impl AsnMessage for raw::InitMessage {
+    fn type_id() -> u32 {
+        TYPE_ID_INIT_MESSAGE
+    }
+
+    fn type_def() -> &'static mut raw::asn_TYPE_descriptor_t {
+        unsafe {
+            &mut raw::asn_DEF_InitMessage
+        }
+    }
+}
+
+impl AsnMessage for raw::RoadClearanceFrame {
+    fn type_id() -> u32 {
+        TYPE_ID_ROAD_CLEARANCE_FRAME
+    }
+
+    fn type_def() -> &'static mut raw::asn_TYPE_descriptor_t {
+        unsafe {
+            &mut raw::asn_DEF_RoadClearanceFrame
+        }
+    }
+}
+
+impl AsnMessage for raw::SensorIdleFrame {
+    fn type_id() -> u32 {
+        TYPE_ID_SENSOR_IDLE_FRAME
+    }
+
+    fn type_def() -> &'static mut raw::asn_TYPE_descriptor_t {
+        unsafe {
+            &mut raw::asn_DEF_SensorIdleFrame
+        }
+    }
+}
+
+impl AsnMessage for raw::UpdateStatus {
+    fn type_id() -> u32 {
+        TYPE_ID_UPDATE_STATUS
+    }
+
+    fn type_def() -> &'static mut raw::asn_TYPE_descriptor_t {
+        unsafe {
+            &mut raw::asn_DEF_UpdateStatus
+        }
+    }
+}
 
 
 

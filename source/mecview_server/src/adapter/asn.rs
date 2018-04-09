@@ -21,7 +21,7 @@ use bytes::BytesMut;
 use byteorder::ByteOrder;
 use byteorder::NetworkEndian;
 
-use adapter::Command;
+use adapter::Adapter;
 
 const CLIENT_TYPE_SENSOR  : ClientType_t = ClientType_ClientType_sensor  as ClientType_t;
 const CLIENT_TYPE_VEHICLE : ClientType_t = ClientType_ClientType_vehicle as ClientType_t;
@@ -29,94 +29,77 @@ const CLIENT_TYPE_VEHICLE : ClientType_t = ClientType_ClientType_vehicle as Clie
 const ASN_HEADER_SIZE : usize = 8;
 
 
-pub struct AsnClientAdapter<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> {
+pub struct AsnAdapter<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> {
     encoder: Wait<E>,
-    client:  Sender<client::Command>,
 }
 
-impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnClientAdapter<E> {
-    pub fn new(encoder: E, client: Sender<client::Command>) -> AsnClientAdapter<E> {
-        AsnClientAdapter {
+impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnAdapter<E> {
+    pub fn new(encoder: E) -> AsnAdapter<E> {
+        AsnAdapter {
             encoder: encoder.wait(),
-            client,
         }
     }
 
-    fn process_message(&mut self, message: Message) -> Result<(), Error> {
-        match message {
-            Message::Registration(ref registration) => {
-                self.client_send(client::Command::UpdateVariant(
-                    variant_from_client_registration(registration)?
-                ))
-            },
-            _ => {
-                error!("Not implemented: {:?}", message);
-                Err(Error::from(ErrorKind::InvalidInput))
-            }
-        }
-    }
-
-    fn client_send(&mut self, command: client::Command) -> Result<(), Error> {
-        trace!("Trying to send command to client: {:?}", command);
-        match self.client.try_send(command) {
-            Ok(_) => {
-                trace!("Sent successfully");
-                Ok(())
-            },
-            Err(e) => {
-                error!("Failed to send command to client: {:?}", e);
-                Err(Error::from(ErrorKind::UnexpectedEof))
-            }
-        }
-    }
-
-    fn remote_subscribe_remote(&mut self) -> Result<(), Error> {
-        self.remote_update_subscription(SubscriptionStatus_SubscriptionStatus_subscribed as SubscriptionStatus_t)
-    }
-
-    fn remote_unsubscribe_remote(&mut self) -> Result<(), Error> {
-        self.remote_update_subscription(SubscriptionStatus_SubscriptionStatus_unsubscribed as SubscriptionStatus_t)
-    }
-
-    fn remote_update_subscription(&mut self, status: SubscriptionStatus_t) -> Result<(), Error> {
+    fn new_subscribe_message(status: SubscriptionStatus_t) -> UpdateSubscription {
         let mut update = UpdateSubscription::default();
         update.subscription_status = status;
-        self.remote_send(Message::UpdateSubscription(Box::new(update)))
-    }
-
-    fn remote_init(&mut self) -> Result<(), Error> {
-        let mut init = InitMessage::default();
-        self.remote_send(Message::InitMessage(Box::new(init)))
+        update
     }
 
     fn remote_send(&mut self, message: Message) -> Result<(), Error> {
         self.encoder.send(message)?;
         self.encoder.flush()
     }
+}
 
-    fn shutdown(&mut self) -> Result<(), Error> {
-        trace!("Received shutdown request");
-        // ignore errors
-        let _ = self.encoder.close();
-        let _ = self.client.try_send(client::Command::Shutdown);
-        let _ = self.client.close();
-        Ok(())
+
+pub fn map_message(message: Message) -> Result<client::Command<SensorFrame>, Error> {
+    match message {
+        Message::Registration(ref reg) =>
+            Err(Error::from(ErrorKind::InvalidInput)),
+        Message::UpdateSubscription(ref update) => match update.subscription_status as SubscriptionStatus {
+            SubscriptionStatus_SubscriptionStatus_subscribed => Ok(client::Command::Subscribe),
+            SubscriptionStatus_SubscriptionStatus_unsubscribed => Ok(client::Command::Unsubscribe),
+            _ => Err(Error::from(ErrorKind::NotFound)),
+        },
+        Message::SensorFrame(frame) => Ok(client::Command::UpdateAlgorithm(frame)),
+        Message::EnvironmentFrame(_) => Err(Error::from(ErrorKind::InvalidInput)),
+        Message::RoadClearanceFrame(_) => Err(Error::from(ErrorKind::InvalidInput)),
+        Message::SensorIdleFrame(_) => Ok(client::Command::SensorIsIdle),
+        Message::UpdateStatus(_) => Err(Error::from(ErrorKind::InvalidInput)),
+        Message::InitMessage(_) => Err(Error::from(ErrorKind::InvalidInput)),
     }
 }
 
-impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> CommandProcessor<Command<Message>> for AsnClientAdapter<E> {
-    fn process_command(&mut self, command: Command<Message>) -> Result<(), Error> {
-        match command {
-            Command::ProcessMessage(message) => self.process_message(message),
-            Command::RemoteSend(message) => self.remote_send(message),
-            Command::RemoteSubscribe => self.remote_subscribe_remote(),
-            Command::RemoteUnsubscribe => self.remote_unsubscribe_remote(),
-            Command::RemoteInit => self.remote_init(),
-            Command::Shutdown => self.shutdown(),
-        }
+impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> Adapter<EnvironmentFrame> for AsnAdapter<E> {
+    fn init_vehicle(&mut self) -> Result<(), Error> {
+        self.remote_send(Message::InitMessage(Box::new(
+            InitMessage::default()
+        )))
+    }
+
+    fn unsubscribe(&mut self) -> Result<(), Error> {
+        self.remote_send(Message::UpdateSubscription(Box::new(
+            Self::new_subscribe_message(
+                SubscriptionStatus_SubscriptionStatus_unsubscribed as SubscriptionStatus_t
+            )
+        )))
+    }
+
+    fn subscribe(&mut self) -> Result<(), Error> {
+        self.remote_send(Message::UpdateSubscription(Box::new(
+            Self::new_subscribe_message(
+                SubscriptionStatus_SubscriptionStatus_subscribed as SubscriptionStatus_t
+            )
+        )))
+    }
+
+    fn update_environment_model(&mut self, model: EnvironmentFrame) -> Result<(), Error> {
+        self.remote_send(Message::EnvironmentFrame(Box::new(
+            model
+        )))
     }
 }
-
 
 
 fn variant_from_client_registration(r: &ClientRegistration) -> Result<client::Variant, Error> {
@@ -127,7 +110,7 @@ fn variant_from_client_type_t(t: ClientType_t) -> Result<client::Variant, Error>
     match t {
         CLIENT_TYPE_SENSOR  => Ok(client::Variant::Sensor),
         CLIENT_TYPE_VEHICLE => Ok(client::Variant::Vehicle),
-        _ => Err(Error::from(ErrorKind::InvalidInput)),
+        _ => Err(Error::from(ErrorKind::NotFound)),
     }
 }
 

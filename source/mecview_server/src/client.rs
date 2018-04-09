@@ -1,25 +1,36 @@
 
 use std::io::Error;
 use std::io::ErrorKind;
+use std::net::SocketAddr;
+
+use std::fmt::Debug;
 
 use async::Sender;
 use async::Sink;
 use async::sink::Wait;
 use async::CommandProcessor;
 
-use adapter;
 
-pub struct Client<M: ::std::fmt::Debug> {
-    remote:  Sender<adapter::Command<M>>,
+use adapter;
+use adapter::Adapter;
+
+pub struct Client<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+'static, D: Adapter<E> + Send + 'static> {
+    address: SocketAddr,
+    adapter: D,
+    algorithm: Sender<A>,
     variant: Variant,
+    _e: ::std::marker::PhantomData<E>,
 }
 
-impl<M: ::std::fmt::Debug> Client<M> {
+impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+'static, D: Adapter<E> + Send + 'static> Client<A, E, D> {
 
-    pub fn new(remote: Sender<adapter::Command<M>>) -> Client<M> {
+    pub fn new(address: SocketAddr, adapter: D, algorithm: Sender<A>) -> Client<A, E, D> {
         Client {
-            remote,
+            address,
+            adapter,
+            algorithm,
             variant: Variant::Unknown,
+            _e: ::std::marker::PhantomData,
         }
     }
 
@@ -45,7 +56,7 @@ impl<M: ::std::fmt::Debug> Client<M> {
         unimplemented!()
     }
 
-    fn on_new_environment_model(&mut self, model: M) -> Result<(), Error> {
+    fn on_new_environment_model(&mut self, model: E) -> Result<(), Error> {
         trace!("New EnvironmentModel: {:?}", model);
         // self.remote.send(model) oder sowas
         // TODO
@@ -53,49 +64,31 @@ impl<M: ::std::fmt::Debug> Client<M> {
     }
 
     fn remote_init(&mut self) -> Result<(), Error> {
-        self.remote_send(adapter::Command::RemoteInit)
+        self.adapter.init_vehicle()
     }
 
     fn remote_unsubscribe(&mut self) -> Result<(), Error> {
-        self.remote_send(adapter::Command::RemoteUnsubscribe)
+        self.adapter.unsubscribe()
     }
 
     fn remote_subscribe(&mut self) -> Result<(), Error> {
-        self.remote_send(adapter::Command::RemoteSubscribe)
-    }
-
-    fn remote_send(&mut self, command: adapter::Command<M>) -> Result<(), Error> {
-        trace!("Going to send command {:?}", command);
-        match self.remote.try_send(command) {
-            Ok(_) => {
-                trace!("Command sent successful");
-                Ok(())
-            },
-            Err(e) => {
-                error!("Error while sending command to adapter: {:?}", e);
-                Err(Error::from(ErrorKind::UnexpectedEof))
-            }
-        }
+        self.adapter.subscribe()
     }
 
     fn set_variant(&mut self, variant: Variant) {
         trace!("Client is now a {:?}", variant);
         self.variant = variant;
     }
+}
 
-    fn shutdown(&mut self) {
-        trace!("Received shutdown");
-        let _ = self.remote_send(adapter::Command::Shutdown);
-        let _ = self.remote.close();
+impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+'static, D: Adapter<E> + Send + 'static> Drop for Client<A, E, D> {
+    fn drop(&mut self) {
+        trace!("Dropping client with address {}", self.address);
     }
 }
 
-impl<M: ::std::fmt::Debug> CommandProcessor<Command> for Client<M> {
-    fn process_command(&mut self, command: Command) -> Result<(), Error> {
-        if let Command::Shutdown = command {
-            self.shutdown();
-            return Err(Error::from(ErrorKind::UnexpectedEof));
-        }
+impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+'static, D: Adapter<E> + Send + 'static> CommandProcessor<Command<A>> for Client<A, E, D> {
+    fn process_command(&mut self, command: Command<A>) -> Result<(), Error> {
         match self.variant {
             Variant::Unknown => {
                 if let Command::UpdateVariant(variant) = command {
@@ -132,12 +125,12 @@ pub enum Variant {
 }
 
 #[derive(Debug, Clone)]
-pub enum Command {
+pub enum Command<A> {
     UpdateVariant(Variant),
     SensorIsIdle,
     Subscribe,
     Unsubscribe,
-    Shutdown,
+    UpdateAlgorithm(Box<A>),
 }
 
 #[cfg(test)]

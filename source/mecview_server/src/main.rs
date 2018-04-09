@@ -12,11 +12,12 @@ extern crate futures;
 extern crate bytes;
 extern crate byteorder;
 
-extern crate libmessages;
+extern crate libmessages as messages;
 
 mod client;
 mod server;
 mod adapter;
+mod algorithm;
 mod command_processor;
 
 mod async {
@@ -62,8 +63,6 @@ use async::Stream;
 use async::AsyncRead;
 use io::net::TcpStream;
 
-use libmessages::Message;
-
 fn main() {
 
     log4rs::init_file("log4rs.yml", Default::default()).unwrap();
@@ -72,12 +71,18 @@ fn main() {
     let server = server.start();
 
     {
+        use std::sync::Arc;
+        use messages::asn::AsnMessage;
+        use messages::asn::Generalize;
+
         thread::sleep_ms(1_000);
 
         let stream = TcpStream::connect(&"0.0.0.0:5500".parse::<SocketAddr>().unwrap()).wait().unwrap();
-        let (sink, mut stream) = stream.framed(::adapter::asn::AsnCodec()).split();
-        let sink = sink.send(Message::decode_client_registration(&[0x10]).unwrap()).wait().unwrap();
-        let sink = sink.send(Message::decode_client_registration(&[0x10]).unwrap()).wait().unwrap();
+        let (sink, mut stream) = stream.framed(::server::RawMessageCodec::default()).split();
+        let reg = messages::asn::raw::ClientRegistration::decode_from_buffer(&[0x20]).unwrap();
+        let arc = Arc::new(reg.encode().unwrap().generalize());
+        let sink = sink.send(arc.clone()).wait().unwrap();
+        let sink = sink.send(arc).wait().unwrap();
         println!(":::::::::: {:?}", stream.wait().next());
     }
 

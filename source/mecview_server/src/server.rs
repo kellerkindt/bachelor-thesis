@@ -3,6 +3,7 @@ use std::io::Error;
 use std::io::ErrorKind;
 use std::fmt::Debug;
 use std::net::SocketAddr;
+use std::sync::Arc;
 
 use client;
 use client::Client;
@@ -22,15 +23,25 @@ use async::AsyncRead;
 use async::AsyncWrite;
 use async::CommandProcessor;
 
+use io::Encoder;
+use io::Decoder;
 use io::net::TcpStream;
 use io::net::TcpListener;
 
-use libmessages::Message;
+use messages;
+use messages::RawMessage;
 
+use bytes::BufMut;
+use bytes::BytesMut;
+use byteorder::ByteOrder;
+use byteorder::NetworkEndian;
 
 const CHANNEL_BUFFER_SIZE_SERVER  : usize = 10;
 const CHANNEL_BUFFER_SIZE_CLIENT  : usize = 10;
 const CHANNEL_BUFFER_SIZE_ADAPTER : usize = 10;
+
+const HEADER_SIZE : usize = 8;
+
 
 pub struct Server {
     address: SocketAddr,
@@ -84,14 +95,21 @@ impl Server {
         let (algorithm_tx, algorithm_rx) = channel(2);
         let (client_tx, client_rx) = channel(2);
 
-        let (encoder, decoder) = client.framed(adapter::asn::AsnCodec()).split();
-        let mut client = Client::new(address, AsnAdapter::new(encoder), algorithm_tx.clone());
+        let (encoder, decoder) = client.framed(RawMessageCodec::default()).split();
+        let mut client = Client::new(client_tx.clone(), address, AsnAdapter::new(encoder), algorithm_tx.clone());
 
 
         self.runtime.spawn(
             decoder
-                .map(adapter::asn::map_message)
-                .and_then(|r| match r {
+                .map(|m| ::messages::asn::Message::decode(&m))
+                .then(|r| match r {
+                    Ok(message) => match message {
+                        Ok(message) => ::adapter::asn::map_message(message),
+                        Err(_) => Err(::std::io::Error::from(::std::io::ErrorKind::UnexpectedEof)),
+                    },
+                    Err(_) => Err(::std::io::Error::from(::std::io::ErrorKind::UnexpectedEof)),
+                })
+                .then(|r| match r {
                     Ok(command) => Ok(command),
                     Err(e) => {
                         error!("AsnAdapter error: {:?}", e);
@@ -136,4 +154,65 @@ impl CommandProcessor<Command> for Server {
 
 pub enum Command {
     AcceptStream(TcpStream),
+}
+
+pub struct RawMessageCodec<T> {
+    _t: ::std::marker::PhantomData<T>,
+}
+
+impl<T> Default for RawMessageCodec<T> {
+    fn default() -> RawMessageCodec<T> {
+        RawMessageCodec {
+            _t: ::std::marker::PhantomData,
+        }
+    }
+}
+
+impl<T> Encoder for RawMessageCodec<T> {
+    type Item = Arc<RawMessage<T>>;
+    type Error = Error;
+
+    fn encode(&mut self, item: <Self as Encoder>::Item, dst: &mut BytesMut) -> Result<(), <Self as Encoder>::Error> {
+        trace!("Writing RawMessage, identifier={}, length={}", item.identifier(), item.length());
+        dst.reserve(HEADER_SIZE + item.length() as usize);
+        dst.put_u32::<NetworkEndian>(item.length());
+        dst.put_u32::<NetworkEndian>(item.identifier());
+        dst.put_slice(item.bytes());
+        trace!("RawMessage written successfully");
+        Ok(())
+    }
+}
+
+impl<T> Decoder for RawMessageCodec<T> {
+    type Item = Arc<RawMessage<T>>;
+    type Error = Error;
+
+    fn decode(&mut self, src: &mut BytesMut) -> Result<Option<<Self as Decoder>::Item>, <Self as Decoder>::Error> {
+        trace!("Trying to read RawMessage, available bytes: {}", src.len());
+        if src.len() >= HEADER_SIZE {
+
+            let length       = NetworkEndian::read_u32(&src[0..4]) as usize;
+            let identifier   = NetworkEndian::read_u32(&src[4..8]);
+            let total_length = HEADER_SIZE + length;
+
+            if src.len() >= total_length {
+                trace!("Going to read RawMessage");
+                let mut vec = vec![length];
+                let mut src = src.split_to(total_length);
+                vec[..length].clone_from_slice(&src[HEADER_SIZE..]);
+                match RawMessage::new(identifier, vec) {
+                    Ok(message) => Ok(Some(Arc::new(message))),
+                    Err(_) => Err(Error::from(ErrorKind::InvalidData))
+                }
+
+            } else {
+                let capacity = src.capacity();
+                src.reserve(total_length - capacity);
+                Ok(None)
+            }
+        } else {
+            src.reserve(HEADER_SIZE);
+            Ok(None)
+        }
+    }
 }

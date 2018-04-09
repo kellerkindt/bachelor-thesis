@@ -5,6 +5,8 @@ use std::net::SocketAddr;
 
 use std::fmt::Debug;
 
+use std::sync::Arc;
+
 use async::Sender;
 use async::Sink;
 use async::sink::Wait;
@@ -14,19 +16,25 @@ use async::CommandProcessor;
 use adapter;
 use adapter::Adapter;
 
-pub struct Client<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+'static, D: Adapter<E> + Send + 'static> {
+use algorithm::Algorithm;
+
+use messages::RawMessage;
+
+pub struct Client<A: Debug+Send+Sized+'static, E: Debug+Sized+Sync+Send+'static, G: Algorithm<A, E, Identifier=SocketAddr>+Sized+'static, D: Adapter<E> + Send + 'static> {
     address: SocketAddr,
+    myself: Sender<Command<A, E>>,
     adapter: D,
-    algorithm: Sender<A>,
+    algorithm: G,
     variant: Variant,
     _e: ::std::marker::PhantomData<E>,
 }
 
-impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+'static, D: Adapter<E> + Send + 'static> Client<A, E, D> {
+impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm<A, E, Identifier=SocketAddr>+Sized+'static, D: Adapter<E> + Send + 'static> Client<A, E, G, D> {
 
-    pub fn new(address: SocketAddr, adapter: D, algorithm: Sender<A>) -> Client<A, E, D> {
+    pub fn new(myself: Sender<Command<A, E>>, address: SocketAddr, adapter: D, algorithm: G) -> Client<A, E, G, D> {
         Client {
             address,
+            myself,
             adapter,
             algorithm,
             variant: Variant::Unknown,
@@ -44,23 +52,30 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+'static, D: Adapter<E> + S
         self.remote_init()
     }
 
-    fn subscribe_to_environment_model(&mut self) -> Result<(), Error> {
-        trace!("Subscribing to environment model");
-        // TODO
-        unimplemented!()
+    fn subscribe_to_algorithm(&mut self) -> Result<(), Error> {
+        trace!("Subscribing to algorithm");
+        let mut sender = self.myself.clone();
+        self.algorithm.subscribe(self.address.clone(), Box::new(move |e| {
+            match sender.try_send(Command::UpdateEnvironmentModel(e)) {
+                Ok(_)  => Ok(()),
+                Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
+            }
+        }))
     }
 
-    fn unsubscribe_from_environment_model(&mut self) -> Result<(), Error> {
+    fn unsubscribe_from_algorithm(&mut self) -> Result<(), Error> {
         trace!("Unsubscribing from environment model");
-        // TODO
-        unimplemented!()
+        self.algorithm.unsubscribe(self.address.clone())
     }
 
-    fn on_new_environment_model(&mut self, model: E) -> Result<(), Error> {
+    fn update_environment_model(&mut self, model: Arc<RawMessage<E>>) -> Result<(), Error> {
         trace!("New EnvironmentModel: {:?}", model);
-        // self.remote.send(model) oder sowas
-        // TODO
-        unimplemented!()
+        self.adapter.update_environment_model(model)
+    }
+
+    fn update_algorithm(&mut self, update: Box<A>) -> Result<(), Error> {
+        trace!("Updating algorithm: {:?}", update);
+        self.algorithm.update(update)
     }
 
     fn remote_init(&mut self) -> Result<(), Error> {
@@ -81,14 +96,14 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+'static, D: Adapter<E> + S
     }
 }
 
-impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+'static, D: Adapter<E> + Send + 'static> Drop for Client<A, E, D> {
+impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm<A, E, Identifier=SocketAddr>+Sized+'static, D: Adapter<E> + Send + 'static> Drop for Client<A, E, G, D> {
     fn drop(&mut self) {
         trace!("Dropping client with address {}", self.address);
     }
 }
 
-impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+'static, D: Adapter<E> + Send + 'static> CommandProcessor<Command<A>> for Client<A, E, D> {
-    fn process_command(&mut self, command: Command<A>) -> Result<(), Error> {
+impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm<A, E, Identifier=SocketAddr>+Sized+'static, D: Adapter<E> + Send + 'static> CommandProcessor<Command<A, E>> for Client<A, E, G, D> {
+    fn process_command(&mut self, command: Command<A, E>) -> Result<(), Error> {
         match self.variant {
             Variant::Unknown => {
                 if let Command::UpdateVariant(variant) = command {
@@ -105,12 +120,14 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+'static, D: Adapter<E> + S
             Variant::Sensor => {
                 match command {
                     Command::SensorIsIdle => Ok(()), // great... I guess
+                    Command::UpdateAlgorithm(update) => self.update_algorithm(update),
                     _ => Err(Error::from(ErrorKind::InvalidInput)),
                 }
             },
             Variant::Vehicle => match command {
-                Command::Subscribe => self.subscribe_to_environment_model(),
-                Command::Unsubscribe => self.unsubscribe_from_environment_model(),
+                Command::Subscribe => self.subscribe_to_algorithm(),
+                Command::Unsubscribe => self.unsubscribe_from_algorithm(),
+                Command::UpdateEnvironmentModel(model) => self.update_environment_model(model),
                 _ => Err(Error::from(ErrorKind::InvalidInput)),
             },
         }
@@ -125,12 +142,13 @@ pub enum Variant {
 }
 
 #[derive(Debug, Clone)]
-pub enum Command<A> {
+pub enum Command<A, E: Debug+Send+Sized+'static> {
     UpdateVariant(Variant),
     SensorIsIdle,
     Subscribe,
     Unsubscribe,
     UpdateAlgorithm(Box<A>),
+    UpdateEnvironmentModel(Arc<RawMessage<E>>),
 }
 
 #[cfg(test)]

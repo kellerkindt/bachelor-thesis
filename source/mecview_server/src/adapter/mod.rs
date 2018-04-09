@@ -4,8 +4,9 @@ pub mod asn;
 use std::io::Error;
 use std::fmt::Debug;
 
-use client;
-use async::Sender;
+use std::sync::Arc;
+
+use messages::RawMessage;
 
 
 pub trait Adapter<E: Debug> {
@@ -16,5 +17,5 @@ pub trait Adapter<E: Debug> {
 
     fn subscribe(&mut self) -> Result<(), Error>;
 
-    fn update_environment_model(&mut self, model: E) -> Result<(), Error>;
+    fn update_environment_model(&mut self, model: Arc<RawMessage<E>>) -> Result<(), Error>;
 }

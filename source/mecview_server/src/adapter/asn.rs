@@ -4,36 +4,28 @@ use client;
 use std::io::Error;
 use std::io::ErrorKind;
 
+use std::sync::Arc;
+
 use async::Sink;
-use async::Future;
-use async::Sender;
 use async::sink::Wait;
-use async::CommandProcessor;
 
-use io::Encoder;
-use io::Decoder;
-
-use libmessages::Message;
-use libmessages::raw::*;
-
-use bytes::BufMut;
-use bytes::BytesMut;
-use byteorder::ByteOrder;
-use byteorder::NetworkEndian;
+use messages::RawMessage;
+use messages::asn::raw::*;
+use messages::asn::Message;
+use messages::asn::AsnMessage;
+use messages::asn::Generalize;
 
 use adapter::Adapter;
 
 const CLIENT_TYPE_SENSOR  : ClientType_t = ClientType_ClientType_sensor  as ClientType_t;
 const CLIENT_TYPE_VEHICLE : ClientType_t = ClientType_ClientType_vehicle as ClientType_t;
 
-const ASN_HEADER_SIZE : usize = 8;
 
-
-pub struct AsnAdapter<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> {
+pub struct AsnAdapter<E: Sink<SinkItem=Arc<RawMessage<Message>>,SinkError=Error> + Send + 'static> {
     encoder: Wait<E>,
 }
 
-impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnAdapter<E> {
+impl<E: Sink<SinkItem=Arc<RawMessage<Message>>,SinkError=Error> + Send + 'static> AsnAdapter<E> {
     pub fn new(encoder: E) -> AsnAdapter<E> {
         AsnAdapter {
             encoder: encoder.wait(),
@@ -46,17 +38,28 @@ impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> AsnAdapter<E> {
         update
     }
 
-    fn remote_send(&mut self, message: Message) -> Result<(), Error> {
+    fn remote_send<M: AsnMessage>(&mut self, message: M) -> Result<(), Error> {
+        match message.encode() {
+            Err(_) => Err(Error::from(ErrorKind::InvalidData)),
+            Ok(raw) => {
+                self.encoder.send(Arc::new(raw.generalize()))?;
+                self.encoder.flush()
+            }
+        }
+    }
+
+    fn remote_send_raw(&mut self, message: Arc<RawMessage<Message>>) -> Result<(), Error> {
         self.encoder.send(message)?;
         self.encoder.flush()
     }
 }
 
 
-pub fn map_message(message: Message) -> Result<client::Command<SensorFrame>, Error> {
+pub fn map_message(message: Message) -> Result<client::Command<SensorFrame, EnvironmentFrame>, Error> {
     match message {
-        Message::Registration(ref reg) =>
-            Err(Error::from(ErrorKind::InvalidInput)),
+        Message::Registration(ref reg) => Ok(client::Command::UpdateVariant(
+            variant_from_client_registration(reg)?
+        )),
         Message::UpdateSubscription(ref update) => match update.subscription_status as SubscriptionStatus {
             SubscriptionStatus_SubscriptionStatus_subscribed => Ok(client::Command::Subscribe),
             SubscriptionStatus_SubscriptionStatus_unsubscribed => Ok(client::Command::Unsubscribe),
@@ -71,33 +74,29 @@ pub fn map_message(message: Message) -> Result<client::Command<SensorFrame>, Err
     }
 }
 
-impl<E: Sink<SinkItem=Message,SinkError=Error> + Send + 'static> Adapter<EnvironmentFrame> for AsnAdapter<E> {
+impl<E: Sink<SinkItem=Arc<RawMessage<Message>>,SinkError=Error> + Send + 'static> Adapter<EnvironmentFrame> for AsnAdapter<E> {
     fn init_vehicle(&mut self) -> Result<(), Error> {
-        self.remote_send(Message::InitMessage(Box::new(
-            InitMessage::default()
-        )))
+        self.remote_send(InitMessage::default())
     }
 
     fn unsubscribe(&mut self) -> Result<(), Error> {
-        self.remote_send(Message::UpdateSubscription(Box::new(
+        self.remote_send(
             Self::new_subscribe_message(
                 SubscriptionStatus_SubscriptionStatus_unsubscribed as SubscriptionStatus_t
             )
-        )))
+        )
     }
 
     fn subscribe(&mut self) -> Result<(), Error> {
-        self.remote_send(Message::UpdateSubscription(Box::new(
+        self.remote_send(
             Self::new_subscribe_message(
                 SubscriptionStatus_SubscriptionStatus_subscribed as SubscriptionStatus_t
             )
-        )))
+        )
     }
 
-    fn update_environment_model(&mut self, model: EnvironmentFrame) -> Result<(), Error> {
-        self.remote_send(Message::EnvironmentFrame(Box::new(
-            model
-        )))
+    fn update_environment_model(&mut self, model: Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error> {
+        self.remote_send_raw(model.generalize())
     }
 }
 
@@ -111,71 +110,6 @@ fn variant_from_client_type_t(t: ClientType_t) -> Result<client::Variant, Error>
         CLIENT_TYPE_SENSOR  => Ok(client::Variant::Sensor),
         CLIENT_TYPE_VEHICLE => Ok(client::Variant::Vehicle),
         _ => Err(Error::from(ErrorKind::NotFound)),
-    }
-}
-
-
-pub struct AsnCodec();
-
-impl Decoder for AsnCodec {
-    type Item = Message;
-    type Error = Error;
-
-    fn decode(&mut self, src: &mut BytesMut) -> Result<Option<<Self as Decoder>::Item>, <Self as Decoder>::Error> {
-        trace!("len: {}", src.len());
-        if src.len() > ASN_HEADER_SIZE {
-            let message_size = NetworkEndian::read_u32(&src[0..4]) as usize;
-            let message_type = NetworkEndian::read_u32(&src[4..8]);
-            let total_size = ASN_HEADER_SIZE + message_size;
-
-            if src.len() >= total_size {
-                trace!("Trying to decode, size={}, type={}", message_size, message_type);
-                let buffer = src.split_to(total_size);
-                match Message::decode(message_type, &buffer[ASN_HEADER_SIZE..]) {
-                    Err(e) => {
-                        warn!("Failed to decode message size={}, type={}: {:?}", message_size, message_type, e);
-                        Err(Error::from(ErrorKind::InvalidData))
-                    },
-                    Ok(message) => {
-                        trace!("Successfully decoded: {:?}", message);
-                        Ok(Some(message))
-                    },
-                }
-            } else {
-                let src_capacity = src.capacity();
-                src.reserve((message_size + ASN_HEADER_SIZE) - src_capacity);
-                Ok(None)
-            }
-        } else {
-            src.reserve(ASN_HEADER_SIZE);
-            Ok(None)
-        }
-    }
-}
-
-impl Encoder for AsnCodec {
-    type Item = Message;
-    type Error = Error;
-
-    fn encode(&mut self, item: <Self as Encoder>::Item, dst: &mut BytesMut) -> Result<(), <Self as Encoder>::Error> {
-        trace!("Trying to encode: {:?}", item);
-        let mut buffer = [0u8; 1024*1024]; // TODO
-        let message_size = match item.encode(&mut buffer[..]) {
-            Err(_) => {
-                trace!("Failed to encode: {:?}", item);
-                return Err(Error::from(ErrorKind::Other))
-            },
-            Ok(size) => size as u32
-        };
-
-        let total_size = ASN_HEADER_SIZE + message_size as usize;
-        dst.reserve(total_size);
-        dst.put_u32::<NetworkEndian>(message_size);
-        dst.put_u32::<NetworkEndian>(item.type_id());
-        let slice = &buffer[..message_size as usize];
-        dst.put_slice(slice);
-        trace!("Successfully Encoded {} bytes: {:?}", message_size, item);
-        Ok(())
     }
 }
 

@@ -31,7 +31,7 @@ pub unsafe fn uper_decode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, buffer: 
     );
 
     trace!("result: {:?} for type: {:?}", result, asn_type);
-    if result.code != raw::asn_dec_rval_code_e_RC_OK{
+    if result.code != raw::asn_dec_rval_code_e_RC_OK {
         warn!("Decoding failed: {:?}", result);
         Err(())
     } else {

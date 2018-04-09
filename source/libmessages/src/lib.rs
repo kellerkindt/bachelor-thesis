@@ -7,6 +7,9 @@ extern crate log;
 extern crate log4rs;
 
 
+use std::sync::Arc;
+
+#[derive(Debug)]
 pub struct RawMessage<T: ?Sized> {
     identifier: u32,
     bytes: Vec<u8>,
@@ -36,5 +39,17 @@ impl<T: ?Sized> RawMessage<T> {
 
     pub fn bytes(&self) -> &[u8] {
         &self.bytes[..]
+    }
+
+    pub(crate) fn into<T2>(self) -> RawMessage<T2> {
+        unsafe {
+            ::std::mem::transmute(self)
+        }
+    }
+
+    pub(crate) fn arc_into<T2>(myself: Arc<RawMessage<T>>) -> Arc<RawMessage<T2>> {
+        unsafe {
+            ::std::mem::transmute(myself)
+        }
     }
 }

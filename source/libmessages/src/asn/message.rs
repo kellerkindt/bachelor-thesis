@@ -102,7 +102,14 @@ impl Message {
         }
     }
 
-    pub fn encode(&self, target: &mut [u8]) -> Result<usize, ()> {
+    pub fn encode(self) -> Result<RawMessage<Message>, ()> {
+        RawMessage::new(
+            self.type_id(),
+            self.encode_to_new_buffer()?,
+        )
+    }
+
+    pub fn encode_to(&self, target: &mut [u8]) -> Result<usize, ()> {
         match self {
             Message::Registration(ref v)        => v.encode_to(target),
             Message::UpdateSubscription(ref v)  => v.encode_to(target),
@@ -127,14 +134,25 @@ impl Message {
             Message::InitMessage(v)         => v.encode_to_new_buffer(),
         }
     }
+}
 
-    pub fn into_raw(self) -> Result<RawMessage<Message>, ()> {
-        RawMessage::new(
-            self.type_id(),
-            self.encode_to_new_buffer()?,
-        )
+pub trait Generalize<T> {
+    fn generalize(self) -> T;
+}
+
+impl<T: AsnMessage> Generalize<RawMessage<Message>> for RawMessage<T> {
+    fn generalize(self) -> RawMessage<Message> {
+        self.into()
     }
 }
+
+use std::sync::Arc;
+impl<T: AsnMessage> Generalize<Arc<RawMessage<Message>>> for Arc<RawMessage<T>> {
+    fn generalize(self) -> Arc<RawMessage<Message>> {
+        RawMessage::arc_into(self)
+    }
+}
+
 
 pub trait AsnMessage {
 

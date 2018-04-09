@@ -88,7 +88,14 @@ impl Message {
         }
     }
 
-    pub fn decode(type_id: u32, buffer: &[u8]) -> Result<Message, ()> {
+    pub fn decode(raw: &RawMessage<Message>) -> Result<Message, ()> {
+        Self::decode_from(
+            raw.identifier(),
+            raw.bytes()
+        )
+    }
+
+    pub fn decode_from(type_id: u32, buffer: &[u8]) -> Result<Message, ()> {
         match type_id {
             TYPE_ID_REGISTRATION            => Self::decode_client_registration(buffer),
             TYPE_ID_SENSOR_FRAME            => Self::decode_sensor_frame(buffer),

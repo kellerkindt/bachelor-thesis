@@ -17,7 +17,7 @@ pub struct RawMessage<T: ?Sized> {
 }
 
 impl<T: ?Sized> RawMessage<T> {
-    pub(crate) fn new(identifier: u32, bytes: Vec<u8>) -> Result<RawMessage<T>, ()> {
+    pub fn new(identifier: u32, bytes: Vec<u8>) -> Result<RawMessage<T>, ()> {
         if bytes.len() > ::std::u32::MAX as usize {
             Err(())
         } else {

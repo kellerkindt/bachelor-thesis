@@ -1,4 +1,7 @@
-use super::raw;
+mod message;
+
+pub extern crate libmessages_sys as raw;
+pub use self::message::*;
 
 
 pub unsafe fn uper_encode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, value: &T, buffer: &mut [u8]) -> Result<usize, ()> {

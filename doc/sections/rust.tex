@@ -586,7 +586,7 @@ Für Unit-Tests müssen Module und Funktionen mit entsprechenden Anmerkung verse
 
 Unit-Tests sind per Konvention immer in der Datei mit der zu testenden Funktionalität zu finden.
 Diese privaten, inneren Module, die konventionell \enquote{tests} benannt sind, werden durch das Attribut \rustcinline{#[cfg(test)]} markiert.
-Durch diese Markierung wird der beinhaltete Code nur für das Ausführen der Tests compiliert.
+Durch diese Markierung wird der beinhaltete Code nur für das Ausführen der Tests compiliert und spart bei normaler Kompilation Zeit.
 \rustcinline{cargo test} führt alle auffindbaren Funktionen mit der Anmerkung \rustcinline{#[test]}, leeren Parameterlisten und keinen Rückgabewerten aus.
 Die Makros \rustcinline{assert!(a)}, \rustcinline{assert_eq!(a, b)} und \rustcinline{assert_ne!(a, b)} prüfen Ergebnisse und lösen \rustcinline{panic!}s aus (siehe \autoref{rust:panic}), falls Ergebnisse nicht den erwarteten Werten entsprechen.
 Ein Test gilt als bestanden, wenn keine \rustcinline{panic!} ausgelöst wurde.

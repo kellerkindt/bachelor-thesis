@@ -197,7 +197,7 @@ impl<T> Decoder for RawMessageCodec<T> {
 
             if src.len() >= total_length {
                 trace!("Going to read RawMessage");
-                let mut vec = vec![length];
+                let mut vec = vec![0u8; length];
                 let mut src = src.split_to(total_length);
                 vec[..length].clone_from_slice(&src[HEADER_SIZE..]);
                 match RawMessage::new(identifier, vec) {

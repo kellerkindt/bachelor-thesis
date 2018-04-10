@@ -22,6 +22,8 @@ pub struct Client<A: Debug+Send+Sized+'static, E: Debug+Sized+Sync+Send+'static,
     adapter: D,
     algorithm: G,
     variant: Variant,
+    subscribed_model: bool,
+    subscribed_count: bool,
     _e: ::std::marker::PhantomData<E>,
 }
 
@@ -34,43 +36,51 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
             adapter,
             algorithm,
             variant: Variant::Unknown,
+            subscribed_model: false,
+            subscribed_count: false,
             _e: ::std::marker::PhantomData,
         }
     }
 
     fn init_as_sensor(&mut self) -> Result<(), Error> {
-        trace!("Initializing as sensor");
+        trace!("Client/{}/{:?} is initializing as sensor", self.address, self.variant);
         self.remote_unsubscribe()
     }
 
     fn init_as_vehicle(&mut self) -> Result<(), Error> {
-        trace!("Initializing as vehicle");
+        trace!("Client/{}/{:?} is initializing as vehicle", self.address, self.variant);
         self.remote_init()
     }
 
     fn subscribe_to_algorithm(&mut self) -> Result<(), Error> {
-        trace!("Subscribing to algorithm");
+        trace!("Client/{}/{:?} is subscribing to algorithm", self.address, self.variant);
         let mut sender = self.myself.clone();
         self.algorithm.subscribe_environment_model(self.address.clone(), Box::new(move |e| {
             match sender.try_send(Command::UpdateEnvironmentModel(e)) {
-                Ok(_)  => Ok(()),
+                Ok(_)  => {
+                    Ok(())
+                },
                 Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
             }
-        }))
+        }))?;
+        self.subscribed_model = true;
+        Ok(())
     }
 
     fn unsubscribe_from_algorithm(&mut self) -> Result<(), Error> {
-        trace!("Unsubscribing from environment model");
-        self.algorithm.unsubscribe_environment_model(self.address.clone())
+        trace!("Client/{}/{:?} is unsubscribing from algorithm", self.address, self.variant);
+        self.algorithm.unsubscribe_environment_model(self.address.clone())?;
+        self.subscribed_model = false;
+        Ok(())
     }
 
     fn update_environment_model(&mut self, model: Arc<RawMessage<E>>) -> Result<(), Error> {
-        trace!("New EnvironmentModel: {:?}", model);
+        trace!("Client/{}/{:?} received environment model: {:?}", self.address, self.variant, model);
         self.adapter.update_environment_model(model)
     }
 
     fn update_algorithm(&mut self, update: Box<A>) -> Result<(), Error> {
-        trace!("Updating algorithm: {:?}", update);
+        trace!("Client/{}/{:?} received algorithm update: {:?}", self.address, self.variant, update);
         self.algorithm.update(update)
     }
 
@@ -87,14 +97,22 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
     }
 
     fn set_variant(&mut self, variant: Variant) {
-        trace!("Client is now a {:?}", variant);
+        trace!("Client/{}/{:?} is going to be a {:?}", self.address, self.variant, variant);
         self.variant = variant;
     }
 }
 
 impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm<A, E, Identifier=SocketAddr>+Sized+'static, D: Adapter<E> + Send + 'static> Drop for Client<A, E, G, D> {
     fn drop(&mut self) {
-        trace!("Dropping client with address {}", self.address);
+        info!("Client/{}/{:?} is being dropped", self.address, self.variant);
+        if self.subscribed_model {
+            warn!("Client/{}/{:?}: Remote did not unsubscribe from algorithm.model", self.address, self.variant);
+            self.unsubscribe_from_algorithm();
+        }
+        if self.subscribed_count {
+            warn!("Client/{}/{:?}: Remote did not unsubscribe from algorithm.count", self.address, self.variant);
+            // TODO
+        }
     }
 }
 

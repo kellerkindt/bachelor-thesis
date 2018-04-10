@@ -7,6 +7,8 @@ use std::sync::Arc;
 use client::Client;
 
 use adapter::asn::AsnAdapter;
+use algorithm::Algorithm;
+use algorithm::SampleAlgorithm;
 
 use async::Sink;
 use async::Future;
@@ -92,12 +94,15 @@ impl Server {
         let (encoder, decoder) = client.framed(RawMessageCodec::default()).split();
         let mut client = Client::new(client_tx.clone(), address, AsnAdapter::new(encoder), algorithm_tx.clone());
 
-        // to prevent EOF errors
+        let mut algorithm = SampleAlgorithm::default();
+
         self.runtime.spawn(
             algorithm_rx
-                .for_each(|command| {
-                    trace!("Received command");
-                    Ok(())
+                .for_each(move |command| {
+                    match algorithm.process_command(command) {
+                        Ok(_) => Ok(()),
+                        Err(_) => Err(()),
+                    }
                 })
         );
 

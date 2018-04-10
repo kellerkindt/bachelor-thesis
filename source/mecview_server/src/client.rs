@@ -104,7 +104,7 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
 
 impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm<A, E, Identifier=SocketAddr>+Sized+'static, D: Adapter<E> + Send + 'static> Drop for Client<A, E, G, D> {
     fn drop(&mut self) {
-        info!("Client/{}/{:?} is being dropped", self.address, self.variant);
+        info!("Client/{}/{:?} is going to be dropped", self.address, self.variant);
         if self.subscribed_model {
             warn!("Client/{}/{:?}: Remote did not unsubscribe from algorithm.model", self.address, self.variant);
             self.unsubscribe_from_algorithm();

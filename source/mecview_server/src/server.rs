@@ -7,6 +7,7 @@ use std::sync::Arc;
 use client::Client;
 
 use adapter::asn::AsnAdapter;
+use algorithm;
 use algorithm::Algorithm;
 use algorithm::SampleAlgorithm;
 
@@ -25,6 +26,7 @@ use io::Decoder;
 use io::net::TcpStream;
 use io::net::TcpListener;
 
+use messages::asn::raw;
 use messages::RawMessage;
 
 use bytes::BufMut;
@@ -32,29 +34,34 @@ use bytes::BytesMut;
 use byteorder::ByteOrder;
 use byteorder::NetworkEndian;
 
-const CHANNEL_BUFFER_SIZE_SERVER  : usize = 10;
-const CHANNEL_BUFFER_SIZE_CLIENT  : usize = 10;
-const CHANNEL_BUFFER_SIZE_ADAPTER : usize = 10;
+const CHANNEL_BUFFER_SIZE_SERVER    : usize = 10;
+const CHANNEL_BUFFER_SIZE_CLIENT    : usize = 10;
+const CHANNEL_BUFFER_SIZE_ADAPTER   : usize = 10;
+const CHANNEL_BUFFER_SIZE_ALGORITHM : usize = 10;
 
 const HEADER_SIZE : usize = 8;
 
+type Alg = Sender<algorithm::Command<raw::SensorFrame, raw::EnvironmentFrame, SocketAddr>>;
 
 pub struct Server {
     address: SocketAddr,
     runtime: Runtime,
+    algorithm: Option<Alg>,
 }
 
 impl Server {
     pub fn new(address: SocketAddr) -> Result<Server, Error> {
         Ok(Server {
             address,
-            runtime: Runtime::new()?
+            runtime: Runtime::new()?,
+            algorithm: None,
         })
     }
 
     pub fn start(mut self) -> Result<Sender<Command>, Error> {
         let (sender, receiver) = channel(CHANNEL_BUFFER_SIZE_SERVER);
         self.spawn_tcp_listener(sender.clone())?;
+        self.spawn_algorithm()?;
         self.spawn_command_processor(receiver);
         Ok(sender)
     }
@@ -75,8 +82,33 @@ impl Server {
         Ok(())
     }
 
-    fn handle_new_client(&mut self, client: TcpStream) {
-        let address = client.peer_addr().unwrap();
+    fn spawn_algorithm(&mut self) -> Result<(), Error> {
+        let (tx, rx) = channel(CHANNEL_BUFFER_SIZE_ALGORITHM);
+        let mut sample = SampleAlgorithm::default();
+        self.runtime.spawn(rx.for_each(move |command| {
+            match sample.process_command(command) {
+                Ok(_) => Ok(()),
+                Err(_) => Err(()),
+            }
+        }));
+        self.algorithm = Some(tx);
+        Ok(())
+    }
+
+    fn spawn_or_get_algorithm(&mut self) -> Result<&mut Alg, Error> {
+        if let Some(ref mut alg) = self.algorithm {
+            Ok(alg)
+        } else {
+            self.spawn_algorithm()?;
+            match self.algorithm {
+                Some(ref mut alg) => Ok(alg),
+                None => Err(Error::from(ErrorKind::Other))
+            }
+        }
+    }
+
+    fn handle_new_client(&mut self, client: TcpStream) -> Result<(), Error> {
+        let address = client.peer_addr()?;
         info!("Client connected from {}", address);
 
         if client.set_nodelay(true).is_err() {
@@ -87,23 +119,14 @@ impl Server {
             warn!("TCP keepalive couldn't be set");
         }
 
-        // TODO
-        let (algorithm_tx, mut algorithm_rx) = channel(2);
         let (client_tx, client_rx) = channel(2);
 
         let (encoder, decoder) = client.framed(RawMessageCodec::default()).split();
-        let mut client = Client::new(client_tx.clone(), address, AsnAdapter::new(encoder), algorithm_tx.clone());
-
-        let mut algorithm = SampleAlgorithm::default();
-
-        self.runtime.spawn(
-            algorithm_rx
-                .for_each(move |command| {
-                    match algorithm.process_command(command) {
-                        Ok(_) => Ok(()),
-                        Err(_) => Err(()),
-                    }
-                })
+        let mut client = Client::new(
+            client_tx.clone(),
+            address,
+            AsnAdapter::new(encoder),
+            self.spawn_or_get_algorithm()?.clone(),
         );
 
         self.runtime.spawn(
@@ -116,14 +139,8 @@ impl Server {
                     },
                     Err(_) => Err(::std::io::Error::from(::std::io::ErrorKind::UnexpectedEof)),
                 })
-                .then(|r| match r {
-                    Ok(command) => Ok(command),
-                    Err(e) => {
-                        error!("AsnAdapter error: {:?}", e);
-                        // TODO verify
-                        Err(::std::io::Error::from(::std::io::ErrorKind::UnexpectedEof))
-                    }
-                })
+                // stop the stream by inserting EOF after the decoder is done
+                .chain(::futures::stream::once(Err(::std::io::Error::from(::std::io::ErrorKind::UnexpectedEof))))
                 .select(client_rx.then(|r| match r {
                     Ok(ok) => Ok(ok),
                     Err(_) => Err(::std::io::Error::from(::std::io::ErrorKind::UnexpectedEof))
@@ -135,6 +152,7 @@ impl Server {
                     Err(_) => Err(())
                 })
         );
+        Ok(())
     }
 
     fn spawn_command_processor(mut self, receiver: Receiver<Command>) {
@@ -153,8 +171,7 @@ impl CommandProcessor<Command> for Server {
     fn process_command(&mut self, command: Command) -> Result<(), Error> {
         match command {
             Command::AcceptStream(stream) => self.handle_new_client(stream),
-        };
-        Ok(())
+        }
     }
 }
 

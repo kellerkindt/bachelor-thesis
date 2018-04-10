@@ -32,7 +32,7 @@ impl SampleAlgorithm {
         trace!("Removing model listener with id={}", remove);
         let len = self.model_listener.len();
         self.model_listener.retain(|(id, _)| id.ne(&remove));
-        trace!("Removed {} matches", self.model_listener.len() - len);
+        trace!("Removed {} matches", len - self.model_listener.len());
         if len != self.model_listener.len() {
             self.on_model_count_changed();
         }

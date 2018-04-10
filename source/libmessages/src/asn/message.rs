@@ -307,34 +307,14 @@ impl AsnMessage for raw::UpdateStatus {
 mod tests {
     use std::ptr;
     use std::mem;
-    use raw::*;
     use super::*;
+    use super::raw::*;
+    use super::super::tests::init_logger;
 
-    pub fn init_logger() {
-        use log::LevelFilter;
-        use log4rs::config::Config;
-        use log4rs::config::Root;
-        use log4rs::config::Appender;
-        use log4rs::append::console::ConsoleAppender;
-        use log4rs::encode::pattern::PatternEncoder;
-
-        let encoder = PatternEncoder::new("{d(%Y-%m-%d %H:%M:%S)} {T} {M}:{L} {l} - {m}{n}");
-
-        let appender = ConsoleAppender::builder()
-            .encoder(Box::new(encoder))
-            .build();
-
-        let config = Config::builder()
-            .appender(Appender::builder().build("stdout", Box::new(appender)))
-            .build(Root::builder().appender("stdout").build(LevelFilter::Warn))
-            .unwrap();
-
-        let _ = log4rs::init_config(config);
-    }
 
     fn test_encode(message: Message, should_be: &[u8]) {
         let mut buffer = vec![0u8; should_be.len()];
-        let result = message.encode(&mut buffer[..]);
+        let result = message.encode_to(&mut buffer[..]);
         trace!("result {:?}", result);
         if let Ok(count) = result {
             let mut string = String::new();
@@ -628,7 +608,7 @@ mod tests {
         assert!(message.is_ok());
         match message.expect("Message decoding failed") {
             Message::Registration(ref reg) => {
-                assert_eq!(ClientType_ClientType_vehicle as ClientType_t, reg.type_);
+                assert_eq!(ClientType_ClientType_vehicle, reg.type_ as ClientType);
                 assert_eq!(ptr::null_mut(), reg.covered_area);
                 assert_eq!(ptr::null_mut(), reg.minimum_message_period);
             },

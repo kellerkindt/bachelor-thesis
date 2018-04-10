@@ -53,6 +53,7 @@ mod io {
 }
 
 use std::thread;
+use std::io::BufRead;
 use std::net::SocketAddr;
 
 use async::Sink;
@@ -64,29 +65,23 @@ use io::net::TcpStream;
 fn main() {
 
     log4rs::init_file("log4rs.yml", Default::default()).unwrap();
+    let address = "0.0.0.0:5500".parse::<SocketAddr>().unwrap();
 
-    let server = server::Server::new("0.0.0.0:5500".parse::<SocketAddr>().unwrap()).unwrap();
+    info!("Staring Server v{} on interface {}", env!("CARGO_PKG_VERSION"), address);
+    let server = server::Server::new(address).unwrap();
     let server = server.start().unwrap();
 
-    {
-        use std::sync::Arc;
-        use messages::asn::AsnMessage;
-        use messages::asn::Generalize;
+    info!("Server started successfully");
 
-        thread::sleep(::std::time::Duration::from_millis(1_000));
-
-        let stream = TcpStream::connect(&"0.0.0.0:5500".parse::<SocketAddr>().unwrap()).wait().unwrap();
-        let (sink, stream) = stream.framed(::server::RawMessageCodec::default()).split();
-        let reg = messages::asn::raw::ClientRegistration::decode_from_buffer(&[0x20]).unwrap();
-        let arc = Arc::new(reg.encode().unwrap().generalize());
-        let sink = sink.send(arc.clone()).wait().unwrap();
-        let sink = sink.send(arc).wait().unwrap();
-        println!(":::::::::: {:?}", stream.wait().next());
-    }
-
-    let time_wait = 100;
-    for i in 0..time_wait {
-        println!(" === Shutdown in {}s", time_wait-i);
-        thread::sleep(::std::time::Duration::from_millis(1_000));
+    let stdin = ::std::io::stdin();
+    for line in stdin.lock().lines() {
+        match line {
+            Err(_) => break,
+            Ok(line) => match line.trim() {
+                _ if line.is_empty() => {},
+                "quit"|"q"|"exit" => break,
+                _ => println!(":: Unknown command")
+            }
+        }
     }
 }

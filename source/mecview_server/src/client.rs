@@ -44,7 +44,8 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
 
     fn init_as_sensor(&mut self) -> Result<(), Error> {
         trace!("Client/{}/{:?} is initializing as sensor", self.address, self.variant);
-        self.remote_unsubscribe()
+        self.remote_unsubscribe()?;
+        self.subscribe_to_algorithm_as_sensor()
     }
 
     fn init_as_vehicle(&mut self) -> Result<(), Error> {
@@ -52,25 +53,47 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
         self.remote_init()
     }
 
-    fn subscribe_to_algorithm(&mut self) -> Result<(), Error> {
+    fn subscribe_to_algorithm_as_vehicle(&mut self) -> Result<(), Error> {
         trace!("Client/{}/{:?} is subscribing to algorithm", self.address, self.variant);
         let mut sender = self.myself.clone();
         self.algorithm.subscribe_environment_model(self.address.clone(), Box::new(move |e| {
-            match sender.try_send(Command::UpdateEnvironmentModel(e)) {
-                Ok(_)  => {
-                    Ok(())
-                },
-                Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
-            }
+            sender
+                .try_send(Command::UpdateEnvironmentModel(e))
+                .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
         }))?;
         self.subscribed_model = true;
         Ok(())
     }
 
-    fn unsubscribe_from_algorithm(&mut self) -> Result<(), Error> {
+
+    fn subscribe_to_algorithm_as_sensor(&mut self) -> Result<(), Error> {
+        trace!("Client/{}/{:?} is subscribing to algorithm", self.address, self.variant);
+        let mut sender = self.myself.clone();
+        self.algorithm.subscribe_listener_count(self.address.clone(), Box::new(move |count| {
+            let command = if count > 0 {
+                Command::RemoteSubscribe
+            } else {
+                Command::RemoteUnsubscribe
+            };
+            sender
+                .try_send(command)
+                .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
+        }))?;
+        self.subscribed_count = true;
+        Ok(())
+    }
+
+    fn unsubscribe_from_algorithm_as_vehicle(&mut self) -> Result<(), Error> {
         trace!("Client/{}/{:?} is unsubscribing from algorithm", self.address, self.variant);
         self.algorithm.unsubscribe_environment_model(self.address.clone())?;
         self.subscribed_model = false;
+        Ok(())
+    }
+
+    fn unsubscribe_from_algorithm_as_sensor(&mut self) -> Result<(), Error> {
+        trace!("Client/{}/{:?} is unsubscribing from algorithm", self.address, self.variant);
+        self.algorithm.unsubscribe_listener_count(self.address.clone())?;
+        self.subscribed_count = false;
         Ok(())
     }
 
@@ -107,11 +130,11 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
         info!("Client/{}/{:?} is going to be dropped", self.address, self.variant);
         if self.subscribed_model {
             warn!("Client/{}/{:?}: Remote did not unsubscribe from algorithm.model", self.address, self.variant);
-            self.unsubscribe_from_algorithm();
+            let _ = self.unsubscribe_from_algorithm_as_vehicle();
         }
         if self.subscribed_count {
             warn!("Client/{}/{:?}: Remote did not unsubscribe from algorithm.count", self.address, self.variant);
-            // TODO
+            let _ = self.unsubscribe_from_algorithm_as_sensor();
         }
     }
 }
@@ -136,12 +159,14 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
                 match command {
                     Command::SensorIsIdle => Ok(()), // great... I guess
                     Command::UpdateAlgorithm(update) => self.update_algorithm(update),
+                    Command::RemoteSubscribe => self.remote_subscribe(),
+                    Command::RemoteUnsubscribe => self.remote_unsubscribe(),
                     _ => Err(Error::from(ErrorKind::InvalidInput)),
                 }
             },
             Variant::Vehicle => match command {
-                Command::Subscribe => self.subscribe_to_algorithm(),
-                Command::Unsubscribe => self.unsubscribe_from_algorithm(),
+                Command::Subscribe => self.subscribe_to_algorithm_as_vehicle(),
+                Command::Unsubscribe => self.unsubscribe_from_algorithm_as_vehicle(),
                 Command::UpdateEnvironmentModel(model) => self.update_environment_model(model),
                 _ => Err(Error::from(ErrorKind::InvalidInput)),
             },
@@ -166,6 +191,8 @@ pub enum Command<A, E: Debug+Send+Sized+'static> {
     Unsubscribe,
     UpdateAlgorithm(Box<A>),
     UpdateEnvironmentModel(Arc<RawMessage<E>>),
+    RemoteSubscribe,
+    RemoteUnsubscribe,
 }
 
 #[cfg(test)]

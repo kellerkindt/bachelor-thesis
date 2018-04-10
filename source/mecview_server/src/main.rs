@@ -5,8 +5,6 @@ extern crate log4rs;
 
 extern crate tokio;
 extern crate tokio_io;
-
-#[macro_use]
 extern crate futures;
 
 extern crate bytes;
@@ -68,17 +66,17 @@ fn main() {
     log4rs::init_file("log4rs.yml", Default::default()).unwrap();
 
     let server = server::Server::new("0.0.0.0:5500".parse::<SocketAddr>().unwrap()).unwrap();
-    let server = server.start();
+    let server = server.start().unwrap();
 
     {
         use std::sync::Arc;
         use messages::asn::AsnMessage;
         use messages::asn::Generalize;
 
-        thread::sleep_ms(1_000);
+        thread::sleep(::std::time::Duration::from_millis(1_000));
 
         let stream = TcpStream::connect(&"0.0.0.0:5500".parse::<SocketAddr>().unwrap()).wait().unwrap();
-        let (sink, mut stream) = stream.framed(::server::RawMessageCodec::default()).split();
+        let (sink, stream) = stream.framed(::server::RawMessageCodec::default()).split();
         let reg = messages::asn::raw::ClientRegistration::decode_from_buffer(&[0x20]).unwrap();
         let arc = Arc::new(reg.encode().unwrap().generalize());
         let sink = sink.send(arc.clone()).wait().unwrap();
@@ -89,6 +87,6 @@ fn main() {
     let time_wait = 100;
     for i in 0..time_wait {
         println!(" === Shutdown in {}s", time_wait-i);
-        thread::sleep_ms(1_000);
+        thread::sleep(::std::time::Duration::from_millis(1_000));
     }
 }

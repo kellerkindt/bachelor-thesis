@@ -118,44 +118,9 @@ fn variant_from_client_type_t(t: ClientType_t) -> Result<client::Variant, Error>
 
 #[cfg(test)]
 mod test {
+
     use super::*;
 
-    #[test]
-    fn test_encode_simple() {
-        use ::bytes::BytesMut;
-        use ::std::io::Cursor;
-
-        let mut buf = BytesMut::with_capacity(1024);
-        AsnCodec().encode(Message::decode_client_registration(&[0x20, 0x00, 0x00]).unwrap(), &mut buf).unwrap();
-        assert_eq!(&[
-            0x00, 0x00, 0x00, 0x01, // length
-            0x00, 0x00, 0x00, 0x01, // type
-            0x20                    // message
-        ], &buf[..9]);
-    }
-
-    #[test]
-    fn test_decode_underflow() {
-        let mut buffer = BytesMut::with_capacity(ASN_HEADER_SIZE-1);
-        assert!(AsnCodec().decode(&mut buffer).unwrap().is_none());
-    }
-
-    #[test]
-    fn test_decode_simple() {
-        use ::bytes::BytesMut;
-        use ::std::io::Cursor;
-
-        let mut buf = BytesMut::with_capacity(1024);
-        buf.put_slice(&[
-            0x00, 0x00, 0x00, 0x01, // length
-            0x00, 0x00, 0x00, 0x01, // type
-            0x20,                   // message
-        ]);
-        let message = AsnCodec().decode(&mut buf).unwrap().unwrap();
-        let mut buffer = [0u8; 10];
-        assert_eq!(Ok(1), message.encode(&mut buffer[..]));
-        assert_eq!(&[0x20], &buffer[..1])
-    }
 
     #[test]
     fn err_on_invalid_type_t_into_variant() {

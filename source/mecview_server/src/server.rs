@@ -1,18 +1,14 @@
 
 use std::io::Error;
 use std::io::ErrorKind;
-use std::fmt::Debug;
 use std::net::SocketAddr;
 use std::sync::Arc;
 
-use client;
 use client::Client;
 
-use adapter;
 use adapter::asn::AsnAdapter;
 
 use async::Sink;
-use async::spawn;
 use async::Future;
 use async::Sender;
 use async::Stream;
@@ -20,7 +16,6 @@ use async::Runtime;
 use async::channel;
 use async::Receiver;
 use async::AsyncRead;
-use async::AsyncWrite;
 use async::CommandProcessor;
 
 use io::Encoder;
@@ -28,7 +23,6 @@ use io::Decoder;
 use io::net::TcpStream;
 use io::net::TcpListener;
 
-use messages;
 use messages::RawMessage;
 
 use bytes::BufMut;
@@ -198,7 +192,7 @@ impl<T> Decoder for RawMessageCodec<T> {
             if src.len() >= total_length {
                 trace!("Going to read RawMessage");
                 let mut vec = vec![0u8; length];
-                let mut src = src.split_to(total_length);
+                let src = src.split_to(total_length);
                 vec[..length].clone_from_slice(&src[HEADER_SIZE..]);
                 match RawMessage::new(identifier, vec) {
                     Ok(message) => Ok(Some(Arc::new(message))),

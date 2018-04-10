@@ -8,12 +8,8 @@ use std::fmt::Debug;
 use std::sync::Arc;
 
 use async::Sender;
-use async::Sink;
-use async::sink::Wait;
 use async::CommandProcessor;
 
-
-use adapter;
 use adapter::Adapter;
 
 use algorithm::Algorithm;
@@ -158,17 +154,41 @@ mod test {
     #[derive(Debug)]
     struct M;
 
+    #[derive(Debug)]
+    struct MockAdapter();
+    impl<E: Debug> Adapter<E> for MockAdapter {
+        fn init_vehicle(&mut self) -> Result<(), Error> {
+            Ok(())
+        }
+
+        fn unsubscribe(&mut self) -> Result<(), Error> {
+            Ok(())
+        }
+
+        fn subscribe(&mut self) -> Result<(), Error> {
+            Ok(())
+        }
+
+        fn update_environment_model(&mut self, model: Arc<RawMessage<E>>) -> Result<(), Error> {
+            Ok(())
+        }
+    }
+
+    fn test_client() -> Client<M, M, impl Algorithm<M, M, Identifier=SocketAddr>, impl Adapter<M>> {
+        let address = "0.0.0.0:2048".parse::<SocketAddr>().unwrap();
+        let (sender, receiver) = ::async::channel(2);
+        let (alg_tx, alg_rx) = ::async::channel(2);
+        Client::new(sender, address, MockAdapter(), alg_tx)
+    }
+
     #[test]
     fn test_default_variant_is_unknown() {
-        let (sender, receiver) = ::async::channel(2);
-        let mut client : Client<M> = Client::new(sender);
-        assert_eq!(Variant::Unknown, client.variant);
+        assert_eq!(Variant::Unknown, test_client().variant);
     }
 
     #[test]
     fn test_update_variant_cannot_change_if_not_unknown() {
-        let (sender, receiver) = ::async::channel(2);
-        let mut client : Client<M> = Client::new(sender);
+        let mut client = test_client();
         client.variant = Variant::Vehicle;
         assert!(client.process_command(Command::UpdateVariant(Variant::Vehicle)).is_err());
         assert!(client.process_command(Command::UpdateVariant(Variant::Sensor)).is_err());
@@ -185,8 +205,7 @@ mod test {
     }
 
     fn test_update_variant_for_client_type(variant: Variant) {
-        let (sender, receiver) = ::async::channel(2);
-        let mut client : Client<M> = Client::new(sender);
+        let mut client = test_client();
         assert_eq!((), client.process_command(Command::UpdateVariant(variant)).unwrap());
         assert_eq!(variant, client.variant);
     }

@@ -2,7 +2,6 @@
 use std::io::Error;
 use std::io::ErrorKind;
 use std::fmt::Debug;
-use std::net::SocketAddr;
 
 use std::sync::Arc;
 

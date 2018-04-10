@@ -38,9 +38,11 @@ impl SampleAlgorithm {
         }
     }
 
-    fn push_count_listener(&mut self, id: SocketAddr, sink: Box<FnMut(usize) -> Result<(), Error>+Send>) {
+    fn push_count_listener(&mut self, id: SocketAddr, mut sink: Box<FnMut(usize) -> Result<(), Error>+Send>) {
         trace!("Adding count listener with id={}", id);
-        self.count_listener.push((id, sink));
+        if sink(self.model_listener.len()).is_ok() {
+            self.count_listener.push((id, sink));
+        }
     }
 
 
@@ -84,7 +86,9 @@ impl SampleAlgorithm {
 
     fn environment_model(frame: &SensorFrame) -> Arc<RawMessage<EnvironmentFrame>> {
         // TODO
-        Arc::new(EnvironmentFrame::default().encode().unwrap())
+        let mut env = EnvironmentFrame::default();
+        env.header.timestamp = frame.header.timestamp;
+        Arc::new(env.encode().unwrap())
     }
 }
 

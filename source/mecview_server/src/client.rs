@@ -51,7 +51,7 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
     fn subscribe_to_algorithm(&mut self) -> Result<(), Error> {
         trace!("Subscribing to algorithm");
         let mut sender = self.myself.clone();
-        self.algorithm.subscribe(self.address.clone(), Box::new(move |e| {
+        self.algorithm.subscribe_environment_model(self.address.clone(), Box::new(move |e| {
             match sender.try_send(Command::UpdateEnvironmentModel(e)) {
                 Ok(_)  => Ok(()),
                 Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
@@ -61,7 +61,7 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
 
     fn unsubscribe_from_algorithm(&mut self) -> Result<(), Error> {
         trace!("Unsubscribing from environment model");
-        self.algorithm.unsubscribe(self.address.clone())
+        self.algorithm.unsubscribe_environment_model(self.address.clone())
     }
 
     fn update_environment_model(&mut self, model: Arc<RawMessage<E>>) -> Result<(), Error> {

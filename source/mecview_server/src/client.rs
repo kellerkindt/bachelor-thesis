@@ -44,7 +44,6 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
 
     fn init_as_sensor(&mut self) -> Result<(), Error> {
         trace!("Client/{}/{:?} is initializing as sensor", self.address, self.variant);
-        self.remote_unsubscribe()?;
         self.subscribe_to_algorithm_as_sensor()
     }
 

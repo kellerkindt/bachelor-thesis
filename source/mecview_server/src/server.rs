@@ -86,12 +86,20 @@ impl Server {
         }
 
         // TODO
-        let (algorithm_tx, algorithm_rx) = channel(2);
+        let (algorithm_tx, mut algorithm_rx) = channel(2);
         let (client_tx, client_rx) = channel(2);
 
         let (encoder, decoder) = client.framed(RawMessageCodec::default()).split();
         let mut client = Client::new(client_tx.clone(), address, AsnAdapter::new(encoder), algorithm_tx.clone());
 
+        // to prevent EOF errors
+        self.runtime.spawn(
+            algorithm_rx
+                .for_each(|command| {
+                    trace!("Received command");
+                    Ok(())
+                })
+        );
 
         self.runtime.spawn(
             decoder

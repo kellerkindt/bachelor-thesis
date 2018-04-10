@@ -100,7 +100,8 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
 
 impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm<A, E, Identifier=SocketAddr>+Sized+'static, D: Adapter<E> + Send + 'static> CommandProcessor<Command<A, E>> for Client<A, E, G, D> {
     fn process_command(&mut self, command: Command<A, E>) -> Result<(), Error> {
-        match self.variant {
+        trace!("Client/{}/{:?} is going to process command: {:?}", self.address, self.variant, command);
+        let result = match self.variant {
             Variant::Unknown => {
                 if let Command::UpdateVariant(variant) = command {
                     self.set_variant(variant);
@@ -126,7 +127,9 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
                 Command::UpdateEnvironmentModel(model) => self.update_environment_model(model),
                 _ => Err(Error::from(ErrorKind::InvalidInput)),
             },
-        }
+        };
+        trace!("Client/{} result: {:?}", self.address, result);
+        result
     }
 }
 

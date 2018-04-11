@@ -4,8 +4,8 @@ pipeline {
         CARGO = '$HOME/.cargo/bin/cargo'
         RUSTUP = '$HOME/.cargo/bin/rustup'
     }
-  dir('source/mecview_server') {
-    stages {
+  stages {
+    dir('source/mecview_server') {
         stage('prepare') {
             steps {
                 sh "curl https://sh.rustup.rs -sSf | sh -s -- -y"

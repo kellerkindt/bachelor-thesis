@@ -30,6 +30,8 @@ pipeline {
 				    steps {
 				        ansiColor('xterm') {
 				            sh "cd $CRATE_SERVER; $CARGO +beta test"
+				            sh "cd $CRATE_SERVER; mv target/debug/mecview_server MECViewServer_Debug"
+							archiveArtifacts 'MECViewServer_Debug'
 				        }
 				    }
                 }
@@ -46,6 +48,8 @@ pipeline {
 			steps {
 			    ansiColor('xterm') {
 			        sh "cd $CRATE_SERVER; $CARGO +beta test --release"
+				            sh "cd $CRATE_SERVER; mv target/release/mecview_server MECViewServer"
+							archiveArtifacts 'MECViewServer'
 			    }
 			}
         }

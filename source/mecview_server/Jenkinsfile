@@ -72,12 +72,7 @@ pipeline {
         stage('Doc') {
             steps {
                 sh "cd $CRATE_SERVER; $CARGO +beta doc"
-                // We run a python `SimpleHTTPServer` against
-                // /var/lib/jenkins/jobs/<repo>/branches/master/javadoc to
-                // display our docs
-                step([$class: 'JavadocArchiver',
-                      javadocDir: "$CRATE_SERVER/target/doc",
-                      keepAll: false])
+                publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$CRATE_SERVER/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'MECViewServer and Dependencies Documentation', reportTitles: ''])
             }
         }
     }

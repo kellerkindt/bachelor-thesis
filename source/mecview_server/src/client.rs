@@ -209,6 +209,7 @@ pub enum Command<A, E: Debug+Send+Sized+'static> {
 #[cfg(test)]
 mod test {
     use super::*;
+    use async::Receiver;
 
     #[derive(Debug)]
     struct M;
@@ -233,21 +234,21 @@ mod test {
         }
     }
 
-    fn test_client() -> Client<M, M, impl Algorithm<M, M, Identifier=SocketAddr>, impl Adapter<M>> {
+    fn test_client() -> (Receiver<::algorithm::Command<M, M, SocketAddr>>, Client<M, M, impl Algorithm<M, M, Identifier=SocketAddr>, impl Adapter<M>>) {
         let address = "0.0.0.0:2048".parse::<SocketAddr>().unwrap();
         let (sender, receiver) = ::async::channel(2);
         let (alg_tx, alg_rx) = ::async::channel(2);
-        Client::new(sender, address, MockAdapter(), alg_tx)
+        (alg_rx, Client::new(sender, address, MockAdapter(), alg_tx))
     }
 
     #[test]
     fn test_default_variant_is_unknown() {
-        assert_eq!(Variant::Unknown, test_client().variant);
+        assert_eq!(Variant::Unknown, test_client().1.variant);
     }
 
     #[test]
     fn test_update_variant_cannot_change_if_not_unknown() {
-        let mut client = test_client();
+        let (alg, mut client) = test_client();
         client.variant = Variant::Vehicle;
         assert!(client.process_command(Command::UpdateVariant(Variant::Vehicle)).is_err());
         assert!(client.process_command(Command::UpdateVariant(Variant::Sensor)).is_err());
@@ -264,7 +265,7 @@ mod test {
     }
 
     fn test_update_variant_for_client_type(variant: Variant) {
-        let mut client = test_client();
+        let (alg, mut client) = test_client();
         assert_eq!((), client.process_command(Command::UpdateVariant(variant)).unwrap());
         assert_eq!(variant, client.variant);
     }

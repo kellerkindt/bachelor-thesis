@@ -17,20 +17,17 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh "cd $CRATE_SERVER"
-                sh "$CARGO +beta build"
+                sh "cd $CRATE_SERVER; $CARGO +beta build"
             }
         }
         stage('Test') {
             steps {
-                sh "cd $CRATE_SERVER"
-                sh "$CARGO +beta test"
+                sh "cd $CRATE_SERVER; $CARGO +beta test"
             }
         }
         stage('Clippy') {
             steps {
-                sh "cd $CRATE_SERVER"
-                sh "$CARGO +nightly clippy --all"
+                sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all"
             }
         }
         stage('Rustfmt') {
@@ -43,8 +40,7 @@ pipeline {
         }
         stage('Doc') {
             steps {
-                sh "cd $CRATE_SERVER"
-                sh "$CARGO doc"
+                sh "cd $CRATE_SERVER; $CARGO doc"
                 // We run a python `SimpleHTTPServer` against
                 // /var/lib/jenkins/jobs/<repo>/branches/master/javadoc to
                 // display our docs

@@ -13,7 +13,7 @@ use super::Algorithm;
 
 #[derive(Default)]
 pub struct SampleAlgorithm {
-    model_listener: Vec<(SocketAddr, Box<FnMut(Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error>+Send>)>,
+    model_listener: Vec<(SocketAddr, bool, Box<FnMut(Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error>+Send>)>,
     count_listener: Vec<(SocketAddr, Box<FnMut(usize) -> Result<(), Error>+Send>)>,
 }
 
@@ -22,7 +22,8 @@ impl SampleAlgorithm {
     fn push_model_listener(&mut self, id: SocketAddr, sink: Box<FnMut(Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error>+Send>) {
         trace!("Adding model listener with id={}", id);
         let len = self.model_listener.len();
-        self.model_listener.push((id, sink));
+        self.model_listener.push((id, false, sink));
+        trace!("Now subscribed model listeners: {}", self.model_listener.len());
         if len != self.model_listener.len() {
             self.on_model_count_changed();
         }
@@ -31,11 +32,25 @@ impl SampleAlgorithm {
     fn remove_model_listener(&mut self, remove: SocketAddr) {
         trace!("Removing model listener with id={}", remove);
         let len = self.model_listener.len();
-        self.model_listener.retain(|(id, _)| id.ne(&remove));
-        trace!("Removed {} matches", len - self.model_listener.len());
+        self.model_listener.retain(|(id, _, _)| id.ne(&remove));
+        trace!("Removed {} matches, still subscribed: {}", len - self.model_listener.len(), self.model_listener.len());
         if len != self.model_listener.len() {
             self.on_model_count_changed();
         }
+    }
+
+    fn activate_model_listener(&mut self, id: SocketAddr) {
+        self.model_listener
+            .iter_mut()
+            .filter(|(addr, _, _)| addr.eq(&id))
+            .for_each(|(_, ref mut active, _)| *active = true);
+    }
+
+    fn deactivate_model_listener(&mut self, id: SocketAddr) {
+        self.model_listener
+            .iter_mut()
+            .filter(|(addr, _, _)| addr.eq(&id))
+            .for_each(|(_, ref mut active, _)| *active = false);
     }
 
     fn push_count_listener(&mut self, id: SocketAddr, mut sink: Box<FnMut(usize) -> Result<(), Error>+Send>) {
@@ -43,12 +58,14 @@ impl SampleAlgorithm {
         if sink(self.model_listener.len()).is_ok() {
             self.count_listener.push((id, sink));
         }
+        trace!("Now subscribed count listeners: {}", self.count_listener.len());
     }
 
 
     fn remove_count_listener(&mut self, remove: SocketAddr) {
         trace!("Removing count listener with id={}", remove);
         self.count_listener.retain(|(id, _)| id.ne(&remove));
+        trace!("Still subscribed count listeners. {}", self.count_listener.len())
     }
 
     fn on_update(&mut self, frame: &SensorFrame) {
@@ -56,8 +73,8 @@ impl SampleAlgorithm {
         let env = Self::environment_model(frame);
         let len = self.model_listener.len();
 
-        Self::retain_mut(&mut self.model_listener, |(_, listener)| {
-            listener(env.clone()).is_ok()
+        Self::retain_mut(&mut self.model_listener, |(_, active, listener)| {
+            !*active || listener(env.clone()).is_ok()
         });
 
         if len != self.model_listener.len() {
@@ -107,6 +124,16 @@ impl Algorithm<SensorFrame, EnvironmentFrame> for SampleAlgorithm {
 
     fn unsubscribe_environment_model(&mut self, identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier) -> Result<(), Error> {
         self.remove_model_listener(identifier);
+        Ok(())
+    }
+
+    fn activate_environment_model_subscription(&mut self, identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier) -> Result<(), Error> {
+        self.activate_model_listener(identifier);
+        Ok(())
+    }
+
+    fn deactivate_environment_model_subscription(&mut self, identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier) -> Result<(), Error> {
+        self.deactivate_model_listener(identifier);
         Ok(())
     }
 

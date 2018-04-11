@@ -49,7 +49,8 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
 
     fn init_as_vehicle(&mut self) -> Result<(), Error> {
         trace!("Client/{}/{:?} is initializing as vehicle", self.address, self.variant);
-        self.remote_init()
+        self.remote_init()?;
+        self.subscribe_to_algorithm_as_vehicle()
     }
 
     fn subscribe_to_algorithm_as_vehicle(&mut self) -> Result<(), Error> {
@@ -62,6 +63,24 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
         }))?;
         self.subscribed_model = true;
         Ok(())
+    }
+
+    fn unsubscribe_from_algorithm_as_vehicle(&mut self) -> Result<(), Error> {
+        trace!("Client/{}/{:?} is unsubscribing from algorithm", self.address, self.variant);
+        self.algorithm.unsubscribe_environment_model(self.address.clone())?;
+        self.subscribed_model = false;
+        Ok(())
+    }
+
+    fn activate_algorithm_model_subscription(&mut self) -> Result<(), Error> {
+        trace!("Client/{}/{:?} is activating model subscription", self.address, self.variant);
+        self.algorithm.activate_environment_model_subscription(self.address.clone())
+    }
+
+
+    fn deactivate_algorithm_model_subscription(&mut self) -> Result<(), Error> {
+        trace!("Client/{}/{:?} is deactivating model subscription", self.address, self.variant);
+        self.algorithm.deactivate_environment_model_subscription(self.address.clone())
     }
 
 
@@ -79,13 +98,6 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
                 .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
         }))?;
         self.subscribed_count = true;
-        Ok(())
-    }
-
-    fn unsubscribe_from_algorithm_as_vehicle(&mut self) -> Result<(), Error> {
-        trace!("Client/{}/{:?} is unsubscribing from algorithm", self.address, self.variant);
-        self.algorithm.unsubscribe_environment_model(self.address.clone())?;
-        self.subscribed_model = false;
         Ok(())
     }
 
@@ -128,11 +140,11 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
     fn drop(&mut self) {
         info!("Client/{}/{:?} is going to be dropped", self.address, self.variant);
         if self.subscribed_model {
-            warn!("Client/{}/{:?}: Remote did not unsubscribe from algorithm.model", self.address, self.variant);
+            trace!("Client/{}/{:?}: Remote did not unsubscribe from algorithm.model", self.address, self.variant);
             let _ = self.unsubscribe_from_algorithm_as_vehicle();
         }
         if self.subscribed_count {
-            warn!("Client/{}/{:?}: Remote did not unsubscribe from algorithm.count", self.address, self.variant);
+            trace!("Client/{}/{:?}: Remote did not unsubscribe from algorithm.count", self.address, self.variant);
             let _ = self.unsubscribe_from_algorithm_as_sensor();
         }
     }
@@ -164,8 +176,8 @@ impl<A: Debug+Send+Sized+'static, E: Debug+Sized+Send+Sync+'static, G: Algorithm
                 }
             },
             Variant::Vehicle => match command {
-                Command::Subscribe => self.subscribe_to_algorithm_as_vehicle(),
-                Command::Unsubscribe => self.unsubscribe_from_algorithm_as_vehicle(),
+                Command::Subscribe => self.activate_algorithm_model_subscription(),
+                Command::Unsubscribe => self.deactivate_algorithm_model_subscription(),
                 Command::UpdateEnvironmentModel(model) => self.update_environment_model(model),
                 _ => Err(Error::from(ErrorKind::InvalidInput)),
             },

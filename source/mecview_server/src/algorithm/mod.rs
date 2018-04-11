@@ -19,6 +19,8 @@ pub enum Command<A: Send, E: Send, I: Debug+Send+Sized+'static> {
     UnsubscribeEnvironmentModel(I),
     SubscribeListenerCount(I, Box<FnMut(usize) -> Result<(), Error>+Send+'static>),
     UnsubscribeListenerCount(I),
+    ActivateEnvironmentModelSubscription(I),
+    DeactivateEnvironmentModelSubscription(I),
 }
 
 pub trait Algorithm<A: Send+Debug, E: Send+Debug> {
@@ -30,6 +32,10 @@ pub trait Algorithm<A: Send+Debug, E: Send+Debug> {
 
     fn unsubscribe_environment_model(&mut self, identifier: Self::Identifier) -> Result<(), Error>;
 
+    fn activate_environment_model_subscription(&mut self, identifier: Self::Identifier) -> Result<(), Error>;
+
+    fn deactivate_environment_model_subscription(&mut self, identifier: Self::Identifier) -> Result<(), Error>;
+
     fn subscribe_listener_count(&mut self, identifier: Self::Identifier, sink: Box<FnMut(usize) -> Result<(), Error>+Send+'static>) -> Result<(), Error>;
 
     fn unsubscribe_listener_count(&mut self, identifier: Self::Identifier) -> Result<(), Error>;
@@ -39,38 +45,38 @@ impl<A: Send+Debug, E: Send+Debug, I: PartialEq+Debug+Send+Sized+'static> Algori
     type Identifier = I;
 
     fn update(&mut self, update: Box<A>) -> Result<(), Error> {
-        match self.try_send(Command::Update(update)) {
-            Ok(_) => Ok(()),
-            Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
-        }
+        self.try_send(Command::Update(update))
+            .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
     }
 
     fn subscribe_environment_model(&mut self, identifier: I, sink: Box<FnMut(Arc<RawMessage<E>>) -> Result<(), Error>+Send+'static>) -> Result<(), Error> {
-        match self.try_send(Command::SubscribeEnvironmentModel(identifier, sink)) {
-            Ok(_) => Ok(()),
-            Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
-        }
+        self.try_send(Command::SubscribeEnvironmentModel(identifier, sink))
+            .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
     }
 
     fn unsubscribe_environment_model(&mut self, identifier: I) -> Result<(), Error> {
-        match self.try_send(Command::UnsubscribeEnvironmentModel(identifier)) {
-            Ok(_) => Ok(()),
-            Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
-        }
+        self.try_send(Command::UnsubscribeEnvironmentModel(identifier))
+            .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
+    }
+
+    fn activate_environment_model_subscription(&mut self, identifier: <Self as Algorithm<A, E>>::Identifier) -> Result<(), Error> {
+        self.try_send(Command::ActivateEnvironmentModelSubscription(identifier))
+            .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
+    }
+
+    fn deactivate_environment_model_subscription(&mut self, identifier: <Self as Algorithm<A, E>>::Identifier) -> Result<(), Error> {
+        self.try_send(Command::DeactivateEnvironmentModelSubscription(identifier))
+            .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
     }
 
     fn subscribe_listener_count(&mut self, identifier: <Self as Algorithm<A, E>>::Identifier, sink: Box<FnMut(usize) -> Result<(), Error>+Send+'static>) -> Result<(), Error> {
-        match self.try_send(Command::SubscribeListenerCount(identifier, sink)) {
-            Ok(_) => Ok(()),
-            Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
-        }
+        self.try_send(Command::SubscribeListenerCount(identifier, sink))
+            .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
     }
 
     fn unsubscribe_listener_count(&mut self, identifier: <Self as Algorithm<A, E>>::Identifier) -> Result<(), Error> {
-        match self.try_send(Command::UnsubscribeListenerCount(identifier)) {
-            Ok(_) => Ok(()),
-            Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
-        }
+        self.try_send(Command::UnsubscribeListenerCount(identifier))
+            .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
     }
 }
 
@@ -83,6 +89,8 @@ impl<A: Send+Debug, E: Send+Debug, I: PartialEq+Debug+Send+Sized+'static, G: Alg
             Command::UnsubscribeEnvironmentModel(id) => self.unsubscribe_environment_model(id),
             Command::SubscribeListenerCount(id, sink) => self.subscribe_listener_count(id, sink),
             Command::UnsubscribeListenerCount(id) => self.unsubscribe_listener_count(id),
+            Command::ActivateEnvironmentModelSubscription(id) => self.activate_environment_model_subscription(id),
+            Command::DeactivateEnvironmentModelSubscription(id) => self.deactivate_environment_model_subscription(id),
         };
         trace!("  :: result: {:?}", result);
         result

@@ -21,10 +21,10 @@ root:
 
 loggers:
   libmessages-sys:
-    level: trace
+    level: info
 
   libmessages:
-    level: trace
+    level: info
 
   mecview_server:
     level: trace

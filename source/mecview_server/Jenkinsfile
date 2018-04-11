@@ -13,7 +13,7 @@ pipeline {
                 sh "$RUSTUP install nightly"
                 sh "$RUSTUP update"
                 sh "$CARGO install --list | grep 'clippy ' || $CARGO +nightly install clippy --force"
-                sh "$CARGO install --list | grep 'fmt ' || $CARGO +nightly fmt clippy --force"
+                sh "$CARGO install --list | grep 'fmt ' || $CARGO +nightly install fmt --force"
             }
         }
         stage('Build-Debug') {

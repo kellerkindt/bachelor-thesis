@@ -67,7 +67,7 @@ pipeline {
         }
         stage('Doc') {
             steps {
-                sh "cd $CRATE_SERVER; $CARGO doc"
+                sh "cd $CRATE_SERVER; $CARGO +beta doc"
                 // We run a python `SimpleHTTPServer` against
                 // /var/lib/jenkins/jobs/<repo>/branches/master/javadoc to
                 // display our docs

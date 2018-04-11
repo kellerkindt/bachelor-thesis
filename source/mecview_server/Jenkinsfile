@@ -3,9 +3,9 @@ pipeline {
     environment {
         CARGO = '$HOME/.cargo/bin/cargo'
         RUSTUP = '$HOME/.cargo/bin/rustup'
+        CRATE_SERVER = 'source/mecview_server/'
     }
-  stages {
-    dir('source/mecview_server') {
+    stages {
         stage('prepare') {
             steps {
                 sh "curl https://sh.rustup.rs -sSf | sh -s -- -y"
@@ -17,16 +17,19 @@ pipeline {
         }
         stage('Build') {
             steps {
+                sh "cd $CRATE_SERVER"
                 sh "$CARGO +beta build"
             }
         }
         stage('Test') {
             steps {
+                sh "cd $CRATE_SERVER"
                 sh "$CARGO +beta test"
             }
         }
         stage('Clippy') {
             steps {
+                sh "cd $CRATE_SERVER"
                 sh "$CARGO +nightly clippy --all"
             }
         }
@@ -34,11 +37,13 @@ pipeline {
             steps {
                 // The build will fail if rustfmt thinks any changes are
                 // required.
+                sh "cd $CRATE_SERVER"
                 sh "$CARGO +nightly fmt --all -- --write-mode diff"
             }
         }
         stage('Doc') {
             steps {
+                sh "cd $CRATE_SERVER"
                 sh "$CARGO doc"
                 // We run a python `SimpleHTTPServer` against
                 // /var/lib/jenkins/jobs/<repo>/branches/master/javadoc to
@@ -49,5 +54,4 @@ pipeline {
             }
         }
     }
-  }
 }

@@ -2,7 +2,7 @@ pipeline {
     agent any
     stages {
         stage('prepare') {
-            steps {
+            withEnv(["PATH=$PATH:$HOME/.cargo/bin"]) {
                 sh "curl https://sh.rustup.rs -sSf | sh -s -- -y"
                 sh "rustup install beta"
                 sh "rustup install nightly"

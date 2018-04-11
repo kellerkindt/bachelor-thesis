@@ -54,7 +54,7 @@ pub trait Algorithm<A: Send + Debug, E: Send + Debug> {
         sink: Box<FnMut(usize) -> Result<(), Error> + Send + 'static>,
     ) -> Result<(), Error>;
 
-    fn unsubscribe_listener_count(mut self, identifier: Self::Identifier) -> Result<(), Error>;
+    fn unsubscribe_listener_count(&mut self, identifier: Self::Identifier) -> Result<(), Error>;
 }
 
 impl<A: Send + Debug, E: Send + Debug, I: PartialEq + Debug + Send + Sized + 'static>

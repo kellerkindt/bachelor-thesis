@@ -1,7 +1,8 @@
 [package]
-name = "mecview_server"
+name = "MECViewServer"
 version = "0.1.0"
 authors = ["Michael Watzko <michael@watzko.de>"]
+description = "MECViewServer implementation in Rust"
 
 [dependencies]
 log = "0.4.1"
@@ -11,6 +12,7 @@ tokio-io = "0.1.6"
 futures = "0.1.19"
 byteorder = "1.2.2"
 bytes = "0.4.6"
+clap = "2.31.2"
 
 [dependencies.libmessages]
 version = "0.1.0"

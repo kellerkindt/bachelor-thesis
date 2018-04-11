@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate log;
+extern crate clap;
 extern crate log4rs;
 
 extern crate futures;
@@ -52,6 +53,7 @@ mod io {
 }
 
 use std::io::BufRead;
+use std::net::IpAddr;
 use std::net::SocketAddr;
 use std::thread;
 
@@ -65,11 +67,19 @@ use log::LevelFilter;
 use log4rs::append::console::ConsoleAppender;
 use log4rs::config::{Appender, Config, Logger, Root};
 
+use clap::App;
+use clap::Arg;
+
+struct ServerConfig {
+    ip: IpAddr,
+    port: u16,
+    log: Option<LevelFilter>,
+}
+
 fn main() {
-    init_log4rs();
-    let address = "0.0.0.0:5500"
-        .parse::<SocketAddr>()
-        .expect("Failed to bind socket");
+    let config = parse_config();
+    init_log4rs(config.log.clone());
+    let address = SocketAddr::new(config.ip.clone(), config.port);
 
     info!(
         "Staring Server v{} on interface {}",
@@ -95,15 +105,76 @@ fn main() {
     }
 }
 
-fn init_log4rs() {
+fn parse_config() -> ServerConfig {
+    let mut parser = create_argument_parser();
+    let matches = parser.get_matches();
+    ServerConfig {
+        ip: matches
+            .value_of("interface")
+            .unwrap()
+            .parse::<IpAddr>()
+            .unwrap(),
+        port: matches.value_of("port").unwrap().parse::<u16>().unwrap(),
+        log: matches
+            .value_of("log")
+            .and_then(|v| match v {
+                "trace" => Some(LevelFilter::Trace),
+                "debug" => Some(LevelFilter::Debug),
+                "info" => Some(LevelFilter::Info),
+                "warn" => Some(LevelFilter::Warn),
+                "err" => Some(LevelFilter::Error),
+                _ => panic!("Invalid log level"),
+            })
+            .or(None),
+    }
+}
+
+fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
+    App::new(env!("CARGO_PKG_NAME"))
+        .version(env!("CARGO_PKG_VERSION"))
+        .author(env!("CARGO_PKG_AUTHORS"))
+        .about(env!("CARGO_PKG_DESCRIPTION"))
+        .arg(
+            Arg::with_name("port")
+                .short("p")
+                .long("port")
+                .value_name("NUMBER")
+                .help("Sets the TCP listen port")
+                .takes_value(true)
+                .default_value("5500"),
+        )
+        .arg(
+            Arg::with_name("interface")
+                .short("i")
+                .long("interface")
+                .value_name("INTERFACE")
+                .help("Sets the interface to listen on")
+                .takes_value(true)
+                .default_value("0.0.0.0"),
+        )
+        .arg(
+            Arg::with_name("log")
+                .short("l")
+                .long("log")
+                .value_name("LEVEL")
+                .help("Sets the log level of the server")
+                .takes_value(true),
+        )
+}
+
+fn init_log4rs(level: Option<LevelFilter>) {
     let stdout = ConsoleAppender::builder().build();
 
     let config = Config::builder()
         .appender(Appender::builder().build("stdout", Box::new(stdout)))
-        .logger(Logger::builder().build("libmessages-sys", LevelFilter::Info))
-        .logger(Logger::builder().build("libmessages", LevelFilter::Info))
-        .logger(Logger::builder().build("mecview_server", LevelFilter::Trace))
-        .build(Root::builder().appender("stdout").build(LevelFilter::Info))
+        .logger(Logger::builder().build("libmessages-sys", level.unwrap_or(LevelFilter::Info)))
+        .logger(Logger::builder().build("libmessages", level.unwrap_or(LevelFilter::Info)))
+        .logger(Logger::builder().build("mecview_server", level.unwrap_or(LevelFilter::Trace)))
+        .build(
+            Root::builder()
+                .appender("stdout")
+                .build(level.unwrap_or(LevelFilter::Info)),
+        )
         .expect("Failed to create logger config");
 
     let _ = log4rs::init_config(config).expect("Failed to initialize logger");

@@ -17,13 +17,15 @@ pipeline {
             }
         }
         stage('Build-And-Test') {
-            stage('Build-Debug') {
-			    steps {
-			        ansiColor('xterm') {
-			            sh "cd $CRATE_SERVER; $CARGO +beta build"
-			        }
-			    }
-            }
+            parallel {
+		        stage('Build-Debug') {
+					steps {
+					    ansiColor('xterm') {
+					        sh "cd $CRATE_SERVER; $CARGO +beta build"
+					    }
+					}
+		        }
+	        }
             parallel {
                 stage('Test-Debug') {
 				    steps {
@@ -40,13 +42,15 @@ pipeline {
 				    }
                 }
             }
-            stage('Test-Release') {
-			    steps {
-			        ansiColor('xterm') {
-			            sh "cd $CRATE_SERVER; $CARGO +beta test --release"
-			        }
-			    }
-            }
+            parallel {
+		        stage('Test-Release') {
+					steps {
+					    ansiColor('xterm') {
+					        sh "cd $CRATE_SERVER; $CARGO +beta test --release"
+					    }
+					}
+		        }
+	        }
         }
         stage('Clippy') {
             steps {

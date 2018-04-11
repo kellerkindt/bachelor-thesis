@@ -1,8 +1,4 @@
 pipeline {
-    agent {
-        table 'any'
-    }
-
     stages {
         stage('prepare') {
             steps {

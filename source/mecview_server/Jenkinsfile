@@ -16,16 +16,14 @@ pipeline {
                 sh "$CARGO install --list | grep 'fmt ' || $CARGO +nightly fmt clippy --force"
             }
         }
-        stage('Build-And-Test') {
-            parallel {
-		        stage('Build-Debug') {
-					steps {
-					    ansiColor('xterm') {
-					        sh "cd $CRATE_SERVER; $CARGO +beta build"
-					    }
-					}
-		        }
-	        }
+        stage('Build-Debug') {
+			steps {
+			    ansiColor('xterm') {
+			        sh "cd $CRATE_SERVER; $CARGO +beta build"
+			    }
+			}
+        }
+        stage('Build-Release-And-Test-Debug') {
             parallel {
                 stage('Test-Debug') {
 				    steps {
@@ -42,15 +40,13 @@ pipeline {
 				    }
                 }
             }
-            parallel {
-		        stage('Test-Release') {
-					steps {
-					    ansiColor('xterm') {
-					        sh "cd $CRATE_SERVER; $CARGO +beta test --release"
-					    }
-					}
-		        }
-	        }
+        }
+        stage('Test-Release') {
+			steps {
+			    ansiColor('xterm') {
+			        sh "cd $CRATE_SERVER; $CARGO +beta test --release"
+			    }
+			}
         }
         stage('Clippy') {
             steps {

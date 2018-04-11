@@ -1,8 +1,8 @@
-
 use std::io::Error;
 use std::io::ErrorKind;
 use std::net::SocketAddr;
 use std::sync::Arc;
+use std::time::Duration;
 
 use client::Client;
 
@@ -11,35 +11,35 @@ use algorithm;
 use algorithm::Algorithm;
 use algorithm::SampleAlgorithm;
 
-use async::Sink;
-use async::Future;
-use async::Sender;
-use async::Stream;
-use async::Runtime;
 use async::channel;
-use async::Receiver;
 use async::AsyncRead;
 use async::CommandProcessor;
+use async::Future;
+use async::Receiver;
+use async::Runtime;
+use async::Sender;
+use async::Sink;
+use async::Stream;
 
-use io::Encoder;
-use io::Decoder;
-use io::net::TcpStream;
 use io::net::TcpListener;
+use io::net::TcpStream;
+use io::Decoder;
+use io::Encoder;
 
 use messages::asn::raw;
 use messages::RawMessage;
 
-use bytes::BufMut;
-use bytes::BytesMut;
 use byteorder::ByteOrder;
 use byteorder::NetworkEndian;
+use bytes::BufMut;
+use bytes::BytesMut;
 
-const CHANNEL_BUFFER_SIZE_SERVER    : usize = 10;
-const CHANNEL_BUFFER_SIZE_CLIENT    : usize = 10;
-const CHANNEL_BUFFER_SIZE_ADAPTER   : usize = 10;
-const CHANNEL_BUFFER_SIZE_ALGORITHM : usize = 10;
+const CHANNEL_BUFFER_SIZE_SERVER: usize = 10;
+const CHANNEL_BUFFER_SIZE_CLIENT: usize = 10;
+const CHANNEL_BUFFER_SIZE_ADAPTER: usize = 10;
+const CHANNEL_BUFFER_SIZE_ALGORITHM: usize = 10;
 
-const HEADER_SIZE : usize = 8;
+const HEADER_SIZE: usize = 8;
 
 type Alg = Sender<algorithm::Command<raw::SensorFrame, raw::EnvironmentFrame, SocketAddr>>;
 
@@ -69,15 +69,18 @@ impl Server {
     fn spawn_tcp_listener(&mut self, sender: Sender<Command>) -> Result<(), Error> {
         let mut sender = sender.wait();
         self.runtime.spawn(
-            TcpListener::bind(&self.address)?.incoming().for_each(move |stream| {
-                match sender.send(Command::AcceptStream(stream)) {
+            TcpListener::bind(&self.address)?
+                .incoming()
+                .for_each(
+                    move |stream| match sender.send(Command::AcceptStream(stream)) {
+                        Ok(_) => Ok(()),
+                        Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
+                    },
+                )
+                .then(|r| match r {
+                    Err(_) => Err(()),
                     Ok(_) => Ok(()),
-                    Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
-                }
-            }).then(|r| match r {
-                Err(_) => Err(()),
-                Ok(_) => Ok(()),
-            })
+                }),
         );
         Ok(())
     }
@@ -85,12 +88,12 @@ impl Server {
     fn spawn_algorithm(&mut self) -> Result<(), Error> {
         let (tx, rx) = channel(CHANNEL_BUFFER_SIZE_ALGORITHM);
         let mut sample = SampleAlgorithm::default();
-        self.runtime.spawn(rx.for_each(move |command| {
-            match sample.process_command(command) {
+        self.runtime.spawn(
+            rx.for_each(move |command| match sample.process_command(command) {
                 Ok(_) => Ok(()),
                 Err(_) => Err(()),
-            }
-        }));
+            }),
+        );
         self.algorithm = Some(tx);
         Ok(())
     }
@@ -102,7 +105,7 @@ impl Server {
             self.spawn_algorithm()?;
             match self.algorithm {
                 Some(ref mut alg) => Ok(alg),
-                None => Err(Error::from(ErrorKind::Other))
+                None => Err(Error::from(ErrorKind::Other)),
             }
         }
     }
@@ -115,7 +118,10 @@ impl Server {
             warn!("TCP nodelay couldn't be set");
         }
 
-        if client.set_keepalive(Some(::std::time::Duration::from_millis(1_000))).is_err() {
+        if client
+            .set_keepalive(Some(Duration::from_millis(1_000)))
+            .is_err()
+        {
             warn!("TCP keepalive couldn't be set");
         }
 
@@ -150,22 +156,21 @@ impl Server {
                 .then(|r| match r {
                     Ok(_) => Ok(()),
                     Err(_) => Err(())
-                })
+                }),
         );
         Ok(())
     }
 
     fn spawn_command_processor(mut self, receiver: Receiver<Command>) {
         let executor = self.runtime.executor().clone();
-        executor.spawn(receiver.for_each(move |command| {
-            match self.process_command(command) {
+        executor.spawn(
+            receiver.for_each(move |command| match self.process_command(command) {
                 Err(_) => Err(()),
                 Ok(_) => Ok(()),
-            }
-        }));
+            }),
+        );
     }
 }
-
 
 impl CommandProcessor<Command> for Server {
     fn process_command(&mut self, command: Command) -> Result<(), Error> {
@@ -174,7 +179,6 @@ impl CommandProcessor<Command> for Server {
         }
     }
 }
-
 
 pub enum Command {
     AcceptStream(TcpStream),
@@ -196,8 +200,16 @@ impl<T> Encoder for RawMessageCodec<T> {
     type Item = Arc<RawMessage<T>>;
     type Error = Error;
 
-    fn encode(&mut self, item: <Self as Encoder>::Item, dst: &mut BytesMut) -> Result<(), <Self as Encoder>::Error> {
-        trace!("Writing RawMessage, identifier={}, length={}", item.identifier(), item.length());
+    fn encode(
+        &mut self,
+        item: <Self as Encoder>::Item,
+        dst: &mut BytesMut,
+    ) -> Result<(), <Self as Encoder>::Error> {
+        trace!(
+            "Writing RawMessage, identifier={}, length={}",
+            item.identifier(),
+            item.length()
+        );
         dst.reserve(HEADER_SIZE + item.length() as usize);
         dst.put_u32::<NetworkEndian>(item.length());
         dst.put_u32::<NetworkEndian>(item.identifier());
@@ -211,12 +223,14 @@ impl<T> Decoder for RawMessageCodec<T> {
     type Item = Arc<RawMessage<T>>;
     type Error = Error;
 
-    fn decode(&mut self, src: &mut BytesMut) -> Result<Option<<Self as Decoder>::Item>, <Self as Decoder>::Error> {
+    fn decode(
+        &mut self,
+        src: &mut BytesMut,
+    ) -> Result<Option<<Self as Decoder>::Item>, <Self as Decoder>::Error> {
         trace!("Trying to read RawMessage, available bytes: {}", src.len());
         if src.len() >= HEADER_SIZE {
-
-            let length       = NetworkEndian::read_u32(&src[0..4]) as usize;
-            let identifier   = NetworkEndian::read_u32(&src[4..8]);
+            let length = NetworkEndian::read_u32(&src[0..4]) as usize;
+            let identifier = NetworkEndian::read_u32(&src[4..8]);
             let total_length = HEADER_SIZE + length;
 
             if src.len() >= total_length {
@@ -226,9 +240,8 @@ impl<T> Decoder for RawMessageCodec<T> {
                 vec[..length].clone_from_slice(&src[HEADER_SIZE..]);
                 match RawMessage::new(identifier, vec) {
                     Ok(message) => Ok(Some(Arc::new(message))),
-                    Err(_) => Err(Error::from(ErrorKind::InvalidData))
+                    Err(_) => Err(Error::from(ErrorKind::InvalidData)),
                 }
-
             } else {
                 let capacity = src.capacity();
                 src.reserve(total_length - capacity);

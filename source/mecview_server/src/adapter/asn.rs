@@ -9,26 +9,29 @@ use std::io::ErrorKind;
 
 use std::sync::Arc;
 
-use async::Sink;
 use async::sink::Wait;
+use async::Sink;
 
-use messages::RawMessage;
 use messages::asn::raw::*;
-use messages::asn::Message;
 use messages::asn::AsnMessage;
 use messages::asn::Generalize;
+use messages::asn::Message;
+use messages::RawMessage;
 
 use adapter::Adapter;
 
-const CLIENT_TYPE_SENSOR  : ClientType_t = ClientType_ClientType_sensor  as ClientType_t;
-const CLIENT_TYPE_VEHICLE : ClientType_t = ClientType_ClientType_vehicle as ClientType_t;
+const CLIENT_TYPE_SENSOR: ClientType_t = ClientType_ClientType_sensor as ClientType_t;
+const CLIENT_TYPE_VEHICLE: ClientType_t = ClientType_ClientType_vehicle as ClientType_t;
 
-
-pub struct AsnAdapter<E: Sink<SinkItem=Arc<RawMessage<Message>>,SinkError=Error> + Send + 'static> {
+pub struct AsnAdapter<
+    E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 'static,
+> {
     encoder: Wait<E>,
 }
 
-impl<E: Sink<SinkItem=Arc<RawMessage<Message>>,SinkError=Error> + Send + 'static> AsnAdapter<E> {
+impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 'static>
+    AsnAdapter<E>
+{
     pub fn new(encoder: E) -> AsnAdapter<E> {
         AsnAdapter {
             encoder: encoder.wait(),
@@ -57,13 +60,16 @@ impl<E: Sink<SinkItem=Arc<RawMessage<Message>>,SinkError=Error> + Send + 'static
     }
 }
 
-
-pub fn map_message(message: Message) -> Result<client::Command<SensorFrame, EnvironmentFrame>, Error> {
+pub fn map_message(
+    message: Message,
+) -> Result<client::Command<SensorFrame, EnvironmentFrame>, Error> {
     match message {
         Message::Registration(ref reg) => Ok(client::Command::UpdateVariant(
-            variant_from_client_registration(reg)?
+            variant_from_client_registration(reg)?,
         )),
-        Message::UpdateSubscription(ref update) => match update.subscription_status as SubscriptionStatus {
+        Message::UpdateSubscription(ref update) => match update.subscription_status
+            as SubscriptionStatus
+        {
             SubscriptionStatus_SubscriptionStatus_subscribed => Ok(client::Command::Subscribe),
             SubscriptionStatus_SubscriptionStatus_unsubscribed => Ok(client::Command::Unsubscribe),
             _ => Err(Error::from(ErrorKind::NotFound)),
@@ -77,32 +83,32 @@ pub fn map_message(message: Message) -> Result<client::Command<SensorFrame, Envi
     }
 }
 
-impl<E: Sink<SinkItem=Arc<RawMessage<Message>>,SinkError=Error> + Send + 'static> Adapter<EnvironmentFrame> for AsnAdapter<E> {
+impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 'static>
+    Adapter<EnvironmentFrame> for AsnAdapter<E>
+{
     fn init_vehicle(&mut self) -> Result<(), Error> {
         self.remote_send(InitMessage::default())
     }
 
     fn unsubscribe(&mut self) -> Result<(), Error> {
-        self.remote_send(
-            Self::new_subscribe_message(
-                SubscriptionStatus_SubscriptionStatus_unsubscribed as SubscriptionStatus_t
-            )
-        )
+        self.remote_send(Self::new_subscribe_message(
+            SubscriptionStatus_SubscriptionStatus_unsubscribed as SubscriptionStatus_t,
+        ))
     }
 
     fn subscribe(&mut self) -> Result<(), Error> {
-        self.remote_send(
-            Self::new_subscribe_message(
-                SubscriptionStatus_SubscriptionStatus_subscribed as SubscriptionStatus_t
-            )
-        )
+        self.remote_send(Self::new_subscribe_message(
+            SubscriptionStatus_SubscriptionStatus_subscribed as SubscriptionStatus_t,
+        ))
     }
 
-    fn update_environment_model(&mut self, model: Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error> {
+    fn update_environment_model(
+        &mut self,
+        model: Arc<RawMessage<EnvironmentFrame>>,
+    ) -> Result<(), Error> {
         self.remote_send_raw(model.generalize())
     }
 }
-
 
 fn variant_from_client_registration(r: &ClientRegistration) -> Result<client::Variant, Error> {
     variant_from_client_type_t(r.type_)
@@ -110,20 +116,16 @@ fn variant_from_client_registration(r: &ClientRegistration) -> Result<client::Va
 
 fn variant_from_client_type_t(t: ClientType_t) -> Result<client::Variant, Error> {
     match t {
-        CLIENT_TYPE_SENSOR  => Ok(client::Variant::Sensor),
+        CLIENT_TYPE_SENSOR => Ok(client::Variant::Sensor),
         CLIENT_TYPE_VEHICLE => Ok(client::Variant::Vehicle),
         _ => Err(Error::from(ErrorKind::NotFound)),
     }
 }
 
-
-
-
 #[cfg(test)]
 mod test {
 
     use super::*;
-
 
     #[test]
     fn err_on_invalid_type_t_into_variant() {
@@ -132,11 +134,17 @@ mod test {
 
     #[test]
     fn client_type_t_into_variant_sensor() {
-        assert_eq!(client::Variant::Sensor, variant_from_client_type_t(CLIENT_TYPE_SENSOR).unwrap());
+        assert_eq!(
+            client::Variant::Sensor,
+            variant_from_client_type_t(CLIENT_TYPE_SENSOR).unwrap()
+        );
     }
 
     #[test]
     fn client_type_t_into_variant_vehicle() {
-        assert_eq!(client::Variant::Vehicle, variant_from_client_type_t(CLIENT_TYPE_VEHICLE).unwrap());
+        assert_eq!(
+            client::Variant::Vehicle,
+            variant_from_client_type_t(CLIENT_TYPE_VEHICLE).unwrap()
+        );
     }
 }

@@ -1,29 +1,40 @@
-
 use std::io::Error;
-use std::sync::Arc;
-use std::ops::IndexMut;
 use std::net::SocketAddr;
+use std::ops::IndexMut;
+use std::sync::Arc;
 
-use messages::RawMessage;
-use messages::asn::AsnMessage;
-use messages::asn::raw::SensorFrame;
 use messages::asn::raw::EnvironmentFrame;
+use messages::asn::raw::SensorFrame;
+use messages::asn::AsnMessage;
+use messages::RawMessage;
 
 use super::Algorithm;
 
 #[derive(Default)]
 pub struct SampleAlgorithm {
-    model_listener: Vec<(SocketAddr, bool, Box<FnMut(Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error>+Send>)>,
-    count_listener: Vec<(SocketAddr, Box<FnMut(usize) -> Result<(), Error>+Send>)>,
+    model_listener: Vec<(
+        SocketAddr,
+        bool,
+        Box<FnMut(Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error> + Send>,
+    )>,
+    count_listener: Vec<(SocketAddr, Box<FnMut(usize) -> Result<(), Error> + Send>)>,
 }
 
 impl SampleAlgorithm {
-
-    fn push_model_listener(&mut self, id: SocketAddr, sink: Box<FnMut(Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error>+Send>) {
+    fn push_model_listener(
+        &mut self,
+        id: SocketAddr,
+        sink: Box<FnMut(Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error> + Send>,
+    ) {
         trace!("Adding model listener with id={}", id);
         let len = self.model_listener.len();
         self.model_listener.push((id, false, sink));
-        trace!("Now subscribed model listeners: {}", self.model_listener.len());
+
+        trace!(
+            "Now subscribed model listeners: {}",
+            self.model_listener.len()
+        );
+
         if len != self.model_listener.len() {
             self.on_model_count_changed();
         }
@@ -33,7 +44,11 @@ impl SampleAlgorithm {
         trace!("Removing model listener with id={}", remove);
         let len = self.model_listener.len();
         self.model_listener.retain(|(id, _, _)| id.ne(&remove));
-        trace!("Removed {} matches, still subscribed: {}", len - self.model_listener.len(), self.model_listener.len());
+        trace!(
+            "Removed {} matches, still subscribed: {}",
+            len - self.model_listener.len(),
+            self.model_listener.len()
+        );
         if len != self.model_listener.len() {
             self.on_model_count_changed();
         }
@@ -53,19 +68,28 @@ impl SampleAlgorithm {
             .for_each(|(_, ref mut active, _)| *active = false);
     }
 
-    fn push_count_listener(&mut self, id: SocketAddr, mut sink: Box<FnMut(usize) -> Result<(), Error>+Send>) {
+    fn push_count_listener(
+        &mut self,
+        id: SocketAddr,
+        mut sink: Box<FnMut(usize) -> Result<(), Error> + Send>,
+    ) {
         trace!("Adding count listener with id={}", id);
         if sink(self.model_listener.len()).is_ok() {
             self.count_listener.push((id, sink));
         }
-        trace!("Now subscribed count listeners: {}", self.count_listener.len());
+        trace!(
+            "Now subscribed count listeners: {}",
+            self.count_listener.len()
+        );
     }
-
 
     fn remove_count_listener(&mut self, remove: SocketAddr) {
         trace!("Removing count listener with id={}", remove);
         self.count_listener.retain(|(id, _)| id.ne(&remove));
-        trace!("Still subscribed count listeners. {}", self.count_listener.len())
+        trace!(
+            "Still subscribed count listeners. {}",
+            self.count_listener.len()
+        );
     }
 
     fn on_update(&mut self, frame: &SensorFrame) {
@@ -117,32 +141,52 @@ impl Algorithm<SensorFrame, EnvironmentFrame> for SampleAlgorithm {
         Ok(())
     }
 
-    fn subscribe_environment_model(&mut self, identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier, sink: Box<FnMut(Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error>+Send+'static>) -> Result<(), Error> {
+    fn subscribe_environment_model(
+        &mut self,
+        identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
+        sink: Box<FnMut(Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error> + Send + 'static>,
+    ) -> Result<(), Error> {
         self.push_model_listener(identifier, sink);
         Ok(())
     }
 
-    fn unsubscribe_environment_model(&mut self, identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier) -> Result<(), Error> {
+    fn unsubscribe_environment_model(
+        &mut self,
+        identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
+    ) -> Result<(), Error> {
         self.remove_model_listener(identifier);
         Ok(())
     }
 
-    fn activate_environment_model_subscription(&mut self, identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier) -> Result<(), Error> {
+    fn activate_environment_model_subscription(
+        &mut self,
+        identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
+    ) -> Result<(), Error> {
         self.activate_model_listener(identifier);
         Ok(())
     }
 
-    fn deactivate_environment_model_subscription(&mut self, identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier) -> Result<(), Error> {
+    fn deactivate_environment_model_subscription(
+        &mut self,
+        identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
+    ) -> Result<(), Error> {
         self.deactivate_model_listener(identifier);
         Ok(())
     }
 
-    fn subscribe_listener_count(&mut self, identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier, sink: Box<FnMut(usize) -> Result<(), Error>+Send+'static>) -> Result<(), Error> {
+    fn subscribe_listener_count(
+        &mut self,
+        identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
+        sink: Box<FnMut(usize) -> Result<(), Error> + Send + 'static>,
+    ) -> Result<(), Error> {
         self.push_count_listener(identifier, sink);
         Ok(())
     }
 
-    fn unsubscribe_listener_count(&mut self, identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier) -> Result<(), Error> {
+    fn unsubscribe_listener_count(
+        &mut self,
+        identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
+    ) -> Result<(), Error> {
         self.remove_count_listener(identifier);
         Ok(())
     }

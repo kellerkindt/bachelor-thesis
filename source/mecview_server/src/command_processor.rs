@@ -1,4 +1,3 @@
-
 use std::io::Error;
 
 pub trait CommandProcessor<T> {

@@ -116,7 +116,8 @@
 
 \makeatletter
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
-\newcommand{\requirement}[3]{\subsection{Anforderung \arabic{reqNumber}: #2}\expandafter\edef\csname#1\endcsname{\arabic{reqNumber}}\label{req:#1}\stepcounter{reqNumber} #3}
+\newcommand{\requirement}[3]{\begin{itemize}
+	\item \textbf{Anforderung \arabic{reqNumber}: #2}\expandafter\edef\csname#1\endcsname{\arabic{reqNumber}}\label{req:#1}\stepcounter{reqNumber}\\#3\end{itemize}}
 \newcommand{\reqNumberForLabel}[1]{\@nameuse{#1}}
 
 \newcommand{\captionsource}[1]{\caption*{\footnotesize{Quelle: #1}}}
@@ -250,6 +251,8 @@
 		\todo{link issues fixed in commit d5d694c}
 		
 		\todo{impl Drop / free structs, important but do not overengineer}
+		
+		\todo{proxy communication}
 			
 			
 	\chapter{Auswertung}

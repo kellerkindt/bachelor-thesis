@@ -76,7 +76,7 @@ pipeline {
                 // /var/lib/jenkins/jobs/<repo>/branches/master/javadoc to
                 // display our docs
                 step([$class: 'JavadocArchiver',
-                      javadocDir: 'target/doc',
+                      javadocDir: "$CRATE_SERVER/target/doc",
                       keepAll: false])
             }
         }

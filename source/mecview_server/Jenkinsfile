@@ -16,26 +16,55 @@ pipeline {
             }
         }
         stage('Build') {
-            steps {
-                sh "cd $CRATE_SERVER; $CARGO +beta build"
+            parallel {
+                stage('Build-Debug') {
+				    steps {
+				        ansiColor('xterm') {
+				            sh "cd $CRATE_SERVER; $CARGO +beta build"
+				        }
+				    }
+                }
+                stage('Build-Release') {
+				    steps {
+				        ansiColor('xterm') {
+				            sh "cd $CRATE_SERVER; $CARGO +beta build --release"
+				        }
+				    }
+                }
             }
         }
         stage('Test') {
-            steps {
-                sh "cd $CRATE_SERVER; $CARGO +beta test"
+            parallel {
+                stage('Test-Debug') {
+				    steps {
+				        ansiColor('xterm') {
+				            sh "cd $CRATE_SERVER; $CARGO +beta test"
+				        }
+				    }
+                }
+                stage('Test-Release') {
+				    steps {
+				        ansiColor('xterm') {
+				            sh "cd $CRATE_SERVER; $CARGO +beta test --release"
+				        }
+				    }
+                }
             }
         }
         stage('Clippy') {
             steps {
-                sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all"
+                ansiColor('xterm') {
+                    sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all"
+                }
             }
         }
         stage('Rustfmt') {
             steps {
-                // The build will fail if rustfmt thinks any changes are
-                // required.
-                sh "cd $CRATE_SERVER"
-                sh "$CARGO +nightly fmt --all -- --write-mode diff"
+                ansiColor('xterm') {
+		            // The build will fail if rustfmt thinks any changes are
+		            // required.
+		            sh "cd $CRATE_SERVER; $CARGO +nightly fmt --all -- --write-mode diff"
+                }
             }
         }
         stage('Doc') {

@@ -61,9 +61,15 @@ use async::Sink;
 use async::Stream;
 use io::net::TcpStream;
 
+use log::LevelFilter;
+use log4rs::append::console::ConsoleAppender;
+use log4rs::config::{Appender, Config, Logger, Root};
+
 fn main() {
-    log4rs::init_file("log4rs.yml", Default::default()).unwrap();
-    let address = "0.0.0.0:5500".parse::<SocketAddr>().unwrap();
+    init_log4rs();
+    let address = "0.0.0.0:5500"
+        .parse::<SocketAddr>()
+        .expect("Failed to bind socket");
 
     info!(
         "Staring Server v{} on interface {}",
@@ -87,4 +93,18 @@ fn main() {
             },
         }
     }
+}
+
+fn init_log4rs() {
+    let stdout = ConsoleAppender::builder().build();
+
+    let config = Config::builder()
+        .appender(Appender::builder().build("stdout", Box::new(stdout)))
+        .logger(Logger::builder().build("libmessages-sys", LevelFilter::Info))
+        .logger(Logger::builder().build("libmessages", LevelFilter::Info))
+        .logger(Logger::builder().build("mecview_server", LevelFilter::Trace))
+        .build(Root::builder().appender("stdout").build(LevelFilter::Info))
+        .expect("Failed to create logger config");
+
+    let _ = log4rs::init_config(config).expect("Failed to initialize logger");
 }

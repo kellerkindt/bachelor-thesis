@@ -341,7 +341,7 @@ Da eine Funktionsüberladung nicht möglich ist, sollen stattdessen sprechende N
 Der \rustcinline{Vec<_>} der Standardbibliothek (siehe \autoref{rust:stdlib}) bietet zum Beispiel zusätzlich \rustcinline{Vec::with_capacity(capacity: usize)} an, um einen Vektor mit einer bestimmten Kapazität zu initialisieren.
 
 Funktionen die sich auf eine Instanz beziehen, haben als ersten Parameter die Variable \rustcinline{self} (konsumierend), \rustcinline{&self} (lesend leihend) oder \rustcinline{&mut self} (exklusiv leihend) deklariert.
-Die \rustcinline{self}-Variable entspricht dabei dem \javacinline{this} aus C, C\# oder Java:
+Die \rustcinline{self}-Variable entspricht dabei dem \javacinline{this} aus C++, C\# oder Java:
 \rustcinline{fn x_eq_y(&self) -> bool \{ self.x == self.y \}}.
 Ein großgeschriebenes \rustcinline{Self} bezieht sich auf den eigenen Typ, deshalb könnte die Funktion aus \autoref{rust:struct:impl} auch folgende Signatur haben: \rustcinline{pub fn new(x: f32, y: f32) -> Self ...}.
 Dies ist aber selten und oft nur in generischem Code anzutreffen (siehe \autoref{rust:traits}).
@@ -489,7 +489,7 @@ Die Variable \rustcinline{value} bindet bei dieser Übereinstimmung den Wert, um
 Falls dies nicht nötig wäre, könnte stattdessen auch die Wildcard \rustcinline{_} verwendet werden.
 
 Das \rustcinline{match} Statement von Rust verlangt, dass eine Musterabgleichung immer zu einem Ergebnis führt.
-Dementsprechend müssen entweder alle Varianten einer Aufzählung aufgeführt sein oder ein Standardpfade vorhanden sein \rustcinline{_ => \{ \} }.
+Dementsprechend müssen entweder alle Varianten einer Aufzählung aufgeführt sein oder ein Standardpfad vorhanden sein \rustcinline{_ => \{ \} }.
 Hiermit wird verhindert, dass, nachdem eine Aufzählung um eine Variation erweitert wurde, eine Musterabgleichung nicht um das neue Element ergänzt wurde.
 
 Wenn nur ein konkreter Fall von Bedeutung ist, kann dies in der verkürzten \rustcinline{if let} Schreibweise notiert werden:
@@ -534,7 +534,7 @@ Somit ist eine, auf den ersten Blick unverständliche Formulierung wie \ccinline
 
 
 Die \rustcinline{for} Schleife erwartet immer etwas iterierbares und entspricht damit einer \ccinline{foreach} aus anderen Programmiersprachen.
-Eine inkrementelle Laufvariable, für zum Beispiel die Indexierung eines Arrays, wird durch das Iterieren über einen Zahlenstrahl dargestellt.
+Eine inkrementelle Laufvariable, zum Beispiel für die Indizierung eines Arrays, wird durch das Iterieren über einen Zahlenstrahl dargestellt.
 In \autoref{rust:loops:for} ist dies in Zeile 4 zu sehen, während in Zeile 8 direkt über die Werte des Arrays iteriert wird.
 
 \begin{figure}[H]
@@ -545,7 +545,7 @@ In \autoref{rust:loops:for} ist dies in Zeile 4 zu sehen, während in Zeile 8 di
 \end{figure}
 
 
-Die \rustcinline{while} Schleife ist die langweiligste aller Schleifen, da das Verhalten dem aus anderen Programmiersprachen entspricht.
+Die \rustcinline{while} Schleife ist die einfachste aller Schleifen, da das Verhalten dem aus anderen Programmiersprachen entspricht.
 Der Rumpf wird so lange wiederholt, wie die Bedingung \rustcinline{true} ergibt.
 Das Beispiel in \autoref{rust:loops:while} gibt eine Sekunde lang wiederholend \rustcinline{\"Zeit noch nicht um\"} auf der Konsole aus.
 
@@ -582,7 +582,7 @@ Der Compiler übernimmt dann nur die zur Zielplattform passende Funktion.
 \label{rust:tests}
 
 Unit-Tests und Integrationstests können in Rust ohne eine weitere Bibliothek durchgeführt werden.
-Für Unit-Tests müssen Module und Funktionen mit entsprechenden Anmerkung versehen sein, Integrationstests müssen im Verzeichnis \rustcinline{tests/} gespeichert sein \cite{rust:book:tests}.
+Für Unit-Tests müssen Module und Funktionen mit entsprechenden Anmerkungen versehen sein, Integrationstests müssen im Verzeichnis \rustcinline{tests/} gespeichert sein \cite{rust:book:tests}.
 
 Unit-Tests sind per Konvention immer in der Datei mit der zu testenden Funktionalität zu finden.
 Diese privaten, inneren Module, die konventionell \enquote{tests} benannt sind, werden durch das Attribut \rustcinline{#[cfg(test)]} markiert.
@@ -635,13 +635,13 @@ Dieser Datentyp erzwingt eine Prüfung vor dem Zugriff (siehe \autoref{rust:guar
 
 Für die Fehlerbehandlung wird nicht auf ein Exception-Handling zurückgegriffen, sondern ein eigener Datentyp angeboten, der entweder den Rückgabewert enthält, oder aber einen Fehler: \rustcinline{Result<_, _>} (siehe \autoref{rust:result}).
 
-Durch den Fragezeichenoperator kann trotzdem ein ähnliches Verhalten wie beim auftreten einer Ausnahme in Java oder C++ erzielt werden (siehe \autoref{rust:result}).
+Durch den Fragezeichenoperator kann trotzdem ein ähnliches Verhalten wie beim Auftreten einer Ausnahme in Java oder C++ erzielt werden (siehe \autoref{rust:result}).
 
 \label{rust:panic}
 Ein besonderer Fehlertyp ist die Panik, denn sie bedeutet in den meisten Fällen ein Logikfehler im Programmcode, der zur Laufzeit nur schwierig zu beheben ist.
 Eine Panik kann zum Beispiel beim Zugriffsversuch außerhalb der Grenzen einer Slice oder eines Arrays, beim Teilen durch 0 oder auch bei einem \rustcinline{.unwrap()} ausgelöst werden.
 Eine Panik durchläuft daraufhin, wie eine Exception in C\#, Java oder C++, rückwärts alle Funktionsaufrufe und gibt den Speicher geordnet wieder frei, bis sie gefangen wird oder zuletzt der panische Thread endet.
-Falls dies im Main-Thread auftritt wird danach der Prozess beendet.
+Falls dies im Main-Thread auftritt, wird danach der Prozess beendet.
 Wenn während einer Panik eine weitere Panik ausgelöst wird, verwandelt sich die Panik in einen nicht mehr aufzuhaltenden \rustcinline{abort} (dt. Abbruch), der den Prozess beendet \cite[145-147]{rust:orly_programming}.
 
 
@@ -747,11 +747,11 @@ Wichtige, aber auch bekannte Datentypen sind hierbei:
 	Dies ist zwar mit höheren Laufzeitkosten verbunden, erlaubt es aber, dass eine \textbf{Arc} Instanz zwischen Threads übertragen werden kann.
 	Mehrere Threads können daher lesend auf den beinhalteten Wert zugreifen.
 	
-	\item \textbf{std::sync::Mutex}: Versichert einen Threadübergreifenden, exklusiven Zugriff auf den beinhalteten Wert.
-	In Rust schützt eine \textbf{Mutex} anstatt einem bestimmten Codeabschnitt, die beinhalteten Daten \cite[486]{rust:orly_programming}.
+	\item \textbf{std::sync::Mutex}: Versichert einen threadübergreifenden, exklusiven Zugriff auf den beinhalteten Wert.
+	In Rust schützt eine \textbf{Mutex} anstatt einen bestimmten Codeabschnitt die beinhalteten Daten \cite[486]{rust:orly_programming}.
 	Ein Zugriff darauf ist erst möglich, nachdem andere Threads ausgesperrt werden konnten.
 	
-	\item \textbf{std::sync::RwLock}: Erlaubt mehreren Threads gleichzeitig lesend oder einem Thread schreibend auf den beinhalteten Wert zuzugreifen. Wie bei einer \textbf{Mutex} kann erst nach einem erfolgreichen aussperren aller anderer Threads auf den geschützten Wert zugegriffen werden.
+	\item \textbf{std::sync::RwLock}: Erlaubt mehreren Threads gleichzeitig lesend oder einem Thread schreibend auf den beinhalteten Wert zuzugreifen. Wie bei einer \textbf{Mutex} kann erst nach einem erfolgreichen Aussperren aller anderer Threads auf den geschützten Wert zugegriffen werden.
 	
 	%\item \textbf{std::net::TcpStream}: \todo{?} 
 	%\item \textbf{Module std::thread}: \todo{?}
@@ -770,7 +770,7 @@ Durch diese statische Analyses findet der Compiler heraus, wann der Speicher ein
 Dies ist genau dann, wenn der Geltungsbereich des Eigentümers zu Ende ist.
 Weder ein \gls{gc}, der dies zur Laufzeit nachverfolgt, noch ein manuelles Eingreifen durch den Entwickler (zum Beispiel durch \ccinline{free(*void)}, wie in C/C++ üblich) ist nötig.
 
-Falls der Compiler keine ordnungsgemäße Nutzung feststellen kann, wie zum Beispiel eine Referenz, die länger als die eigentliche Wert leben möchte, wird die Kompilation verweigert.
+Falls der Compiler keine ordnungsgemäße Nutzung feststellen kann, wie zum Beispiel eine Referenz, die länger als den referenzierten Wert leben möchte, wird die Kompilation verweigert.
 Dadurch wird das Problem des \enquote{dangling pointers} verhindert, ohne Laufzeitkosten zu erzeugen (siehe \autoref{rust:guarantee:no_dangling_pointer}).
 
 Im folgenden \autoref{rust:memory:scope} wird beispielhaft Speicher auf dem Heap allokiert.
@@ -808,21 +808,21 @@ Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nö
 		{sections/rust.ownership.rs}
 \end{figure}
 
-Das Beispiel in \autoref{rust:ownership:scope} zeigt verschieden Möglichkeiten und Beschränkungen beim verleihen und übertragen von Werten.
+Das Beispiel in \autoref{rust:ownership:scope} zeigt verschiedene Möglichkeiten und Beschränkungen beim Verleihen und Übertragen von Werten.
 
 Das Eigentümerprinzip unterbindet automatisch einen \enquote{dangling pointer} (siehe \autoref{rust:guarantee:no_dangling_pointer}) und kann Optimierungen erlauben, die, bei ansonsten unzureichend detaillierten Nachforschung in der jeweiligen API Dokumentation, schnell zu Laufzeitfehlern führen kann.
 Am Funktionskopf ist zum Beispiel eindeutig ablesbar, ob ein Wert von einer Funktion konsumiert wird.
 Falls der Wert in solch einem Fall weiterhin benötigt wird, muss eine Kopie veranlasst werden.
-Eine falsche Nutzung der API wird durch einen Compilerfehler bemängelt, anstatt eines zur Laufzeit unerwarteten Verhaltens.
+Eine falsche Nutzung der API wird durch eine Fehlermeldung des Compilers bemängelt, anstatt eines zur Laufzeit unerwarteten Verhaltens.
 
 \rustcinline{String::from_utf8(vec: Vec<u8>)} nimmt zum Beispiel einen \rustcinline{Vec<u8>} entgegen und konsumiert diesen.
-Der Aufrufer kann danach nicht mehr auf den diesen Zugreifen, da die Eigentümerschaft an die Funktion \rustcinline{from_utf8} übertragen wurde.
-Dies erlaubt der Funktion, den Speicherbereich des \rustcinline{Vec<u8>} für den \rustcinline{String} wiederzuverwenden ohne neuen Speicher zu allokieren oder zu kopieren \cite{rust:string:from_utf8}.
+Der Aufrufer kann danach nicht mehr auf diesen zugreifen, da die Eigentümerschaft an die Funktion \rustcinline{from_utf8} übertragen wurde.
+Dies erlaubt der Funktion, den Speicherbereich des \rustcinline{Vec<u8>} für den \rustcinline{String} wiederzuverwenden, ohne neuen Speicher zu allokieren oder zu kopieren \cite{rust:string:from_utf8}.
 
 Das typische Problem, die Modifikation einer Kollektion während einer Iteration, wird durch das Eigentümerprinzip schon prinzipiell ausgeschlossen.
 Ein Wert kann während einer Iteration nicht hinzugefügt oder entfernt werden.
-Es kann kein exklusiver Zugriff für die Kollektion erlangt werden kann, da für die Kollektion bereits lesend (oder exklusiv) an die Iteration verliehen ist.
-Eine \javacinline{ConcurrentModificationException} (Java) oder  wird deshalb nicht benötigt \cite[116]{rust:orly_programming}.
+Es kann kein exklusiver Zugriff für die Kollektion erlangt werden, da die Kollektion bereits lesend (oder exklusiv) an die Iteration verliehen ist.
+Eine \javacinline{ConcurrentModificationException} (Java)  wird deshalb nicht benötigt \cite[116]{rust:orly_programming}.
 
 \section{Rust als funktionale Programmiersprache ??s}
 
@@ -871,7 +871,7 @@ Die Ausnahme bilden einige Fälle innerhalb von \rustcinline{unsafe} Blöcken, f
 Für diese Fälle gibt es eine überschaubare Liste von Szenarien, aus denen ein undefinierter Zustand bzw. undefiniertes Verhalten resultieren kann \cite{rust:book:undefined}.
 
 Als einfaches Beispiel eines undefinierten Zustandes in C ist eine Variable, die deklariert wurde, der aber noch keinen Wert zugewiesen wurde.
-In manchen Szenarien hat die Variable dann den Wert der in diesem Moment an der entsprechenden Stelle im Speicher steht, in anderen Szenarien wird der Speicher vom Betriebssystem, Allokator oder von vom Compiler eingefügten Befehlen mit 0en gefüllt -- eine sichere Aussage ist nicht möglich.
+In manchen Szenarien hat die Variable dann den Wert, der in diesem Moment an der entsprechenden Stelle im Speicher steht, in anderen Szenarien wird der Speicher vom Betriebssystem, Allokator oder von vom Compiler eingefügten Befehlen mit 0en gefüllt -- eine sichere Aussage ist nicht möglich.
 Sich darauf zu verlassen, dass neue Werte automatisch mit 0 initialisiert wurden, kann auf neuen Systemen oder mit anderen Compilern ein unvorhersehbares Verhalten provozieren.
 
 Rust lässt deshalb keinen Zugriff auf Variablen zu, die nicht zuvor initialisiert wurden \cite[126]{rust:orly_programming}.
@@ -946,10 +946,10 @@ Dazu muss die Funktion, die den Operator verwendet aber auch ein \rustcinline{Re
 
 Durch das Eigentümerprinzip wird eine typische Fehlerquelle aus C und C++ verhindert, bei der durch einen Pointer auf bereits deallokierten Speicher zugegriffen wird.
 Ein Verhalten ist hierbei nicht vorhersehbar. Es könnte einfach nur auf den als \enquote{frei} markierten Speicherbereich zugegriffen werden, der noch die vorherigen Werte enthält.
-Es könnte aber auch auf den nun neu zugewiesenen Speicherbereiche geschrieben und dabei Werte anderer Datenstrukturen überschrieben werden.
+Es könnte aber auch auf den nun neu zugewiesenen Speicherbereich geschrieben und dabei Werte anderer Datenstrukturen überschrieben werden.
 Im besten Fall hat das Betriebssystem die Speicherseite dem Programm bereits entzogen und das Programm stürzt einfach nur ab.
 
-Im Beispiel in \autoref{rust:owner:c_bad_free} wird durch eine Fehlerhafte Implementierung der Funktion \ccinline{klone_computer} ein \enquote{dangling pointer} in C provoziert.
+Im Beispiel in \autoref{rust:owner:c_bad_free} wird durch eine fehlerhafte Implementierung der Funktion \ccinline{klone_computer} ein \enquote{dangling pointer} in C provoziert.
 Daraufhin wird versucht, mit dem gleichen Beispiel in \autoref{rust:owner:rust_bad_free} ein \enquote{dangling pointer} in Rust zu provozieren.
 
 
@@ -969,7 +969,7 @@ Daraufhin wird versucht, mit dem gleichen Beispiel in \autoref{rust:owner:rust_b
 \end{figure}
 
 Ein äquivalentes Beispiel zu dem C-Beispiel in Rust zu schreiben, ist schwierig.
-Das Feld \enquote{model} in der C-Struktur ist beim erstellen der Eigentümer der Zeichenkette (Datentyp \rustcinline{String} in Rust) und beim Klonen der Entleiher (Datentyp \rustcinline{&str} in Rust).
+Das Feld \enquote{model} in der C-Struktur ist beim Erstellen der Eigentümer der Zeichenkette (Datentyp \rustcinline{String} in Rust) und beim Klonen der Entleiher (Datentyp \rustcinline{&str} in Rust).
 Im Rust-Beispiel ist die Zeichenkette deswegen in Zeile 19 außerhalb der \rustcinline{erstelle_computer}-Funktion, da der Geltungsbereich ansonsten beim Verlassen der Funktion bereits zu Ende wäre und das Leihen an die Datenstruktur nicht möglich wäre.
 Dieser Unterschied ist gleichzeitig auch die Fehlerquelle im C-Beispiel.
 
@@ -979,12 +979,12 @@ Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgeh
 \label{rust:guarantee:memory_safety}
 
 
-In Rust werden verschiedene Arten von Speichersicherheit Garantiert. Zum einen, wird niemals auf einen \ccinline{NULL}-Pointer zugegriffen (siehe \autoref{rust:guarantee:no_null}), zum anderen wird niemals auf einen bereits deallokierten Speicherbereich zugegriffen (siehe \autoref{rust:guarantee:no_dangling_pointer}).
+In Rust werden verschiedene Arten von Speichersicherheit garantiert. Zum einen, wird niemals auf einen \ccinline{NULL}-Pointer zugegriffen (siehe \autoref{rust:guarantee:no_null}), zum anderen wird niemals auf einen bereits deallokierten Speicherbereich zugegriffen (siehe \autoref{rust:guarantee:no_dangling_pointer}).
 
-Die Speichersicherheit umfasst aber Zugriffe auf Puffer. So ist es nicht möglich einen Pufferüberlauf zu provozieren, da die Größe von einem Array und einer Slice immer bekannt ist.
+Die Speichersicherheit umfasst aber auch den Zugriffe auf Puffer. So ist es nicht möglich einen Pufferüberlauf zu provozieren, da die Größe von einem Array und einer Slice immer bekannt ist.
 Der Compiler erzwingt eine Grenzüberprüfung beim Zugriff zur Laufzeit, falls die Einhaltung statisch nicht ersichtlich ist (\autoref{rust:zero_cost}).
 
-Ein Datenwettlauf wird auch, durch Anwendung des Eigentümerprinzips, verhindert (siehe \autoref{rust:guarantee:thread_safety}).
+Ein weiterer Punkt zur Speichersicherheit ist im Bereich der Nebenläufigkeit zu finden: Ein Datenwettlauf wird durch Anwendung des Eigentümerprinzips verhindert (siehe \autoref{rust:guarantee:thread_safety}).
 
 \subsection{Sichere Nebenläufigkeit}
 \label{rust:guarantee:thread_safety}
@@ -1126,7 +1126,7 @@ Rust bietet durch das \gls{ffi} \todo{(FFI)} die Möglichkeit, andere (System-)B
 Entsprechende Strukturen und Funktionen werden durch einen \rustcinline{extern} Block
 oder im Falle von Strukturen stattdessen optional mit einem \rustcinline{#[repr(C)]} gekennzeichnet.
 
-In einem Beispiel, soll die Nutzung von \gls{ffi} demonstriert werden.
+In einem Beispiel soll die Nutzung von \gls{ffi} demonstriert werden.
 
 \begin{figure}[H]
 	\ccinclude
@@ -1146,7 +1146,7 @@ Dabei gibt es mehrere Möglichkeiten:
 	\item Falls der Aufbau wie in \autoref{rust:ffi:example:enumerate:repr} unbedeutend ist, es soll aber ausdrücklich auf einen externen Datentyp hingewiesen werden soll, kann dieser in einem \rustcinline{extern \{ \} } Block bekannt gemacht werden: \rustcinline{extern \{ type PositionOffset; \}} \cite{rust:github:extern_type}.
 	Dies ist zum jetzigen Zeitpunkt aber nur in \enquote{nightly} und hinter dem \enquote{feature gate} \monospaceinline{extern_types} möglich.
 	
-	\item Der Inhalt der Struktur ist von Bedeutung, da darauf zugegriffen oder in Rust eine Instanz werden soll. In diesem Fall ist eine komplette Wiedergabe die Struktur unumgänglich:
+	\item Der Inhalt der Struktur ist von Bedeutung, da darauf zugegriffen oder in Rust eine Instanz werden soll. In diesem Fall ist eine komplette Wiedergabe der Struktur unumgänglich:
 	\begin{figure}[H]
 		\rustcinclude
 			{rust:ffi:position_offset_rust}
@@ -1192,7 +1192,7 @@ Externe Funktionen müssen im Gegensatz zu externen Strukturen immer in einem \r
 		{sections/rust.uper_encode_to_buffer.rs}
 \end{figure}
 
-Wie in \autoref{rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Anmerkungen (sieh \autoref{rust:annotations}) versehen werden. Zwingend ist bei der Verwendung einer \rustcinline{#[link(..)]} Anmerkung der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{rust:ffi:uper_encode_to_buffer} die Art der Verlinkung (dynamisch oder statisch) angegeben werden.
+Wie in \autoref{rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Anmerkungen (siehe \autoref{rust:annotations}) versehen werden. Zwingend ist bei der Verwendung einer \rustcinline{#[link(..)]} Anmerkung der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{rust:ffi:uper_encode_to_buffer} die Art der Verlinkung (dynamisch oder statisch) angegeben werden.
 
 Die Art der Definition einer externen Funktion unterscheidet sich nicht von einer normalen Funktionsdefinition. Es sollten aber, wie in \autoref{rust:ffi:datatypes} beschrieben, zu C bzw. der externen Sprache kompatiblen Datentypen verwendet werden.
 
@@ -1208,7 +1208,7 @@ Der womöglich bekannteste Einsatzzweck von Rust ist im Webbrowser Firefox.
 Mehrere Versuche die Layoutberechnung in C++ zu parallelisieren sind aufgrund schwer auffindbaren Fehlern abgebrochen worden \cite{rust:example:firefox}.
 Eine Parallelisierung im aktuellen Projekt \enquote{Quantum} in Rust is dagegen mit ersten Erfolgen gekrönt \cite{rust:example:firefox_heise}
 
-Dropbox erreicht bereits \enquote{Hunderten Millionen von Geräten} mit Rust und das GNOME Projekt ermöglicht die Integration von Rust Code \cite{rust:example:two_years}.
+Dropbox erreicht bereits \enquote{Hunderte Millionen von Geräten} mit Rust und das GNOME Projekt ermöglicht die Integration von Rust Code \cite{rust:example:two_years}.
 %https://www.youtube.com/watch?v=-Tj8Q12DaEQ \\
 %\todo{GTK binding heavily to rust} \\
 

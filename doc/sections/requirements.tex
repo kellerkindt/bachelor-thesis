@@ -3,33 +3,23 @@
 
 \section{Funktionale Anforderungen}
 
-\requirement{impl:rust}{Implementation in Rust}{Die Implementation wird in der Programmiersprache Rust vorgenommen.}
+\requirement{com:tcp}{TCP Server}{Auf Port \todo{...} sollen neue TCP-Verbindungen angenommen werden. Jeder Client soll einer eigenen TCP Verbindung zugewiesen sein.}
 
-\requirement{exec:mec}{Plattform MEC}{Die Implementation des Servers muss in compilierter Form auf einem MEC Server mit dem Betriebssystem \todo{Ubuntu 16.04 LTS Server} und der Architektur \todo{x86-64} lauffähig sein.}
+\requirement{com:asn}{Kommunikationsprotokoll ist ASN.1/UPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients soll ASN.1 mit der Encodierung uPER sein. Es werden sollen die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert werden. Das Kommunikationsverhalten soll die Anforderungen der C++ Referenzimplementation erfüllen, sprich den Clients soll nicht ersichtlich sein, ob die Rust oder die Referenzimplementation des Servers ausgeführt wird.}
 
-\requirement{exec:time}{Reaktionszeit des Servers}{Die Implementation des Servers muss Nachrichten von \todo{20} gleichzeitigen Sensoren und \todo{50} gleichzeitigen Fahrzeugen innerhalb von \todo{10ms} beantworten.
-Dies umfasst Nachricht dekodieren, Fusions-Algorithmus darbieten, Resultat enkodieren und versenden.
-Die Bearbeitungszeit des Fusions-Algorithmus zählt nicht dazu.}
+\requirement{client:sensor}{Client als Sensor}{Ein Client soll sich nach dem Verbindungsaufbau als Sensor registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ der Clients unbekannt sein und er soll nicht als Sensor gewertet werden.}
 
-\requirement{exec:realtime}{Kein Echtzeitsystem}{Trotz Anforderung \reqNumberForLabel{exec:time} wird das System nicht als hartes Echtzeitsystem gewertet. Eine Analyse für die maximale Reaktionszeit ist nicht verlangt. Stattdessen wird das System als weiches Echtzeitsystem gewertet, weswegen die durchschnittliche Reaktionszeit die Anforderung \reqNumberForLabel{exec:time} erfüllen muss.}
+\requirement{client:car}{Client als Fahrzeug}{Ein Client soll sich nach dem Verbindungsaufbau als Fahrzeug registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ der Clients unbekannt sein und er soll nicht als Fahrzeug gewertet werden.}
 
-\requirement{com:tcp}{TCP Server}{Auf Port \todo{...} müssen auf neue TCP-Verbindungen gehört werden. Jeder Client hat eine eigene TCP Verbindung. Es müssen genügend gleichzeitige Verbindungen möglich sein, um Anforderung \reqNumberForLabel{exec:time} zu erfüllen. Ein Client entspricht einer TCP-Verbindung.}
+\requirement{client:sectors}{Sektoren übertragen}{Der Server soll dem Fahrzeug nach Registrierung alle bekannten Sektoren übermitteln.}
 
-\requirement{com:asn}{Kommunikationsprotokoll ist ASN.1/uPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients ist ASN.1 mit der Encodierung uPER. Es werden die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert. Das Kommunikationsverhalten erfüllt die Anforderungen der C++ Referenzimplementation, sprich den Clients ist nicht ersichtlich, ob die Rust oder die Referenzimplementation des Servers ausgeführt wird.}
+\requirement{sensor:pause}{Sensoren abonnieren}{Sensoren sollen bei verbunden Fahrzeugen abonniert werden.}
 
-\requirement{client:sensor}{Client als Sensor}{Ein Client kann sich nach dem Verbindungsaufbau als Sensor registrieren. Ein Client kann sich nicht mehrmals registrieren. Vor einer Registrierung ist der Typ der Clients unbekannt und er wird nicht als Sensor gewertet.}
+\requirement{sensor:resume}{Sensoren deabonnieren}{Sensoren sollen bei keinen verbunden Fahrzeugen deabonniert werden.}
 
-\requirement{client:car}{Client als Fahrzeug}{Ein Client kann sich nach dem Verbindungsaufbau als Fahrzeug registrieren. Ein Client kann sich nicht mehrmals registrieren. Vor einer Registrierung ist der Typ der Clients unbekannt und er wird nicht als Fahrzeug gewertet.}
+\requirement{impl:algorithmus:to}{Sensordaten weitergeben}{Empfangene Sensordaten sollen dekodiert und an den Fusions-Algorithmus übergeben werden.}
 
-\requirement{client:sectors}{Sektoren übertragen}{Der Server übermittelt dem Fahrzeug nach Registrierung alle bekannten Sektoren.}
-
-\requirement{sensor:pause}{Sensoren abonnieren}{Sensoren werden bei keinem verbunden Fahrzeug abonniert.}
-
-\requirement{sensor:resume}{Sensoren deabonnieren}{Sensoren werden bei verbunden Fahrzeugen deabonniert.}
-
-\requirement{impl:algorithmus:to}{Sensordaten weitergeben}{Empfangene Sensordaten werden dekodiert und an den Fusions-Algorithmus übergeben.}
-
-\requirement{impl:algorithmus:from}{Ergebnisse weitergeben}{Ergebnisse des Fusions-Algorithmus werden enkodiert un an die Fahrzeuge versendet.}
+\requirement{impl:algorithmus:from}{Ergebnisse weitergeben}{Ergebnisse des Fusions-Algorithmus sollen enkodiert un an die verbundenen Fahrzeuge versendet werden.}
 
 \requirement{impl:algorithmus}{Fusions-Algorithmus}{Für den Testbetrieb soll der Fusions-Algorithmus aus der C++ Referenzimplementierung (\enquote{SampleAlgorithm}) auch in Rust umgesetzt werden. Dieser Fusions-Algorithmus ist eine \enquote{dummy} Implementation, d.h. eingehende Daten werden nach einem einfachen Schema wieder verschickt. Ob die Einbindung einer externen Bibliothek als Fusions-Algorithmus möglich ist, soll überprüft werden.}
 
@@ -39,13 +29,23 @@ Die Bearbeitungszeit des Fusions-Algorithmus zählt nicht dazu.}
 
 \requirement{impl:args}{Startparameter}{\todo{sample: send\_delay\_ms, sensor\_timeout\_ms, environment\_frame\_file, ...}}
 
-\requirement{dos:sensor}{Widerstand gegen Sensor DOS}{Die Funktionalität des Servers gegenüber anderen Clients wird durch eine Überflutung von Daten eines Sensors nicht beeinträchtigt. \todo{optional? relevant?}}
+\requirement{dos:sensor}{Widerstand gegen Sensor DOS}{Die Funktionalität des Servers gegenüber anderen Clients soll durch eine Überflutung von Daten eines Sensors nicht beeinträchtigt werden. \todo{optional? relevant?}}
 
-\requirement{dos:car}{Widerstand gegen Nachrichtenrückstau}{Die Funktionalität des Servers gegenüber anderen Clients wird durch Fahrzeuge, für die sich ein \todo{Nachrichtenrückstau} gebildet hat und von einzelnen langsamen Verbindungen, nicht beeinträchtigt. \todo{optional? relevant?}}
+\requirement{dos:car}{Widerstand gegen Nachrichtenrückstau}{Die Funktionalität des Servers gegenüber anderen Clients soll durch Fahrzeuge, für die sich ein \todo{Nachrichtenrückstau} gebildet hat und von einzelnen langsamen Verbindungen, nicht beeinträchtigt werden. \todo{optional? relevant?}}
 
 
 \section{Nichtfunktionale Anforderungen}
 
-\requirement{nfktl:speed}{Möglichst schnell}{Der Server soll auf Sensordaten und Algorithmusergebnisse möglichst schnell reagieren.}
+\requirement{exec:mec}{Plattform MEC}{Die Implementation des Servers muss in compilierter Form auf einem MEC Server mit dem Betriebssystem \todo{Ubuntu 16.04 LTS Server} und der Architektur \todo{x86-64} lauffähig sein.}
+
+\requirement{exec:time}{Reaktionszeit des Servers}{Die Implementation des Servers muss Nachrichten von \todo{20} gleichzeitigen Sensoren und \todo{50} gleichzeitigen Fahrzeugen innerhalb von \todo{10ms} beantworten.
+	Dies umfasst Nachricht dekodieren, Fusions-Algorithmus darbieten, Resultat enkodieren und versenden.
+	Die Bearbeitungszeit des Fusions-Algorithmus zählt nicht dazu.}
+
+\requirement{exec:realtime}{Kein Echtzeitsystem}{Trotz Anforderung \reqNumberForLabel{exec:time} wird das System nicht als hartes Echtzeitsystem gewertet. Eine Analyse für die maximale Reaktionszeit ist nicht verlangt. Stattdessen wird das System als weiches Echtzeitsystem gewertet, weswegen die durchschnittliche Reaktionszeit die Anforderung \reqNumberForLabel{exec:time} erfüllen muss.}
+
+\requirement{nfktl:rust}{Implementation in Rust}{Die Implementation wird in der Programmiersprache Rust vorgenommen.}
+
+\requirement{nfktl:speed}{Möglichst schnell}{Der Server soll auf Sensordaten und Algorithmusergebnisse schnell reagieren.}
 
 \requirement{nfktl:styleguide}{Einhaltung des Styleguides}{Der Quellcode der Serverimplementation soll sich weitestgehend an den Styleguide (siehe \autoref{rust:styleguide}) halten.}

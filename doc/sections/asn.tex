@@ -8,18 +8,18 @@
 	\cite{asn:itu:asn.1}
 \end{quotation}
 
-Die Notationsform \gls{asn} ermöglicht abstrakte Datentypen und Wertebereich zu beschreiben \cite{asn:layman}.
+Die Notationsform \gls{asn} ermöglicht es abstrakte Datentypen und Wertebereich zu beschreiben \cite{asn:layman}.
 Die Beschreibungen können anschließend zu Quellcode einer theoretisch\footnote{Es gibt keine Einschränkungen seitens des Standards, aber entsprechende Compiler zu finden erweist sich als schwierig (siehe \autoref{impl:issue:ffi})} beliebigen Programmiersprache compiliert werden.
 Beschriebene Datentypen werden dadurch als native Konstrukte dargestellt und können mittels einer der standardisierten (oder auch eigenen \cite{asn:itu:ecn}) Encodierungen serialisiert werden.
 
 Um den Austausch zwischen verschiedenen Anwendungen und Systemen zu ermöglichen, sind durch die \gls{itu}  bereits einige Encodierungen standardisiert \cite[8]{asn:itu:x691}.
-Für diese Arbeit ist aber einzig der PER bzw. uPER Standard relevant, da der Server diese Encodierung verwenden muss, um mit den Sensoren und den Autos zu kommunizieren (Anforderung in \autoref{req:com:asn}).
+Für diese Arbeit ist aber einzig der PER bzw. UPER Standard relevant, da der Server diese Encodierung verwenden muss, um mit den Sensoren und den Autos zu kommunizieren (Anforderung in \autoref{req:com:asn}).
 
 Andere, bekanntere Verfahren werden hier nur kurz erwähnt:
 \begin{itemize}
 	\item \textbf{BER} (\underline{B}asic \underline{E}ncoding \underline{R}ules): Flexible binäre Encodierung \cite{asn:wiki:x690}, spezifiziert in X.690 \cite{asn:itu:x690} und ISO/IEC 8825-1 \cite{asn:iso}.
-	\item \textbf{CER} (\underline{C}anonical \underline{E}ncoding \underline{R}ules): Reduziert BER durch die Restriktion, die Enden von Datenfelder speziell zu Markieren anstatt deren Größe zu übermitteln, eignet sich gut für große Nachrichten \cite{asn:wiki:x690}, spezifiziert in X.690 \cite{asn:itu:x690} und ISO/IEC 8825-1 \cite{asn:iso}.
-	\item \textbf{DER} (\underline{D}istinguished \underline{E}ncoding \underline{R}ules): Reduziert BER durch die Restriktion Größeninformationen zu Datenfeldern in den Metadaten zu übermitteln, eignet sich gut für kleine Nachrichten \cite{asn:wiki:x690}, spezifiziert in X.690 \cite{asn:itu:x690} und ISO/IEC 8825-1 \cite{asn:iso}.
+	\item \textbf{CER} (\underline{C}anonical \underline{E}ncoding \underline{R}ules): Reduziert BER durch die Restriktion, die Enden von Datenfelder speziell zu markieren anstatt deren Größe zu übermitteln und eignet sich gut für große Nachrichten \cite{asn:wiki:x690}, spezifiziert in X.690 \cite{asn:itu:x690} und ISO/IEC 8825-1 \cite{asn:iso}.
+	\item \textbf{DER} (\underline{D}istinguished \underline{E}ncoding \underline{R}ules): Reduziert BER durch die Restriktion, Größeninformationen zu Datenfeldern in den Metadaten zu übermitteln und eignet sich gut für kleine Nachrichten \cite{asn:wiki:x690}, spezifiziert in X.690 \cite{asn:itu:x690} und ISO/IEC 8825-1 \cite{asn:iso}.
 	\item \textbf{XER} (\underline{X}ML \underline{E}ncoding \underline{R}ules): Beschreibt den Wechsel der Darstellung zwischen ASN.1 und XML, spezifiziert in X.693 \cite{asn:itu:x693} und ISO/IEC 8825-4 \cite{asn:iso}.
 \end{itemize}
 

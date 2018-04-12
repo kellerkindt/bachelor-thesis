@@ -5,7 +5,7 @@
 
 \requirement{com:tcp}{TCP Server}{Auf Port 2000 sollen neue TCP-Verbindungen angenommen werden. Jedem Client soll eine eigenen TCP Verbindung zugewiesen sein.}
 
-\requirement{com:asn}{Kommunikationsprotokoll ist ASN.1/UPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients soll ASN.1 mit der Encodierung uPER sein. Es werden sollen die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert werden. Das Kommunikationsverhalten soll die Anforderungen der C++ Referenzimplementation erfüllen, sprich den Clients soll nicht ersichtlich sein, ob die Rust oder die Referenzimplementation des Servers ausgeführt wird.}
+\requirement{com:asn}{Kommunikationsprotokoll ist ASN.1/UPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients soll ASN.1 mit der Encodierung UPER sein. Es sollen die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert werden. Das Kommunikationsverhalten soll die Anforderungen der C++ Referenzimplementation erfüllen, sprich den Clients soll nicht ersichtlich sein, ob die Rust oder die Referenzimplementation des Servers ausgeführt wird.}
 
 \requirement{client:sensor}{Client als Sensor}{Ein Client soll sich nach dem Verbindungsaufbau als Sensor registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ der Clients unbekannt sein und er soll nicht als Sensor gewertet werden.}
 

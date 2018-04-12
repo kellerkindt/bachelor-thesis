@@ -7,11 +7,13 @@
 
 \requirement{com:asn}{Kommunikationsprotokoll ist ASN.1/UPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients soll ASN.1 mit der Encodierung UPER sein. Es sollen die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert werden. Das Kommunikationsverhalten soll die Anforderungen der C++ Referenzimplementation erfüllen, sprich den Clients soll nicht ersichtlich sein, ob die Rust oder die Referenzimplementation des Servers ausgeführt wird.}
 
-\requirement{client:sensor}{Client als Sensor}{Ein Client soll sich nach dem Verbindungsaufbau als Sensor registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ der Clients unbekannt sein und er soll nicht als Sensor gewertet werden.}
+\requirement{client:sensor}{Client als Sensor}{Ein Client soll sich nach dem Verbindungsaufbau als Sensor registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ des Clients unbekannt sein und er soll nicht als Sensor gewertet werden.}
 
-\requirement{client:car}{Client als Fahrzeug}{Ein Client soll sich nach dem Verbindungsaufbau als Fahrzeug registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ der Clients unbekannt sein und er soll nicht als Fahrzeug gewertet werden.}
+\requirement{client:car}{Client als Fahrzeug}{Ein Client soll sich nach dem Verbindungsaufbau als Fahrzeug registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ des Clients unbekannt sein und er soll nicht als Fahrzeug gewertet werden.}
 
-\requirement{client:sectors}{Sektoren übertragen}{Der Server soll dem Fahrzeug nach Registrierung alle bekannten Sektoren übermitteln.}
+\requirement{client:sectors}{Fahrzeug initialisieren}{Der Server soll dem Fahrzeug nach Registrierung alle bekannten Sektoren übermitteln.}
+
+\requirement{client:defunsub}{Sensor initialisieren}{Der Server soll den Sensor nach Registrierung deabonnieren.}
 
 \requirement{sensor:pause}{Sensoren abonnieren}{Sensoren sollen bei verbunden Fahrzeugen abonniert werden.}
 
@@ -29,23 +31,21 @@
 
 \requirement{impl:args}{Startparameter}{\todo{sample: send\_delay\_ms, sensor\_timeout\_ms, environment\_frame\_file, ...}}
 
+\section{Nichtfunktionale Anforderungen}
+
+\requirement{exec:mec}{Plattform MEC}{Die Implementation des Servers soll in compilierter Form auf einem MEC Server mit dem Betriebssystem \todo{Ubuntu 16.04 LTS Server} und der Architektur \todo{x86-64} ausführbar sein.}
+
+\requirement{exec:time}{Reaktionszeit des Servers}{Die Implementation des Servers soll Nachrichten von \todo{20} gleichzeitigen Sensoren und \todo{50} gleichzeitigen Fahrzeugen innerhalb von \todo{10ms} beantworten können.
+	Dies umfasst Nachricht dekodieren, Fusions-Algorithmus darbieten, Resultat enkodieren und versenden.
+	Die Bearbeitungszeit des Fusions-Algorithmus zählt nicht dazu.}
+
+\requirement{exec:realtime}{Kein Echtzeitsystem}{Trotz vorgegebener Reaktionszeit wird das System nicht als hartes Echtzeitsystem gewertet. Eine Analyse für die maximale Reaktionszeit ist nicht verlangt. Stattdessen soll das System als weiches Echtzeitsystem gewertet werden, weswegen die durchschnittliche Reaktionszeit die Anforderung \todo{\reqNumberForLabel{exec:time}} erfüllen muss.}
+
+\requirement{nfktl:rust}{Implementation in Rust}{Die Implementation soll in der Programmiersprache Rust vorgenommen werden.}
+
+\requirement{nfktl:styleguide}{Einhaltung des Styleguides}{Der Quellcode der Serverimplementation soll sich weitestgehend an den offiziellen Styleguide (siehe \autoref{rust:styleguide}) halten.}
+
 \requirement{dos:sensor}{Widerstand gegen Sensor DOS}{Die Funktionalität des Servers gegenüber anderen Clients soll durch eine Überflutung von Daten eines Sensors nicht beeinträchtigt werden. \todo{optional? relevant?}}
 
 \requirement{dos:car}{Widerstand gegen Nachrichtenrückstau}{Die Funktionalität des Servers gegenüber anderen Clients soll durch Fahrzeuge, für die sich ein \todo{Nachrichtenrückstau} gebildet hat und von einzelnen langsamen Verbindungen, nicht beeinträchtigt werden. \todo{optional? relevant?}}
 
-
-\section{Nichtfunktionale Anforderungen}
-
-\requirement{exec:mec}{Plattform MEC}{Die Implementation des Servers muss in compilierter Form auf einem MEC Server mit dem Betriebssystem \todo{Ubuntu 16.04 LTS Server} und der Architektur \todo{x86-64} lauffähig sein.}
-
-\requirement{exec:time}{Reaktionszeit des Servers}{Die Implementation des Servers muss Nachrichten von \todo{20} gleichzeitigen Sensoren und \todo{50} gleichzeitigen Fahrzeugen innerhalb von \todo{10ms} beantworten.
-	Dies umfasst Nachricht dekodieren, Fusions-Algorithmus darbieten, Resultat enkodieren und versenden.
-	Die Bearbeitungszeit des Fusions-Algorithmus zählt nicht dazu.}
-
-\requirement{exec:realtime}{Kein Echtzeitsystem}{Trotz Anforderung \reqNumberForLabel{exec:time} wird das System nicht als hartes Echtzeitsystem gewertet. Eine Analyse für die maximale Reaktionszeit ist nicht verlangt. Stattdessen wird das System als weiches Echtzeitsystem gewertet, weswegen die durchschnittliche Reaktionszeit die Anforderung \reqNumberForLabel{exec:time} erfüllen muss.}
-
-\requirement{nfktl:rust}{Implementation in Rust}{Die Implementation wird in der Programmiersprache Rust vorgenommen.}
-
-\requirement{nfktl:speed}{Möglichst schnell}{Der Server soll auf Sensordaten und Algorithmusergebnisse schnell reagieren.}
-
-\requirement{nfktl:styleguide}{Einhaltung des Styleguides}{Der Quellcode der Serverimplementation soll sich weitestgehend an den Styleguide (siehe \autoref{rust:styleguide}) halten.}

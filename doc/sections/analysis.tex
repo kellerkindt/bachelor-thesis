@@ -10,6 +10,7 @@
 		\node [draw, rectangle, drop shadow, fill=white] (F) {Fahrzeug};
 		\node [draw, circle, drop shadow, fill=white, text width=3cm, align=center] (C) [below right=of F] {MEC-Server};
 		\node [draw, rectangle, drop shadow, fill=white] (S) [below right=of C] {Sensor};
+		\node [draw, rectangle, drop shadow, fill=white] (L) [above right=of C] {Client};
 %		\node [draw, rectangle, drop shadow, fill=white] (A) [above right=of C] {Fusions-Algorithmus};
 		
 		\node (ctrl1) [above=of S] {};
@@ -59,6 +60,13 @@
 		\path[draw, -{Latex[scale=2.0]}, dashed] (C)
 			edge [bend left]  node [fill=white] {abonnieren} (S)
 			edge [bend right] node [fill=white] {deabonnieren} (S);
+			
+		%
+		% Client -> MEC-Sensor
+		%
+		\path[draw, -{Latex[scale=2.0]}, dashed] (L)
+			edge [bend right] node [fill=white] {Als Fahrzeug registrieren} (C)
+			edge [bend left]  node [fill=white] {Als Sensor registrieren} (C);
 				
 				
 		
@@ -73,6 +81,22 @@
 
 \section{Use Case Diagramme}
 \todo{was wirklich umgesetzt sein wird}
+\begin{figure}[H]
+	\begin{tikzpicture}[node distance=5]
+		\begin{umlsystem}{MEC-Server}
+			\umlusecase[y=2,name=u1]{Als Fahrzeug registrieren}
+			\umlusecase[y=0,name=u2]{Als Sensor registrieren}
+		\end{umlsystem}
+		\umlactor[x=-5.5,y=1]{Client}
+		\umlassoc{Client}{u1}
+		\umlassoc{Client}{u2}
+	\end{tikzpicture}
+	\centering
+	\caption{Use Case Diagramm für den MEC-Server}
+	\label{use_case:server_clients}
+\end{figure}
+
+\todo{Use-Case Beschreibung für \autoref{use_case:server_clients}}
 
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
@@ -97,10 +121,11 @@
 %		\umlassoc{Fusions-Algorithmus}{u4}
 	\end{tikzpicture}
 	\centering
-	\label{use_case:car}
 	\caption{Use Case Diagramm für den MEC-Server}
+	\label{use_case:car}
 \end{figure}
 
+\todo{Use-Case Beschreibung für \autoref{use_case:car}}
 
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
@@ -113,9 +138,11 @@
 		\umlassoc{MEC-Server}{u2} 
 	\end{tikzpicture}
 	\centering
-	\label{use_case:server_sensor}
 	\caption{Use Case Diagramm des MEC-Servers gegenüber dem Sensor}
+	\label{use_case:server_sensor}
 \end{figure}
+
+\todo{Use-Case Beschreibung für \autoref{use_case:server_sensor}}
 
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
@@ -128,9 +155,11 @@
 		\umlassoc{MEC-Server}{u2}
 	\end{tikzpicture}
 	\centering
-	\label{use_case:server_vehicle}
 	\caption{Use Case Diagramm des MEC-Servers gegenüber dem Sensor}
+	\label{use_case:server_vehicle}
 \end{figure}
+
+\todo{Use-Case Beschreibung für \autoref{use_case:server_vehicle}}
 
 %\begin{figure}[H]
 %	\begin{tikzpicture}[node distance=5]
@@ -146,6 +175,7 @@
 %\end{figure}
 
 
+\newpage
 \section{Nachrichten}
 
 
@@ -199,6 +229,8 @@ Für den Nachrichtentyp sind nur die in \autoref{message:types} gelisteten Werte
 
 \subsection{ClientRegistration}
 \label{msg:client_registration}
+
+\todo{Woher kommt die? Anforderungen? Use Cases? Kontextdiagramm?}
 
 Die ClientRegistration-Nachricht sendet der Client nach dem Verbindungsaufbau dem Server zu, um mitzuteilen, ob es sich um einen Sensor oder ein Fahrzeug handelt.
 

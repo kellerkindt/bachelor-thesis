@@ -12,7 +12,8 @@ pipeline {
                 sh "$RUSTUP install beta"
                 sh "$RUSTUP install nightly"
                 sh "$RUSTUP update"
-                sh "$CARGO +nightly install --list | grep 'clippy '; $CARGO +nightly install clippy --force"
+                sh "$CARGO +nightly install --list | grep 'clippy ' || $CARGO +nightly install clippy --force"
+                sh '$CARGO +nightly clippy --all; if [ $? -ne "101" ]; then $CARGO +nightly install clippy --force; fi"
                 sh "$RUSTUP component add rustfmt-preview"
                 sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
             }

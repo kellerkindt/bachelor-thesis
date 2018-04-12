@@ -56,7 +56,8 @@ pipeline {
         stage('Clippy') {
             steps {
                 ansiColor('xterm') {
-                    sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all"
+# seems to have issues? https://github.com/rust-lang-nursery/rust-clippy/issues/2602
+#                    sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all"
                 }
             }
         }

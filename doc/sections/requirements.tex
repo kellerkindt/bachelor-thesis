@@ -3,7 +3,7 @@
 
 \section{Funktionale Anforderungen}
 
-\requirement{com:tcp}{TCP Server}{Auf Port \todo{...} sollen neue TCP-Verbindungen angenommen werden. Jeder Client soll einer eigenen TCP Verbindung zugewiesen sein.}
+\requirement{com:tcp}{TCP Server}{Auf Port 2000 sollen neue TCP-Verbindungen angenommen werden. Jedem Client soll eine eigenen TCP Verbindung zugewiesen sein.}
 
 \requirement{com:asn}{Kommunikationsprotokoll ist ASN.1/UPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients soll ASN.1 mit der Encodierung uPER sein. Es werden sollen die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert werden. Das Kommunikationsverhalten soll die Anforderungen der C++ Referenzimplementation erfüllen, sprich den Clients soll nicht ersichtlich sein, ob die Rust oder die Referenzimplementation des Servers ausgeführt wird.}
 

@@ -141,7 +141,7 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
                 .value_name("NUMBER")
                 .help("Sets the TCP listen port")
                 .takes_value(true)
-                .default_value("5500"),
+                .default_value("2000"),
         )
         .arg(
             Arg::with_name("interface")

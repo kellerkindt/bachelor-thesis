@@ -28,7 +28,6 @@ pub struct Client<
     variant: Variant,
     subscribed_model: bool,
     subscribed_count: bool,
-    _e: ::std::marker::PhantomData<E>,
 }
 
 impl<
@@ -52,7 +51,6 @@ impl<
             variant: Variant::Unknown,
             subscribed_model: false,
             subscribed_count: false,
-            _e: ::std::marker::PhantomData,
         }
     }
 

@@ -9,8 +9,6 @@
 
 \requirement{com:tcp}{TCP Server}{Auf Port 2000 sollen neue TCP-Verbindungen angenommen werden. Jedem Client soll eine eigenen TCP Verbindung zugewiesen sein.}
 
-\requirement{com:asn}{Kommunikationsprotokoll ist ASN.1/UPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients soll ASN.1 mit der Encodierung UPER sein. Es sollen die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert werden. Das Kommunikationsverhalten soll die Anforderungen der C++ Referenzimplementation erfüllen, sprich den Clients soll nicht ersichtlich sein, ob die Rust oder die Referenzimplementation des Servers ausgeführt wird.}
-
 \requirement{client:sensor}{Client als Sensor}{Ein Client soll sich nach dem Verbindungsaufbau als Sensor registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ des Clients unbekannt sein und er soll nicht als Sensor gewertet werden.}
 
 \requirement{client:car}{Client als Fahrzeug}{Ein Client soll sich nach dem Verbindungsaufbau als Fahrzeug registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ des Clients unbekannt sein und er soll nicht als Fahrzeug gewertet werden.}
@@ -27,7 +25,7 @@
 
 \requirement{impl:algorithmus:from}{Ergebnisse weitergeben}{Ergebnisse des Fusions-Algorithmus sollen enkodiert un an die verbundenen Fahrzeuge versendet werden.}
 
-\requirement{impl:algorithmus}{Fusions-Algorithmus}{Für den Testbetrieb soll der Fusions-Algorithmus aus der C++ Referenzimplementierung (\enquote{SampleAlgorithm}) auch in Rust umgesetzt werden. Dieser Fusions-Algorithmus ist eine \enquote{dummy} Implementation, d.h. eingehende Daten werden nach einem einfachen Schema wieder verschickt. Ob die Einbindung einer externen Bibliothek als Fusions-Algorithmus möglich ist, soll überprüft werden.}
+\requirement{impl:algorithmus}{Fusions-Algorithmus}{Für den Testbetrieb soll der Fusions-Algorithmus aus der C++ Referenzimplementierung (\enquote{SampleAlgorithm}) auch in Rust umgesetzt werden. Dieser Fusions-Algorithmus ist eine \enquote{dummy} Implementation, d.h. eingehende Daten werden nach einem einfachen Schema wieder verschickt. Ob die Einbindung einer externen Bibliothek als Fusions-Algorithmus möglich ist, soll überprüft werden.\todo{zu lax}}
 
 \requirement{impl:roadclearance}{Road-Clearance}{\todo{...}}
 
@@ -37,9 +35,11 @@
 
 \section{Nichtfunktionale Anforderungen}
 
+\requirement{com:asn}{Kommunikationsprotokoll ist ASN.1/UPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients soll ASN.1 mit der Encodierung UPER sein. Es sollen die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert werden. Das Kommunikationsverhalten soll die Anforderungen der C++ Referenzimplementation erfüllen, sprich den Clients soll nicht ersichtlich sein, ob die Rust oder die Referenzimplementation des Servers ausgeführt wird.}
+
 \requirement{exec:mec}{Plattform MEC}{Die Implementation des Servers soll in compilierter Form auf einem MEC Server mit dem Betriebssystem \todo{Ubuntu 16.04 LTS Server} und der Architektur \todo{x86-64} ausführbar sein.}
 
-\requirement{exec:time}{Reaktionszeit des Servers}{Die Implementation des Servers soll Nachrichten von \todo{20} gleichzeitigen Sensoren und \todo{50} gleichzeitigen Fahrzeugen innerhalb von \todo{10ms} beantworten können.
+\requirement{exec:time}{Reaktionszeit des Servers}{Die Implementation des Servers soll Nachrichten von \todo{20} gleichzeitigen Sensoren und \todo{50} gleichzeitigen Fahrzeugen innerhalb von \todo{5ms} beantworten können.
 	Dies umfasst Nachricht dekodieren, Fusions-Algorithmus darbieten, Resultat enkodieren und versenden.
 	Die Bearbeitungszeit des Fusions-Algorithmus zählt nicht dazu.}
 

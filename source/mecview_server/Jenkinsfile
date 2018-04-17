@@ -12,9 +12,6 @@ pipeline {
                 sh "$RUSTUP install beta"
                 sh "$RUSTUP install nightly"
                 sh "$RUSTUP update"
-                sh "$CARGO +nightly install clippy --version 0.0.194 --force"
-                sh "$RUSTUP component add rustfmt-preview"
-                sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
                 sh "rm -rf mecview_server/target/ || true"
             }
         }
@@ -57,6 +54,7 @@ pipeline {
         stage('Clippy') {
             steps {
                 ansiColor('xterm') {
+                    sh "$CARGO +nightly install clippy --version 0.0.194 --force"
                     sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all"
                 }
             }
@@ -66,6 +64,8 @@ pipeline {
                 ansiColor('xterm') {
 		            // The build will fail if rustfmt thinks any changes are
 		            // required.
+                    sh "$RUSTUP component add rustfmt-preview"
+                    sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
 		            sh "cd $CRATE_SERVER; $CARGO +nightly fmt --all -- --write-mode diff"
                 }
             }

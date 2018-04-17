@@ -56,7 +56,6 @@ pipeline {
         stage('Clippy') {
             steps {
                 ansiColor('xterm') {
-                    sh "$CARGO +nightly install clippy --version 0.0.194 --force"
                     sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all"
                 }
             }

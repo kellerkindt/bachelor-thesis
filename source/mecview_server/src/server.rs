@@ -8,7 +8,6 @@ use client::Client;
 
 use adapter::asn::AsnAdapter;
 use algorithm;
-use algorithm::Algorithm;
 use algorithm::SampleAlgorithm;
 
 use async::channel;

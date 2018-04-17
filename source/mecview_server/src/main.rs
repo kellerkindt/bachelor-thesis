@@ -55,13 +55,6 @@ mod io {
 use std::io::BufRead;
 use std::net::IpAddr;
 use std::net::SocketAddr;
-use std::thread;
-
-use async::AsyncRead;
-use async::Future;
-use async::Sink;
-use async::Stream;
-use io::net::TcpStream;
 
 use log::LevelFilter;
 use log4rs::append::console::ConsoleAppender;
@@ -88,7 +81,7 @@ fn main() {
     );
 
     let server = server::Server::new(address).unwrap();
-    let server = server.start().unwrap();
+    let _server = server.start().unwrap();
 
     info!("Server started successfully");
 
@@ -106,7 +99,7 @@ fn main() {
 }
 
 fn parse_config() -> ServerConfig {
-    let mut parser = create_argument_parser();
+    let parser = create_argument_parser();
     let matches = parser.get_matches();
     ServerConfig {
         ip: matches

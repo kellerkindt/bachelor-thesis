@@ -117,10 +117,12 @@ impl SampleAlgorithm {
     fn retain_mut<T, F: Fn(&mut T) -> bool>(vec: &mut Vec<T>, keep: F) {
         // nightly: see Vec::drain_filter
         // Vec::retain only provides &T and not &mut T :(
-        for mut i in 0..vec.len() {
-            if !keep(vec.index_mut(i)) {
-                vec.swap_remove(i);
-                i -= 1;
+        let mut index = 0_usize;
+        for _ in 0..vec.len() {
+            if !keep(vec.index_mut(index)) {
+                vec.swap_remove(index);
+            } else {
+                index += 1;
             }
         }
     }

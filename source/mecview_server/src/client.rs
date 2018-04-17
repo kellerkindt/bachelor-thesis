@@ -81,7 +81,7 @@ impl<
         );
         let mut sender = self.myself.clone();
         self.algorithm.subscribe_environment_model(
-            self.address.clone(),
+            self.address,
             Box::new(move |e| {
                 sender
                     .try_send(Command::UpdateEnvironmentModel(e))
@@ -98,8 +98,7 @@ impl<
             self.address,
             self.variant
         );
-        self.algorithm
-            .unsubscribe_environment_model(self.address.clone())?;
+        self.algorithm.unsubscribe_environment_model(self.address)?;
         self.subscribed_model = false;
         Ok(())
     }
@@ -111,7 +110,7 @@ impl<
             self.variant
         );
         self.algorithm
-            .activate_environment_model_subscription(self.address.clone())
+            .activate_environment_model_subscription(self.address)
     }
 
     fn deactivate_algorithm_model_subscription(&mut self) -> Result<(), Error> {
@@ -121,7 +120,7 @@ impl<
             self.variant
         );
         self.algorithm
-            .deactivate_environment_model_subscription(self.address.clone())
+            .deactivate_environment_model_subscription(self.address)
     }
 
     fn subscribe_to_algorithm_as_sensor(&mut self) -> Result<(), Error> {
@@ -132,7 +131,7 @@ impl<
         );
         let mut sender = self.myself.clone();
         self.algorithm.subscribe_listener_count(
-            self.address.clone(),
+            self.address,
             Box::new(move |count| {
                 let command = if count > 0 {
                     Command::RemoteSubscribe
@@ -154,8 +153,7 @@ impl<
             self.address,
             self.variant
         );
-        self.algorithm
-            .unsubscribe_listener_count(self.address.clone())?;
+        self.algorithm.unsubscribe_listener_count(self.address)?;
         self.subscribed_count = false;
         Ok(())
     }
@@ -324,7 +322,7 @@ mod test {
             Ok(())
         }
 
-        fn update_environment_model(&mut self, model: Arc<RawMessage<E>>) -> Result<(), Error> {
+        fn update_environment_model(&mut self, _model: Arc<RawMessage<E>>) -> Result<(), Error> {
             Ok(())
         }
     }
@@ -334,7 +332,7 @@ mod test {
         Client<M, M, impl Algorithm<M, M, Identifier = SocketAddr>, impl Adapter<M>>,
     ) {
         let address = "0.0.0.0:2048".parse::<SocketAddr>().unwrap();
-        let (sender, receiver) = ::async::channel(2);
+        let (sender, _receiver) = ::async::channel(2);
         let (alg_tx, alg_rx) = ::async::channel(2);
         (alg_rx, Client::new(sender, address, MockAdapter(), alg_tx))
     }
@@ -346,7 +344,7 @@ mod test {
 
     #[test]
     fn test_update_variant_cannot_change_if_not_unknown() {
-        let (alg, mut client) = test_client();
+        let (_alg, mut client) = test_client();
         client.variant = Variant::Vehicle;
         assert!(
             client
@@ -371,7 +369,7 @@ mod test {
     }
 
     fn test_update_variant_for_client_type(variant: Variant) {
-        let (alg, mut client) = test_client();
+        let (_alg, mut client) = test_client();
         assert_eq!(
             (),
             client

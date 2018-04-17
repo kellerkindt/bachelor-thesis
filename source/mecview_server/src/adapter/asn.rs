@@ -1,6 +1,7 @@
 #![allow(non_upper_case_globals)]
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
+#![allow(cast_lossless)]
 
 use client;
 
@@ -44,6 +45,7 @@ impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 's
         update
     }
 
+    #[allow(needless_pass_by_value)]
     fn remote_send<M: AsnMessage>(&mut self, message: M) -> Result<(), Error> {
         match message.encode() {
             Err(_) => Err(Error::from(ErrorKind::InvalidData)),

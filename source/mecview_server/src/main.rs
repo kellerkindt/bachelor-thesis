@@ -71,7 +71,7 @@ struct ServerConfig {
 
 fn main() {
     let config = parse_config();
-    init_log4rs(config.log.clone());
+    init_log4rs(config.log);
     let address = SocketAddr::new(config.ip, config.port);
 
     info!(

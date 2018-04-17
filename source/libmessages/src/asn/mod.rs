@@ -11,7 +11,7 @@ pub fn uper_encode_to_new_buffer<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, v
     let result = unsafe {
         raw::uper_encode_to_new_buffer(
             asn_type as *mut raw::asn_TYPE_descriptor_t,
-            0 as *mut raw::asn_per_constraints_s,
+            ::std::ptr::null_mut(),
             value as *const T as *mut T as *mut ::std::os::raw::c_void,
             (&mut pointer as *mut *mut u8) as *mut *mut ::std::os::raw::c_void,
         )

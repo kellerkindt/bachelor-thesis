@@ -79,7 +79,7 @@ struct ServerConfig {
 fn main() {
     let config = parse_config();
     init_log4rs(config.log.clone());
-    let address = SocketAddr::new(config.ip.clone(), config.port);
+    let address = SocketAddr::new(config.ip, config.port);
 
     info!(
         "Staring Server v{} on interface {}",

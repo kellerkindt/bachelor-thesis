@@ -1,7 +1,5 @@
 #![allow(non_upper_case_globals)]
 #![allow(non_camel_case_types)]
-#![allow(non_snake_case)]
-#![allow(cast_lossless)]
 
 use client;
 
@@ -45,6 +43,7 @@ impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 's
         update
     }
 
+    #[allow(unknown_lints)]
     #[allow(needless_pass_by_value)]
     fn remote_send<M: AsnMessage>(&mut self, message: M) -> Result<(), Error> {
         match message.encode() {
@@ -92,12 +91,16 @@ impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 's
         self.remote_send(InitMessage::default())
     }
 
+    #[allow(unknown_lints)]
+    #[allow(cast_lossless)]
     fn unsubscribe(&mut self) -> Result<(), Error> {
         self.remote_send(Self::new_subscribe_message(
             SubscriptionStatus_SubscriptionStatus_unsubscribed as SubscriptionStatus_t,
         ))
     }
 
+    #[allow(unknown_lints)]
+    #[allow(cast_lossless)]
     fn subscribe(&mut self) -> Result<(), Error> {
         self.remote_send(Self::new_subscribe_message(
             SubscriptionStatus_SubscriptionStatus_subscribed as SubscriptionStatus_t,

@@ -9,23 +9,17 @@ use messages::asn::AsnMessage;
 use messages::RawMessage;
 
 use super::Algorithm;
+use super::CountListener;
+use super::EnvironmentListener;
 
 #[derive(Default)]
 pub struct SampleAlgorithm {
-    model_listener: Vec<(
-        SocketAddr,
-        bool,
-        Box<FnMut(Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error> + Send>,
-    )>,
-    count_listener: Vec<(SocketAddr, Box<FnMut(usize) -> Result<(), Error> + Send>)>,
+    model_listener: Vec<(SocketAddr, bool, EnvironmentListener<EnvironmentFrame>)>,
+    count_listener: Vec<(SocketAddr, CountListener)>,
 }
 
 impl SampleAlgorithm {
-    fn push_model_listener(
-        &mut self,
-        id: SocketAddr,
-        sink: Box<FnMut(Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error> + Send>,
-    ) {
+    fn push_model_listener(&mut self, id: SocketAddr, sink: EnvironmentListener<EnvironmentFrame>) {
         trace!("Adding model listener with id={}", id);
         let len = self.model_listener.len();
         self.model_listener.push((id, false, sink));
@@ -68,11 +62,7 @@ impl SampleAlgorithm {
             .for_each(|(_, ref mut active, _)| *active = false);
     }
 
-    fn push_count_listener(
-        &mut self,
-        id: SocketAddr,
-        mut sink: Box<FnMut(usize) -> Result<(), Error> + Send>,
-    ) {
+    fn push_count_listener(&mut self, id: SocketAddr, mut sink: CountListener) {
         trace!("Adding count listener with id={}", id);
         if sink(self.model_listener.len()).is_ok() {
             self.count_listener.push((id, sink));
@@ -146,7 +136,7 @@ impl Algorithm<SensorFrame, EnvironmentFrame> for SampleAlgorithm {
     fn subscribe_environment_model(
         &mut self,
         identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
-        sink: Box<FnMut(Arc<RawMessage<EnvironmentFrame>>) -> Result<(), Error> + Send + 'static>,
+        sink: EnvironmentListener<EnvironmentFrame>,
     ) -> Result<(), Error> {
         self.push_model_listener(identifier, sink);
         Ok(())
@@ -179,7 +169,7 @@ impl Algorithm<SensorFrame, EnvironmentFrame> for SampleAlgorithm {
     fn subscribe_listener_count(
         &mut self,
         identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
-        sink: Box<FnMut(usize) -> Result<(), Error> + Send + 'static>,
+        sink: CountListener,
     ) -> Result<(), Error> {
         self.push_count_listener(identifier, sink);
         Ok(())

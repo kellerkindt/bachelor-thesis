@@ -12,14 +12,14 @@ use async::Sender;
 
 use messages::RawMessage;
 
+type CountListener = Box<FnMut(usize) -> Result<(), Error> + Send + 'static>;
+type EnvironmentListener<E> = Box<FnMut(Arc<RawMessage<E>>) -> Result<(), Error> + Send + 'static>;
+
 pub enum Command<A: Send, E: Send, I: Debug + Send + Sized + 'static> {
     Update(Box<A>),
-    SubscribeEnvironmentModel(
-        I,
-        Box<FnMut(Arc<RawMessage<E>>) -> Result<(), Error> + Send + 'static>,
-    ),
+    SubscribeEnvironmentModel(I, EnvironmentListener<E>),
     UnsubscribeEnvironmentModel(I),
-    SubscribeListenerCount(I, Box<FnMut(usize) -> Result<(), Error> + Send + 'static>),
+    SubscribeListenerCount(I, CountListener),
     UnsubscribeListenerCount(I),
     ActivateEnvironmentModelSubscription(I),
     DeactivateEnvironmentModelSubscription(I),
@@ -33,7 +33,7 @@ pub trait Algorithm<A: Send + Debug, E: Send + Debug> {
     fn subscribe_environment_model(
         &mut self,
         identifier: Self::Identifier,
-        sink: Box<FnMut(Arc<RawMessage<E>>) -> Result<(), Error> + Send + 'static>,
+        sink: EnvironmentListener<E>,
     ) -> Result<(), Error>;
 
     fn unsubscribe_environment_model(&mut self, identifier: Self::Identifier) -> Result<(), Error>;
@@ -51,7 +51,7 @@ pub trait Algorithm<A: Send + Debug, E: Send + Debug> {
     fn subscribe_listener_count(
         &mut self,
         identifier: Self::Identifier,
-        sink: Box<FnMut(usize) -> Result<(), Error> + Send + 'static>,
+        sink: CountListener,
     ) -> Result<(), Error>;
 
     fn unsubscribe_listener_count(&mut self, identifier: Self::Identifier) -> Result<(), Error>;
@@ -70,7 +70,7 @@ impl<A: Send + Debug, E: Send + Debug, I: PartialEq + Debug + Send + Sized + 'st
     fn subscribe_environment_model(
         &mut self,
         identifier: I,
-        sink: Box<FnMut(Arc<RawMessage<E>>) -> Result<(), Error> + Send + 'static>,
+        sink: EnvironmentListener<E>,
     ) -> Result<(), Error> {
         self.try_send(Command::SubscribeEnvironmentModel(identifier, sink))
             .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
@@ -100,7 +100,7 @@ impl<A: Send + Debug, E: Send + Debug, I: PartialEq + Debug + Send + Sized + 'st
     fn subscribe_listener_count(
         &mut self,
         identifier: <Self as Algorithm<A, E>>::Identifier,
-        sink: Box<FnMut(usize) -> Result<(), Error> + Send + 'static>,
+        sink: CountListener,
     ) -> Result<(), Error> {
         self.try_send(Command::SubscribeListenerCount(identifier, sink))
             .map_err(|_| Error::from(ErrorKind::UnexpectedEof))

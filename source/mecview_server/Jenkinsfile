@@ -11,7 +11,9 @@ pipeline {
                 sh "curl https://sh.rustup.rs -sSf | sh -s -- -y"
                 sh "$RUSTUP install beta"
                 sh "$RUSTUP install nightly"
-                sh "$RUSTUP update"
+                sh "$RUSTUP update stable"
+                sh "$RUSTUP update beta"
+                sh "$RUSTUP update nightly 2>&1 | grep -i installing && $CARGO +nightly install clippy --version 0.0.194 --force || true"
                 sh "rm -rf mecview_server/target/ || true"
             }
         }

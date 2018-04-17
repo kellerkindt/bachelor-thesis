@@ -29,9 +29,9 @@ pipeline {
                 stage('Test-Debug') {
 				    steps {
 				        ansiColor('xterm') {
-				            sh "cd $CRATE_SERVER; $CARGO +beta test  -p libmessages -p libmessages-sys -p MECViewServer"
-				            sh "cd $CRATE_SERVER; mv target/debug/MECViewServer MECViewServer_Debug"
-							archiveArtifacts "$CRATE_SERVER/MECViewServer_Debug"
+				            sh "cd $CRATE_SERVER; $CARGO +beta test  -p libmessages -p libmessages-sys -p mecview_server"
+				            sh "cd $CRATE_SERVER; mv target/debug/mecview_server mecview_server_debug"
+							archiveArtifacts "$CRATE_SERVER/mecview_server_Debug"
 				        }
 				    }
                 }
@@ -47,9 +47,9 @@ pipeline {
         stage('Test-Release') {
 			steps {
 			    ansiColor('xterm') {
-			        sh "cd $CRATE_SERVER; $CARGO +beta test  -p libmessages -p libmessages-sys -p MECViewServer --release"
-				            sh "cd $CRATE_SERVER; mv target/release/MECViewServer MECViewServer"
-							archiveArtifacts "$CRATE_SERVER/MECViewServer"
+			        sh "cd $CRATE_SERVER; $CARGO +beta test  -p libmessages -p libmessages-sys -p mecview_server --release"
+				            sh "cd $CRATE_SERVER; mv target/release/mecview_server mecview_server"
+							archiveArtifacts "$CRATE_SERVER/mecview_server"
 			    }
 			}
         }

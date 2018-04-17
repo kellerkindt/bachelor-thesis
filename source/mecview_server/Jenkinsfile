@@ -16,7 +16,7 @@ pipeline {
                 sh "set +e; $CARGO +nightly clippy --all; if [ \$? -ne '101' ]; then set -e && $CARGO +nightly install clippy --force; fi;"
                 sh "$RUSTUP component add rustfmt-preview"
                 sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
-                sh "rm -rf mecview_server/target/"
+                sh "rm -rf mecview_server/target/ || true"
             }
         }
         stage('Build-Debug') {

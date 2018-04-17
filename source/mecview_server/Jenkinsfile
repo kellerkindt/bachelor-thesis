@@ -31,7 +31,7 @@ pipeline {
 				        ansiColor('xterm') {
 				            sh "cd $CRATE_SERVER; $CARGO +beta test  -p libmessages -p libmessages-sys -p mecview_server"
 				            sh "cd $CRATE_SERVER; mv target/debug/mecview_server mecview_server_debug"
-							archiveArtifacts "$CRATE_SERVER/mecview_server_Debug"
+							archiveArtifacts "$CRATE_SERVER/mecview_server_debug"
 				        }
 				    }
                 }

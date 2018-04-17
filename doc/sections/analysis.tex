@@ -82,53 +82,30 @@ In der folgenden Abbildung sind die Systemgrenzen aufgezeigt.
 	\caption{Systemkontextdiagramm}
 \end{figure}
 
-Ein Client einer neuen Verbindung kann sich entweder als Fahrzeug oder als Sensor registrieren.
-Nach Registratur stehen die jeweiligen Funktionen eines Fahrzeugs oder eines Sensor zu Verfügung.
-
 
 \section{Use Case Diagramme}
 \todo{was wirklich umgesetzt sein wird}
 
-\begin{figure}[H]
-	\begin{tikzpicture}[node distance=5]
-		\begin{umlsystem}{MEC-Server}
-			\umlusecase[y=2,name=u1]{Als Fahrzeug registrieren}
-			\umlusecase[y=0,name=u2]{Als Sensor registrieren}
-		\end{umlsystem}
-		\umlactor[x=-5.5,y=1]{Client}
-		\umlassoc{Client}{u1}
-		\umlassoc{Client}{u2}
-	\end{tikzpicture}
-	\centering
-	\caption{Use Case Diagramm für den MEC-Server}
-	\label{use_case:server_clients}
-\end{figure}
+\subsection{MEC-Server}
 
-\begin{itemize}
-	\item \textbf{Als Fahrzeug registrieren} \\
-	Ein neuer Client kann sich dem Server gegenüber als Fahrzeug registrieren.
-	Der Client kann sich nur als Fahrzeug registrieren, wenn zuvor keine Registratur vorgenommen wurde.
-	
-	\item \textbf{Als Sensor registrieren} \\
-	Ein neuer Client kann sich dem Server gegenüber als Sensor registrieren.
-	Der Client kann sich nur als Sensor registrieren, wenn zuvor keine Registratur vorgenommen wurde.
-\end{itemize}
+Das Use-Case Diagramm in \autoref{use_case:car} zeigt die Funktionalität des Servers, die gegenüber einem Fahrzeug un einem Sensor zur Verfügung stellt werden soll.
+Im Folgenden sind die Anwendungsfälle genauer erklärt:
 
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
 		\begin{umlsystem}{MEC-Server}
 %			\umlusecase[y=4,name=u0]{Verbindung aufbauen}
-			\umlusecase[y=2,name=u1]{abonnieren}
-			\umlusecase[y=0,name=u2]{deabonnieren}
-			\umlusecase[y=-2,name=u3]{Als Fahrzeug registrieren}
+			\umlusecase[y=2,name=u3]{Als Fahrzeug registrieren}
+			\umlusecase[y=0,name=u1]{Umgebungsmodell abonnieren}
+			\umlusecase[y=-2,name=u2]{Umgebungsmodell deabonnieren}
 			\umlusecase[y=-4,name=u4]{Als Sensor registrieren}
 			\umlusecase[y=-6,name=u5]{SensorFrame zusenden}
 			\umlusecase[y=-8,name=u6]{SensorIdleFrame zusenden}
 %			\umlusecase[y=-4,name=u4]{Umfeldmodel übergeben}
 		\end{umlsystem}
-		\umlactor[x=-5.5,y=0]{Fahrzeug}
+		\umlactor[x=-6.5,y=0]{Fahrzeug}
 %		\umlactor[x=-6,y=-4]{Fusions-Algorithmus}
-		\umlactor[x=5.5,y=-6]{Sensor}
+		\umlactor[x=6.5,y=-6]{Sensor}
 %		\umlassoc{Fahrzeug}{u0}
 		\umlassoc{Fahrzeug}{u1}
 		\umlassoc{Fahrzeug}{u2}
@@ -144,9 +121,34 @@ Nach Registratur stehen die jeweiligen Funktionen eines Fahrzeugs oder eines Sen
 	\caption{Use Case Diagramm für den MEC-Server}
 	\label{use_case:car}
 \end{figure}
+\begin{itemize}
+	\item \textbf{Als Fahrzeug registrieren [Vorbedingung: noch nicht registriert]} \\
+	Ein neu verbundenes Fahrzeug kann sich dem Server gegenüber als Fahrzeug registrieren.
+	Eine Registrierung kann für jede Verbindung  nur einmal vorgenommen werden und wird durch die Übermittlung einer \textit{ClientRegistration}-Nachricht durchgeführt (siehe \autoref{msg:client_registration}).
+	
+	\item \textbf{Umgebungsmodell abonnieren [Vorbedingung: als Fahrzeug registriert]} \\
+	Ein Fahrzeug kann das Umgebungsmodell abonnieren, woraufhin neue Modelle vom Server an das Fahrzeug übermittelt werden sollen.
+	Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).
+	
+	\item \textbf{Umgebungsmodell deabonnieren [Vorbedingung: bereits abonniert]} \\
+	Ein Fahrzeug kann das Umgebungsmodell wieder deabonnieren, woraufhin keine neuen Modelle mehr vom Server an das Fahrzeug übermittelt werden sollen.
+	Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).
+	
+	
+	\item \textbf{Als Sensor registrieren [Vorbedingung: noch nicht registriert]} \\
+	Ein neu verbundener Sensor kann sich dem Server gegenüber als Sensor registrieren.
+	Eine Registrierung kann für jede Verbindung nur einmal vorgenommen werden und wird durch die Übermittlung einer \textit{ClientRegistration}-Nachricht durchgeführt (siehe \autoref{msg:client_registration}).
+	
+	\item \textbf{SensorFrame zusenden [Vorbedingung: als Sensor registriert]} \\
+	Ein Sensor kann dem Server eine \textit{SensorFrame}-Nachricht übermitteln.
+	Der Server soll diese Nachricht dem Fusions-Algorithmus weiterleiten.
+	
+	\item \textbf{SensorIdleFrame zusenden [Vorbedingung: als Sensor registriert]} \\
+	Ein Sensor kann dem Server eine \textit{SensorIdleFrame}-Nachricht übermitteln.
+	
+\end{itemize}
 
-Das Use-Case Diagramm in \autoref{use_case:car} zeigt \todo{...}
-
+\subsection{Sensor}
 
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
@@ -198,7 +200,7 @@ Das Use-Case Diagramm in \autoref{use_case:car} zeigt \todo{...}
 
 \newpage
 \section{Nachrichten}
-
+\label{analysis:messages}
 
 \begin{wrapfigure}{R}[-1.5em]{.5\textwidth}
 	\centering
@@ -266,6 +268,7 @@ Die SensorFrame-Nachricht wird vom Sensor an den Server versendet und beschreibt
 Die EnvironmentFrame-Nachricht wird vom Server an das Fahrzeug versendet und enthält das Ergebnis des Fusions-Algorithmus.
 
 \subsection{UpdateSubscription}
+\label{msg:update_subscription}
 
 Die UpdateSubscription-Nachricht wird vom Server an den Sensor oder vom Fahrzeug an den Server gesendet.
 Der Sensor versendet bei einer Anmeldung erkannte Objekte (siehe \autoref{msg:sensor_frame}), während der Server dem Fahrzeug die Ergebnisse aus dem Fusions-Algorithmus (siehe \autoref{msg:environment_frame}) zusendet.

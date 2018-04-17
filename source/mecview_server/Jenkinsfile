@@ -10,7 +10,7 @@ pipeline {
             steps {
                 sh "curl https://sh.rustup.rs -sSf | sh -s -- -y"
                 sh "$RUSTUP install beta"
-                sh "$RUSTUP update"
+                sh "$RUSTUP update stable beta"
                 sh "$CARGO +beta install clippy --version 0.0.194 --force"
                 sh "$RUSTUP component add rustfmt-preview"
                 sh "rm -rf mecview_server/target/ || true"

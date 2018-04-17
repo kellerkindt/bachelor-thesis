@@ -35,7 +35,6 @@ use bytes::BytesMut;
 
 const CHANNEL_BUFFER_SIZE_SERVER: usize = 10;
 const CHANNEL_BUFFER_SIZE_CLIENT: usize = 10;
-const CHANNEL_BUFFER_SIZE_ADAPTER: usize = 10;
 const CHANNEL_BUFFER_SIZE_ALGORITHM: usize = 10;
 
 const HEADER_SIZE: usize = 8;
@@ -124,7 +123,7 @@ impl Server {
             warn!("TCP keepalive couldn't be set");
         }
 
-        let (client_tx, client_rx) = channel(2);
+        let (client_tx, client_rx) = channel(CHANNEL_BUFFER_SIZE_CLIENT);
 
         let (encoder, decoder) = client.framed(RawMessageCodec::default()).split();
         let mut client = Client::new(

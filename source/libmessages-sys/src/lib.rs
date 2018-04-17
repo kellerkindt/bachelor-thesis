@@ -6,6 +6,7 @@
 #[macro_use]
 extern crate log;
 
+#[allow(unknown_lints)]
 #[allow(clippy)]
 mod bindings;
 pub use bindings::*;

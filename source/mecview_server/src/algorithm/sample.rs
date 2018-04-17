@@ -193,3 +193,17 @@ impl Algorithm<SensorFrame, EnvironmentFrame> for SampleAlgorithm {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn retain_mut_removes_correct() {
+        let mut list = vec![1, 2, 3, 4, 5];
+        SampleAlgorithm::retain_mut(&mut list, |i| *i % 2 == 0);
+        assert_eq!(2, list.len());
+        assert!(list.contains(&2));
+        assert!(list.contains(&4));
+    }
+}

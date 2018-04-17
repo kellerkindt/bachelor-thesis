@@ -78,3 +78,25 @@ pipeline {
         }
     }
 }
+
+
+post {
+    always {
+        script {
+            step([$class: 'WarningsPublisher',
+                  canResolveRelativePaths: true,
+                  canComputeNew: true,
+                  unHealthy: '10',
+                  healthy: '0',
+                  unstableTotalAll: '0',
+                  thresholds: [[$class              : 'FailedThreshold',
+                                failureNewThreshold : '5',
+                                failureThreshold    : '5',
+                                unstableNewThreshold: '0',
+                                unstableThreshold   : '0']],
+                  consoleParsers: [[parserName: 'Rustc Warnings Parser'],
+                                   [parserName: 'Clippy Warnings Parser']]])
+        }
+    }
+}
+

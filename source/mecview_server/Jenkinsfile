@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('prepare') {
             steps {
-                sh "curl https://sh.rustup.rs -sSf | sh -s -- -y"
+                sh "$RUSTUP --version || curl https://sh.rustup.rs -sSf | sh -s -- -y"
                 sh "$RUSTUP install beta"
                 sh "$RUSTUP install nightly"
                 sh "$RUSTUP update stable"

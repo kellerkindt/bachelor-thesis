@@ -11,7 +11,7 @@ pipeline {
                 sh "$RUSTUP --version || curl https://sh.rustup.rs -sSf | sh -s -- -y"
                 sh "$RUSTUP install beta"
                 sh "$RUSTUP install nightly"
-                sh "$RUSTUP update stable"
+                sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
                 sh "$RUSTUP update beta"
                 sh "$RUSTUP update nightly 2>&1 | grep -i installing && $CARGO +nightly install clippy --version 0.0.194 --force || true"
                 sh "cd mecview_server; $CARGO clean"
@@ -48,8 +48,8 @@ pipeline {
 			steps {
 			    ansiColor('xterm') {
 			        sh "cd $CRATE_SERVER; $CARGO +beta test  -p libmessages -p libmessages-sys -p mecview_server --release"
-				            sh "cd $CRATE_SERVER; mv target/release/mecview_server mecview_server"
-							archiveArtifacts "$CRATE_SERVER/mecview_server"
+		            sh "cd $CRATE_SERVER; mv target/release/mecview_server mecview_server"
+					archiveArtifacts "$CRATE_SERVER/mecview_server"
 			    }
 			}
         }
@@ -74,8 +74,11 @@ pipeline {
         }
         stage('Doc') {
             steps {
+                sh "set +e; $CARGO tarpaulin --all --skip-clean | grep -v "Error during run" && $CARGO install cargo-tarpaulin"
+                sh "cd $CRATE_SERVER; $CARGO tarpaulin --all --skip-clean --out Xml"
                 sh "cd $CRATE_SERVER; $CARGO +beta doc"
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$CRATE_SERVER/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'Documentation', reportTitles: ''])
+				step([$class: 'CoberturaPublisher', coberturaReportFile: 'coverage.xml'])
             }
         }
     }

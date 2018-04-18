@@ -14,7 +14,7 @@ pipeline {
                 sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
                 sh "$RUSTUP update beta"
                 sh "$RUSTUP update nightly 2>&1 | grep -i installing && $CARGO +nightly install clippy --version 0.0.194 --force || true"
-                sh "cd $CRATE_SERVER; $CARGO clean"
+                sh "cd $CRATE_SERVER; true || $CARGO clean"
             }
         }
         stage('Build-Debug') {

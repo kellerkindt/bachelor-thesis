@@ -56,7 +56,7 @@ pipeline {
         stage('Clippy') {
             steps {
                 ansiColor('xterm') {
-                    sh "set +e; $CARGO +nightly clippy --all; if [ \$? -ne '101' ]; then set -e && $CARGO +nightly install clippy --force; fi;"
+                    sh "$CARGO +nightly clippy --all || ($CARGO +nightly install clippy --version 0.0.194 --force && $CARGO +nightly clippy --all)"
                     sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all"
                 }
             }

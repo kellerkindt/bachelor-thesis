@@ -14,7 +14,7 @@ pipeline {
                 sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
                 sh "$RUSTUP update beta"
                 sh "$RUSTUP update nightly 2>&1 | grep -i installing && $CARGO +nightly install clippy --version 0.0.194 --force || true"
-                sh "cd mecview_server; $CARGO clean"
+                sh "cd $CRATE_SERVER; $CARGO clean"
             }
         }
         stage('Build-Debug') {
@@ -78,7 +78,7 @@ pipeline {
                 sh "cd $CRATE_SERVER; $CARGO tarpaulin --all --skip-clean --out Xml"
                 sh "cd $CRATE_SERVER; $CARGO +beta doc"
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$CRATE_SERVER/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'Documentation', reportTitles: ''])
-				step([$class: 'CoberturaPublisher', coberturaReportFile: 'coverage.xml'])
+				step([$class: 'CoberturaPublisher', coberturaReportFile: "$CRATE_SERVER/coverage.xml"])
             }
         }
     }

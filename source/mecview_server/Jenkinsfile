@@ -14,7 +14,7 @@ pipeline {
                 sh "$RUSTUP update stable"
                 sh "$RUSTUP update beta"
                 sh "$RUSTUP update nightly 2>&1 | grep -i installing && $CARGO +nightly install clippy --version 0.0.194 --force || true"
-                sh "rm -rf mecview_server/target/ || true"
+                sh "cd mecview_server; $CARGO clean"
             }
         }
         stage('Build-Debug') {

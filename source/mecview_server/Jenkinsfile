@@ -126,8 +126,7 @@ pipeline {
                                     failureThreshold    : '5',
                                     unstableNewThreshold: '0',
                                     unstableThreshold   : '0']],
-                      consoleParsers: [[parserName: 'Rustc Warnings Parser'],
-                                      [parserName: 'Clippy Warnings Parser']]])
+                      consoleParsers: [[parserName: 'Clippy Warnings Parser']]])
             }
         }
     }

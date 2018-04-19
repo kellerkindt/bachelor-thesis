@@ -55,51 +55,52 @@ pipeline {
 			    }
 			}
         }
-        parallel {
-		    stage('Clippy') {
-		        steps {
-		            ansiColor('xterm') {
-		                sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all || ($CARGO +nightly install clippy --version 0.0.195 --force && $CARGO +nightly clippy --all)"
-		            }
-		        }
-		    }
-		    stage('Rustfmt') {
-		        steps {
-		            ansiColor('xterm') {
-				        // The build will fail if rustfmt thinks any changes are
-				        // required.
-		                sh "$RUSTUP component add rustfmt-preview"
-		                sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
-				        sh "cd $CRATE_SERVER; $CARGO +nightly fmt --all -- --write-mode diff"
-		            }
-		        }
-		    }
-			stage('Coverage') {
-		        steps {
-		            sh "set +e; $CARGO +beta tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
-		            sh "cd $CRATE_SERVER; $CARGO +beta tarpaulin --all --skip-clean --out Xml"
-		            sh "cd $CRATE_LIBMSG; $CARGO +beta tarpaulin --all --skip-clean --out Xml"
-		            sh "cd $CRATE_LIBMSG_SYS; $CARGO +beta tarpaulin --all --skip-clean --out Xml"
-					step([$class: 'CoberturaPublisher',
-						  autoUpdateHealth    : false,
-						  autoUpdateStability : false,
-						  coberturaReportFile : '**/cobertura.xml',
-						  failUnhealthy       : false,
-						  failUnstable        : false,
-						  maxNumberOfBuilds   : 0,
-						  onlyStable          : false,
-						  sourceEncoding      : 'ASCII',
-						  zoomCoverageChart   : false])
+        stage('Post-Build') {
+		    parallel {
+				stage('Clippy') {
+				    steps {
+				        ansiColor('xterm') {
+				            sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all || ($CARGO +nightly install clippy --version 0.0.195 --force && $CARGO +nightly clippy --all)"
+				        }
+				    }
 				}
-			}
-			stage('Documentation') {
-		        steps {
-		            sh "cd $CRATE_SERVER; $CARGO +beta doc"
-		            publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$CRATE_SERVER/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'Documentation', reportTitles: ''])
-		        }
+				stage('Rustfmt') {
+				    steps {
+				        ansiColor('xterm') {
+						    // The build will fail if rustfmt thinks any changes are
+						    // required.
+				            sh "$RUSTUP component add rustfmt-preview"
+				            sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
+						    sh "cd $CRATE_SERVER; $CARGO +nightly fmt --all -- --write-mode diff"
+				        }
+				    }
+				}
+				stage('Coverage') {
+				    steps {
+				        sh "set +e; $CARGO +beta tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
+				        sh "cd $CRATE_SERVER; $CARGO +beta tarpaulin --all --skip-clean --out Xml"
+				        sh "cd $CRATE_LIBMSG; $CARGO +beta tarpaulin --all --skip-clean --out Xml"
+				        sh "cd $CRATE_LIBMSG_SYS; $CARGO +beta tarpaulin --all --skip-clean --out Xml"
+						step([$class: 'CoberturaPublisher',
+							  autoUpdateHealth    : false,
+							  autoUpdateStability : false,
+							  coberturaReportFile : '**/cobertura.xml',
+							  failUnhealthy       : false,
+							  failUnstable        : false,
+							  maxNumberOfBuilds   : 0,
+							  onlyStable          : false,
+							  sourceEncoding      : 'ASCII',
+							  zoomCoverageChart   : false])
+					}
+				}
+				stage('Documentation') {
+				    steps {
+				        sh "cd $CRATE_SERVER; $CARGO +beta doc"
+				        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$CRATE_SERVER/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'Documentation', reportTitles: ''])
+				    }
+				}
 		    }
         }
-        
     }
     post {
         always {

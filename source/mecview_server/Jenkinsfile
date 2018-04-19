@@ -80,7 +80,7 @@ pipeline {
 				step([$class: 'CoberturaPublisher',
 					  autoUpdateHealth    : false,
 					  autoUpdateStability : false,
-					  coberturaReportFile : '***/coverage.xml',
+					  coberturaReportFile : "$CRATE_SERVER/coverage.xml",
 					  failUnhealthy       : false,
 					  failUnstable        : false,
 					  maxNumberOfBuilds   : 0,

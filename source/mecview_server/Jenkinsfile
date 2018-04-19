@@ -14,7 +14,7 @@ pipeline {
                 // sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
                 // sh "$RUSTUP update beta"
                 // sh "$RUSTUP update nightly"
-                sh "cd $CRATE_SERVER; $CARGO clean"
+                // sh "cd $CRATE_SERVER; $CARGO clean"
             }
         }
         stage('Build-Debug') {

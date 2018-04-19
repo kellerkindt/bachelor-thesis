@@ -73,7 +73,7 @@ pipeline {
         }
         stage('Doc') {
             steps {
-                sh "set +e; $CARGO tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
+                sh "set +e; $CARGO +beta tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
                 sh "cd $CRATE_SERVER; $CARGO tarpaulin --all --skip-clean --out Xml"
                 sh "cd $CRATE_SERVER; $CARGO +beta doc"
                 publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$CRATE_SERVER/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'Documentation', reportTitles: ''])

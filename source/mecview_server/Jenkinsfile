@@ -10,10 +10,10 @@ pipeline {
             steps {
                 sh "$RUSTUP --version || curl https://sh.rustup.rs -sSf | sh -s -- -y"
                 sh "$RUSTUP install beta"
-                sh "$RUSTUP install nightly"
-                sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
-                sh "$RUSTUP update beta"
-                sh "$RUSTUP update nightly"
+                sh "true || $RUSTUP install nightly"
+                sh "true || $RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
+                sh "true || $RUSTUP update beta"
+                sh "true || $RUSTUP update nightly"
                 sh "cd $CRATE_SERVER; true || $CARGO clean"
             }
         }
@@ -56,7 +56,7 @@ pipeline {
         stage('Clippy') {
             steps {
                 ansiColor('xterm') {
-                    sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all || ($CARGO +nightly install clippy --version 0.0.194 --force && $CARGO +nightly clippy --all)"
+                    sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all || ($CARGO +nightly install clippy --version 0.0.195 --force && $CARGO +nightly clippy --all)"
                 }
             }
         }

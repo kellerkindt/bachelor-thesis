@@ -17,13 +17,17 @@
 
 \requirement{client:defunsub}{Sensor initialisieren}{Der Server soll den Sensor nach Registrierung deabonnieren.}
 
-\requirement{sensor:pause}{Sensoren abonnieren}{Sensoren sollen bei verbunden Fahrzeugen abonniert werden.}
+\requirement{sensor:pause}{Sensoren abonnieren}{Sensoren sollen bei verbunden Fahrzeugen abonniert sein.}
 
-\requirement{sensor:resume}{Sensoren deabonnieren}{Sensoren sollen bei keinen verbunden Fahrzeugen deabonniert werden.}
+\requirement{sensor:resume}{Sensoren deabonnieren}{Sensoren sollen bei keinen verbunden Fahrzeugen deabonniert sein.}
 
 \requirement{impl:algorithmus:to}{Sensordaten weitergeben}{Empfangene Sensordaten sollen dekodiert und an den Fusions-Algorithmus übergeben werden.}
 
-\requirement{impl:algorithmus:from}{Ergebnisse weitergeben}{Ergebnisse des Fusions-Algorithmus sollen enkodiert un an die verbundenen Fahrzeuge versendet werden.}
+\requirement{impl:vehicle:subscribe}{Fahrzeug kann Umgebungsmodell abonnieren}{Ein Fahrzeug kann ein Abonnement für Umgebungsmodelle erstellen.}
+
+\requirement{impl:vehicle:unsubscribe}{Fahrzeug kann Abonnement aufkündigen}{Ein Fahrzeug kann ein bestehendes Abonnement für Umgebungsmodelle aufkündigen.}
+
+\requirement{impl:algorithmus:from}{Umgebungsmodell weitergeben}{Ergebnisse des Fusions-Algorithmus sollen enkodiert un an die verbundenen Fahrzeuge mit einem Abonnement versendet werden.}
 
 \requirement{impl:algorithmus}{Fusions-Algorithmus}{Für den Testbetrieb soll der Fusions-Algorithmus aus der C++ Referenzimplementierung (\enquote{SampleAlgorithm}) auch in Rust umgesetzt werden. Dieser Fusions-Algorithmus ist eine \enquote{dummy} Implementation, d.h. eingehende Daten werden nach einem einfachen Schema wieder verschickt. Ob die Einbindung einer externen Bibliothek als Fusions-Algorithmus möglich ist, soll überprüft werden.\todo{zu lax}}
 

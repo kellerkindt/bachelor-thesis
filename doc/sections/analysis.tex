@@ -83,13 +83,13 @@ In der folgenden Abbildung sind die Systemgrenzen aufgezeigt.
 \end{figure}
 
 
-\section{Use Case Diagramme}
+\section{Anwendungsfalldiagramme}
 \todo{was wirklich umgesetzt sein wird}
 
 \subsection{MEC-Server}
 
-Das Use-Case Diagramm in \autoref{use_case:car} zeigt die Funktionalität des Servers, die gegenüber einem Fahrzeug un einem Sensor zur Verfügung stellt werden soll.
-Im Folgenden sind die Anwendungsfälle genauer erklärt:
+Das Anwendungsfalldiagramm in \autoref{use_case:car} zeigt die Funktionalität des Servers, die gegenüber einem Fahrzeug un einem Sensor zur Verfügung stellt werden soll.
+Darauf folgend sind diese Anwendungsfälle genauer erklärt.
 
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
@@ -118,7 +118,7 @@ Im Folgenden sind die Anwendungsfälle genauer erklärt:
 %		\umlassoc{Fusions-Algorithmus}{u4}
 	\end{tikzpicture}
 	\centering
-	\caption{Use Case Diagramm für den MEC-Server}
+	\caption{Anwendungsfalldiagramm des MEC-Servers}
 	\label{use_case:car}
 \end{figure}
 \begin{itemize}
@@ -131,7 +131,7 @@ Im Folgenden sind die Anwendungsfälle genauer erklärt:
 	Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).
 	
 	\item \textbf{Umgebungsmodell deabonnieren [Vorbedingung: bereits abonniert]} \\
-	Ein Fahrzeug kann das Umgebungsmodell wieder deabonnieren, woraufhin keine neuen Modelle mehr vom Server an das Fahrzeug übermittelt werden sollen.
+	Ein Fahrzeug kann das Umgebungsmodell deabonnieren, woraufhin keine neuen Modelle mehr vom Server an das Fahrzeug übermittelt werden sollen.
 	Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).
 	
 	
@@ -150,6 +150,9 @@ Im Folgenden sind die Anwendungsfälle genauer erklärt:
 
 \subsection{Sensor}
 
+In \autoref{use_case:server_sensor} sind Anwendungsfälle aufgezeigt, die durch den Sensor dem MEC-Server angeboten werden.
+
+
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
 		\begin{umlsystem}{Sensor}
@@ -161,16 +164,30 @@ Im Folgenden sind die Anwendungsfälle genauer erklärt:
 		\umlassoc{MEC-Server}{u2} 
 	\end{tikzpicture}
 	\centering
-	\caption{Use Case Diagramm des MEC-Servers gegenüber dem Sensor}
+	\caption{Anwendungsfalldiagramm des Sensors}
 	\label{use_case:server_sensor}
 \end{figure}
 
-\todo{Use-Case Beschreibung für \autoref{use_case:server_sensor}}
+\begin{itemize}
+	\item \textbf{Abonnieren [Vorbedingung: Sensor hat sich als Sensor registriert]} \\
+	Der MEC-Server kann einen Sensor abonnieren um \textit{SensorFrame}-Nachrichten (siehe \autoref{msg:sensor_frame}) zu erhalten.
+	Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).
+	
+	\item \textbf{Deabonnieren [Vorbedingung: Sensor hat sich als Sensor registriert]} \\
+	Der MEC-Server kann ein Abonnement aufkündigen um keine weiteren \textit{SensorFrame}-Nachrichten (siehe \autoref{msg:sensor_frame}) zu erhalten.
+	Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).
+	
+\end{itemize}
+
+
+\section{Fahrzeug}
+
+In \autoref{use_case:server_vehicle} sind Anwendungsfälle aufgezeigt, die durch das Fahrzeug dem MEC-Server angeboten werden.
 
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
 		\begin{umlsystem}{Fahrzeug}
-			\umlusecase[y=0,name=u1]{EnvironmentFrame zusenden}
+			\umlusecase[y=0,name=u1]{Umgebungsmodell zusenden}
 			\umlusecase[y=2,name=u2]{Sektoren zusenden}
 		\end{umlsystem} 
 		\umlactor[x=-6,y=1]{MEC-Server}
@@ -178,11 +195,18 @@ Im Folgenden sind die Anwendungsfälle genauer erklärt:
 		\umlassoc{MEC-Server}{u2}
 	\end{tikzpicture}
 	\centering
-	\caption{Use Case Diagramm des MEC-Servers gegenüber dem Sensor}
+	\caption{Anwendungsfalldiagramm des Fahrzeugs}
 	\label{use_case:server_vehicle}
 \end{figure}
 
-\todo{Use-Case Beschreibung für \autoref{use_case:server_vehicle}}
+\begin{itemize}
+	\item \textbf{Sektoren zusenden [Vorbedingung: Fahrzeug ist registriert, einmalig]} \\
+	Der MEC-Server soll dem Fahrzeug einmalig nach Registrierung alle bekannten Sektoren in einer \textit{InitMessage}-Nachricht (siehe \autoref{msg:init_message}) zusenden.
+	
+	\item \textbf{Umgebungsmodell zusenden [Vorbedingung: Fahrzeug hat Abonnement]} \\
+	Der MEC-Server kann dem Fahrzeug Umgebungsmodelle mit \textit{EnvironmentFrame}-Nachrichten (siehe \autoref{msg:environment_frame}) zusenden.
+	
+\end{itemize}
 
 %\begin{figure}[H]
 %	\begin{tikzpicture}[node distance=5]
@@ -271,10 +295,12 @@ Die EnvironmentFrame-Nachricht wird vom Server an das Fahrzeug versendet und ent
 \label{msg:update_subscription}
 
 Die UpdateSubscription-Nachricht wird vom Server an den Sensor oder vom Fahrzeug an den Server gesendet.
-Der Sensor versendet bei einer Anmeldung erkannte Objekte (siehe \autoref{msg:sensor_frame}), während der Server dem Fahrzeug die Ergebnisse aus dem Fusions-Algorithmus (siehe \autoref{msg:environment_frame}) zusendet.
-Bei einer Abmeldung wird das Versenden der Nachrichten eingestellt.
+\todo{enthält subscribe oder unsubscribe}
+\todo{hier falsch: Der Sensor versendet bei einer Anmeldung erkannte Objekte (siehe \autoref{msg:sensor_frame}), während der Server dem Fahrzeug die Ergebnisse aus dem Fusions-Algorithmus (siehe \autoref{msg:environment_frame}) zusendet.
+Bei einer Abmeldung wird das Versenden der Nachrichten eingestellt.}
 
 \subsection{InitMessage}
+\label{msg:init_message}
 
 Die InitMessage-Nachricht wird vom Server, nach einer Fahrzeuganmeldung, an das Fahrzeug gesendet und beinhaltet Koordinaten über die Sektoren, die die Sensoren beobachten.
 

@@ -10,11 +10,11 @@ pipeline {
             steps {
                 sh "$RUSTUP --version || curl https://sh.rustup.rs -sSf | sh -s -- -y"
                 sh "$RUSTUP install beta"
-                sh "true || $RUSTUP install nightly"
-                sh "true || $RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
-                sh "true || $RUSTUP update beta"
-                sh "true || $RUSTUP update nightly"
-                sh "cd $CRATE_SERVER; true || $CARGO clean"
+                // sh "$RUSTUP install nightly"
+                // sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
+                // sh "$RUSTUP update beta"
+                // sh "$RUSTUP update nightly"
+                sh "cd $CRATE_SERVER; $CARGO clean"
             }
         }
         stage('Build-Debug') {

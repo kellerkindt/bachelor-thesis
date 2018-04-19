@@ -79,21 +79,11 @@ pipeline {
 				    steps {
 				        sh "set +e; $CARGO +beta tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
 				        sh "cd $CRATE_SERVER; $CARGO +beta tarpaulin --all --skip-clean --out Xml"
-						step([$class: 'CoberturaPublisher',
-							  autoUpdateHealth    : false,
-							  autoUpdateStability : false,
-							  coberturaReportFile : "$CRATE_SERVER/cobertura.xml",
-							  failUnhealthy       : false,
-							  failUnstable        : false,
-							  maxNumberOfBuilds   : 0,
-							  onlyStable          : false,
-							  sourceEncoding      : 'ASCII',
-							  zoomCoverageChart   : false])
 				        sh "cd $CRATE_LIBMSG; $CARGO +beta tarpaulin --all --skip-clean --out Xml"
 						step([$class: 'CoberturaPublisher',
 							  autoUpdateHealth    : false,
 							  autoUpdateStability : false,
-							  coberturaReportFile : "$CRATE_LIBMSG/cobertura.xml",
+							  coberturaReportFile : '**/cobertura.xml',
 							  failUnhealthy       : false,
 							  failUnstable        : false,
 							  maxNumberOfBuilds   : 0,

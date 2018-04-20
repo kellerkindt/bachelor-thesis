@@ -495,6 +495,7 @@ mod test {
         Receiver<Command<M, M>>,
         Client<M, M, MockAlgorithm<M, M>, MockAdapter<M>>,
     ) {
+        let _ = ::init_log4rs(Some(::log::LevelFilter::Trace));
         let address = "0.0.0.0:2048".parse::<SocketAddr>().unwrap();
         let (sender, receiver) = ::async::channel(128);
         (

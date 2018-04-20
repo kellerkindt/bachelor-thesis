@@ -57,8 +57,10 @@ use std::net::IpAddr;
 use std::net::SocketAddr;
 
 use log::LevelFilter;
+use log::SetLoggerError;
 use log4rs::append::console::ConsoleAppender;
 use log4rs::config::{Appender, Config, Logger, Root};
+use log4rs::Handle;
 
 use clap::App;
 use clap::Arg;
@@ -71,7 +73,7 @@ struct ServerConfig {
 
 fn main() {
     let config = parse_config();
-    init_log4rs(config.log);
+    let _ = init_log4rs(config.log).expect("Failed to initialize logger");
     let address = SocketAddr::new(config.ip, config.port);
 
     info!(
@@ -155,7 +157,7 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
         )
 }
 
-fn init_log4rs(level: Option<LevelFilter>) {
+pub(crate) fn init_log4rs(level: Option<LevelFilter>) -> Result<Handle, SetLoggerError> {
     let stdout = ConsoleAppender::builder().build();
 
     let config = Config::builder()
@@ -170,5 +172,5 @@ fn init_log4rs(level: Option<LevelFilter>) {
         )
         .expect("Failed to create logger config");
 
-    let _ = log4rs::init_config(config).expect("Failed to initialize logger");
+    log4rs::init_config(config)
 }

@@ -309,7 +309,7 @@ mod test {
     use std::ops::IndexMut;
 
     #[derive(Default, Debug)]
-    struct M;
+    struct M();
 
     #[derive(Default, Debug)]
     struct MockAdapter<E: Debug> {
@@ -618,6 +618,22 @@ mod test {
         assert!(client.algorithm.subscribe_listener_count.index_mut(0).1(0).is_ok());
         apply_all_commands(&mut receiver, &mut client);
         client.adapter.assert(0, 1, 1, 0);
+    }
+
+    #[test]
+    fn test_sensor_update_algorithm() {
+        let (_, mut client) = variant_client(Variant::Sensor, true);
+        assert!(client.process_command(Command::UpdateAlgorithm(Box::new(M()))).is_ok());
+        client.adapter.assert(0, 0, 0, 0);
+        client.algorithm.assert(1, 0, 0, 0, 0, 0, 0);
+    }
+
+    #[test]
+    fn test_vehicle_update_environment_model() {
+        let (_, mut client) = variant_client(Variant::Vehicle, true);
+        assert!(client.process_command(Command::UpdateEnvironmentModel(Arc::new(RawMessage::new(0, Vec::new()).unwrap()))).is_ok());
+        client.adapter.assert(0, 0, 0, 1);
+        client.algorithm.assert(0, 0, 0, 0, 0, 0, 0);
     }
 
     #[test]

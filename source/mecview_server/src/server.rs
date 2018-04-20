@@ -260,32 +260,52 @@ mod tests {
 
     #[test]
     fn test_encoder() {
-        let msg : RawMessage<()> = RawMessage::new(0xFF, vec![0x01, 0xFF, 0x90]).unwrap();
+        let msg: RawMessage<()> = RawMessage::new(0xFF, vec![0x01, 0xFF, 0x90]).unwrap();
         let mut codec = RawMessageCodec::default();
         let mut bytes = BytesMut::new();
-        codec.encode(Arc::new(msg), &mut bytes).expect("Encoding failed");
+        codec
+            .encode(Arc::new(msg), &mut bytes)
+            .expect("Encoding failed");
         assert_eq!(
-            &[0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xFF, 0x01, 0xFF, 0x90],
+            &[0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xFF, 0x01, 0xFF, 0x90,],
             &bytes[..11],
         )
     }
 
     #[test]
     fn test_decoder() {
-        let mut codec : RawMessageCodec<()> = RawMessageCodec::default();
+        let mut codec: RawMessageCodec<()> = RawMessageCodec::default();
         let mut bytes = BytesMut::new();
         bytes.reserve(2);
         bytes.put_slice(&[0x00, 0x00]);
-        assert!(codec.decode(&mut bytes).expect("Erroneous for missing bytes").is_none());
+        assert!(
+            codec
+                .decode(&mut bytes)
+                .expect("Erroneous for missing bytes")
+                .is_none()
+        );
         bytes.reserve(2);
         bytes.put_slice(&[0x00, 0x03]);
-        assert!(codec.decode(&mut bytes).expect("Erroneous for missing bytes").is_none());
+        assert!(
+            codec
+                .decode(&mut bytes)
+                .expect("Erroneous for missing bytes")
+                .is_none()
+        );
         bytes.reserve(4);
         bytes.put_slice(&[0x00_u8, 0x00, 0x00, 0xFF]);
-        assert!(codec.decode(&mut bytes).expect("Erroneous for missing bytes").is_none());
+        assert!(
+            codec
+                .decode(&mut bytes)
+                .expect("Erroneous for missing bytes")
+                .is_none()
+        );
         bytes.reserve(3);
         bytes.put_slice(&[0x01, 0xFF, 0x90]);
-        let msg = codec.decode(&mut bytes).expect("Decoder erroneous").expect("No message decoded");
+        let msg = codec
+            .decode(&mut bytes)
+            .expect("Decoder erroneous")
+            .expect("No message decoded");
         assert_eq!(0xFF, msg.identifier());
         assert_eq!(3, msg.bytes().len());
         assert_eq!(&[0x01, 0xFF, 0x90], &msg.bytes()[..]);

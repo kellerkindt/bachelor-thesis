@@ -12,8 +12,6 @@ use async::Sender;
 use adapter::Adapter;
 
 use algorithm::Algorithm;
-use algorithm::CountListener;
-use algorithm::EnvironmentListener;
 
 use messages::RawMessage;
 
@@ -304,6 +302,8 @@ pub enum Command<A, E: Debug + Send + Sized + 'static> {
 #[cfg(test)]
 mod test {
     use super::*;
+    use algorithm::CountListener;
+    use algorithm::EnvironmentListener;
     use async::Receiver;
     use async::Stream;
     use std::ops::IndexMut;

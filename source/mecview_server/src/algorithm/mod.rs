@@ -12,8 +12,8 @@ use async::Sender;
 
 use messages::RawMessage;
 
-type CountListener = Box<FnMut(usize) -> Result<(), Error> + Send + 'static>;
-type EnvironmentListener<E> = Box<FnMut(Arc<RawMessage<E>>) -> Result<(), Error> + Send + 'static>;
+pub type CountListener = Box<FnMut(usize) -> Result<(), Error> + Send + 'static>;
+pub type EnvironmentListener<E> = Box<FnMut(Arc<RawMessage<E>>) -> Result<(), Error> + Send + 'static>;
 
 pub enum Command<A: Send, E: Send, I: Debug + Send + Sized + 'static> {
     Update(Box<A>),

@@ -12,6 +12,7 @@ pipeline {
             steps {
                 sh "$RUSTUP --version || curl https://sh.rustup.rs -sSf | sh -s -- -y"
                 sh "$RUSTUP install beta"
+                sh "find . -name cobertura.xml -delete"
                 // sh "$RUSTUP install nightly"
                 // sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
                 // sh "$RUSTUP update beta"

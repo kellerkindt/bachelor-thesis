@@ -33,7 +33,7 @@ pub trait Algorithm<A: Send + Debug, E: Send + Debug> {
     fn subscribe_environment_model(
         &mut self,
         identifier: Self::Identifier,
-        sink: EnvironmentListener<E>,
+        listener: EnvironmentListener<E>,
     ) -> Result<(), Error>;
 
     fn unsubscribe_environment_model(&mut self, identifier: Self::Identifier) -> Result<(), Error>;
@@ -51,7 +51,7 @@ pub trait Algorithm<A: Send + Debug, E: Send + Debug> {
     fn subscribe_listener_count(
         &mut self,
         identifier: Self::Identifier,
-        sink: CountListener,
+        listener: CountListener,
     ) -> Result<(), Error>;
 
     fn unsubscribe_listener_count(&mut self, identifier: Self::Identifier) -> Result<(), Error>;
@@ -70,9 +70,9 @@ impl<A: Send + Debug, E: Send + Debug, I: PartialEq + Debug + Send + Sized + 'st
     fn subscribe_environment_model(
         &mut self,
         identifier: I,
-        sink: EnvironmentListener<E>,
+        listener: EnvironmentListener<E>,
     ) -> Result<(), Error> {
-        self.try_send(Command::SubscribeEnvironmentModel(identifier, sink))
+        self.try_send(Command::SubscribeEnvironmentModel(identifier, listener))
             .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
     }
 
@@ -100,9 +100,9 @@ impl<A: Send + Debug, E: Send + Debug, I: PartialEq + Debug + Send + Sized + 'st
     fn subscribe_listener_count(
         &mut self,
         identifier: <Self as Algorithm<A, E>>::Identifier,
-        sink: CountListener,
+        listener: CountListener,
     ) -> Result<(), Error> {
-        self.try_send(Command::SubscribeListenerCount(identifier, sink))
+        self.try_send(Command::SubscribeListenerCount(identifier, listener))
             .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
     }
 
@@ -126,11 +126,11 @@ impl<
         trace!("Received command");
         let result = match command {
             Command::Update(model) => self.update(model),
-            Command::SubscribeEnvironmentModel(id, sink) => {
-                self.subscribe_environment_model(id, sink)
+            Command::SubscribeEnvironmentModel(id, listener) => {
+                self.subscribe_environment_model(id, listener)
             }
             Command::UnsubscribeEnvironmentModel(id) => self.unsubscribe_environment_model(id),
-            Command::SubscribeListenerCount(id, sink) => self.subscribe_listener_count(id, sink),
+            Command::SubscribeListenerCount(id, listener) => self.subscribe_listener_count(id, listener),
             Command::UnsubscribeListenerCount(id) => self.unsubscribe_listener_count(id),
             Command::ActivateEnvironmentModelSubscription(id) => {
                 self.activate_environment_model_subscription(id)

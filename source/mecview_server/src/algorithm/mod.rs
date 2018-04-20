@@ -13,7 +13,8 @@ use async::Sender;
 use messages::RawMessage;
 
 pub type CountListener = Box<FnMut(usize) -> Result<(), Error> + Send + 'static>;
-pub type EnvironmentListener<E> = Box<FnMut(Arc<RawMessage<E>>) -> Result<(), Error> + Send + 'static>;
+pub type EnvironmentListener<E> =
+    Box<FnMut(Arc<RawMessage<E>>) -> Result<(), Error> + Send + 'static>;
 
 pub enum Command<A: Send, E: Send, I: Debug + Send + Sized + 'static> {
     Update(Box<A>),
@@ -130,7 +131,9 @@ impl<
                 self.subscribe_environment_model(id, listener)
             }
             Command::UnsubscribeEnvironmentModel(id) => self.unsubscribe_environment_model(id),
-            Command::SubscribeListenerCount(id, listener) => self.subscribe_listener_count(id, listener),
+            Command::SubscribeListenerCount(id, listener) => {
+                self.subscribe_listener_count(id, listener)
+            }
             Command::UnsubscribeListenerCount(id) => self.unsubscribe_listener_count(id),
             Command::ActivateEnvironmentModelSubscription(id) => {
                 self.activate_environment_model_subscription(id)

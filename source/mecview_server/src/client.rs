@@ -623,7 +623,11 @@ mod test {
     #[test]
     fn test_sensor_update_algorithm() {
         let (_, mut client) = variant_client(Variant::Sensor, true);
-        assert!(client.process_command(Command::UpdateAlgorithm(Box::new(M()))).is_ok());
+        assert!(
+            client
+                .process_command(Command::UpdateAlgorithm(Box::new(M())))
+                .is_ok()
+        );
         client.adapter.assert(0, 0, 0, 0);
         client.algorithm.assert(1, 0, 0, 0, 0, 0, 0);
     }
@@ -631,7 +635,13 @@ mod test {
     #[test]
     fn test_vehicle_update_environment_model() {
         let (_, mut client) = variant_client(Variant::Vehicle, true);
-        assert!(client.process_command(Command::UpdateEnvironmentModel(Arc::new(RawMessage::new(0, Vec::new()).unwrap()))).is_ok());
+        assert!(
+            client
+                .process_command(Command::UpdateEnvironmentModel(Arc::new(
+                    RawMessage::new(0, Vec::new()).unwrap()
+                )))
+                .is_ok()
+        );
         client.adapter.assert(0, 0, 0, 1);
         client.algorithm.assert(0, 0, 0, 0, 0, 0, 0);
     }

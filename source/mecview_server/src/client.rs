@@ -12,6 +12,8 @@ use async::Sender;
 use adapter::Adapter;
 
 use algorithm::Algorithm;
+use algorithm::CountListener;
+use algorithm::EnvironmentListener;
 
 use messages::RawMessage;
 
@@ -303,38 +305,247 @@ pub enum Command<A, E: Debug + Send + Sized + 'static> {
 mod test {
     use super::*;
     use async::Receiver;
+    use async::Stream;
+    use std::ops::IndexMut;
 
-    #[derive(Debug)]
+    #[derive(Default, Debug)]
     struct M;
 
-    #[derive(Debug)]
-    struct MockAdapter();
-    impl<E: Debug> Adapter<E> for MockAdapter {
+    #[derive(Default, Debug)]
+    struct MockAdapter<E: Debug> {
+        init_vehicle: usize,
+        unsubscribe: usize,
+        subscribe: usize,
+        update_environment_model: Vec<Arc<RawMessage<E>>>,
+    }
+    impl<E: Debug> MockAdapter<E> {
+        fn assert(
+            &self,
+            init_vehicle: usize,
+            unsubscribe: usize,
+            subscribe: usize,
+            update_environment_model: usize,
+        ) {
+            assert_eq!(init_vehicle, self.init_vehicle, "init_vehicle");
+            assert_eq!(unsubscribe, self.unsubscribe, "unsubscribe");
+            assert_eq!(subscribe, self.subscribe, "subscribe");
+            assert_eq!(
+                update_environment_model,
+                self.update_environment_model.len(),
+                "update_environment_model",
+            );
+        }
+
+        fn clear(&mut self) {
+            self.init_vehicle = 0;
+            self.unsubscribe = 0;
+            self.subscribe = 0;
+            self.update_environment_model.clear();
+        }
+    }
+    impl<E: Debug> Adapter<E> for MockAdapter<E> {
         fn init_vehicle(&mut self) -> Result<(), Error> {
+            self.init_vehicle += 1;
             Ok(())
         }
 
         fn unsubscribe(&mut self) -> Result<(), Error> {
+            self.unsubscribe += 1;
             Ok(())
         }
 
         fn subscribe(&mut self) -> Result<(), Error> {
+            self.subscribe += 1;
             Ok(())
         }
 
-        fn update_environment_model(&mut self, _model: Arc<RawMessage<E>>) -> Result<(), Error> {
+        fn update_environment_model(&mut self, model: Arc<RawMessage<E>>) -> Result<(), Error> {
+            self.update_environment_model.push(model);
+            Ok(())
+        }
+    }
+
+    #[derive(Default)]
+    struct MockAlgorithm<A: Send + Debug, E: Send + Debug> {
+        update: Vec<Box<A>>,
+        subscribe_environment_model: Vec<(SocketAddr, EnvironmentListener<E>)>,
+        unsubscribe_environment_model: Vec<(SocketAddr)>,
+        activate_environment_model_subscription: Vec<SocketAddr>,
+        deactivate_environment_model_subscription: Vec<SocketAddr>,
+        subscribe_listener_count: Vec<(SocketAddr, CountListener)>,
+        unsubscribe_listener_count: Vec<SocketAddr>,
+    }
+    impl<A: Send + Debug, E: Send + Debug> MockAlgorithm<A, E> {
+        fn assert(
+            &self,
+            update: usize,
+            subscribe_environment_model: usize,
+            unsubscribe_environment_model: usize,
+            activate_environment_model_subscription: usize,
+            deactivate_environment_model_subscription: usize,
+            subscribe_listener_count: usize,
+            unsubscribe_listener_count: usize,
+        ) {
+            assert_eq!(update, self.update.len(), "update");
+            assert_eq!(
+                subscribe_environment_model,
+                self.subscribe_environment_model.len(),
+                "subscribe_environment_model"
+            );
+            assert_eq!(
+                unsubscribe_environment_model,
+                self.unsubscribe_environment_model.len(),
+                "unsubscribe_environment_model"
+            );
+            assert_eq!(
+                activate_environment_model_subscription,
+                self.activate_environment_model_subscription.len(),
+                "activate_environment_model_subscription"
+            );
+            assert_eq!(
+                deactivate_environment_model_subscription,
+                self.deactivate_environment_model_subscription.len(),
+                "deactivate_environment_model_subscription"
+            );
+            assert_eq!(
+                subscribe_listener_count,
+                self.subscribe_listener_count.len(),
+                "subscribe_listener_count"
+            );
+            assert_eq!(
+                unsubscribe_listener_count,
+                self.unsubscribe_listener_count.len(),
+                "unsubscribe_listener_count"
+            );
+        }
+
+        fn clear(&mut self) {
+            self.update.clear();
+            self.subscribe_environment_model.clear();
+            self.unsubscribe_environment_model.clear();
+            self.activate_environment_model_subscription.clear();
+            self.deactivate_environment_model_subscription.clear();
+            self.subscribe_listener_count.clear();
+            self.unsubscribe_listener_count.clear();
+        }
+    }
+    impl<A: Send + Debug, E: Send + Debug> Algorithm<A, E> for MockAlgorithm<A, E> {
+        type Identifier = SocketAddr;
+
+        fn update(&mut self, update: Box<A>) -> Result<(), Error> {
+            self.update.push(update);
+            Ok(())
+        }
+
+        fn subscribe_environment_model(
+            &mut self,
+            identifier: <Self as Algorithm<A, E>>::Identifier,
+            listener: EnvironmentListener<E>,
+        ) -> Result<(), Error> {
+            self.subscribe_environment_model
+                .push((identifier, listener));
+            Ok(())
+        }
+
+        fn unsubscribe_environment_model(
+            &mut self,
+            identifier: <Self as Algorithm<A, E>>::Identifier,
+        ) -> Result<(), Error> {
+            self.unsubscribe_environment_model.push(identifier);
+            Ok(())
+        }
+
+        fn activate_environment_model_subscription(
+            &mut self,
+            identifier: <Self as Algorithm<A, E>>::Identifier,
+        ) -> Result<(), Error> {
+            self.activate_environment_model_subscription
+                .push(identifier);
+            Ok(())
+        }
+
+        fn deactivate_environment_model_subscription(
+            &mut self,
+            identifier: <Self as Algorithm<A, E>>::Identifier,
+        ) -> Result<(), Error> {
+            self.deactivate_environment_model_subscription
+                .push(identifier);
+            Ok(())
+        }
+
+        fn subscribe_listener_count(
+            &mut self,
+            identifier: <Self as Algorithm<A, E>>::Identifier,
+            listener: CountListener,
+        ) -> Result<(), Error> {
+            self.subscribe_listener_count.push((identifier, listener));
+            Ok(())
+        }
+
+        fn unsubscribe_listener_count(
+            &mut self,
+            identifier: <Self as Algorithm<A, E>>::Identifier,
+        ) -> Result<(), Error> {
+            self.unsubscribe_listener_count.push(identifier);
             Ok(())
         }
     }
 
     fn test_client() -> (
-        Receiver<::algorithm::Command<M, M, SocketAddr>>,
-        Client<M, M, impl Algorithm<M, M, Identifier = SocketAddr>, impl Adapter<M>>,
+        Receiver<Command<M, M>>,
+        Client<M, M, MockAlgorithm<M, M>, MockAdapter<M>>,
     ) {
         let address = "0.0.0.0:2048".parse::<SocketAddr>().unwrap();
-        let (sender, _receiver) = ::async::channel(2);
-        let (alg_tx, alg_rx) = ::async::channel(2);
-        (alg_rx, Client::new(sender, address, MockAdapter(), alg_tx))
+        let (sender, receiver) = ::async::channel(128);
+        (
+            receiver,
+            Client::new(
+                sender,
+                address,
+                MockAdapter::default(),
+                MockAlgorithm::default(),
+            ),
+        )
+    }
+
+    fn variant_client(
+        variant: Variant,
+        cleared: bool,
+    ) -> (
+        ::std::sync::mpsc::Receiver<Command<M, M>>,
+        Client<M, M, MockAlgorithm<M, M>, MockAdapter<M>>,
+    ) {
+        let (receiver, mut client) = test_client();
+        assert!(
+            client
+                .process_command(Command::UpdateVariant(variant))
+                .is_ok()
+        );
+        if cleared {
+            client.algorithm.clear();
+            client.adapter.clear();
+        }
+        let (tx, rx) = ::std::sync::mpsc::channel();
+        ::std::thread::spawn(move || {
+            ::tokio::run(receiver.for_each(move |c| {
+                tx.send(c).unwrap();
+                Ok(())
+            }));
+        });
+        (rx, client)
+    }
+
+    fn apply_all_commands<A: Sync + Send + Debug + 'static, E: Sync + Send + Debug + 'static>(
+        receiver: &mut ::std::sync::mpsc::Receiver<Command<A, E>>,
+        client: &mut Client<A, E, MockAlgorithm<A, E>, MockAdapter<E>>,
+    ) {
+        // TODO bad!
+        ::std::thread::sleep(::std::time::Duration::from_millis(1_000));
+        for _ in 0..5 {
+            while let Ok(command) = receiver.try_recv() {
+                client.process_command(command).unwrap();
+            }
+        }
     }
 
     #[test]
@@ -344,7 +555,7 @@ mod test {
 
     #[test]
     fn test_update_variant_cannot_change_if_not_unknown() {
-        let (_alg, mut client) = test_client();
+        let (_, mut client) = test_client();
         client.variant = Variant::Vehicle;
         assert!(
             client
@@ -359,6 +570,57 @@ mod test {
     }
 
     #[test]
+    fn test_sensor_being_registered_at_algorithm() {
+        let (_, mut client) = test_client();
+        assert!(
+            client
+                .process_command(Command::UpdateVariant(Variant::Sensor))
+                .is_ok()
+        );
+        client.algorithm.assert(0, 0, 0, 0, 0, 1, 0);
+        assert_eq!(
+            client.address,
+            client.algorithm.subscribe_listener_count[0].0,
+        );
+    }
+
+    #[test]
+    fn test_sensor_remote_subscribing_unsubscribe() {
+        let (_, mut client) = variant_client(Variant::Sensor, true);
+        assert!(client.process_command(Command::RemoteSubscribe).is_ok());
+        client.algorithm.assert(0, 0, 0, 0, 0, 0, 0);
+        client.adapter.assert(0, 0, 1, 0);
+        client.adapter.clear();
+        assert!(client.process_command(Command::RemoteUnsubscribe).is_ok());
+        client.adapter.assert(0, 1, 0, 0);
+    }
+
+    #[test]
+    fn test_sensor_subscribe_unsubscribe_forbidden() {
+        let (_, mut client) = variant_client(Variant::Sensor, true);
+        assert!(client.process_command(Command::Subscribe).is_err());
+        assert!(client.process_command(Command::Unsubscribe).is_err());
+        client.algorithm.assert(0, 0, 0, 0, 0, 0, 0);
+        client.adapter.assert(0, 0, 0, 0);
+    }
+
+    #[test]
+    fn test_sensor_remote_subscribe_unsubscribe_on_count_change() {
+        let (mut receiver, mut client) = variant_client(Variant::Sensor, false);
+        client.adapter.assert(0, 0, 0, 0);
+        client.adapter.clear();
+        client.algorithm.assert(0, 0, 0, 0, 0, 1, 0);
+
+        assert!(client.algorithm.subscribe_listener_count.index_mut(0).1(1).is_ok());
+        apply_all_commands(&mut receiver, &mut client);
+        client.adapter.assert(0, 0, 1, 0);
+
+        assert!(client.algorithm.subscribe_listener_count.index_mut(0).1(0).is_ok());
+        apply_all_commands(&mut receiver, &mut client);
+        client.adapter.assert(0, 1, 1, 0);
+    }
+
+    #[test]
     fn test_update_variant_for_client_type_sensor() {
         test_update_variant_for_client_type(Variant::Sensor);
     }
@@ -369,12 +631,11 @@ mod test {
     }
 
     fn test_update_variant_for_client_type(variant: Variant) {
-        let (_alg, mut client) = test_client();
-        assert_eq!(
-            (),
+        let (_, mut client) = test_client();
+        assert!(
             client
                 .process_command(Command::UpdateVariant(variant))
-                .unwrap()
+                .is_ok()
         );
         assert_eq!(variant, client.variant);
     }

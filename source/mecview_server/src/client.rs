@@ -647,6 +647,17 @@ mod test {
     }
 
     #[test]
+    fn test_vehicle_activate_deactivate_algorithm_model_subscription() {
+        let (_, mut client) = variant_client(Variant::Vehicle, true);
+        assert!(client.process_command(Command::Subscribe).is_ok());
+        client.adapter.assert(0, 0, 0, 0);
+        client.algorithm.assert(0, 0, 0, 1, 0, 0, 0);
+        assert!(client.process_command(Command::Unsubscribe).is_ok());
+        client.adapter.assert(0, 0, 0, 0);
+        client.algorithm.assert(0, 0, 0, 1, 1, 0, 0);
+    }
+
+    #[test]
     fn test_update_variant_for_client_type_sensor() {
         test_update_variant_for_client_type(Variant::Sensor);
     }

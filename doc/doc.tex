@@ -46,8 +46,7 @@
 \usepackage{xcolor}
 \usepackage{caption}
 
-
-
+\usepackage{auto-pst-pdf} 
 \usepackage{tikz}
 
 \usepackage{float}
@@ -181,6 +180,18 @@
 		
 	\chapter{Systementwurf}
 		\section{Architektur / Komponentendiagramme}
+		
+		test test test \autoref{draft:architecture}
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=1.5\textwidth]{dia/architecture}
+			\caption{Architekturentwurf}
+			\label{draft:architecture}
+		\end{figure}
+		
+		test test test
+		
 		\begin{figure}[H]
 			\centering
 			\begin{tikzpicture}

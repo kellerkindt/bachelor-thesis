@@ -180,8 +180,72 @@
 		
 	\chapter{Systementwurf}
 		\section{Architektur / Komponentendiagramme}
-		
+				
 		In \autoref{draft:architecture} ist ein Entwurf der Architektur zu sehen.
+		Blau markierte Klassen haben als Aufgabengebiet die Kommunikation, grün markierte Klassen bilden die Geschäftslogik ab und rot markierte Klassen sind Spezialisierungen für ASN.1.
+		
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=2.0\textwidth]{dia/architecture}
+			\caption{Architekturentwurf}
+			\label{draft:architecture}
+		\end{figure}
+		
+		Die Implementation soll in drei Crates aufgeteilt sein:
+		\begin{itemize}
+			\item \textbf{libmessages-sys}: Soll bindings für die ASN.1 Datenstrukturen und Funktionen der C-Bibliothek beinhalten (siehe \autoref{rust:ffi}).
+			Unsichere Funktionsaufrufe nach C, wie zur Serialisierung und Deserialisierung, sollen durch sichere Rust Funktionen gekapselt werden.
+			Eine ordnungsgemäße Allokation und Deallokation der Nachrichten soll hier sichergestellt gestellt werden.
+			
+			\item \textbf{libmessages}: Soll Datenstrukturen und Implementationen bereit stellen um unabhängig von der eingesetzten Technologie eine Nachricht abbilden zu können.
+			Hierzu soll in \textit{RawMessage} der Kopf (siehe \autoref{analysis:messages}) und der binären Inhalt einer Nachricht dargestellt werden.
+			
+			Zusätzlich soll hier für jede Verwendete Technologie (in dieser Bachelorarbeit nur ASN.1) die Wandlung zwischen einer \textit{RawMessage} und einer entsprechenden Datenstruktur implementiert werden.
+			
+			\item \textbf{MECViewServer}: Bündelt die Geschäfts- und Kommunikationslogik zu einem ausführbaren Kompilat.
+		\end{itemize}
+		
+		\subsubsection{Erklärung Server}
+		
+		Der Server lädt zu beginn eine Algorithmus Implementation, öffnet einen TCP-Port und wartet auf dem daraus resultierenden \textit{TcpListener} auf neue Clients.
+		Jedem neuen Client wird eine Referenz auf den Algorithmus mitgegeben.
+		
+		\subsubsection{Erklärung Client, Sensor und Vehicle}
+		
+		Der Client hält eine Referenz auf einen Algorithmus und einen Adapter.
+		Im Falle eines \textit{Vehicle}s kann ein \textit{EnvironmentListener} am Algorithmus registriert werden, um neue Umgebungsmodelle zu erhalten.
+		im Falle eines \textit{Sensor}s kann ein \textit{CountListener} registriert werden, um über die Anzahl der registrierten Fahrzeuge informiert zu werden.
+		
+		\subsubsection{Erklärung Adapter}
+		
+		Der Adapter bietet eine Schnittstelle um Technologie-unabhängig dem verbundenen Client Nachrichten zuzusenden.
+		Hierzu sollen der Client Instanz Funktionen angeboten werden, die von der Implementation in entsprechende Nachrichten übersetzt werden.
+		
+		\subsubsection{Erklärung Mapper}
+		
+		Der Mapper ruft für Empfangene Nachrichten der eingesetzten Technologie Funktionen der Client Instanz auf und agiert somit als Gegenstück zum Adapter.
+		
+		\subsubsection{Erklärung Encoder / Decoder}
+		
+		Der Encoder soll \textit{RawMessage}s auf den Datenstrom schreiben, während der Encoder \textit{RawMessage}s lesen soll.
+		
+		\subsubsection{Technologie bezogene Klassen}
+		
+		Innerhalb der MECViewServer Crate soll nur die konkreten Algorithmus (\textit{SampleAlgorithmus}), Mapper und Adapter (\textit{AsnAdapter}) Implementation die genutzte Technologie kennen.
+		Dies ist unumgänglich, weil sowohl der eingesetzte Algorithmus, der Mapper und der Adapter Felder der Nachrichten lesen und schreiben müssen.
+		Zudem muss der Server mindestens indirekt die eingesetzte Technologie kennen, um die richtigen und zueinander kompatiblen Algorithmus, Mapper und Adapter Implementation zu instantiieren.
+		Weitere Klassen sollen unabhängig von der eingesetzten Technologie agieren.
+		
+		Eine neue Nachrichtentechnologie \todo{(zbsp. Protobuf)} soll somit mit hinzufügen der entsprechenden Implementationen und dem Austausch beim instantiieren im Server einfach erfolgen können.
+		
+		
+		
+		
+		
+		
+		
+		Ausgliederung von libmessages weil ASN-Bindings + weil von Protokolländerungen unabhängig sein soll
 		
 		Drei Crates, libmessages-sys: bindings+allokator+deallokator, libmessages: ans encoding/decoding, common RawMessage, MECViewServer: logic
 		
@@ -189,38 +253,6 @@
 		
 		Abbildung vereinfacht, Kommunikation via Queues im tokio context
 		
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=2.2\textwidth]{dia/architecture}
-			\caption{Architekturentwurf}
-			\label{draft:architecture}
-		\end{figure}
-		
-		test test test
-		
-		\begin{figure}[H]
-			\centering
-			\begin{tikzpicture}
-				\begin{umlcomponent}{MEC-Server}
-					\umlbasiccomponent[x=3,y=4]{Server}
-					\umlprovidedinterface[interface=TcpListener]{Server}
-					
-					
-					\umlbasiccomponent[x=9,y=5]{Fusions-Algorithmus}
-%					\umlbasiccomponent[x=1,y=5]{Sektor-Abonnement}
-					\umlbasiccomponent[x=6,y=0]{Client-Connection}
-					
-					\umlHVassemblyconnector[interface=FaQ,arm2=-2]{Client-Connection}{Fusions-Algorithmus}
-%					\umlHVassemblyconnector[interface=SaQ,arm2=-2]{Client-Connection}{Sektor-Abonnement}
-					
-					\umlHVassemblyconnector[interface=CQ,last arm]{Fusions-Algorithmus}{Client-Connection}
-					\umlHVassemblyconnector[last arm]{Server}{Client-Connection}
-%					\umlHVassemblyconnector[last arm]{Sektor-Abonnement}{Client-Connection}
-				\end{umlcomponent}
-				\umlHVHdelegateconnector{MEC-Server-west-port}{Server-west-interface}
-				\umlport{MEC-Server}{west}
-			\end{tikzpicture} 
-		\end{figure}
 		
 		\cite[446]{goll2012methoden}, example \cite[457]{goll2012methoden}
 		  

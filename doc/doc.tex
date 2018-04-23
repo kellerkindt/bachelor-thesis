@@ -181,11 +181,17 @@
 	\chapter{Systementwurf}
 		\section{Architektur / Komponentendiagramme}
 		
-		test test test \autoref{draft:architecture}
+		In \autoref{draft:architecture} ist ein Entwurf der Architektur zu sehen.
+		
+		Drei Crates, libmessages-sys: bindings+allokator+deallokator, libmessages: ans encoding/decoding, common RawMessage, MECViewServer: logic
+		
+		Prüfen tokio, queues, async + proxy pattern
+		
+		Abbildung vereinfacht, Kommunikation via Queues im tokio context
 		
 		\begin{figure}[H]
 			\centering
-			\includegraphics[width=1.5\textwidth]{dia/architecture}
+			\includegraphics[width=2.2\textwidth]{dia/architecture}
 			\caption{Architekturentwurf}
 			\label{draft:architecture}
 		\end{figure}
@@ -236,6 +242,12 @@
 		\todo{Clean Architecture / Clean Code}
 	
 	\chapter{Implementierung}
+	
+	\section{Architektur}
+	
+	Weitestgehend wie in \autoref{draft:architecture}, aber Futures, tokio, Queues
+	
+	\todo{diagramm: jede future ein eigenes "paket", queues dazwischen für kommunikation}
 	
 	\todo{rust-clippy: https://github.com/rust-lang-nursery/rust-clippy}
 	

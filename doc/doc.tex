@@ -178,7 +178,11 @@
 	\input{sections/analysis}
 	
 		
+	
 	\chapter{Systementwurf}
+	
+		\todo{vorweg, kein ASN.1 Rust compiler, dh c bibliothek einbinden, unabhängigkeit von asn/nachrichtentechnologie weil sauber + weil schonmal wechsel von protobuf}
+	
 		\section{Architektur / Komponentendiagramme}
 				
 		In \autoref{draft:architecture} ist ein Entwurf der Architektur zu sehen.
@@ -196,12 +200,12 @@
 		\begin{itemize}
 			\item \textbf{libmessages-sys}: Soll bindings für die ASN.1 Datenstrukturen und Funktionen der C-Bibliothek beinhalten (siehe \autoref{rust:ffi}).
 			Unsichere Funktionsaufrufe nach C, wie zur Serialisierung und Deserialisierung, sollen durch sichere Rust Funktionen gekapselt werden.
-			Eine ordnungsgemäße Allokation und Deallokation der Nachrichten soll hier sichergestellt gestellt werden.
+			Eine ordnungsgemäße Allokation und Deallokation der Nachrichten soll hier sichergestellt ermöglicht werden.
 			
-			\item \textbf{libmessages}: Soll Datenstrukturen und Implementationen bereit stellen um unabhängig von der eingesetzten Technologie eine Nachricht abbilden zu können.
-			Hierzu soll in \textit{RawMessage} der Kopf (siehe \autoref{analysis:messages}) und der binären Inhalt einer Nachricht dargestellt werden.
+			\item \textbf{libmessages}: Soll Datenstrukturen und Implementationen bereit stellen um unabhängig von der eingesetzten Nachrichtentechnologie eine Nachricht abbilden zu können.
+			Hierzu soll in \textit{RawMessage} der Kopf (siehe \autoref{analysis:messages}) und der binären Inhalt einer Nachricht dargestellt sein.
 			
-			Zusätzlich soll hier für jede Verwendete Technologie (in dieser Bachelorarbeit nur ASN.1) die Wandlung zwischen einer \textit{RawMessage} und einer entsprechenden Datenstruktur implementiert werden.
+			Zusätzlich soll in dieser Crate für jede Verwendete Technologie (in dieser Bachelorarbeit nur ASN.1) die Wandlung zwischen einer \textit{RawMessage} und einer entsprechenden Datenstruktur implementiert werden.
 			
 			\item \textbf{MECViewServer}: Bündelt die Geschäfts- und Kommunikationslogik zu einem ausführbaren Kompilat.
 		\end{itemize}
@@ -214,31 +218,40 @@
 		\subsubsection{Erklärung Client, Sensor und Vehicle}
 		
 		Der Client hält eine Referenz auf einen Algorithmus und einen Adapter.
-		Im Falle eines \textit{Vehicle}s kann ein \textit{EnvironmentListener} am Algorithmus registriert werden, um neue Umgebungsmodelle zu erhalten.
-		im Falle eines \textit{Sensor}s kann ein \textit{CountListener} registriert werden, um über die Anzahl der registrierten Fahrzeuge informiert zu werden.
+		Im Falle eines \textit{Vehicle}s kann ein \textit{EnvironmentListener} am Algorithmus registriert werden um neue Umgebungsmodelle zu erhalten.
+		Im Falle eines \textit{Sensor}s kann ein \textit{CountListener} am Algorithmus registriert werden um über Änderungen bei der Anzahl der registrierten Fahrzeuge informiert zu werden.
 		
 		\subsubsection{Erklärung Adapter}
 		
-		Der Adapter bietet eine Schnittstelle um Technologie-unabhängig dem verbundenen Client Nachrichten zuzusenden.
-		Hierzu sollen der Client Instanz Funktionen angeboten werden, die von der Implementation in entsprechende Nachrichten übersetzt werden.
+		Der Adapter bietet eine Schnittstelle um damit eine Clientinstanz Nachrichten versenden kann, ohne die eingesetzte Nachrichtentechnologie zu kennen.
+		Hierzu sollen der Clientinstanz Funktionen bereitgestellt werden, die von der Adapterimplementation in entsprechende Nachrichten übersetzt werden.
 		
 		\subsubsection{Erklärung Mapper}
 		
-		Der Mapper ruft für Empfangene Nachrichten der eingesetzten Technologie Funktionen der Client Instanz auf und agiert somit als Gegenstück zum Adapter.
+		Der Mapper ruft für Empfangene Nachrichten der eingesetzten Nachrichtentechnologie Funktionen der Clientinstanz auf und agiert somit als Gegenstück zum Adapter.
 		
 		\subsubsection{Erklärung Encoder / Decoder}
 		
-		Der Encoder soll \textit{RawMessage}s auf den Datenstrom schreiben, während der Encoder \textit{RawMessage}s lesen soll.
+		Der Encoder soll \textit{RawMessage}s auf den TCP-Datenstrom schreiben, während der Encoder \textit{RawMessage}s vom TCP-Datenstrom lesen soll.
+		Hierzu muss eine Wandlung, wie in \autoref{analysis:messages} beschrieben, vorgenommen werden.
 		
-		\subsubsection{Technologie bezogene Klassen}
+		\subsubsection{Nachrichtentechnologie kapseln}
 		
-		Innerhalb der MECViewServer Crate soll nur die konkreten Algorithmus (\textit{SampleAlgorithmus}), Mapper und Adapter (\textit{AsnAdapter}) Implementation die genutzte Technologie kennen.
-		Dies ist unumgänglich, weil sowohl der eingesetzte Algorithmus, der Mapper und der Adapter Felder der Nachrichten lesen und schreiben müssen.
-		Zudem muss der Server mindestens indirekt die eingesetzte Technologie kennen, um die richtigen und zueinander kompatiblen Algorithmus, Mapper und Adapter Implementation zu instantiieren.
+		Innerhalb der MECViewServer Crate sollen möglichst wenige Klassen die eingesetzt Nachrichtentechnologie kennen.
+		Hierzu zählen die Algorithmus- (\textit{SampleAlgorithmus}), Mapper- und Adapterimplementationen (\textit{AsnAdapter}).
+		Dies ist unumgänglich, weil sowohl der eingesetzte Algorithmus, der Mapper und der Adapter Felder der Nachrichten lesen und schreiben müssen und dies voraussetzt, die Nachrichtentechnologie zu kennen.
+		Zudem muss der Server mindestens indirekt die eingesetzte Technologie kennen, um die richtigen und zueinander kompatiblen Algorithmus-, Mapper- und Adapterimplementation zu instantiieren.
 		Weitere Klassen sollen unabhängig von der eingesetzten Technologie agieren.
 		
-		Eine neue Nachrichtentechnologie \todo{(zbsp. Protobuf)} soll somit mit hinzufügen der entsprechenden Implementationen und dem Austausch beim instantiieren im Server einfach erfolgen können.
+		\subsection{Asynchrone Kommunikation}
 		
+		Um ein Mehrkernsystem effizient zu nutzen, sollen einige Klassen asynchron zueinander arbeiten.
+		Hierzu zählt der Server, der asynchron zur Geschäftslogik neue Verbindungen annimmt.
+		Die daraus resultierenden Clientinstanzen sollen zum Server und zueinander asynchron ihre Anfragen bearbeiten.
+		Letztendlich soll auch der Algorithmus asynchron zu den Clients und dem Server das Umfeldmodell aktualisieren.
+		
+		
+		~\\ ~\\ ~\\
 		
 		
 		
@@ -246,8 +259,6 @@
 		
 		
 		Ausgliederung von libmessages weil ASN-Bindings + weil von Protokolländerungen unabhängig sein soll
-		
-		Drei Crates, libmessages-sys: bindings+allokator+deallokator, libmessages: ans encoding/decoding, common RawMessage, MECViewServer: logic
 		
 		Prüfen tokio, queues, async + proxy pattern
 		

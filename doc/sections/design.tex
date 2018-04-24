@@ -1,6 +1,16 @@
 
 \chapter{Systementwurf}
 
+In diesem Kapitel wird eine Entwurf für die Implementation des Systems aufgezeigt.
+Die Struktur des Systems wird durch einen Architekturentwurf vorgegeben, wogegen eine Unschärfe bei der Implementation der Details erlaubt wird \todo{...rly? satz}.
+
+Eine frühe Recherche hat ergeben, dass kein ASN.1 Compiler für Rust verfügbar ist.
+Zwar sind einige Rust-Bibliotheken für ASN.1 zu finden (\textit{yasna}, \textit{raisin}, \textit{rust-asn1}, ...), jedoch kann keine UPER.
+Keine der genannten Bibliotheken übersetzt, wie in der bisherigen Referenzimplementierung, die ASN.1 Datenstrukturen in native Datenstrukturen.
+Auch keiner der von der ITU genannten Compiler\footnote{\url{https://www.itu.int/en/ITU-T/asn1/Pages/Tools.aspx}} unterstützen Rust .
+Dieser Umstand erzwingt die Nutzung der C-Datenstrukturen der Referenzimplementierung mittels \gls{ffi} (siehe \autoref{rust:ffi}).
+Zur besseren Kapselung ist die Einbindung der ASN.1 Nachrichten deswegen in mehreren Schritten in zwei Crates ausgelagert.
+
 \todo{vorweg, kein ASN.1 Rust compiler, dh c bibliothek einbinden, unabhängigkeit von asn/nachrichtentechnologie weil sauber + weil schonmal wechsel von protobuf}
 
 \section{Architektur / Komponentendiagramme}

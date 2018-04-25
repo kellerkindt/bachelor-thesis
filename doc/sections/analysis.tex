@@ -446,10 +446,17 @@ Daraufhin sendet der Sensor dem Server anstatt \textit{SensorIdleFrame}-Nachrich
 	\label{seq_dia:vehicle}
 \end{figure}
 
+In \autoref{seq_dia:vehicle} ist die Kommunikation zwischen einem Fahrzeug und dem MEC-Server zu sehen.
+Nach Verbindungsaufbau versendet das Fahrzeug eine \textit{ClientRegistration}-Nachricht um sich am Server als Fahrzeug zu registrieren.
+Der Server beantwortet dies mit einer \textit{InitMessage}-Nachricht (siehe \autoref{msg:init_message}) mit Informationen zu bekannten Sektoren.
+Bis das Fahrzeug ein Abonnement mittels einer \textit{UpdateSubscription}-Nachricht erstellt, werden keine weiteren Nachrichten ausgetauscht.
+Während eines gültigen Abonnements sendet der Server Umfeldmodelle in \textit{EnvironmentFrame}-Nachrichten (siehe \autoref{msg:environment_frame}) an das Fahrzeug.
+Durch eine \textit{UpdateSubscription}-Nachricht kann das Fahrzeug jederzeit das Abonnement aufkündigen und erhält daraufhin keine weiteren \textit{EnvironmentFrame}-Nachrichten.
+
 \subsection{Sensor, Fahrzeug und MEC-Server}
 
 \begin{figure}[H]
-	\begin{tikzpicture}
+	\begin{tikzpicture}[scale=.9]
 		\begin{umlseqdiag} 
 			\umlactor[x=0,no ddots]{Sensor}
 			\umlactor[x=6,no ddots]{MEC-Server}
@@ -515,3 +522,8 @@ Daraufhin sendet der Sensor dem Server anstatt \textit{SensorIdleFrame}-Nachrich
 	\caption{Interaktion des MEC-Servers mit einem Fahrzeug und einem Sensor}
 	\label{seq_dia:both}
 \end{figure}
+
+In \autoref{seq_dia:both} ist das Zusammenspiel des Sensor aus \autoref{seq_dia:sensor}, des Fahrzeugs aus \autoref{seq_dia:vehicle} und des MEC-Servers zu sehen.
+Um die Übersichtlichkeit zu wahren, wurden die Nachrichtentypen durch Anweisungen ersetzt.
+Es ist zu erkennen, das der Server bereits ein Abonnement gegenüber dem Sensor erstellt, sobald sich ein Fahrzeug registriert.
+Dieses Abonnement ist so lange gültig, wie zumindest ein Fahrzeug verbunden ist.

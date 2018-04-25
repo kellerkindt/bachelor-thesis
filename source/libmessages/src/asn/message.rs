@@ -312,7 +312,7 @@ mod tests {
     use super::super::tests::init_logger;
 
 
-    fn test_encode(message: Message, should_be: &[u8]) {
+    fn test_encode_uper(message: Message, should_be: &[u8]) {
         let mut buffer = vec![0u8; should_be.len()];
         let result = message.try_encode_uper_to(&mut buffer[..]);
         trace!("result {:?}", result);
@@ -328,7 +328,7 @@ mod tests {
     }
 
     #[test]
-    fn encode_init_message() {
+    fn encode_uper_init_message() {
         init_logger();
         let init = Message::InitMessage(unsafe {
             let mut init = Box::new(mem::zeroed::<InitMessage>());
@@ -342,14 +342,14 @@ mod tests {
             raw::asn_set_empty(&mut init.sectors as *mut _ as *mut ::std::os::raw::c_void);
             init
         });
-        test_encode(init, &[
+        test_encode_uper(init, &[
             0x00, 0x00, 0x03, 0x20, 0x02, 0x04, 0x02, 0x51, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7, 0x3b,
             0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00,
         ]);
     }
 
     #[test]
-    fn decode_init_message() {
+    fn decode_uper_init_message() {
         init_logger();
         let message = Message::try_decode_uper_init_message(&[
             0x00, 0x00, 0x03, 0x20, 0x02, 0x04, 0x02, 0x51, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7, 0x3b,
@@ -371,7 +371,7 @@ mod tests {
     }
 
     #[test]
-    fn encode_update_status() {
+    fn encode_uper_update_status() {
         init_logger();
         let status = Message::UpdateStatus(unsafe {
             let mut status = Box::new(mem::zeroed::<UpdateStatus>());
@@ -379,13 +379,13 @@ mod tests {
             status.sensor_status = raw::ConnectionStatus_ConnectionStatus_disconnected as ConnectionStatus_t;
             status
         });
-        test_encode(status, &[
+        test_encode_uper(status, &[
             0x40, 0x00, 0x40, 0x00,
         ]);
     }
 
     #[test]
-    fn decode_update_status() {
+    fn decode_uper_update_status() {
         init_logger();
         let message = Message::try_decode_uper_update_status(&[
             0x40, 0x00, 0x40, 0x00,
@@ -400,7 +400,7 @@ mod tests {
     }
 
     #[test]
-    fn encode_sensor_idle_frame() {
+    fn encode_uper_sensor_idle_frame() {
         init_logger();
         let frame = Message::SensorIdleFrame(unsafe {
             let mut frame = Box::new(mem::zeroed::<raw::SensorIdleFrame>());
@@ -409,13 +409,13 @@ mod tests {
             frame.sender_id = 4;
             frame
         });
-        test_encode(frame, &[
+        test_encode_uper(frame, &[
             0x02, 0x08, 0x30
         ]);
     }
 
     #[test]
-    fn decode_sensor_idle_frame() {
+    fn decode_uper_sensor_idle_frame() {
         init_logger();
         let message = Message::try_decode_uper_sensor_idle_frame(&[
             0x02, 0x08, 0x30
@@ -431,7 +431,7 @@ mod tests {
     }
 
     #[test]
-    fn encode_road_clearance_frame() {
+    fn encode_uper_road_clearance_frame() {
         init_logger();
         let frame = Message::RoadClearanceFrame(unsafe {
             let mut frame = Box::new(mem::zeroed::<RoadClearanceFrame>());
@@ -444,14 +444,14 @@ mod tests {
             raw::asn_set_empty(&mut frame.road_sections as *mut _ as *mut ::std::os::raw::c_void);
             frame
         });
-        test_encode(frame, &[
+        test_encode_uper(frame, &[
             0x00, 0x00, 0x02, 0x58, 0x02, 0x04, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7, 0x3b,
             0xb1, 0x25, 0xf2, 0x00, 0x00,
         ]);
     }
 
     #[test]
-    fn decode_road_clearance_frame() {
+    fn decode_uper_road_clearance_frame() {
         init_logger();
         let message = Message::try_decode_uper_road_clearance_frame(&[
             0x00, 0x00, 0x02, 0x58, 0x02, 0x04, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7, 0x3b,
@@ -472,7 +472,7 @@ mod tests {
     }
 
     #[test]
-    fn encode_environment_frame() {
+    fn encode_uper_environment_frame() {
         init_logger();
         let frame = Message::EnvironmentFrame(unsafe {
             let mut frame = Box::new(mem::zeroed::<EnvironmentFrame>());
@@ -486,14 +486,14 @@ mod tests {
             raw::asn_set_empty(&mut frame.envelope.error_codes as *mut _ as *mut ::std::os::raw::c_void);
             frame
         });
-        test_encode(frame, &[
+        test_encode_uper(frame, &[
             0x00, 0x00, 0x01, 0x90, 0x02, 0x02, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7, 0x3b,
             0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00,
         ]);
     }
 
     #[test]
-    fn decode_environment_frame() {
+    fn decode_uper_environment_frame() {
         init_logger();
         let message = Message::try_decode_uper_environment_frame(&[
             0x00, 0x00, 0x01, 0x90, 0x02, 0x02, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7, 0x3b,
@@ -516,7 +516,7 @@ mod tests {
     }
 
     #[test]
-    fn encode_sensor_frame() {
+    fn encode_uper_sensor_frame() {
         init_logger();
         let frame = Message::SensorFrame(unsafe {
             let mut frame = Box::new(mem::zeroed::<SensorFrame>());
@@ -531,14 +531,14 @@ mod tests {
             frame.envelope.reference_point.altitude = 256000;
             frame
         });
-        test_encode(frame, &[
+        test_encode_uper(frame, &[
             0x00, 0x00, 0x00, 0xc8, 0x02, 0x00, 0x15, 0x27, 0xe5, 0x44, 0x67, 0x13, 0xdc, 0xee, 0xc4,
             0x97, 0xc8, 0x00, 0x00,
         ]);
     }
 
     #[test]
-    fn decode_sensor_frame() {
+    fn decode_uper_sensor_frame() {
         init_logger();
         let message = Message::try_decode_uper_sensor_frame(&[
             0x00, 0x00, 0x00, 0xc8, 0x02, 0x00, 0x15, 0x27, 0xe5, 0x44, 0x67, 0x13, 0xdc, 0xee, 0xc4,
@@ -562,7 +562,7 @@ mod tests {
     }
 
     #[test]
-    fn encode_update_subscription() {
+    fn encode_uper_update_subscription() {
         init_logger();
         let subscription = Message::UpdateSubscription(unsafe {
             let mut subscription = Box::new(mem::zeroed::<UpdateSubscription>());
@@ -570,11 +570,11 @@ mod tests {
             subscription.message_period = ptr::null_mut();
             subscription
         });
-        test_encode(subscription, &[0x40]);
+        test_encode_uper(subscription, &[0x40]);
     }
 
     #[test]
-    fn decode_update_subscription() {
+    fn decode_uper_update_subscription() {
         init_logger();
         let message = Message::try_decode_uper_update_subscription(&[0x40]);
         trace!("result: {:?}", message);
@@ -588,7 +588,7 @@ mod tests {
     }
 
     #[test]
-    fn encode_client_registration() {
+    fn encode_uper_client_registration() {
         init_logger();
         let registration = Message::Registration(unsafe {
             let mut registration = Box::new(mem::zeroed::<ClientRegistration>());
@@ -597,11 +597,11 @@ mod tests {
             registration.minimum_message_period = ptr::null_mut();
             registration
         });
-        test_encode(registration, &[0x20])
+        test_encode_uper(registration, &[0x20])
     }
 
     #[test]
-    fn decode_client_registration() {
+    fn decode_uper_client_registration() {
         init_logger();
         let message = Message::try_decode_uper_client_registration(&[0x20]);
         trace!("result: {:?}", message);

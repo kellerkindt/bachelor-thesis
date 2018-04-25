@@ -309,6 +309,7 @@ Die InitMessage-Nachricht wird vom Server, nach einer Fahrzeuganmeldung, an das 
 Die RoadClearanceFrame-Nachricht wird vom Server an das Fahrzeug versendet und kann Verkehrs-, Wetter- und andere Informationen über die Sektoren enthalten.
 
 \subsection{SensorIdleFrame}
+\label{msg:sensor_idle_frame}
 
 Die SensorIdleFrame-Nachricht wird vom Sensor in regelmäßigen Zeitintervallen an den Server versendet, wenn der Sensor nicht abonniert ist.
 Die Anwesenheit des Sensors wird somit festgestellt.
@@ -369,7 +370,11 @@ Die Anwesenheit des Sensors wird somit festgestellt.
 
 \section{Schnittstellenanalyse}
 
+In diesem Kapitel werden die Schnittstellen analysiert, über die der MEC-Server mit dem Sensor und dem Client kommuniziert.
+Für die Darstellung werden Sequenzdiagramme verwendet.
+Aktionen in \enquote{loop}-Abschnitten werden so lange wiederholt, bis die erste darauf folgende Aktion außerhalb eines \enquote{loop}-Abschnittes eintritt \todo{satz}.
 
+\subsection{Sensor und MEC-Server}
 \begin{figure}[H]
 	\begin{tikzpicture}
 		\begin{umlseqdiag} 
@@ -403,10 +408,18 @@ Die Anwesenheit des Sensors wird somit festgestellt.
 		\end{umlseqdiag}
 	\end{tikzpicture}
 	\centering
-	\label{seq_dia:sensor}
 	\caption{Kommunikation zwischen Sensor und MEC-Server}
+	\label{seq_dia:sensor}
 \end{figure}
 
+In \autoref{seq_dia:sensor} ist die Kommunikation zwischen einem Sensor und dem MEC-Server zu sehen.
+Nach Verbindungsaufbau versendet der Sensor eine \textit{ClientRegistration}-Nachricht (siehe \autoref{msg:client_registration}) um sich am Server als Sensor zu registrieren.
+Der Server beantwortet dies mit einer \textit{UpdateSubscription}-Nachricht (siehe \autoref{msg:update_subscription}) um klarzustellen, dass kein Abonnement gewünscht ist.
+Der Sensor versendet darauf folgend in regelmäßigen Abständen \textit{SensorIdleFrame}-Nachrichten (siehe \autoref{msg:sensor_idle_frame}) um \todo{seine Präsenz zu beteuern}.
+Nach unbekannter Zeit kann der Server ein Abonnement erstellen, indem eine entsprechende \textit{UpdateSubscription}-Nachricht versendet wird.
+Daraufhin sendet der Sensor dem Server anstatt \textit{SensorIdleFrame}-Nachrichten \textit{SensorFrame}-Nachrichten (siehe \autoref{msg:sensor_frame}) zu, bis dieser das Abonnement mit einer \textit{UpdateSubscription}-Nachricht wieder aufkündigt.
+
+\subsection{Fahrzeug und MEC-Server}
 
 \begin{figure}[H]
 	\begin{tikzpicture}
@@ -429,10 +442,11 @@ Die Anwesenheit des Sensors wird somit festgestellt.
 		\end{umlseqdiag}
 	\end{tikzpicture}
 	\centering
-	\label{seq_dia:vehicle}
 	\caption{Kommunikation zwischen Fahrzeug und MEC-Server}
+	\label{seq_dia:vehicle}
 \end{figure}
 
+\subsection{Sensor, Fahrzeug und MEC-Server}
 
 \begin{figure}[H]
 	\begin{tikzpicture}
@@ -498,6 +512,6 @@ Die Anwesenheit des Sensors wird somit festgestellt.
 		\end{umlseqdiag}
 	\end{tikzpicture}
 	\centering
-	\label{seq_dia:both}
 	\caption{Interaktion des MEC-Servers mit einem Fahrzeug und einem Sensor}
+	\label{seq_dia:both}
 \end{figure}

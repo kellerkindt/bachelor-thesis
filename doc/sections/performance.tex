@@ -112,22 +112,56 @@ Eine Entwicklung nach ISO 26262 findet nicht statt, da dies zum Einen nicht durc
 	
 %\todo{Kommunikation als Socket, FiFo, Fehlerkorrektur, erneutes senden bei Fehlern, richtige Reiehenfolge...}
 
-\section{Streams / Reactive programming}
 
-\section{Blocking vs Nonblocking IO}
+\section{Blockierende und nicht-blockierende Ein-/Ausgabe}
 
 \begin{quotation}
 	\textit{\enquote{However, for high-performance servers, you'll need to use asynchronous input and output.}}
 	\cite[454]{rust:orly_programming}
 \end{quotation}
 
+\todo{.}
+
+Bei einer blockierenden Ein-/Ausgabe wartet der aufrufende Thread darauf, das entweder die gewünschte Anzahl an Daten (oft Bytes) gelesen oder geschrieben wurden.
+In vielen Situationen, wie zum Beispiel beim Lesen von einer einzelnen Datei oder beim Schreiben auf die Standardausgabe, kann ein blockierendes System die Anforderungen ausreichend erfüllen.
+Für einen Server mit vielen Verbindungen kann dies aber zu einem sehr hohen Speicherverbrauch führen und die Leistungsfähigkeit reduzieren.
+
+Bei einem blockierenden System müssen zu jeder Verbindung mehrere Threads gestartet werden, die ihre meiste Zeit damit verbringen, auf eingehende Daten zu warten oder um auf die Fertigstellung  von Schreiboperationen von ausgehenden Daten zu warten.
+Da für jeden Thread ein Stack allokiert werden muss, ist in solch einem System ein hoher Speicherverbrauch je Verbindung gegeben.
+In vielen Fällen wird zudem beim Aufruf einer blockierenden Methode der gesamte Prozess vom Scheduler des Betriebssystems pausiert und erst in der nächsten \todo{slice} fortgesetzt.
+Dies reduziert die Leistungsfähigkeit des gesamten Prozesses.
+
+Asynchrone Ein-/Ausgabe arbeitet nach anderen Prinzipien, es ist nicht nötig hierfür je Verbindung mehrere Threads zu erstellen.
+Anstatt dass ein Thread auf eingehende Daten wartet, wird ein Callback registriert, der aufgerufen wird, sobald neue Daten eingetroffen sind.
+Bei einem Schreibaufruf wird nicht gewartet, bis alle Daten versendet worden sind, sondern über einen Callback wird mitgeteilt, sobald alle Daten versendet worden sind.
+Hierdurch können viele Verbindungen gleichzeitig und ressourcenschonend von wenigen Threads bearbeitet werden.
+
+In Rust ist dies im Framework tokio durch Futures abstrahiert. Ein Funktionsaufruf zum Lesen von Bytes von einem \textit{TcpStream} gibt nicht die gelesenen Bytes zurück (blockierend), sondern eine \textit{Future} (dt. Zukunft), in der die Bytes gelesen sein werden (weiteres in \autoref{perf:future}). 
+
+\todo{rust}
+
+\todo{cites from tokio guide / doc}
+
+
 \cite[303]{realtime}
 
 Blocking heißt je thread ein stack, overhead für betriebssystem, viel nichts tun
 
+\section{Nicht auf die Zukunft warten}
+\label{perf:future}
+
 \section{Stack / Heap performance}
 
+für performance abwägen,
 stack: kostenlos,
-heap: laufzeitkosten
+heap: laufzeitkosten,
+nachträglich kopieren langsam weil kopieren,
+stack limitierend,
+stack in c++ gefährlich wenn pointer gespeichert wird,
+
+weil stack kostenlos, möglichst auf dem stack weil performanter
+
 
 \section{Continuous Integration}
+
+\todo{prüft regelmäßig ob eingescheckter code qualitätsansprüchen erfüllt bzw ob überhaupt funktionsfähig, metrik, nachvollziehbare builds}

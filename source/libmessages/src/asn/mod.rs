@@ -58,7 +58,8 @@ pub unsafe fn uper_decode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, buffer: 
     if result.code != raw::asn_dec_rval_code_e_RC_OK {
         warn!("Decoding failed: {:?}", result);
         if pointer != ::std::ptr::null_mut() {
-            raw::free(asn_type, pointer as &T, false);
+            debug!("Freeing partially decoded data");
+            raw::free(asn_type, &*pointer as &T, false);
         }
         Err(())
     } else {
@@ -142,6 +143,13 @@ mod tests {
         let msg = RawMessage::new(raw::ClientRegistration::type_id(), vec![0x20]).unwrap();
         let reg = raw::ClientRegistration::decode(&msg).unwrap();
         assert_eq!(raw::ClientType_ClientType_vehicle as raw::ClientType_t, reg.type_);
+    }
+
+    #[test]
+    fn decoding_of_invalid_data_fails() {
+        let msg = RawMessage::new(raw::ClientRegistration::type_id(), vec![0xFF]).unwrap();
+        let res = raw::ClientRegistration::decode(&msg);
+        assert!(res.is_err());
     }
 
 }

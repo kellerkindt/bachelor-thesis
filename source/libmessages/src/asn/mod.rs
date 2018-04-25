@@ -57,6 +57,9 @@ pub unsafe fn uper_decode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, buffer: 
     trace!("result: {:?} for type: {:?}", result, asn_type);
     if result.code != raw::asn_dec_rval_code_e_RC_OK {
         warn!("Decoding failed: {:?}", result);
+        if pointer != ::std::ptr::null_mut() {
+            raw::free(asn_type, pointer as &T, false);
+        }
         Err(())
     } else {
         trace!("fine");

@@ -132,7 +132,7 @@ mod tests {
     fn basic_encode_client_registration() {
         let mut reg = raw::ClientRegistration::default();
         reg.type_ = raw::ClientType_ClientType_vehicle as raw::ClientType_t;
-        let raw = reg.encode().unwrap();
+        let raw = reg.try_encode_uper().unwrap();
         assert_eq!(1, raw.length());
         assert_eq!(raw::ClientRegistration::type_id(), raw.identifier());
         assert_eq!(&[0x20], raw.bytes());

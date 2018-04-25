@@ -121,7 +121,7 @@ impl SampleAlgorithm {
         // TODO
         let mut env = EnvironmentFrame::default();
         env.header.timestamp = frame.header.timestamp;
-        Arc::new(env.encode().unwrap())
+        Arc::new(env.try_encode_uper().unwrap())
     }
 }
 

@@ -135,7 +135,7 @@ impl Server {
 
         self.runtime.spawn(
             decoder
-                .map(|m| ::messages::asn::Message::decode(&m))
+                .map(|m| ::messages::asn::Message::try_decode_uper(&m))
                 .then(|r| match r {
                     Ok(message) => match message {
                         Ok(message) => ::adapter::asn::map_message(message),

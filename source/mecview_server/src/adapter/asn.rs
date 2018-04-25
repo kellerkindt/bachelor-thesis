@@ -46,7 +46,7 @@ impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 's
     #[allow(unknown_lints)]
     #[allow(needless_pass_by_value)]
     fn remote_send<M: AsnMessage>(&mut self, message: M) -> Result<(), Error> {
-        match message.encode() {
+        match message.try_encode_uper() {
             Err(_) => Err(Error::from(ErrorKind::InvalidData)),
             Ok(raw) => {
                 self.encoder.send(Arc::new(raw.generalize()))?;

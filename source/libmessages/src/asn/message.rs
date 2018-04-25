@@ -27,51 +27,51 @@ pub enum Message {
 
 
 impl Message {
-    pub fn decode_client_registration(buffer: &[u8]) -> Result<Message, ()> {
+    pub fn try_decode_uper_client_registration(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::Registration(
-            <raw::ClientRegistration as AsnMessage>::decode_from_buffer(buffer)?
+            <raw::ClientRegistration as AsnMessage>::try_decode_uper_from_buffer(buffer)?
         ))
     }
 
-    pub fn decode_update_subscription(buffer: &[u8]) -> Result<Message, ()> {
+    pub fn try_decode_uper_update_subscription(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::UpdateSubscription(
-            <raw::UpdateSubscription as AsnMessage>::decode_from_buffer(buffer)?
+            <raw::UpdateSubscription as AsnMessage>::try_decode_uper_from_buffer(buffer)?
         ))
     }
 
-    pub fn decode_sensor_frame(buffer: &[u8]) -> Result<Message, ()> {
+    pub fn try_decode_uper_sensor_frame(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::SensorFrame(
-            <raw::SensorFrame as AsnMessage>::decode_from_buffer(buffer)?
+            <raw::SensorFrame as AsnMessage>::try_decode_uper_from_buffer(buffer)?
         ))
     }
 
-    pub fn decode_environment_frame(buffer: &[u8]) -> Result<Message, ()> {
+    pub fn try_decode_uper_environment_frame(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::EnvironmentFrame(
-            <raw::EnvironmentFrame as AsnMessage>::decode_from_buffer(buffer)?
+            <raw::EnvironmentFrame as AsnMessage>::try_decode_uper_from_buffer(buffer)?
         ))
     }
 
-    pub fn decode_road_clearance_frame(buffer: &[u8]) -> Result<Message, ()> {
+    pub fn try_decode_uper_road_clearance_frame(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::RoadClearanceFrame(
-            <raw::RoadClearanceFrame as AsnMessage>::decode_from_buffer(buffer)?
+            <raw::RoadClearanceFrame as AsnMessage>::try_decode_uper_from_buffer(buffer)?
         ))
     }
 
-    pub fn decode_sensor_idle_frame(buffer: &[u8]) -> Result<Message, ()> {
+    pub fn try_decode_uper_sensor_idle_frame(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::SensorIdleFrame(
-            <raw::SensorIdleFrame as AsnMessage>::decode_from_buffer(buffer)?
+            <raw::SensorIdleFrame as AsnMessage>::try_decode_uper_from_buffer(buffer)?
         ))
     }
 
-    pub fn decode_update_status(buffer: &[u8]) -> Result<Message, ()> {
+    pub fn try_decode_uper_update_status(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::UpdateStatus(
-            <raw::UpdateStatus as AsnMessage>::decode_from_buffer(buffer)?
+            <raw::UpdateStatus as AsnMessage>::try_decode_uper_from_buffer(buffer)?
         ))
     }
 
-    pub fn decode_init_message(buffer: &[u8]) -> Result<Message, ()> {
+    pub fn try_decode_uper_init_message(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::InitMessage(
-            <raw::InitMessage as AsnMessage>::decode_from_buffer(buffer)?
+            <raw::InitMessage as AsnMessage>::try_decode_uper_from_buffer(buffer)?
         ))
     }
 
@@ -88,57 +88,57 @@ impl Message {
         }
     }
 
-    pub fn decode(raw: &RawMessage<Message>) -> Result<Message, ()> {
-        Self::decode_from(
+    pub fn try_decode_uper(raw: &RawMessage<Message>) -> Result<Message, ()> {
+        Self::try_decode_uper_from(
             raw.identifier(),
             raw.bytes()
         )
     }
 
-    pub fn decode_from(type_id: u32, buffer: &[u8]) -> Result<Message, ()> {
+    pub fn try_decode_uper_from(type_id: u32, buffer: &[u8]) -> Result<Message, ()> {
         match type_id {
-            TYPE_ID_REGISTRATION            => Self::decode_client_registration(buffer),
-            TYPE_ID_SENSOR_FRAME            => Self::decode_sensor_frame(buffer),
-            TYPE_ID_ENVIRONMENT_FRAME       => Self::decode_environment_frame(buffer),
-            TYPE_ID_UPDATE_SUBSCRIPTION     => Self::decode_update_subscription(buffer),
-            TYPE_ID_INIT_MESSAGE            => Self::decode_init_message(buffer),
-            TYPE_ID_ROAD_CLEARANCE_FRAME    => Self::decode_road_clearance_frame(buffer),
-            TYPE_ID_SENSOR_IDLE_FRAME       => Self::decode_sensor_idle_frame(buffer),
-            TYPE_ID_UPDATE_STATUS           => Self::decode_update_status(buffer),
+            TYPE_ID_REGISTRATION            => Self::try_decode_uper_client_registration(buffer),
+            TYPE_ID_SENSOR_FRAME            => Self::try_decode_uper_sensor_frame(buffer),
+            TYPE_ID_ENVIRONMENT_FRAME       => Self::try_decode_uper_environment_frame(buffer),
+            TYPE_ID_UPDATE_SUBSCRIPTION     => Self::try_decode_uper_update_subscription(buffer),
+            TYPE_ID_INIT_MESSAGE            => Self::try_decode_uper_init_message(buffer),
+            TYPE_ID_ROAD_CLEARANCE_FRAME    => Self::try_decode_uper_road_clearance_frame(buffer),
+            TYPE_ID_SENSOR_IDLE_FRAME       => Self::try_decode_uper_sensor_idle_frame(buffer),
+            TYPE_ID_UPDATE_STATUS           => Self::try_decode_uper_update_status(buffer),
             _ => Err(())
         }
     }
 
-    pub fn encode(self) -> Result<RawMessage<Message>, ()> {
+    pub fn try_encode_uper(self) -> Result<RawMessage<Message>, ()> {
         RawMessage::new(
             self.type_id(),
-            self.encode_to_new_buffer()?,
+            self.try_encode_uper_to_new_buffer()?,
         )
     }
 
-    pub fn encode_to(&self, target: &mut [u8]) -> Result<usize, ()> {
+    pub fn try_encode_uper_to(&self, target: &mut [u8]) -> Result<usize, ()> {
         match self {
-            Message::Registration(ref v)        => v.encode_to(target),
-            Message::UpdateSubscription(ref v)  => v.encode_to(target),
-            Message::SensorFrame(ref v)         => v.encode_to(target),
-            Message::EnvironmentFrame(ref v)    => v.encode_to(target),
-            Message::RoadClearanceFrame(ref v)  => v.encode_to(target),
-            Message::SensorIdleFrame(ref v)     => v.encode_to(target),
-            Message::UpdateStatus(ref v)        => v.encode_to(target),
-            Message::InitMessage(ref v)         => v.encode_to(target),
+            Message::Registration(ref v)        => v.try_encode_uper_to(target),
+            Message::UpdateSubscription(ref v)  => v.try_encode_uper_to(target),
+            Message::SensorFrame(ref v)         => v.try_encode_uper_to(target),
+            Message::EnvironmentFrame(ref v)    => v.try_encode_uper_to(target),
+            Message::RoadClearanceFrame(ref v)  => v.try_encode_uper_to(target),
+            Message::SensorIdleFrame(ref v)     => v.try_encode_uper_to(target),
+            Message::UpdateStatus(ref v)        => v.try_encode_uper_to(target),
+            Message::InitMessage(ref v)         => v.try_encode_uper_to(target),
         }
     }
 
-    pub fn encode_to_new_buffer(&self) -> Result<Vec<u8>, ()> {
+    pub fn try_encode_uper_to_new_buffer(&self) -> Result<Vec<u8>, ()> {
         match self {
-            Message::Registration(v)        => v.encode_to_new_buffer(),
-            Message::UpdateSubscription(v)  => v.encode_to_new_buffer(),
-            Message::SensorFrame(v)         => v.encode_to_new_buffer(),
-            Message::EnvironmentFrame(v)    => v.encode_to_new_buffer(),
-            Message::RoadClearanceFrame(v)  => v.encode_to_new_buffer(),
-            Message::SensorIdleFrame(v)     => v.encode_to_new_buffer(),
-            Message::UpdateStatus(v)        => v.encode_to_new_buffer(),
-            Message::InitMessage(v)         => v.encode_to_new_buffer(),
+            Message::Registration(v)        => v.try_encode_uper_to_new_buffer(),
+            Message::UpdateSubscription(v)  => v.try_encode_uper_to_new_buffer(),
+            Message::SensorFrame(v)         => v.try_encode_uper_to_new_buffer(),
+            Message::EnvironmentFrame(v)    => v.try_encode_uper_to_new_buffer(),
+            Message::RoadClearanceFrame(v)  => v.try_encode_uper_to_new_buffer(),
+            Message::SensorIdleFrame(v)     => v.try_encode_uper_to_new_buffer(),
+            Message::UpdateStatus(v)        => v.try_encode_uper_to_new_buffer(),
+            Message::InitMessage(v)         => v.try_encode_uper_to_new_buffer(),
         }
     }
 }
@@ -167,7 +167,7 @@ pub trait AsnMessage {
 
     fn type_def() -> &'static mut raw::asn_TYPE_descriptor_t;
 
-    fn encode_to(&self, buffer: &mut [u8]) -> Result<usize, ()> where Self: Sized {
+    fn try_encode_uper_to(&self, buffer: &mut [u8]) -> Result<usize, ()> where Self: Sized {
         unsafe {
             asn::uper_encode(
                 Self::type_def(),
@@ -177,21 +177,21 @@ pub trait AsnMessage {
         }
     }
 
-    fn encode_to_new_buffer(&self) -> Result<Vec<u8>, ()> where Self: Sized {
+    fn try_encode_uper_to_new_buffer(&self) -> Result<Vec<u8>, ()> where Self: Sized {
         asn::uper_encode_to_new_buffer(
             Self::type_def(),
             self
         )
     }
 
-    fn encode(&self) -> Result<RawMessage<Self>, ()> where Self: Sized {
+    fn try_encode_uper(&self) -> Result<RawMessage<Self>, ()> where Self: Sized {
         RawMessage::new(
             Self::type_id(),
-            self.encode_to_new_buffer()?
+            self.try_encode_uper_to_new_buffer()?
         )
     }
 
-    fn decode_from_buffer(buffer: &[u8]) -> Result<Box<Self>, ()> where Self: Sized {
+    fn try_decode_uper_from_buffer(buffer: &[u8]) -> Result<Box<Self>, ()> where Self: Sized {
         unsafe {
             asn::uper_decode(
                 Self::type_def(),
@@ -201,7 +201,7 @@ pub trait AsnMessage {
     }
 
     fn decode(raw: &RawMessage<Self>) -> Result<Box<Self>, ()> where Self: Sized {
-        Self::decode_from_buffer(raw.bytes())
+        Self::try_decode_uper_from_buffer(raw.bytes())
     }
 }
 
@@ -314,7 +314,7 @@ mod tests {
 
     fn test_encode(message: Message, should_be: &[u8]) {
         let mut buffer = vec![0u8; should_be.len()];
-        let result = message.encode_to(&mut buffer[..]);
+        let result = message.try_encode_uper_to(&mut buffer[..]);
         trace!("result {:?}", result);
         if let Ok(count) = result {
             let mut string = String::new();
@@ -351,7 +351,7 @@ mod tests {
     #[test]
     fn decode_init_message() {
         init_logger();
-        let message = Message::decode_init_message(&[
+        let message = Message::try_decode_uper_init_message(&[
             0x00, 0x00, 0x03, 0x20, 0x02, 0x04, 0x02, 0x51, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7, 0x3b,
             0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00,
         ]);
@@ -387,7 +387,7 @@ mod tests {
     #[test]
     fn decode_update_status() {
         init_logger();
-        let message = Message::decode_update_status(&[
+        let message = Message::try_decode_uper_update_status(&[
             0x40, 0x00, 0x40, 0x00,
         ]);
         match message.expect("Decoding failed") {
@@ -417,7 +417,7 @@ mod tests {
     #[test]
     fn decode_sensor_idle_frame() {
         init_logger();
-        let message = Message::decode_sensor_idle_frame(&[
+        let message = Message::try_decode_uper_sensor_idle_frame(&[
             0x02, 0x08, 0x30
         ]);
         match message.expect("Decoding failed") {
@@ -453,7 +453,7 @@ mod tests {
     #[test]
     fn decode_road_clearance_frame() {
         init_logger();
-        let message = Message::decode_road_clearance_frame(&[
+        let message = Message::try_decode_uper_road_clearance_frame(&[
             0x00, 0x00, 0x02, 0x58, 0x02, 0x04, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7, 0x3b,
             0xb1, 0x25, 0xf2, 0x00, 0x00,
         ]);
@@ -495,7 +495,7 @@ mod tests {
     #[test]
     fn decode_environment_frame() {
         init_logger();
-        let message = Message::decode_environment_frame(&[
+        let message = Message::try_decode_uper_environment_frame(&[
             0x00, 0x00, 0x01, 0x90, 0x02, 0x02, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7, 0x3b,
             0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00,
         ]);
@@ -540,7 +540,7 @@ mod tests {
     #[test]
     fn decode_sensor_frame() {
         init_logger();
-        let message = Message::decode_sensor_frame(&[
+        let message = Message::try_decode_uper_sensor_frame(&[
             0x00, 0x00, 0x00, 0xc8, 0x02, 0x00, 0x15, 0x27, 0xe5, 0x44, 0x67, 0x13, 0xdc, 0xee, 0xc4,
             0x97, 0xc8, 0x00, 0x00,
         ]);
@@ -576,7 +576,7 @@ mod tests {
     #[test]
     fn decode_update_subscription() {
         init_logger();
-        let message = Message::decode_update_subscription(&[0x40]);
+        let message = Message::try_decode_uper_update_subscription(&[0x40]);
         trace!("result: {:?}", message);
         match message.expect("Message decoding failed") {
             Message::UpdateSubscription(ref sub) => {
@@ -603,7 +603,7 @@ mod tests {
     #[test]
     fn decode_client_registration() {
         init_logger();
-        let message = Message::decode_client_registration(&[0x20]);
+        let message = Message::try_decode_uper_client_registration(&[0x20]);
         trace!("result: {:?}", message);
         assert!(message.is_ok());
         match message.expect("Message decoding failed") {

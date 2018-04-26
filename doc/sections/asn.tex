@@ -13,7 +13,7 @@ Die Beschreibungen können anschließend zu Quellcode einer theoretisch\footnote
 Beschriebene Datentypen werden dadurch als native Konstrukte dargestellt und können mittels einer der standardisierten (oder auch eigenen \cite{asn:itu:ecn}) Encodierungen serialisiert werden.
 
 Um den Austausch zwischen verschiedenen Anwendungen und Systemen zu ermöglichen, sind durch die \gls{itu}  bereits einige Encodierungen standardisiert \cite[8]{asn:itu:x691}.
-Für diese Arbeit ist aber einzig der PER bzw. UPER Standard relevant, da der Server diese Encodierung verwenden muss, um mit den Sensoren und den Autos zu kommunizieren (Anforderung in \autoref{req:com:asn}).
+Für diese Arbeit ist aber einzig der PER bzw. UPER Standard relevant, da der Server diese Encodierung verwenden muss, um mit den Sensoren und den Autos zu kommunizieren (siehe Anforderung in \autoref{req:com:asn}).
 
 Andere, bekanntere Verfahren werden hier nur kurz erwähnt:
 \begin{itemize}
@@ -30,12 +30,11 @@ Sie beschreibt eine Encodierung, die Daten kompakt -- also in wenigen Bytes -- s
 Zu PER sind mehrere Variationen spezifiziert, für diese Arbeit ist jedoch nur UPER (unaligned PER) von Bedeutung.
 Im Gegensatz zu anderen Variationen bestehen Datenbausteine in UPER nicht aus ganzen Bytes, sondern aus unterschiedlich vielen Bits.
 Eine serialisierte Nachricht ist deswegen nicht N-Bytes sondern N-Bits lang.
-An den resultierenden Bitstring dürfen 0-Bits angehängt werden, um diesen als Bytestring wandeln zu können.
+An den resultierenden Bitstring dürfen 0-Bits angehängt werden, um diesen in einen Bytestring wandeln zu können.
 Durch dieses Verfahren ist die Nachricht noch kürzer darstellbar.
 
-Für Funkverbindungen ist dies von besonderer Bedeutung, da alle Teilnehmer das gleiche Übertragungsmedium teilen.
+Für Funkverbindungen ist dies von besonderer Bedeutung, da sich alle Teilnehmer das gleiche Übertragungsmedium teilen.
 Das Einsparen von wenigen Bytes pro Nachricht und je Teilnehmer ermöglicht einen höheren Gesamtdurchsatz.
-\todo{Einsparung = (Einsparung pro Nachricht) * (Anzahl Teilnehmer)}
 %\todo{refactor, sources:}
 %Für den Einsatz bei Funkverbindungen ist diese Encodierung von Vorteil, da bei der Übermittlung einer Nachricht kein anderen Kommunikationsteilnehmer auf dieser Frequenz etwas übermitteln kann.
 %Eine kürzere Nachricht blockiert eine Frequenz kürzer, weshalb kürzere Nachrichten einen höheren Durchsatz erlauben.

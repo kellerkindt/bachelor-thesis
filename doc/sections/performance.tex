@@ -1,6 +1,6 @@
 
 %\chapter{Hochperformante, serverbasierte Kommunikationsplattform}
-\chapter{\todo{\enquote{Systemrelevant}?}}
+\chapter{Systemrelevante Technologien}
 \label{com_plattform}
 
 Dieses Kapitel erläutert weitere, relevante Themen, die zur Umsetzung der hochperformante, serverbasierte Kommunikationsplattform wichtig sind.
@@ -21,7 +21,7 @@ Je nach Art des Echtzeitsystems, wird diese Frist jedoch unterschiedlich gewicht
 	Zum Beispiel könnte eine zu späte Auswertung von Beschleunigungsdaten in einem Flugzeug zu einer verzögerten und mittlerweile falschen Reaktion und daraufhin zu einem Absturz führen \cite[5]{perf:laplante2004real}.
 	
 	\item Bei einem weichen Echtzeitsystem resultiert die Überschreitung des vorgegebenen Zeitraums nicht in einer Katastrophe.
-	Es wird die durchschnittliche Reaktionszeit dem Zeitraum bis zur Frist gegenübergestellt, eine seltene und unter Last auftretende Überschreitung wird in Kauf genommen \cite[76]{douglass2003real}.
+	Es wird die durchschnittliche Reaktionszeit dem Zeitraum bis zur Frist gegenübergestellt. Eine seltene und unter Last auftretende Überschreitung wird in Kauf genommen \cite[76]{douglass2003real}.
 	Das System führt in so einem Fall weiterhin seine Aufgaben aus, die Performance wird aber \todo{abgewertet} eingestuft.
 %	Weiche Echtzeitsysteme können sogar überhaupt keine Frist haben, sondern die Aufgabe, die Antwortzeit so gering wie möglich zu gehalten \cite[4]{perf:buttazzo2006soft}.
 \end{itemize}
@@ -32,9 +32,11 @@ Je nach Art des Echtzeitsystems, wird diese Frist jedoch unterschiedlich gewicht
 
 Mobile Edge Computing (\gls{mec}) bezeichnet Recheneinheiten, die eine Cloud-ähnliche Umgebung am Rande des Mobilfunknetzes schaffen \cite[4]{etsi:mec}.
 Wenn in dieser Arbeit auf MEC Bezug genommen wird, sind damit explizit direkt an Funkmasten montierte Recheneinheiten gemeint.
-Dadurch, dass die Recheneinheiten direkt an eine Antenne angeschlossen sind, können sie Anfragen aus dem Abdeckungsbereich der Antenne deutlich schneller beantworten (Latenz kleiner 20ms) als Cloudlösungen (Latenz ca 100ms) \cite[2]{perf:mec:fraunhofer}.
+Dadurch, dass die Recheneinheiten direkt an einen Funkmast angeschlossen sind, können sie Anfragen aus dem Abdeckungsbereich der Antenne deutlich schneller beantworten (Latenz kleiner 20ms) als Cloudlösungen (Latenz ca 100ms) \cite[2]{perf:mec:fraunhofer}.
 Hierfür werden die Anfragen aus dem Mobilfunknetz direkt an die Recheneinheit weitergeleitet, anstatt über einen Provider eine Internetverbindung zu einer Cloudlösung aufzubauen.
-In dem \gls{mec}-View Projekt wird eine \gls{vm} in einer \gls{mec} Recheneinheit ausgeführt und die Verbindungen zu den Sensoren und dem Fahrzeuge \todo{durchgeschleust}.
+
+In dem \gls{mec}-View Projekt wird eine \gls{vm} in einer \gls{mec} Recheneinheit ausgeführt.
+Die Verbindungen von Fahrzeugen und Sensoren in dem Abdeckungsbereich des Funkmastes werden anstatt über einen Provider direkt an die \gls{vm} geroutet.
 
 
 %\section{Architekturmuster? oder erst während der Implementation?}
@@ -68,13 +70,13 @@ Diese drei Phasen werden \enquote{red/green/refactor} bezeichnet:
 \begin{itemize}
 	\item \textbf{red}: Ein neuer Test wird erstellt, dieser stellt erfolgreich die Abwesenheit der Funktionalität fest, eine rote Fehlermeldung ist zu sehen.
 	\item \textbf{green}: Der Test wird durch neuen Code zufriedengestellt; eine positive Ausgabe bestätigt dies. Eine schnelle Implementierung wird hierbei temporär einer hochwertigen bevorzugt \cite[24]{tdd}, da ein erfolgreicher Test das Selbstvertrauen beim Refactoring stärkt und helfen würde, fehlerhafte Tests zu finden \cite[152]{tdd}.
-	\item \textbf{refactor}: Der neue Code wird aufgeräumt und verbessert, um den Qualitätsstandards gerecht zu werden. \todo{Ein andauernder Testdurchlauf versichert dabei keine Regression der Funktionalität.}
+	\item \textbf{refactor}: Der neue Code wird aufgeräumt und verbessert, um den Qualitätsstandards gerecht zu werden.
 \end{itemize}
 
 Die Testgröße und der daraus resultierende Umfang der neuen Funktionalität wird durch die Zuversichtlichkeit des Entwicklers gesteuert \cite[42]{tdd}.
 Eine hohe Zuversicht führe zu größeren Tests, die etwas mehr Funktionalität auf einmal prüfen, während eine hohe Unsicherheit zu vielen kleinen Tests führen würden.
 Daraus resultiert, dass gerade komplexe Algorithmen mit vielen Tests abgesichert sein sollten.
-Bestehende Tests bilden ein Sicherheitsnetz, mit dem \todo{defekte} Änderungen umgehend detektiert werden können.
+Bestehende Tests bilden ein Sicherheitsnetz, mit dem Fehler durch Änderungen detektiert werden können.
 
 %\todo{manchmal stellt man beim erstellen des tests fest, dass die Anforderung blöd ist}
 Test-getriebene Entwicklung verändert auch die Vorgehensweise bei der Implementation von Anforderungen. Anstatt zu fragen \enquote{Wie würde ich das implementieren?}, wird überlegt \enquote{Wie würde ich das testen?} \cite[39]{tdd}, womit auch implizit gefragt wird, wie die äußere Schnittstelle idealerweise aussehen sollen \cite[4]{tdd}.
@@ -95,7 +97,6 @@ Deswegen ist es wichtig, den Begriff \enquote{funktionale Sicherheit} kurz zu er
 Bei funktionaler Sicherheit (\textit{safety}) geht es um die Betriebssicherheit, eine \enquote{Freiheit von unvertretbaren Risiken} \cite[6]{safety}.
 Unvertretbare Risiken sind in erster Linie Personenschäden, weswegen einheitliche Regularien in Normen wie der IEC 61508 bzw der DIN EN 61508 festgehalten sind.
 Für den Automobilbereich wurde die Norm in der ISO 26262 angepasst, um u.a. eine Einzelabnahme eines jeden Fahrzeuges, durch eine Gesamtabnahme des Produktes zu ermöglichen \cite[14]{safety}.
-\todo{Erwähnung?: Einstufung (A)SIL -> Gegenmaßnahmen}
 
 Durch die Test-getriebene Entwicklung und der Verwendung von Rust und dessen Garantien (siehe \autoref{rust:guarantees}), sollen Fehler reduziert und eine möglichst sichere Implementierung geschaffen werden.
 Eine Entwicklung nach ISO 26262 findet nicht statt, da dies zum Einen nicht durch das Forschungsprojekt gefordert ist und zum Anderen den Umfang dieser Bachelorarbeit überschreitet.
@@ -123,20 +124,22 @@ Eine Entwicklung nach ISO 26262 findet nicht statt, da dies zum Einen nicht durc
 \todo{.}
 
 Bei einer blockierenden Ein-/Ausgabe wartet der aufrufende Thread darauf, das entweder die gewünschte Anzahl an Daten (oft Bytes) gelesen oder geschrieben wurden.
-In vielen Situationen, wie zum Beispiel beim Lesen von einer einzelnen Datei oder beim Schreiben auf die Standardausgabe, kann ein blockierendes System die Anforderungen ausreichend erfüllen.
-Für einen Server mit vielen Verbindungen kann dies aber zu einem sehr hohen Speicherverbrauch führen und die Leistungsfähigkeit reduzieren.
+In vielen Situationen, wie zum Beispiel beim Lesen einer einzelnen Datei oder beim Schreiben auf die Standardausgabe, kann ein blockierendes System die Anforderungen ausreichend erfüllen.
+Für einen Server mit vielen Clientverbindungen kann dies aber zu einem sehr hohen Speicherverbrauch führen und die Leistungsfähigkeit reduzieren.
 
-Bei einem blockierenden System müssen zu jeder Verbindung mehrere Threads gestartet werden, die ihre meiste Zeit damit verbringen, auf eingehende Daten zu warten oder um auf die Fertigstellung  von Schreiboperationen von ausgehenden Daten zu warten.
+Bei einem blockierenden System müssen zu jeder Verbindung mehrere Threads gestartet werden, die ihre meiste Zeit damit verbringen, auf eingehende Daten oder um auf die Fertigstellung  von Schreiboperationen von ausgehenden Daten zu warten.
 Da für jeden Thread ein Stack allokiert werden muss, ist in solch einem System ein hoher Speicherverbrauch je Verbindung gegeben.
-In vielen Fällen wird zudem beim Aufruf einer blockierenden Methode der gesamte Prozess vom Scheduler des Betriebssystems pausiert und erst in der nächsten \todo{slice} fortgesetzt.
+In vielen Fällen wird zudem beim Aufruf einer blockierenden Methode der gesamte Prozess vom Scheduler des Betriebssystems pausiert und erst in der nächsten Zeitscheibe fortgesetzt.
 Dies reduziert die Leistungsfähigkeit des gesamten Prozesses.
 
 Asynchrone Ein-/Ausgabe arbeitet nach anderen Prinzipien, es ist nicht nötig hierfür je Verbindung mehrere Threads zu erstellen.
+\todo{
 Anstatt dass ein Thread auf eingehende Daten wartet, wird ein Callback registriert, der aufgerufen wird, sobald neue Daten eingetroffen sind.
-Bei einem Schreibaufruf wird nicht gewartet, bis alle Daten versendet worden sind, sondern über einen Callback wird mitgeteilt, sobald alle Daten versendet worden sind.
+Bei einem Schreibaufruf wird nicht gewartet, bis alle Daten versendet worden sind, sondern über einen Callback wird mitgeteilt, sobald alle Daten versendet worden sind.}
 Hierdurch können viele Verbindungen gleichzeitig und ressourcenschonend von wenigen Threads bearbeitet werden.
 
-In Rust ist dies im Framework tokio durch Futures abstrahiert. Ein Funktionsaufruf zum Lesen von Bytes von einem \textit{TcpStream} gibt nicht die gelesenen Bytes zurück (blockierend), sondern eine \textit{Future} (dt. Zukunft), in der die Bytes gelesen sein werden (weiteres in \autoref{perf:future}). 
+In Rust ist dies im Framework tokio durch \textit{Future}s abstrahiert. Ein Funktionsaufruf zum Lesen von Bytes von einem \textit{TcpStream} gibt nicht die gelesenen Bytes zurück (blockierend), sondern eine \textit{Future} (dt. Zukunft), zu der die Bytes gelesen sein werden.
+\todo{Aneinanderreihung, ~pollen = heartbeat}
 
 \todo{rust}
 
@@ -147,10 +150,23 @@ In Rust ist dies im Framework tokio durch Futures abstrahiert. Ein Funktionsaufr
 
 Blocking heißt je thread ein stack, overhead für betriebssystem, viel nichts tun
 
-\section{Nicht auf die Zukunft warten}
-\label{perf:future}
 
-\section{Stack / Heap performance}
+\section{Stack und Heap Geschwindigkeit}
+
+\todo{.}
+
+Allokation von Speicher auf dem Stack und dem Heap unterscheiden sich in ihrer Geschwindigkeit und ihrer möglichen Verwendungsart.
+Eine allokation auf dem Stack hat keine Laufzeitkosten, da sie zur Compilezeit ermittelt werden kann.
+Die Lebenszeit des allokierten Speichers ist aber durch die Lebenszeit der Funktion, in der der Speicher allokiert wurde, limitiert.
+Eine allokation auf dem Heap hat dagegen Laufzeitkosten, da dynamisch ein ausreichend großer und freier Speicherbereich gesucht werden muss.
+Ein Speicherbereich auf dem Heap ist in der Lebenszeit nicht eingeschränkt.
+
+Die Verwendung von kurzlebigen Datenstrukturen auf dem Stack anstatt auf dem Heap, können eine performante Programmierung ermöglichen, bergen jedoch auch Gefahren.
+Wenn versucht wird, auf die Datenstruktur nach ihrer Lebenszeit zuzugreifen oder diese zu modifizieren, wird im besten Fall ein ungültiger Wert gelesen und im schlimmsten Fall \todo{der Stack überschrieben. Ein unvorhersehbares Verhalten kann die Folge sein.}
+
+
+
+In vielen Programmiersprachen mit einer Laufzeitumgebung, wie C\# oder Java, ist diese Thematik der Allokation auf dem Stack oder Heap weitestgehend nicht vom Programmierer beeinflussbar.
 
 
 

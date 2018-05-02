@@ -114,42 +114,34 @@ Eine Entwicklung nach ISO 26262 findet nicht statt, da dies zum Einen nicht durc
 %\todo{Kommunikation als Socket, FiFo, Fehlerkorrektur, erneutes senden bei Fehlern, richtige Reiehenfolge...}
 
 
-\section{Blockierende und nicht-blockierende Ein-/Ausgabe}
+\section{Asynchrone Kommunikation und Datenströme}
 
 \begin{quotation}
 	\textit{\enquote{However, for high-performance servers, you'll need to use asynchronous input and output.}}
 	\cite[454]{rust:orly_programming}
 \end{quotation}
 
-\todo{.}
+Eine typische synchrone Kommunikation ist ein Funktionsaufruf.
+Zuerst werden die Parameter vorbereitet, dann die Funktion aufgerufen.
+Der weitere Code der aufrufenden Funktion wird nicht ausgeführt, bis der Aufruf der aufgerufenden Funktion beendet wurde.
 
-Bei einer blockierenden Ein-/Ausgabe wartet der aufrufende Thread darauf, das entweder die gewünschte Anzahl an Daten (oft Bytes) gelesen oder geschrieben wurden.
-In vielen Situationen, wie zum Beispiel beim Lesen einer einzelnen Datei oder beim Schreiben auf die Standardausgabe, kann ein blockierendes System die Anforderungen ausreichend erfüllen.
-Für einen Server mit vielen Clientverbindungen kann dies aber zu einem sehr hohen Speicherverbrauch führen und die Leistungsfähigkeit reduzieren.
+Auch für Datenströme, bei zum Beispiel TCP-Verbindungen, bieten Standardbibliotheken der entsprechenden Programmiersprachen oft eine synchrone Kommunikation an.
+Hierbei beendet ein Funktionsaufruf für das Versenden oder Empfangen von Daten (bei TCP Bytes) erst, wenn die erwartete Anzahl an Elementen empfangen oder versendet wurden.
 
-Bei einem blockierenden System müssen zu jeder Verbindung mehrere Threads gestartet werden, die ihre meiste Zeit damit verbringen, auf eingehende Daten oder um auf die Fertigstellung  von Schreiboperationen von ausgehenden Daten zu warten.
-Da für jeden Thread ein Stack allokiert werden muss, ist in solch einem System ein hoher Speicherverbrauch je Verbindung gegeben.
-In vielen Fällen wird zudem beim Aufruf einer blockierenden Methode der gesamte Prozess vom Scheduler des Betriebssystems pausiert und erst in der nächsten Zeitscheibe fortgesetzt.
-Dies reduziert die Leistungsfähigkeit des gesamten Prozesses.
+Zwar ist diese Herangehensweise für die Implementation eines Clients, der nur zu einem Server eine Verbindung aufbaut, aufgrund der niedrigen Komplexität gut geeignet, aber für einen Server, der mit vielen Datenströmen gleichzeitig kommunizieren muss, ist diese Herangehensweise nicht geeignet.
+Eine sequentieller Sendeaufruf würde die Latenz des Servers pro Client um einen u.a. von der Verbindungsgeschwindigkeit abhängigen Wert erhöhen.
+Einen Sende- und Empfangsthread je Client würde das Problem der Latenz lösen, jedoch aufgrund des je Thread benötigten Stacks und zusätzlichen Verwaltungsaufwands den Ressourcenverbrauch des Servers drastisch erhöhen.
 
-Asynchrone Ein-/Ausgabe arbeitet nach anderen Prinzipien, es ist nicht nötig hierfür je Verbindung mehrere Threads zu erstellen.
-\todo{
-Anstatt dass ein Thread auf eingehende Daten wartet, wird ein Callback registriert, der aufgerufen wird, sobald neue Daten eingetroffen sind.
-Bei einem Schreibaufruf wird nicht gewartet, bis alle Daten versendet worden sind, sondern über einen Callback wird mitgeteilt, sobald alle Daten versendet worden sind.}
-Hierdurch können viele Verbindungen gleichzeitig und ressourcenschonend von wenigen Threads bearbeitet werden.
+Eine asynchrone Kommunikation ermöglicht dagegen die Kommunikation mit vielen Datenströmen gleichzeitig, ohne die zuvor erwähnte Probleme zu provozieren.
+Bei einem asynchronen Sende- oder Empfangsaufruf wird nicht auf dessen Fertigstellung gewartet, sondern in der darunterliegende Implementation wird die Anfrage notiert, sobald möglich abgearbeitet und der Aufrufer bei Fertigstellung informiert.
+Das erlaubt dem Aufrufer zum Beispiel dem nächsten Datenstrom Daten zuzusenden, ohne das dies durch die Fertigstellung des ersten Aufrufs verzögert wird.
+Eine asynchrone Kommunikation erhöht jedoch die Komplexität des Aufrufers (hier: des Servers), da nun zusätzlich der Status einer Sende- und Empfangsanfrage nachverfolgt werden muss.
+Im Gegenzug wird die Verwaltung von vielen Datenströmen bzw. Verbindungen mit wenigen Threads ermöglicht.
 
-In Rust ist dies im Framework tokio durch \textit{Future}s abstrahiert. Ein Funktionsaufruf zum Lesen von Bytes von einem \textit{TcpStream} gibt nicht die gelesenen Bytes zurück (blockierend), sondern eine \textit{Future} (dt. Zukunft), zu der die Bytes gelesen sein werden.
-\todo{Aneinanderreihung, ~pollen = heartbeat}
-
-\todo{rust}
-
-\todo{cites from tokio guide / doc}
-
-
-\cite[303]{realtime}
-
-Blocking heißt je thread ein stack, overhead für betriebssystem, viel nichts tun
-
+Auch ein Funktionsaufruf kann asynchron erfolgen.
+Der Aufrufer teilt dem Aufgerufenem dabei die Anfrage und deren Parameter mit, ohne auf die Fertigstellung zu warten.
+Stattdessen kontaktiert der Aufgerufene den ursprünglichen Aufrufer nachdem die Anfrage bearbeitet wurde.
+Ein solches System wird oft als \enquote{Aktorsystem} bezeichnet.
 
 \section{Stack und Heap Geschwindigkeit}
 

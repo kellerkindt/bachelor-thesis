@@ -766,13 +766,13 @@ Wichtige, aber auch bekannte Datentypen sind hierbei:
 \label{rust:scope}
 \label{rust:static_analysis}
 
-Rust benutzt ein \enquote{statisches, automatisches Speicher Management -- keinen Garbage Collector} \cite{rust:youtube:goto2017}.
+Rust benutzt ein \enquote{statisches, automatisches Speichermanagement -- keinen Garbage Collector} \cite{rust:youtube:goto2017}.
 Das bedeutet, die Lebenszeit einer Variable wird statisch während der Compilezeit anhand des Geltungsbereichs ermittelt (siehe \autoref{rust:scope}).
 Durch diese statische Analyses findet der Compiler heraus, wann der Speicher einer Variable wieder freigegeben werden muss.
 Dies ist genau dann, wenn der Geltungsbereich des Eigentümers zu Ende ist.
 Weder ein \gls{gc}, der dies zur Laufzeit nachverfolgt, noch ein manuelles Eingreifen durch den Entwickler (zum Beispiel durch \ccinline{free(*void)}, wie in C/C++ üblich) ist nötig.
 
-Falls der Compiler keine ordnungsgemäße Nutzung feststellen kann, wie zum Beispiel eine Referenz, die länger als den referenzierten Wert leben möchte, wird die Kompilation verweigert.
+Falls der Compiler keine ordnungsgemäße Nutzung feststellen kann, wie zum Beispiel eine Referenz, die ihren referenzierten Wert überleben möchte, wird die Kompilation verweigert.
 Dadurch wird das Problem des \enquote{dangling pointers} verhindert, ohne Laufzeitkosten zu erzeugen (siehe \autoref{rust:guarantee:no_dangling_pointer}).
 
 Im folgenden \autoref{rust:memory:scope} wird beispielhaft Speicher auf dem Heap allokiert.

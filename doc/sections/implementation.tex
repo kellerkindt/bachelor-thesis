@@ -1,0 +1,41 @@
+
+\chapter{Implementierung}
+
+\section{Architektur}
+
+Weitestgehend wie in \autoref{draft:architecture}, aber Futures, tokio, Queues
+
+\todo{diagramm: jede future ein eigenes "paket", queues dazwischen für kommunikation}
+
+\todo{rust-clippy: https://github.com/rust-lang-nursery/rust-clippy}
+
+\todo{catch panic? mention how in \autoref{rust:no_null}}
+
+\todo{SRP, impl Object separat from impl CommandProcessor for Object, testability?}
+
+\subsection{Tokio}
+
+	\subsection{Generalisierung mittels Aufzählung für nicht erweiterbare Anzahl von Elementen}
+	
+	\subsection{libmessages make unsafe libmessages-sys safe}
+	
+	\subsection{Vorgehen, bindgen tests, C/unsafe/wrapper -> nach sicher ->  architektur entwickeln}
+	
+	\subsection{Architektur zeigen, module/crates, }
+
+	\subsection{TDD?}
+	\todo{Learning Test p.136 for tokio?}
+	
+	\todo{did not work that good for first try without proxy?}
+	
+	\subsection{Unerwartete Schwierigkeiten}
+	\label{impl:issue:ffi}
+	\todo{Schwierigkeiten: FFI binding, manuell -> meh, also generieren}
+		
+	\todo{Trailing zeroes issue, commit a02496d + tagged, libmessages/src/asn.rs:17 bzw :31 bzw :32 Ok((result.encoded as usize + 7) / 8}
+	
+	\todo{link issues fixed in commit d5d694c}
+	
+	\todo{impl Drop / free structs, important but do not overengineer}
+	
+	\todo{proxy communication}

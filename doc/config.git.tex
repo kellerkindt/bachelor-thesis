@@ -1,0 +1,18 @@
+
+\renewcommand{\date}{
+	\ifthenelse{\equal{\gitDirtyValue}{\gitDirty}}
+		{\today}
+		{\printdate{\gitAuthorDate}}
+}
+
+\newcommand{\gitDirtyValue}{+}
+\immediate\write18{/bin/bash update_git_info.sh}
+\usepackage[mark,grumpy,dirty=\gitDirtyValue]{gitinfo2}
+\immediate\write18{/bin/bash -c "rm .git/gitHeadInfo.gin"}
+\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}
+	%\gitReln{} (
+	%	\gitAuthorDate
+	%)
+	%	Head tags: \gitTags
+	\textbullet{} \date
+}

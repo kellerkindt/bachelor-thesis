@@ -1,0 +1,242 @@
+%Start der Zusammenfassung
+\renewcommand{\footnoterule}{\hspace{-0.5cm}\rule{6cm}{1pt}{\vspace*{2pt}}}
+\selectlanguage{ngerman}
+\begin{center}
+\newcommand{\WatzkoMichaelThema}{	Evaluation der Programmiersprache Rust für den 		Entwurf und die Implementierung einer hochperformanten, 		serverbasierten Kommunikationsplattform für Sensordaten 		im Umfeld des automatisierten Fahrens}
+		\baselineskip15pt
+		\textbf{\textcolor{hs_dunkelblau}{\large{	Evaluation der Programmiersprache Rust für den
+		Entwurf und die Implementierung einer hochperformanten,
+		serverbasierten Kommunikationsplattform für Sensordaten
+		im Umfeld des automatisierten Fahrens}}}\\\ \\
+		\baselineskip10pt
+\newcommand{\WatzkoMichael}{Michael \newline Watzko}
+		\textbf{\textcolor{hs_dunkelblau}{Michael Watzko\label{WatzkoMichael}\symbolfootnote[1]{\fontspec{Lucida Sans}
+\begin{minipage}[t]{67.43mm}Diese Arbeit wurde durchgeführt bei der Firma \\ IT-Designers GmbH, Esslingen\end{minipage}\hspace{1.27cm}\vspace{0.1mm}
+\begin{minipage}[t]{71mm}\newcounter{ZaehlerWatzkoMichael}\begin{list}{\textcolor{black}{[\arabic{enumi}]}}{\usecounter{enumi}\setlength{\labelwidth}{2cm}\setlength{\leftmargin}{0.5cm}\setlength{\itemsep}{-1mm}}\item Jim Blandy und Jason Orendorff: Programming Rust, 2017, ISBN: 1491927283\item Florian Gilcher: GOTO 2017 - Why is Rust Successful? \url{https://www.youtube.com/watch?v=-Tj8Q12DaEQ}\item B.P. Douglass. Real-time Design Patterns: Robust Scalable Architecture for
+Real-time Systems, ISBN 9780201699562, 2003\end{list}
+\begin{minipage}[t]{1.6cm}Bildquellen: \end{minipage}
+\begin{minipage}[t]{5.4cm}\url{https://www.rust-lang.org/logos/rust-logo-256x256.png}\end{minipage}
+\end{minipage}},}\hspace{.5cm}}
+\textbf{\textcolor{hs_dunkelblau}{
+Manfred Dausmann,}}
+\hspace{.5cm}\textbf{\textcolor{hs_dunkelblau}{
+NN}}
+\textcolor{hs_dunkelblau}{\\\ \\Fakultät Informationstechnik der Hochschule Esslingen - University of Applied Sciences}\\\ \\
+\textcolor{hs_dunkelblau}{\textbf{Sommersemester 2018}}
+\color{hs_dunkelblau}\rule{\linewidth}{1.5pt}
+\end{center}
+\setcounter{figure}{0}
+\renewcommand{\bildI}{
+ \begin{center}
+ \begin{minipage}[t]{\linewidth}
+ \begin{center}
+  \includegraphics*[width=.6\linewidth]
+{../tmp/WatzkoMichael/rust-logo-256x256.png}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize Rust}
+  \end{center}
+  \end{minipage}
+ \end{center}
+}
+
+\renewcommand{\bildII}{
+ \begin{center}
+  \begin{minipage}[t]{\linewidth}
+  \begin{center}
+  \includegraphics*[width=\linewidth]
+{Bild ist zu groß oder hat das falsche Format!}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize }
+  \end{center}
+  \end{minipage}
+ \end{center}
+}
+
+\renewcommand{\bildIII}{
+ \begin{center}
+  \begin{minipage}[t]{\linewidth}
+  \begin{center}
+  \includegraphics*[width=\linewidth]
+{Bild ist zu groß oder hat das falsche Format!}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize }
+  \end{center}
+  \end{minipage}
+ \end{center}
+}
+
+\renewcommand{\bildIV}{
+ \begin{center}
+  \begin{minipage}[t]{\linewidth}
+  \begin{center}
+  \includegraphics*[width=\linewidth]
+{Bild ist zu groß oder hat das falsche Format!}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize }
+  \end{center}
+  \end{minipage}
+ \end{center}
+}
+
+\renewcommand{\bildV}{
+ \begin{center}
+  \begin{minipage}[t]{\linewidth}
+  \begin{center}
+  \includegraphics*[width=\linewidth]
+{Bild ist zu groß oder hat das falsche Format!}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize }
+  \end{center}
+  \end{minipage}
+ \end{center}
+}
+
+\renewcommand{\bildVI}{
+ \begin{center}
+  \begin{minipage}[t]{\linewidth}
+  \begin{center}
+  \includegraphics*[width=\linewidth]
+{Bild ist zu groß oder hat das falsche Format!}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize }
+  \end{center}
+  \end{minipage}
+ \end{center}
+}
+
+\renewcommand{\bildVII}{
+ \begin{center}
+  \begin{minipage}[t]{\linewidth}
+  \begin{center}
+  \includegraphics*[width=\linewidth]
+{Bild ist zu groß oder hat das falsche Format!}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize }
+  \end{center}
+  \end{minipage}
+ \end{center}
+}
+
+\renewcommand{\bildVIII}{
+ \begin{center}
+  \begin{minipage}[t]{\linewidth}
+  \begin{center}
+  \includegraphics*[width=\linewidth]
+{Bild ist zu groß oder hat das falsche Format!}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize }
+  \end{center}
+  \end{minipage}
+ \end{center}
+}
+
+\renewcommand{\bildIX}{
+ \begin{center}
+  \begin{minipage}[t]{\linewidth}
+  \begin{center}
+  \includegraphics*[width=\linewidth]
+{Bild ist zu groß oder hat das falsche Format!}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize }
+  \end{center}
+  \end{minipage}
+ \end{center}
+}
+
+\renewcommand{\bildX}{
+ \begin{center}
+  \begin{minipage}[t]{\linewidth}
+  \begin{center}
+  \includegraphics*[width=\linewidth]
+{Bild ist zu groß oder hat das falsche Format!}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize }
+  \end{center}
+  \end{minipage}
+ \end{center}
+}
+
+\newcommand{\enquote}[1]{\symbol{8222}#1\symbol{8220}}
+
+\begin{multicols}{2}
+\bildI
+
+\subsection*{Motivation}
+
+Der Begriff \symbol{8222}autonomes Fahren\symbol{8220} hat spätestens seit den Autos von Tesla einen allgemeinen Bekanntheitsgrad erreicht. Damit ein Auto selbstständig fahren kann, müssen erst viele Hürden gemeistert werden.
+Dazu gehört zum Beispiel das Spur halten, das richtige Interpretieren von Verkehrsschildern und das Navigieren durch komplexe Kreuzungen.
+
+Bevor ein autonomes Fahrzeug Entscheidungen treffen kann, benötigt es ein möglichst genaues Model seines Umfelds.
+Hierzu werden von verschiedenen Sensoren wie Front-, Rück- und Seitenkameras und Abstandssensoren Informationen gesammelt und ausgewertet.
+Aber vielleicht kann ein Auto nicht immer selbständig genügend Informationen zu seinem Umfeld sammeln?
+
+Externe Sensorik könnte Informationen liefern, die das Auto selbst nicht erfassen kann.
+Ein viel zu schneller Radfahrer hinter einer Hecke in einer unübersichtlicher Kreuzung?
+Eine Lücke zwischen Autos, die ausreichend groß ist, um einzufahren ohne zu bremsen?
+Die nächste Ampel wird bei Ankunft rot sein, ein schnelles und Umwelt belastendes Anfahren ist nicht nötig?
+Ideen gibt es zuhauf.
+
+Aber was ist, wenn das System aussetzt?
+Die Antwort hierzu ist einfach: das Auto muss immer noch selbstständig agieren können, externe Systeme sollen nur optionale Helfer sein.
+Viel schlimmer ist es dagegen, wenn das unterstützende System falsche Informationen liefert.
+Eine Lücke zwischen Autos, wo keine ist; eine freie Fahrbahn, wo ein Radfahrer fährt; ein angeblich entgegenkommendes Auto, eine unnötig Vollbremsung, ein Auffahrunfall.
+Ein solches System muss sicher sein - nicht nur vor Hackern.
+Es muss funktional sicher sein, Redundanzen und Notfallsysteme müssen jederzeit greifen.
+
+Aber was nützt die beste Idee, die ausgeklügelte Strategie, wenn nur ein einziges Mal vergessen wurde, einen Rückgabewert auf den Fehlerfall zu prüfen?
+Was nützt es, wenn Strategien für das Freigeben von Speicher in Notfallsituationen einen Sonderfall übersehen haben?
+Das System handelt total unvorhersehbar.
+
+Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt: die fehlerhaften Strategien zur Compilezeit findet und die Compilation stoppt; die trotz erzwungener Sicherheitsmaßnahmen, schnell und echtzeitnah reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
+
+Diese Arbeit soll zeigen, dass Rust genau so eine Programmiersprache ist und sich für sicherheitsrelevante, hoch parallelisierte und echtzeitnahe Anwendungsfälle bestens eignet.
+
+\subsection*{Die Programmiersprache Rust}
+
+Rust hat als Ziel, eine sichere und performante Systemprogrammiersprache zu sein.
+Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber keine unnötigen Performance-Einbußen verursachen.
+
+Aus anderen Programmiersprachen bekannte Fehlerquellen - wie vergessene NULL-Pointer Prüfung, vergessene Fehlerprüfung, \symbol{8222}dangling pointers\symbol{8220} oder \symbol{8222}memory leaks\symbol{8220} -  werden durch strikte Regeln und mit Hilfe des Compilers verhindert.
+Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse und mit dem Eigentümerprinzip bei der Kompilation überprüft und erzwungen.
+Dadurch erreicht Rust eine zur Laufzeit hohe Ausführgeschwindigkeit.
+
+Das Eigentümerprinzip und die Markierung von Datentypen durch Merkmale vereinfacht es zudem, nebenläufige und sichere Programme zu schreiben.
+
+
+\subsection*{Speicherverwaltung}
+
+Rust benutzt ein \symbol{8222}statisches, automatisches Speichermanagement - keinen Garbage Collector\symbol{8220} [2].
+Das bedeutet, die Lebenszeit einer Variable wird statisch während der Compilezeit anhand des Geltungsbereichs ermittelt.
+Durch diese statische Analyses findet der Compiler heraus, wann der Speicher einer Variable wieder freigegeben werden muss.
+Dies ist genau dann, wenn der Geltungsbereich des Eigentümers zu Ende ist.
+Weder ein Garbage-Collector, der dies zur Laufzeit nachverfolgt, noch ein manuelles Eingreifen durch den Entwickler (zum Beispiel durch \textit{free(*void)}, wie in C/C++ üblich) ist nötig.
+
+Falls der Compiler keine ordnungsgemäße Nutzung feststellen kann, wie zum Beispiel eine Referenz, die ihren referenzierten Wert überleben möchte, wird die Kompilation verweigert.
+Dadurch wird das Problem des \symbol{8222}dangling pointers\symbol{8220} verhindert, ohne Laufzeitkosten zu erzeugen.
+
+\subsection*{Eigentümer- und Verleihprinzip}
+
+Bereits 2003 beschreibt Bruce Powel Douglass im Buch \enquote{Real-Time Design Patterns}, dass \enquote{passive} Objekte ihre Arbeit nur in dem Thread-Kontext ihres \enquote{aktiven} Eigentümers tätigen sollen (Seite 204, [3]).
+In dem beschriebenen \enquote{Concurrency Pattern} werden Objekte eindeutig Eigentümern zugeordnet, um so eine sicherere Nebenläufigkeit zu erlauben.
+
+Diese Philosophie setzt Rust direkt in der Sprache um, denn in Rust darf ein Wert immer nur einen Eigentümer haben.
+Zusätzlich zu einem immer eindeutig identifizierbaren Eigentümer, kann der Wert auch ausgeliehen werden, um einen kurzzeitigen Zugriff zu erlauben; entweder exklusiv mit sowohl Lese- als auch Schreiberlaubnis, oder mehrfache mit nur Leseerlaubnis.
+
+Eigentümerschaft kann auch übertragen werden, der vorherige Eigentümer kann danach nicht mehr auf den Wert zugreifen.
+Ein entsprechender Versuch wird mit einer Fehlermeldung durch den Compiler bemängelt.
+
+Die Garantie, nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert.
+
+\subsection*{Sichere Nebenläufigkeit}
+
+Eine sichere Nebenläufigkeit wird in Rust durch das Eigentümerprinzip in Kombination mit zusätzlichen Typmerkmalen erreicht.
+Dabei ist diese sichere Nebenläufigkeit meist unsichtbar (Seite 41, [1]), da der Compiler eine unsichere und damit syntaktisch falsche Verwendung nicht übersetzt.
+Ein Rust Programm das compiliert, ist daher, in vielerlei Hinsicht, sicher in der Nebenläufigkeit.
+Einzig ein \enquote{Deadlock} kann nicht statisch ermittelt und verhindert werden.
+
+Eine Wettlaufsituation (englisch \enquote{race condition}) um einen Wert ist in Rust nicht möglich.
+Das Eigentümer- und Leihprinzip verhindert dies, denn es kann nur exklusiv schreibend auf einen Wert zugegriffen werden.
+Für einen Datenwettlauf muss dagegen, gleichzeitig zu einem schreibenden, ein lesender Zugriff erfolgen.
+
+Datentypen, die einen gemeinsamen Zugriff auf veränderliche Werte ermöglichen, liefern immer ein Ergebnis ob der Versuch, einen exklusiven Schreib- oder Lesezugriff zu erhalten, geklappt hat.
+Erst nach einer Fehlerauswertung kann auf den Wert zugegriffen werden.
+
+\subsection*{Ausblick}
+
+Durch die u.a. hier erwähnten Garantien von Rust, soll eine funktional sichere Implementation einer Kommunikationsplattform, im Rahmen des MEC-View Forschungsprojektes, geschaffen werden.
+Im Umfeld des automatisierten Fahrens hat dies einen besonderen Stellenwert.
+
+
+\end{multicols}
+\newpage
+

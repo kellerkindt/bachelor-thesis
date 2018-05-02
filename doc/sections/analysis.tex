@@ -121,33 +121,73 @@ Darauf folgend sind diese Anwendungsfälle genauer erklärt.
 	\caption{Anwendungsfalldiagramm des MEC-Servers}
 	\label{use_case:car}
 \end{figure}
-\begin{itemize}
-	\item \textbf{Als Fahrzeug registrieren [Vorbedingung: noch nicht registriert]} \\
-	Ein neu verbundenes Fahrzeug kann sich dem Server gegenüber als Fahrzeug registrieren.
-	Eine Registrierung kann für jede Verbindung  nur einmal vorgenommen werden und wird durch die Übermittlung einer \textit{ClientRegistration}-Nachricht durchgeführt (siehe \autoref{msg:client_registration}).
-	
-	\item \textbf{Umgebungsmodell abonnieren [Vorbedingung: als Fahrzeug registriert]} \\
-	Ein Fahrzeug kann das Umgebungsmodell abonnieren, woraufhin neue Modelle vom Server an das Fahrzeug übermittelt werden sollen.
-	Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).
-	
-	\item \textbf{Umgebungsmodell deabonnieren [Vorbedingung: bereits abonniert]} \\
-	Ein Fahrzeug kann das Umgebungsmodell deabonnieren, woraufhin keine neuen Modelle mehr vom Server an das Fahrzeug übermittelt werden sollen.
-	Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).
-	
-	
-	\item \textbf{Als Sensor registrieren [Vorbedingung: noch nicht registriert]} \\
-	Ein neu verbundener Sensor kann sich dem Server gegenüber als Sensor registrieren.
-	Eine Registrierung kann für jede Verbindung nur einmal vorgenommen werden und wird durch die Übermittlung einer \textit{ClientRegistration}-Nachricht durchgeführt (siehe \autoref{msg:client_registration}).
-	
-	\item \textbf{SensorFrame zusenden [Vorbedingung: als Sensor registriert]} \\
-	Ein Sensor kann dem Server eine \textit{SensorFrame}-Nachricht übermitteln.
-	Der Server soll diese Nachricht dem Fusions-Algorithmus weiterleiten.
-	
-	\item \textbf{SensorIdleFrame zusenden [Vorbedingung: als Sensor registriert]} \\
-	Ein Sensor kann dem Server eine \textit{SensorIdleFrame}-Nachricht übermitteln.
-	
-\end{itemize}
 
+\newcommand{\usecasetablewidth}{11.5cm}
+\newcommand{\usecase}[7]{\subsection{#1}
+	\begin{tabular}[H]{lp{\usecasetablewidth}}
+		\textbf{Initiator:} & #2 \\
+		\textbf{Beteiligte Akteure:} & MEC-Server, #3 \\
+		\textbf{Vorbedingung:} & #4 \\
+		\textbf{Basisablauf:} & #5 \\
+		\textbf{Alternativablauf:} & #6 \\
+		\textbf{Nachbedingung:} & #7 \\
+	\end{tabular}
+}
+	
+\usecase{Als Fahrzeug registrieren}
+	{Fahrzeug}
+	{Fahrzeug}
+	{Noch nicht registriert}
+	{Ein neu verbundenes Fahrzeug kann sich dem Server gegenüber als Fahrzeug registrieren.
+		Eine Registrierung kann für jede Verbindung  nur einmal vorgenommen werden und wird durch die Übermittlung einer \textit{ClientRegistration}-Nachricht durchgeführt (siehe \autoref{msg:client_registration}).}
+	{--}
+	{Das Fahrzeug kann alle weiteren, dem Fahrzeug zugeordneten, Use-Cases ausführen.}
+
+\usecase{Umgebungsmodell abonnieren}
+	{Fahrzeug}
+	{Fahrzeug}
+	{Ist als Fahrzeug registriert}
+	{Ein Fahrzeug kann das Umgebungsmodell abonnieren, woraufhin neue Modelle vom Server an das Fahrzeug übermittelt werden sollen.
+		Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription})}
+	{--}
+	{Neue Umgebungsmodelle werden an das Fahrzeug übermittelt.}
+	
+	
+\usecase{Umgebungsmodell deabonnieren}
+	{Fahrzeug}
+	{Fahrzeug}
+	{Umgebungsmodell ist abonniert}
+	{Ein Fahrzeug kann das Umgebungsmodell deabonnieren, woraufhin keine neuen Modelle mehr vom Server an das Fahrzeug übermittelt werden sollen.
+		Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).}
+	{--}
+	{Es werden keine weiteren Umgebungsmodelle an das Fahrzeug übermittelt.}
+
+\usecase{Als Sensor registrieren}
+	{Sensor}
+	{Sensor}
+	{Noch nicht registriert}
+	{Ein neu verbundener Sensor kann sich dem Server gegenüber als Sensor registrieren.
+		Eine Registrierung kann für jede Verbindung nur einmal vorgenommen werden und wird durch die Übermittlung einer \textit{ClientRegistration}-Nachricht durchgeführt (siehe \autoref{msg:client_registration}).}
+	{--}
+	{Der Sensor kann alle weiteren, dem Sensor zugeordneten, Use-Cases ausführen.}
+
+\usecase{SensorFrame zusenden}
+	{Sensor}
+	{Sensor}
+	{Ist als Sensor registriert}
+	{Ein Sensor kann dem Server eine \textit{SensorFrame}-Nachricht übermitteln.
+		Der Server soll diese Nachricht dem Fusions-Algorithmus weiterleiten.}
+	{--}
+	{--}
+
+\usecase{SensorIdleFrame zusenden}
+	{Sensor}
+	{Sensor}
+	{Ist als Sensor registriert}
+	{Ein Sensor kann dem Server eine \textit{SensorIdleFrame}-Nachricht übermitteln.}
+	{--}
+	{--}
+	
 \subsection{Sensor}
 
 In \autoref{use_case:server_sensor} sind Anwendungsfälle aufgezeigt, die durch den Sensor dem MEC-Server angeboten werden.
@@ -168,16 +208,24 @@ In \autoref{use_case:server_sensor} sind Anwendungsfälle aufgezeigt, die durch 
 	\label{use_case:server_sensor}
 \end{figure}
 
-\begin{itemize}
-	\item \textbf{Abonnieren [Vorbedingung: Sensor hat sich als Sensor registriert]} \\
-	Der MEC-Server kann einen Sensor abonnieren um \textit{SensorFrame}-Nachrichten (siehe \autoref{msg:sensor_frame}) zu erhalten.
-	Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).
+\usecase{Abonnieren}
+	{MEC-Server}
+	{Sensor}
+	{Ist als Sensor registriert}
+	{Der MEC-Server kann einen Sensor abonnieren um \textit{SensorFrame}-Nachrichten (siehe \autoref{msg:sensor_frame}) zu erhalten.
+		Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).}
+	{--}
+	{Der MEC-Server erhält \textit{SensorFrame}-Nachrichten.}
 	
-	\item \textbf{Deabonnieren [Vorbedingung: Sensor hat sich als Sensor registriert]} \\
-	Der MEC-Server kann ein Abonnement aufkündigen um keine weiteren \textit{SensorFrame}-Nachrichten (siehe \autoref{msg:sensor_frame}) zu erhalten.
-	Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).
+\usecase{Deabonnieren}
+	{MEC-Server}
+	{Sensor}
+	{Ist als Sensor registriert}
+	{Der MEC-Server kann ein Abonnement aufkündigen um keine weiteren \textit{SensorFrame}-Nachrichten (siehe \autoref{msg:sensor_frame}) zu erhalten.
+		Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).}
+	{--}
+	{Der MEC-Server erhält keine \textit{SensorFrame}-Nachrichten.}
 	
-\end{itemize}
 
 
 \section{Fahrzeug}
@@ -199,14 +247,21 @@ In \autoref{use_case:server_vehicle} sind Anwendungsfälle aufgezeigt, die durch
 	\label{use_case:server_vehicle}
 \end{figure}
 
-\begin{itemize}
-	\item \textbf{Sektoren zusenden [Vorbedingung: Fahrzeug ist registriert, einmalig]} \\
-	Der MEC-Server soll dem Fahrzeug einmalig nach Registrierung alle bekannten Sektoren in einer \textit{InitMessage}-Nachricht (siehe \autoref{msg:init_message}) zusenden.
+\usecase{Sektoren zusenden}
+	{MEC-Server}
+	{Fahrzeug}
+	{Ist als Fahrzeug registriert, Sektoren noch nicht übermittelt}
+	{Der MEC-Server soll dem Fahrzeug einmalig nach Registrierung alle bekannten Sektoren in einer \textit{InitMessage}-Nachricht (siehe \autoref{msg:init_message}) zusenden.}
+	{--}
+	{Sektoren können nicht erneut zugesendet werden}
 	
-	\item \textbf{Umgebungsmodell zusenden [Vorbedingung: Fahrzeug hat Abonnement]} \\
-	Der MEC-Server kann dem Fahrzeug Umgebungsmodelle mit \textit{EnvironmentFrame}-Nachrichten (siehe \autoref{msg:environment_frame}) zusenden.
-	
-\end{itemize}
+\usecase{Umgebungsmodell zusenden}
+	{MEC-Server}
+	{Fahrzeug}
+	{Fahrzeug ist abonniert}
+	{Der MEC-Server kann dem Fahrzeug Umgebungsmodelle mit \textit{EnvironmentFrame}-Nachrichten (siehe \autoref{msg:environment_frame}) zusenden.}
+	{--}
+	{--}
 
 %\begin{figure}[H]
 %	\begin{tikzpicture}[node distance=5]

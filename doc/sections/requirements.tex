@@ -1,12 +1,10 @@
 
 \chapter{Anforderungen}
 
+\todo{.}
 In diesem Kapitel sind die Anforderungen an das umzusetzende System gelistet.
-
-
-\todo{funktional / nicht funktional} \cite[150]{goll2012methoden}
-
-\todo{top level requirement}
+Die Anforderungen sind dabei in funktionale und nichtfunktionale Anforderungen sortiert.
+Funktionale Anforderungen beschreiben das gewünschte Verhalten des Systems, nichtfunktionale Anforderungen stellen dagegen Rahmenbedingungen bei der Umsetzung auf \cite[155]{goll2012methoden}.
 
 \section{Funktionale Anforderungen}
 
@@ -34,13 +32,16 @@ In diesem Kapitel sind die Anforderungen an das umzusetzende System gelistet.
 
 \requirement{impl:algorithmus}{Fusions-Algorithmus}{Für den Testbetrieb soll der Fusions-Algorithmus aus der C++ Referenzimplementierung (\enquote{SampleAlgorithm}) auch in Rust umgesetzt werden. Dieser Fusions-Algorithmus ist eine \enquote{dummy} Implementation, d.h. eingehende Daten werden nach einem einfachen Schema wieder verschickt. Ob die Einbindung einer externen Bibliothek als Fusions-Algorithmus möglich ist, soll überprüft werden.\todo{zu lax}}
 
-\requirement{impl:roadclearance}{Road-Clearance}{\todo{...}}
+%\requirement{impl:roadclearance}{Road-Clearance}{\todo{...}}
 
 \requirement{impl:config}{Konfigurationsdateien}{\todo{/etc/MECViewServer/...}}
 
 \requirement{impl:args}{Startparameter}{\todo{sample: send\_delay\_ms, sensor\_timeout\_ms, environment\_frame\_file, ...}}
 
 \section{Nichtfunktionale Anforderungen}
+
+
+\requirement{rust}{Implementation in Rust}{Die Implementation des Servers soll in der Programmiersprache Rust vorgenommen werden.}
 
 \requirement{com:asn}{Kommunikationsprotokoll ist ASN.1/UPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients soll ASN.1 mit der Encodierung UPER sein. Es sollen die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert werden. Das Kommunikationsverhalten soll die Anforderungen der C++ Referenzimplementation erfüllen, sprich den Clients soll nicht ersichtlich sein, ob die Rust oder die Referenzimplementation des Servers ausgeführt wird.}
 
@@ -54,7 +55,7 @@ In diesem Kapitel sind die Anforderungen an das umzusetzende System gelistet.
 
 \requirement{nfktl:rust}{Implementation in Rust}{Die Implementation soll in der Programmiersprache Rust vorgenommen werden.}
 
-\requirement{nfktl:styleguide}{Einhaltung des Styleguides}{Der Quellcode der Serverimplementation soll sich weitestgehend an den offiziellen Styleguide (siehe \autoref{rust:styleguide}) halten.}
+\requirement{nfktl:styleguide}{Einhaltung des Styleguides}{Der Quellcode der Serverimplementation soll sich an den offiziellen Styleguide (siehe \autoref{rust:styleguide}) halten.}
 
 \requirement{dos:sensor}{Widerstand gegen Sensor DOS}{Die Funktionalität des Servers gegenüber anderen Clients soll durch eine Überflutung von Daten eines Sensors nicht beeinträchtigt werden. \todo{optional? relevant?}}
 

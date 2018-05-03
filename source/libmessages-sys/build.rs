@@ -1,16 +1,15 @@
 // extern crate cc;
-extern crate gcc;
 extern crate bindgen;
+extern crate gcc;
 
 use std::fs;
-use std::path::Path;
 use std::io::Write;
+use std::path::Path;
 
-const LIBRARY_FILE  : &'static str = "libmessage.a";
-const BINDINGS_FILE : &'static str = "src/bindings.rs";
+const LIBRARY_FILE : &'static str = "libmessage.a";
+const BINDINGS_FILE: &'static str = "src/bindings.rs";
 
 fn main() {
-
     println!("cargo:rustc-link-search=native={}", ".");
     println!("cargo:rustc-flags=-l dylib=stdc++");
 
@@ -21,7 +20,11 @@ fn main() {
             let main_header = "cpp/wrapper/wrapper.h";
 
             generate_main_header(&headers, main_header);
-            generate_bindings("cpp/MECViewServerSDK-Build/proto/", main_header, Path::new(BINDINGS_FILE).to_str().unwrap());
+            generate_bindings(
+                "cpp/MECViewServerSDK-Build/proto/",
+                main_header,
+                Path::new(BINDINGS_FILE).to_str().unwrap(),
+            );
         }
     }
 }
@@ -52,9 +55,7 @@ fn compile_sdk(sdk_dir: &str, out: &str) -> Vec<String> {
                 }
             }
 
-            gcc_build
-                .include(sdk_dir)
-                .compile(out);
+            gcc_build.include(sdk_dir).compile(out);
         }
     }
 

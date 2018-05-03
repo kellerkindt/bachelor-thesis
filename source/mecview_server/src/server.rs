@@ -208,9 +208,12 @@ impl<T> Encoder for RawMessageCodec<T> {
             item.identifier(),
             item.length()
         );
+        let mut header = [0u8; HEADER_SIZE];
+        NetworkEndian::write_u32(&mut header[0..], item.length());
+        NetworkEndian::write_u32(&mut header[4..], item.identifier());
+
         dst.reserve(HEADER_SIZE + item.length() as usize);
-        dst.put_u32::<NetworkEndian>(item.length());
-        dst.put_u32::<NetworkEndian>(item.identifier());
+        dst.put_slice(&header);
         dst.put_slice(item.bytes());
         trace!("RawMessage written successfully");
         Ok(())

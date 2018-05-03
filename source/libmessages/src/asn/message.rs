@@ -61,15 +61,33 @@ impl Message {
         ))
     }
 
+    pub fn try_decode_xer_sensor_idle_frame(xml: &str) -> Result<Message, ()> {
+        Ok(Message::SensorIdleFrame(
+            <raw::SensorIdleFrame as AsnMessage>::try_decode_xer(xml)?,
+        ))
+    }
+
     pub fn try_decode_uper_update_status(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::UpdateStatus(
             <raw::UpdateStatus as AsnMessage>::try_decode_uper_from_buffer(buffer)?,
         ))
     }
 
+    pub fn try_decode_xer_update_status(xml: &str) -> Result<Message, ()> {
+        Ok(Message::UpdateStatus(
+            <raw::UpdateStatus as AsnMessage>::try_decode_xer(xml)?,
+        ))
+    }
+
     pub fn try_decode_uper_init_message(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::InitMessage(
             <raw::InitMessage as AsnMessage>::try_decode_uper_from_buffer(buffer)?,
+        ))
+    }
+
+    pub fn try_decode_xer_init_message(xml: &str) -> Result<Message, ()> {
+        Ok(Message::InitMessage(
+            <raw::InitMessage as AsnMessage>::try_decode_xer(xml)?,
         ))
     }
 
@@ -133,6 +151,19 @@ impl Message {
             Message::InitMessage(v)         => v.try_encode_uper_to_new_buffer(),
         }
     }
+
+    pub fn try_encode_xer_to_new_string(&self) -> Result<String, ()> {
+        match self {
+            Message::Registration(v)        => v.try_encode_xer_to_new_string(),
+            Message::UpdateSubscription(v)  => v.try_encode_xer_to_new_string(),
+            Message::SensorFrame(v)         => v.try_encode_xer_to_new_string(),
+            Message::EnvironmentFrame(v)    => v.try_encode_xer_to_new_string(),
+            Message::RoadClearanceFrame(v)  => v.try_encode_xer_to_new_string(),
+            Message::SensorIdleFrame(v)     => v.try_encode_xer_to_new_string(),
+            Message::UpdateStatus(v)        => v.try_encode_xer_to_new_string(),
+            Message::InitMessage(v)         => v.try_encode_xer_to_new_string(),
+        }
+    }
 }
 
 pub trait Generalize<T> {
@@ -190,6 +221,20 @@ pub trait AsnMessage {
         Self: Sized,
     {
         Self::try_decode_uper_from_buffer(raw.bytes())
+    }
+
+    fn try_encode_xer_to_new_string(&self) -> Result<String, ()>
+    where
+        Self: Sized,
+    {
+        asn::xer::encode_to_new_string(Self::type_def(), self)
+    }
+
+    fn try_decode_xer(xml: &str) -> Result<Box<Self>, ()>
+    where
+        Self: Sized,
+    {
+        asn::xer::decode(Self::type_def(), xml)
     }
 }
 
@@ -281,6 +326,10 @@ mod tests {
     use std::mem;
     use std::ptr;
 
+    const XML_INIT_MESSAGE:      &'static str = include_str!("test_init_message.xml");
+    const XML_UPDATE_STATUS:     &'static str = include_str!("test_update_status.xml");
+    const XML_SENSOR_IDLE_FRAME: &'static str = include_str!("test_sensor_idle_frame.xml");
+
     fn test_encode_uper(message: Message, should_be: &[u8]) {
         let mut buffer = vec![0u8; should_be.len()];
         let result = message.try_encode_uper_to(&mut buffer[..]);
@@ -296,10 +345,17 @@ mod tests {
         assert_eq!(should_be, &buffer[..]);
     }
 
-    #[test]
-    fn encode_uper_init_message() {
-        init_logger();
-        let init = Message::InitMessage(unsafe {
+    fn test_encode_xer(message: Message, should_be: &str) {
+        let result = message.try_encode_xer_to_new_string();
+        trace!("result {:?}", result);
+        assert!(result.is_ok());
+        let result = result.unwrap();
+        warn!("{}", result);
+        assert_eq!(&result, should_be);
+    }
+
+    fn create_init_message() -> Message {
+        Message::InitMessage(unsafe {
             let mut init = Box::new(mem::zeroed::<InitMessage>());
             init.header.timestamp = 400;
             init.envelope.version = 2;
@@ -312,23 +368,10 @@ mod tests {
             );
             raw::asn_set_empty(&mut init.sectors as *mut _ as *mut ::std::os::raw::c_void);
             init
-        });
-        test_encode_uper(
-            init,
-            &[
-                0x00, 0x00, 0x03, 0x20, 0x02, 0x04, 0x02, 0x51, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7,
-                0x3b, 0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00,
-            ],
-        );
+        })
     }
 
-    #[test]
-    fn decode_uper_init_message() {
-        init_logger();
-        let message = Message::try_decode_uper_init_message(&[
-            0x00, 0x00, 0x03, 0x20, 0x02, 0x04, 0x02, 0x51, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7,
-            0x3b, 0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00,
-        ]);
+    fn check_init_message(message: Result<Message, ()>) {
         match message.expect("Decoding failed") {
             Message::InitMessage(ref init) => {
                 assert_eq!(400, init.header.timestamp);
@@ -345,22 +388,50 @@ mod tests {
     }
 
     #[test]
-    fn encode_uper_update_status() {
+    fn encode_uper_init_message() {
         init_logger();
-        let status = Message::UpdateStatus(unsafe {
+        test_encode_uper(
+            create_init_message(),
+            &[
+                0x00, 0x00, 0x03, 0x20, 0x02, 0x04, 0x02, 0x51, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7,
+                0x3b, 0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00,
+            ],
+        );
+    }
+
+    #[test]
+    fn decode_uper_init_message() {
+        init_logger();
+        let message = Message::try_decode_uper_init_message(&[
+            0x00, 0x00, 0x03, 0x20, 0x02, 0x04, 0x02, 0x51, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7,
+            0x3b, 0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00,
+        ]);
+        check_init_message(message);
+    }
+
+    #[test]
+    fn encode_xer_init_message() {
+        init_logger();
+        test_encode_xer(create_init_message(), XML_INIT_MESSAGE);
+    }
+
+    #[test]
+    fn decode_xer_init_message() {
+        init_logger();
+        check_init_message(Message::try_decode_xer_init_message(XML_INIT_MESSAGE));
+    }
+
+    fn create_update_status() -> Message {
+        Message::UpdateStatus(unsafe {
             let mut status = Box::new(mem::zeroed::<UpdateStatus>());
             status.ip_address.size = 0;
             status.sensor_status =
                 raw::ConnectionStatus_ConnectionStatus_disconnected as ConnectionStatus_t;
             status
-        });
-        test_encode_uper(status, &[0x40, 0x00, 0x40, 0x00]);
+        })
     }
 
-    #[test]
-    fn decode_uper_update_status() {
-        init_logger();
-        let message = Message::try_decode_uper_update_status(&[0x40, 0x00, 0x40, 0x00]);
+    fn check_update_status(message: Result<Message, ()>) {
         match message.expect("Decoding failed") {
             Message::UpdateStatus(ref status) => {
                 assert_eq!(0, status.ip_address.size);
@@ -374,30 +445,78 @@ mod tests {
     }
 
     #[test]
-    fn encode_uper_sensor_idle_frame() {
+    fn encode_uper_update_status() {
         init_logger();
-        let frame = Message::SensorIdleFrame(unsafe {
+        test_encode_uper(create_update_status(), &[0x40, 0x00, 0x40, 0x00]);
+    }
+
+    #[test]
+    fn decode_uper_update_status() {
+        init_logger();
+        check_update_status(Message::try_decode_uper_update_status(&[
+            0x40, 0x00, 0x40, 0x00,
+        ]));
+    }
+
+    #[test]
+    fn encode_xer_update_status() {
+        init_logger();
+        test_encode_xer(create_update_status(), XML_UPDATE_STATUS);
+    }
+
+    #[test]
+    fn decode_xer_update_status() {
+        init_logger();
+        check_update_status(Message::try_decode_xer_update_status(XML_UPDATE_STATUS));
+    }
+
+    fn create_sensor_idle_frame() -> Message {
+        Message::SensorIdleFrame(unsafe {
             let mut frame = Box::new(mem::zeroed::<raw::SensorIdleFrame>());
             frame.version = 2;
             frame.pole_id = 3;
             frame.sender_id = 4;
             frame
-        });
-        test_encode_uper(frame, &[0x02, 0x08, 0x30]);
+        })
+    }
+
+    fn check_sensor_idle_frame(message: Result<Message, ()>) {
+        match message.expect("Decoding failed") {
+            Message::SensorIdleFrame(ref frame) => {
+                assert_eq!(2, frame.version);
+                assert_eq!(3, frame.pole_id);
+                assert_eq!(4, frame.sender_id)
+            }
+            _ => panic!("Wrong message variant"),
+        };
+    }
+
+    #[test]
+    fn encode_uper_sensor_idle_frame() {
+        init_logger();
+        test_encode_uper(create_sensor_idle_frame(), &[0x02, 0x08, 0x30]);
     }
 
     #[test]
     fn decode_uper_sensor_idle_frame() {
         init_logger();
-        let message = Message::try_decode_uper_sensor_idle_frame(&[0x02, 0x08, 0x30]);
-        match message.expect("Decoding failed") {
-            Message::SensorIdleFrame(ref frame) => {
-                assert_eq!(2, frame.version);
-                assert_eq!(3, frame.pole_id);
-                assert_eq!(4, frame.sender_id);
-            }
-            _ => panic!("Wrong message variant"),
-        }
+        check_sensor_idle_frame(Message::try_decode_uper_sensor_idle_frame(&[
+            0x02, 0x08, 0x30,
+        ]));
+    }
+
+    #[test]
+    fn encode_xer_sensor_idle_frame() {
+        init_logger();
+        test_encode_xer(create_sensor_idle_frame(), XML_SENSOR_IDLE_FRAME);
+    }
+
+    #[test]
+    fn decode_xer_sensor_idle_frame() {
+        init_logger();
+        check_sensor_idle_frame(Message::try_decode_xer_sensor_idle_frame(
+            XML_SENSOR_IDLE_FRAME,
+        ));
     }
 
     #[test]

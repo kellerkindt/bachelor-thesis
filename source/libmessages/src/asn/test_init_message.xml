@@ -1,0 +1,18 @@
+<InitMessage>
+    <header>
+        <timestamp>400</timestamp>
+    </header>
+    <envelope>
+        <version>2</version>
+        <server-id>40</server-id>
+        <reference-point>
+            <latitude>484010822</latitude>
+            <longitude>99876076</longitude>
+            <altitude>256000</altitude>
+        </reference-point>
+        <error-codes>
+        </error-codes>
+    </envelope>
+    <sectors>
+    </sectors>
+</InitMessage>

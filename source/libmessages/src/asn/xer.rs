@@ -86,10 +86,7 @@ mod tests {
         super::super::tests::init_logger();
         let decoded: Box<raw::ClientRegistration> = decode(
             unsafe { &mut raw::asn_DEF_ClientRegistration },
-            "<ClientRegistration>
-    <type><sensor/></type>
-</ClientRegistration>
-",
+            "<ClientRegistration><type><sensor/></type></ClientRegistration>",
         ).unwrap();
         assert_eq!(
             raw::ClientType_ClientType_sensor as raw::ClientType_t,

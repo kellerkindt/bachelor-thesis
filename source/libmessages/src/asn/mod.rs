@@ -4,6 +4,7 @@ pub extern crate libmessages_sys as raw;
 pub use self::message::*;
 
 pub mod uper;
+pub mod xer;
 
 #[cfg(test)]
 mod tests {

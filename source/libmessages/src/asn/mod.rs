@@ -80,7 +80,7 @@ mod tests {
     #[test]
     fn basic_decode_client_registration() {
         let msg = RawMessage::new(raw::ClientRegistration::type_id(), vec![0x20]).unwrap();
-        let reg = raw::ClientRegistration::decode(&msg).unwrap();
+        let reg = raw::ClientRegistration::try_decode_uper(&msg).unwrap();
         assert_eq!(
             raw::ClientType_ClientType_vehicle as raw::ClientType_t,
             reg.type_
@@ -90,7 +90,7 @@ mod tests {
     #[test]
     fn decoding_of_invalid_data_fails() {
         let msg = RawMessage::new(raw::ClientRegistration::type_id(), vec![0xFF]).unwrap();
-        let res = raw::ClientRegistration::decode(&msg);
+        let res = raw::ClientRegistration::try_decode_uper(&msg);
         assert!(res.is_err());
     }
 

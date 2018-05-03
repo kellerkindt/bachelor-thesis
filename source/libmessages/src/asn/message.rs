@@ -185,7 +185,7 @@ pub trait AsnMessage {
         unsafe { asn::uper::decode(Self::type_def(), buffer) }
     }
 
-    fn decode(raw: &RawMessage<Self>) -> Result<Box<Self>, ()>
+    fn try_decode_uper(raw: &RawMessage<Self>) -> Result<Box<Self>, ()>
     where
         Self: Sized,
     {

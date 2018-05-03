@@ -7,21 +7,21 @@ pub mod uper;
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use super::raw::*;
-    use super::super::RawMessage;
     use super::super::log4rs;
+    use super::super::RawMessage;
+    use super::raw::*;
+    use super::*;
 
-    use std::ptr;
     use std::mem;
     use std::os;
+    use std::ptr;
 
     pub fn init_logger() {
         use log::LevelFilter;
+        use log4rs::append::console::ConsoleAppender;
+        use log4rs::config::Appender;
         use log4rs::config::Config;
         use log4rs::config::Root;
-        use log4rs::config::Appender;
-        use log4rs::append::console::ConsoleAppender;
         use log4rs::encode::pattern::PatternEncoder;
 
         let encoder = PatternEncoder::new("{d(%Y-%m-%d %H:%M:%S)} {T} {M}:{L} {l} - {m}{n}");
@@ -38,7 +38,6 @@ mod tests {
         let _ = log4rs::init_config(config);
     }
 
-
     #[test]
     fn library_link_valid_do_not_panic() {
         init_logger();
@@ -50,12 +49,15 @@ mod tests {
             p.std_dev_position_east = ptr::null_mut();
             p.std_dev_position_north = ptr::null_mut();
 
-            trace!("{:?}", uper_encode_to_buffer(
-                &mut asn_DEF_PositionOffset as *mut asn_TYPE_descriptor_s,
-                &mut p as *mut _ as *mut os::raw::c_void,
-                buffer.as_mut_ptr() as *mut os::raw::c_void,
-                buffer.len() as usize
-            ));
+            trace!(
+                "{:?}",
+                uper_encode_to_buffer(
+                    &mut asn_DEF_PositionOffset as *mut asn_TYPE_descriptor_s,
+                    &mut p as *mut _ as *mut os::raw::c_void,
+                    buffer.as_mut_ptr() as *mut os::raw::c_void,
+                    buffer.len() as usize
+                )
+            );
             let mut string = String::new();
             for byte in buffer.iter() {
                 string.push_str(&format!("{:02x} ", byte));
@@ -78,7 +80,10 @@ mod tests {
     fn basic_decode_client_registration() {
         let msg = RawMessage::new(raw::ClientRegistration::type_id(), vec![0x20]).unwrap();
         let reg = raw::ClientRegistration::decode(&msg).unwrap();
-        assert_eq!(raw::ClientType_ClientType_vehicle as raw::ClientType_t, reg.type_);
+        assert_eq!(
+            raw::ClientType_ClientType_vehicle as raw::ClientType_t,
+            reg.type_
+        );
     }
 
     #[test]

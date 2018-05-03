@@ -6,14 +6,13 @@ extern crate log;
 #[cfg(test)]
 extern crate log4rs;
 
-
 use std::sync::Arc;
 
 #[derive(Debug)]
 pub struct RawMessage<T: ?Sized> {
     identifier: u32,
     bytes: Vec<u8>,
-    _t: ::std::marker::PhantomData<T>
+    _t: ::std::marker::PhantomData<T>,
 }
 
 impl<T: ?Sized> RawMessage<T> {
@@ -42,14 +41,10 @@ impl<T: ?Sized> RawMessage<T> {
     }
 
     pub(crate) fn into<T2>(self) -> RawMessage<T2> {
-        unsafe {
-            ::std::mem::transmute(self)
-        }
+        unsafe { ::std::mem::transmute(self) }
     }
 
     pub(crate) fn arc_into<T2>(myself: Arc<RawMessage<T>>) -> Arc<RawMessage<T2>> {
-        unsafe {
-            ::std::mem::transmute(myself)
-        }
+        unsafe { ::std::mem::transmute(myself) }
     }
 }

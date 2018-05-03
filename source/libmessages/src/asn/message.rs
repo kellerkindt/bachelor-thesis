@@ -169,7 +169,7 @@ pub trait AsnMessage {
 
     fn try_encode_uper_to(&self, buffer: &mut [u8]) -> Result<usize, ()> where Self: Sized {
         unsafe {
-            asn::uper_encode(
+            asn::uper::encode(
                 Self::type_def(),
                 self,
                 buffer
@@ -178,7 +178,7 @@ pub trait AsnMessage {
     }
 
     fn try_encode_uper_to_new_buffer(&self) -> Result<Vec<u8>, ()> where Self: Sized {
-        asn::uper_encode_to_new_buffer(
+        asn::uper::encode_to_new_buffer(
             Self::type_def(),
             self
         )
@@ -193,7 +193,7 @@ pub trait AsnMessage {
 
     fn try_decode_uper_from_buffer(buffer: &[u8]) -> Result<Box<Self>, ()> where Self: Sized {
         unsafe {
-            asn::uper_decode(
+            asn::uper::decode(
                 Self::type_def(),
                 buffer
             )

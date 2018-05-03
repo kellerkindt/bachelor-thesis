@@ -6,7 +6,6 @@ pub fn encode_to_new_string<T>(
 ) -> Result<String, ()> {
     let mut vec: Vec<u8> = Vec::new();
     let result = unsafe {
-
         unsafe extern "C" fn fill_vec(
             buffer: *const ::std::os::raw::c_void,
             size: usize,
@@ -37,10 +36,7 @@ pub fn encode_to_new_string<T>(
     }
 }
 
-pub fn decode<T>(
-    asn_type: &mut raw::asn_TYPE_descriptor_t,
-    xml: &str,
-) -> Result<Box<T>, ()> {
+pub fn decode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, xml: &str) -> Result<Box<T>, ()> {
     let mut pointer: *mut T = ::std::ptr::null_mut();
     let xml = xml.as_bytes();
     let result = unsafe {
@@ -49,7 +45,7 @@ pub fn decode<T>(
             asn_type as *mut raw::asn_TYPE_descriptor_t,
             (&mut pointer as *mut *mut T) as *mut *mut ::std::os::raw::c_void,
             xml.as_ptr() as *mut ::std::os::raw::c_void,
-            xml.len()
+            xml.len(),
         )
     };
     trace!("result: {:?} for type: {:?}", result, asn_type);
@@ -65,7 +61,6 @@ pub fn decode<T>(
         Ok(unsafe { Box::from_raw(pointer) })
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -89,11 +84,17 @@ mod tests {
     #[test]
     fn decode_sample() {
         super::super::tests::init_logger();
-        let decoded : Box<raw::ClientRegistration> = decode(unsafe { &mut raw::asn_DEF_ClientRegistration }, "<ClientRegistration>
+        let decoded: Box<raw::ClientRegistration> = decode(
+            unsafe { &mut raw::asn_DEF_ClientRegistration },
+            "<ClientRegistration>
     <type><sensor/></type>
 </ClientRegistration>
-").unwrap();
-        assert_eq!(raw::ClientType_ClientType_sensor as raw::ClientType_t, decoded.type_);
+",
+        ).unwrap();
+        assert_eq!(
+            raw::ClientType_ClientType_sensor as raw::ClientType_t,
+            decoded.type_
+        );
         assert_eq!(::std::ptr::null_mut(), decoded.covered_area);
         assert_eq!(::std::ptr::null_mut(), decoded.minimum_message_period);
     }

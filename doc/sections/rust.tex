@@ -436,15 +436,15 @@ Ein ergonomisches aber auch Fehler reduzierendes Feature.
 \label{rust:closures}
 
 \todo{..}
-Mit Closures bietet Rust einen entsprechenden Sprachkonstrukt um Lambdas wie in Programmiersprachen wie Java, JavaScripit, C\# und C++ darstellen zu können.
-Übergabeparameter befinden sich in der Notation zwischen zwei senkrechten Strichen, deren Typ nicht explizit angegeben werden müssen, da der Compiler diese meist ableiten kann.
+Mit Closures bietet Rust ein entsprechendes Sprachkonstrukt um Lambdas aus Programmiersprachen wie Java, JavaScripit, C\# und C++ darstellen zu können.
+Übergabeparameter befinden sich in der Notation zwischen zwei senkrechten Strichen, deren Typ nicht explizit angegeben werden muss.
 In geschweiften klammern ist anschließend der Rumpf zu finden.
 Wenn der Rumpf nur eine Zeile groß ist, sind die geschweiften Klammern optional: \rustcinline{let adder = \|a, b\| a + b;}.
-Der Aufruf unterscheidet sich dabei nicht von einem normalen Funktionsaufruf: \rustcinline{let sum = adder(1, 2);}.
+Der Aufruf unterscheidet sich nicht von einem normalen Funktionsaufruf: \rustcinline{let sum = adder(1, 2);}.
 
-Eine Closure entspricht automatisch einem der folgenden Merkmale:
+Eine Closure ist eine automatisch generierte Datenstruktur, die eine der folgenden Merkmale automatisch implementiert:
 \begin{itemize}
-	\item \rustcinline{Fn<Args>} mit \rustcinline{fn call(&self, arg: Args) -> Self::Output}: Ein mehrfacher Aufruf ist möglich, ohne das Nebeneffekte auftreten, die die Eigenreferenz unveränderlich ist.
+	\item \rustcinline{Fn<Args>} mit \rustcinline{fn call(&self, arg: Args) -> Self::Output}: Ein mehrfacher Aufruf ist möglich, ohne das Nebeneffekte auftreten, da die Eigenreferenz unveränderlich ist.
 	\item \rustcinline{FnMut<Args>} mit \rustcinline{fn call_mut(&mut self, arg: Args) -> Self::Output}: Da die Eigenreferenz veränderlich ist, können Nebeneffekte auftreten.
 	\item \rustcinline{FnOnce<Args>} mit \rustcinline{fn call_once(self, arg: Args) -> Self::Output}: Ein Aufruf ist wegen des Eigenkonsums nur einmalig möglich.
 \end{itemize}

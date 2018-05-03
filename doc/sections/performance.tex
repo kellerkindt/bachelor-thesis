@@ -126,11 +126,12 @@ Zuerst werden die Parameter vorbereitet, dann die Funktion aufgerufen.
 Der weitere Code der aufrufenden Funktion wird nicht ausgeführt, bis der Aufruf der aufgerufenden Funktion beendet wurde.
 
 Auch für Datenströme, bei zum Beispiel TCP-Verbindungen, bieten Standardbibliotheken der entsprechenden Programmiersprachen oft eine synchrone Kommunikation an.
-Hierbei beendet ein Funktionsaufruf für das Versenden oder Empfangen von Daten (bei TCP Bytes) erst, wenn die erwartete Anzahl an Elementen empfangen oder versendet wurden.
+Hierbei beendet ein Funktionsaufruf für das Versenden oder Empfangen von Daten (bei TCP Bytes) erst, wenn die erwartete Anzahl an Elementen empfangen oder versendet wurde.
 
-Zwar ist diese Herangehensweise für die Implementation eines Clients, der nur zu einem Server eine Verbindung aufbaut, aufgrund der niedrigen Komplexität gut geeignet, aber für einen Server, der mit vielen Datenströmen gleichzeitig kommunizieren muss, ist diese Herangehensweise nicht geeignet.
+Für einen Client, der nur zu einem Server eine Verbindung aufbaut, ist diese Herangehensweise aufgrund der niedrigen Komplexität gut geeignet.
+Für einen Server, der mit vielen Datenströmen gleichzeitig kommunizieren muss, ist diese Herangehensweise nicht geeignet.
 Eine sequentieller Sendeaufruf würde die Latenz des Servers pro Client um einen u.a. von der Verbindungsgeschwindigkeit abhängigen Wert erhöhen.
-Einen Sende- und Empfangsthread je Client würde das Problem der Latenz lösen, jedoch aufgrund des je Thread benötigten Stacks und zusätzlichen Verwaltungsaufwands den Ressourcenverbrauch des Servers drastisch erhöhen.
+Einen Sende- und Empfangsthread je Client würde das Problem der Latenz lösen, jedoch aufgrund des je Thread benötigten Stack und zusätzlichen Verwaltungsaufwand den Ressourcenverbrauch des Servers drastisch erhöhen.
 
 Eine asynchrone Kommunikation ermöglicht dagegen die Kommunikation mit vielen Datenströmen gleichzeitig, ohne die zuvor erwähnte Probleme zu provozieren.
 Bei einem asynchronen Sende- oder Empfangsaufruf wird nicht auf dessen Fertigstellung gewartet, sondern in der darunterliegende Implementation wird die Anfrage notiert, sobald möglich abgearbeitet und der Aufrufer bei Fertigstellung informiert.
@@ -148,12 +149,12 @@ Ein solches System wird oft als \enquote{Aktorsystem} bezeichnet.
 \todo{.}
 
 Allokation von Speicher auf dem Stack und dem Heap unterscheiden sich in ihrer Geschwindigkeit und ihrer möglichen Verwendungsart.
-Eine allokation auf dem Stack hat keine Laufzeitkosten, da sie zur Compilezeit ermittelt werden kann.
+Eine Allokation auf dem Stack hat keine Laufzeitkosten, da sie zur Compilezeit ermittelt werden kann.
 Die Lebenszeit des allokierten Speichers ist aber durch die Lebenszeit der Funktion, in der der Speicher allokiert wurde, limitiert.
 Eine allokation auf dem Heap hat dagegen Laufzeitkosten, da dynamisch ein ausreichend großer und freier Speicherbereich gesucht werden muss.
 Ein Speicherbereich auf dem Heap ist in der Lebenszeit nicht eingeschränkt.
 
-Die Verwendung von kurzlebigen Datenstrukturen auf dem Stack anstatt auf dem Heap, können eine performante Programmierung ermöglichen, bergen jedoch auch Gefahren.
+Die Verwendung von kurzlebigen Datenstrukturen auf dem Stack anstatt auf dem Heap, kann eine performante Programmierung ermöglichen, birgt jedoch auch Gefahren.
 Wenn versucht wird, auf die Datenstruktur nach ihrer Lebenszeit zuzugreifen oder diese zu modifizieren, wird im besten Fall ein ungültiger Wert gelesen und im schlimmsten Fall \todo{der Stack überschrieben. Ein unvorhersehbares Verhalten kann die Folge sein.}
 
 Viele Programmiersprachen lassen sich in zwei Kategorien einteilen, die, bei denen das Speichermanagement soweit abstrahiert ist, dass eine 

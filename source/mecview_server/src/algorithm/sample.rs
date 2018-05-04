@@ -16,9 +16,14 @@ use super::EnvironmentListener;
 pub struct SampleAlgorithm {
     model_listener: Vec<(SocketAddr, bool, EnvironmentListener<EnvironmentFrame>)>,
     count_listener: Vec<(SocketAddr, CountListener)>,
+    environment_frame: Option<Box<EnvironmentFrame>>,
 }
 
 impl SampleAlgorithm {
+    pub fn set_environment_frame(&mut self, frame: Option<Box<EnvironmentFrame>>) {
+        self.environment_frame = frame;
+    }
+
     fn push_model_listener(&mut self, id: SocketAddr, sink: EnvironmentListener<EnvironmentFrame>) {
         trace!("Adding model listener with id={}", id);
         let len = self.model_listener.len();
@@ -84,7 +89,7 @@ impl SampleAlgorithm {
 
     fn on_update(&mut self, frame: &SensorFrame) {
         trace!("Sensor update received: {:?}", frame);
-        let env = Self::environment_model(frame);
+        let env = self.environment_model(frame);
         let len = self.model_listener.len();
 
         Self::retain_mut(&mut self.model_listener, |(_, active, listener)| {
@@ -117,11 +122,16 @@ impl SampleAlgorithm {
         }
     }
 
-    fn environment_model(frame: &SensorFrame) -> Arc<RawMessage<EnvironmentFrame>> {
+    fn environment_model(&mut self, frame: &SensorFrame) -> Arc<RawMessage<EnvironmentFrame>> {
         // TODO
-        let mut env = EnvironmentFrame::default();
-        env.header.timestamp = frame.header.timestamp;
-        Arc::new(env.try_encode_uper().unwrap())
+        if let Some(ref mut env) = self.environment_frame {
+            env.header.timestamp = frame.header.timestamp;
+            Arc::new(env.try_encode_uper().unwrap())
+        } else {
+            let mut env = EnvironmentFrame::default();
+            env.header.timestamp = frame.header.timestamp;
+            Arc::new(env.try_encode_uper().unwrap())
+        }
     }
 }
 

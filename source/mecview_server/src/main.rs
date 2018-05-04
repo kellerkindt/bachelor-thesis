@@ -63,6 +63,7 @@ use log4rs::config::{Appender, Config, Logger, Root};
 use log4rs::Handle;
 
 use clap::App;
+use clap::AppSettings;
 use clap::Arg;
 
 struct ServerConfig {
@@ -70,6 +71,7 @@ struct ServerConfig {
     port: u16,
     log: Option<LevelFilter>,
     init_message: Option<String>,
+    environment_frame: Option<String>,
 }
 
 fn main() {
@@ -88,6 +90,11 @@ fn main() {
     if let Some(path) = config.init_message {
         info!("Loading InitMessage from {}", path);
         let _ = server.load_init_message(path).expect("Loading failed");
+    }
+
+    if let Some(path) = config.environment_frame {
+        info!("Loading EnvironmentFrame from {}", path);
+        let _ = server.load_environment_frame(path).expect("Loading failed");
     }
 
     let _server = server.start().unwrap();
@@ -128,6 +135,9 @@ fn parse_config() -> ServerConfig {
             })
             .or(None),
         init_message: matches.value_of("init_message").map(|s| String::from(s)),
+        environment_frame: matches
+            .value_of("environment_frame")
+            .map(|s| String::from(s)),
     }
 }
 
@@ -136,6 +146,7 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
         .version(env!("CARGO_PKG_VERSION"))
         .author(env!("CARGO_PKG_AUTHORS"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
+        .setting(AppSettings::ColoredHelp)
         .arg(
             Arg::with_name("port")
                 .short("p")
@@ -168,6 +179,14 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
                 .long("init-message")
                 .value_name("PATH")
                 .help("The path to the InitMessage to send to a Vehicle")
+                .takes_value(true),
+        )
+        .arg(
+            Arg::with_name("environment_frame")
+                .short("e")
+                .long("environment-frame")
+                .value_name("PATH")
+                .help("The path to the EnvironmentFrame to send to the Vehicles")
                 .takes_value(true),
         )
 }

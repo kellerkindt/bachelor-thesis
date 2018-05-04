@@ -1,13 +1,44 @@
 
 \chapter{Implementierung}
 
-\section{Architektur}
+\section{Architektur / Framework Tokio}
 
-Weitestgehend wie in \autoref{draft:architecture}, aber Futures, tokio, Queues
+%Weitestgehend wie in \autoref{draft:architecture}, aber Futures, tokio, Queues
 
-\todo{diagramm: jede future ein eigenes "paket", queues dazwischen für kommunikation}
+\todo{channel architektur pattern \cite[167]{douglass2003real}?, diagramm message decode steps}
+
+\todo{proxy communication}
+
+\section{Bindgen für ASN}
+
+\label{impl:issue:ffi}
+\todo{schnell problem: kein asn->rs compiler, c bindings aufwending -> autogen via bindgen}
+
+\todo{link issues fixed in commit d5d694c}
+
+\todo{impl Drop / free structs, important but do not overengineer}
+
+
+\subsection{Continuous Integration mittels Jenkins}
+
+\todo{screenshot + explain}
+
+\todo{prüft rustfmt, wertet test-coverage aus und führt tests aus --> schnelle rückmeldung bei fehlern}
+
+\todo{tdd schwierig weil viel integration mit framework / async, schnell wird daraus integrationstest(?, unerwünscht)}
 
 \todo{rust-clippy: https://github.com/rust-lang-nursery/rust-clippy}
+
+
+\section{Strategien für Performance}
+
+\todo{\enquote{bypass} for algorithm->>many vehicles}
+
+
+
+
+
+\todo{diagramm: jede future ein eigenes "paket", queues dazwischen für kommunikation}
 
 \todo{catch panic? mention how in \autoref{rust:no_null}}
 
@@ -21,21 +52,11 @@ Weitestgehend wie in \autoref{draft:architecture}, aber Futures, tokio, Queues
 	
 	\subsection{Vorgehen, bindgen tests, C/unsafe/wrapper -> nach sicher ->  architektur entwickeln}
 	
-	\subsection{Architektur zeigen, module/crates, }
 
-	\subsection{TDD?}
-	\todo{Learning Test p.136 for tokio?}
-	
-	\todo{did not work that good for first try without proxy?}
 	
 	\subsection{Unerwartete Schwierigkeiten}
-	\label{impl:issue:ffi}
-	\todo{Schwierigkeiten: FFI binding, manuell -> meh, also generieren}
-		
+	
 	\todo{Trailing zeroes issue, commit a02496d + tagged, libmessages/src/asn.rs:17 bzw :31 bzw :32 Ok((result.encoded as usize + 7) / 8}
 	
-	\todo{link issues fixed in commit d5d694c}
 	
-	\todo{impl Drop / free structs, important but do not overengineer}
 	
-	\todo{proxy communication}

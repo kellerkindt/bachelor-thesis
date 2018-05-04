@@ -31,9 +31,21 @@ impl Message {
         ))
     }
 
+    pub fn try_decode_xer_client_registration(xml: &str) -> Result<Message, ()> {
+        Ok(Message::Registration(
+            <raw::ClientRegistration as AsnMessage>::try_decode_xer(xml)?,
+        ))
+    }
+
     pub fn try_decode_uper_update_subscription(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::UpdateSubscription(
             <raw::UpdateSubscription as AsnMessage>::try_decode_uper_from_buffer(buffer)?,
+        ))
+    }
+
+    pub fn try_decode_xer_update_subscription(xml: &str) -> Result<Message, ()> {
+        Ok(Message::UpdateSubscription(
+            <raw::UpdateSubscription as AsnMessage>::try_decode_xer(xml)?,
         ))
     }
 
@@ -43,15 +55,33 @@ impl Message {
         ))
     }
 
+    pub fn try_decode_xer_sensor_frame(xml: &str) -> Result<Message, ()> {
+        Ok(Message::SensorFrame(
+            <raw::SensorFrame as AsnMessage>::try_decode_xer(xml)?,
+        ))
+    }
+
     pub fn try_decode_uper_environment_frame(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::EnvironmentFrame(
             <raw::EnvironmentFrame as AsnMessage>::try_decode_uper_from_buffer(buffer)?,
         ))
     }
 
+    pub fn try_decode_xer_environment_frame(xml: &str) -> Result<Message, ()> {
+        Ok(Message::EnvironmentFrame(
+            <raw::EnvironmentFrame as AsnMessage>::try_decode_xer(xml)?,
+        ))
+    }
+
     pub fn try_decode_uper_road_clearance_frame(buffer: &[u8]) -> Result<Message, ()> {
         Ok(Message::RoadClearanceFrame(
             <raw::RoadClearanceFrame as AsnMessage>::try_decode_uper_from_buffer(buffer)?,
+        ))
+    }
+
+    pub fn try_decode_xer_road_clearance_frame(xml: &str) -> Result<Message, ()> {
+        Ok(Message::RoadClearanceFrame(
+            <raw::RoadClearanceFrame as AsnMessage>::try_decode_xer(xml)?,
         ))
     }
 
@@ -326,9 +356,14 @@ mod tests {
     use std::mem;
     use std::ptr;
 
-    const XML_INIT_MESSAGE:      &'static str = include_str!("test_init_message.xml");
-    const XML_UPDATE_STATUS:     &'static str = include_str!("test_update_status.xml");
-    const XML_SENSOR_IDLE_FRAME: &'static str = include_str!("test_sensor_idle_frame.xml");
+    const XML_INIT_MESSAGE:         &'static str = include_str!("test_init_message.xml");
+    const XML_UPDATE_STATUS:        &'static str = include_str!("test_update_status.xml");
+    const XML_SENSOR_IDLE_FRAME:    &'static str = include_str!("test_sensor_idle_frame.xml");
+    const XML_ROAD_CLEARANCE_FRAME: &'static str = include_str!("test_road_clearance_frame.xml");
+    const XML_ENVIRONMENT_FRAME:    &'static str = include_str!("test_environment_frame.xml");
+    const XML_SENSOR_FRAME:         &'static str = include_str!("test_sensor_frame.xml");
+    const XML_UPDATE_SUBSCRIPTION:  &'static str = include_str!("test_update_subscription.xml");
+    const XML_CLIENT_REGISTRATION:  &'static str = include_str!("test_client_registration.xml");
 
     fn test_encode_uper(message: Message, should_be: &[u8]) {
         let mut buffer = vec![0u8; should_be.len()];
@@ -519,10 +554,8 @@ mod tests {
         ));
     }
 
-    #[test]
-    fn encode_uper_road_clearance_frame() {
-        init_logger();
-        let frame = Message::RoadClearanceFrame(unsafe {
+    fn create_road_clearance_frame() -> Message {
+        Message::RoadClearanceFrame(unsafe {
             let mut frame = Box::new(mem::zeroed::<RoadClearanceFrame>());
             frame.header.timestamp = 300;
             frame.envelope.version = 2;
@@ -532,23 +565,10 @@ mod tests {
             frame.envelope.server_id = 0;
             raw::asn_set_empty(&mut frame.road_sections as *mut _ as *mut ::std::os::raw::c_void);
             frame
-        });
-        test_encode_uper(
-            frame,
-            &[
-                0x00, 0x00, 0x02, 0x58, 0x02, 0x04, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7,
-                0x3b, 0xb1, 0x25, 0xf2, 0x00, 0x00,
-            ],
-        );
+        })
     }
 
-    #[test]
-    fn decode_uper_road_clearance_frame() {
-        init_logger();
-        let message = Message::try_decode_uper_road_clearance_frame(&[
-            0x00, 0x00, 0x02, 0x58, 0x02, 0x04, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7,
-            0x3b, 0xb1, 0x25, 0xf2, 0x00, 0x00,
-        ]);
+    fn check_road_clearance_frame(message: Result<Message, ()>) {
         match message.expect("Decoding failed") {
             Message::RoadClearanceFrame(ref frame) => {
                 assert_eq!(300, frame.header.timestamp);
@@ -564,9 +584,42 @@ mod tests {
     }
 
     #[test]
-    fn encode_uper_environment_frame() {
+    fn encode_uper_road_clearance_frame() {
         init_logger();
-        let frame = Message::EnvironmentFrame(unsafe {
+        test_encode_uper(
+            create_road_clearance_frame(),
+            &[
+                0x00, 0x00, 0x02, 0x58, 0x02, 0x04, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7,
+                0x3b, 0xb1, 0x25, 0xf2, 0x00, 0x00,
+            ],
+        );
+    }
+
+    #[test]
+    fn decode_uper_road_clearance_frame() {
+        init_logger();
+        check_road_clearance_frame(Message::try_decode_uper_road_clearance_frame(&[
+            0x00, 0x00, 0x02, 0x58, 0x02, 0x04, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7,
+            0x3b, 0xb1, 0x25, 0xf2, 0x00, 0x00,
+        ]));
+    }
+
+    #[test]
+    fn encode_xer_road_clearance_frame() {
+        init_logger();
+        test_encode_xer(create_road_clearance_frame(), XML_ROAD_CLEARANCE_FRAME);
+    }
+
+    #[test]
+    fn decode_xer_road_clearance_frame() {
+        init_logger();
+        check_road_clearance_frame(Message::try_decode_xer_road_clearance_frame(
+            XML_ROAD_CLEARANCE_FRAME,
+        ));
+    }
+
+    fn create_environment_frame() -> Message {
+        Message::EnvironmentFrame(unsafe {
             let mut frame = Box::new(mem::zeroed::<EnvironmentFrame>());
             frame.header.timestamp = 200;
             frame.envelope.version = 1;
@@ -581,23 +634,10 @@ mod tests {
                 &mut frame.envelope.error_codes as *mut _ as *mut ::std::os::raw::c_void,
             );
             frame
-        });
-        test_encode_uper(
-            frame,
-            &[
-                0x00, 0x00, 0x01, 0x90, 0x02, 0x02, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7,
-                0x3b, 0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00,
-            ],
-        );
+        })
     }
 
-    #[test]
-    fn decode_uper_environment_frame() {
-        init_logger();
-        let message = Message::try_decode_uper_environment_frame(&[
-            0x00, 0x00, 0x01, 0x90, 0x02, 0x02, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7,
-            0x3b, 0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00,
-        ]);
+    fn check_environment_frame(message: Result<Message, ()>) {
         match message.expect("Decoding failed") {
             Message::EnvironmentFrame(ref frame) => {
                 assert_eq!(0, frame.object_detections.list.count);
@@ -614,9 +654,42 @@ mod tests {
     }
 
     #[test]
-    fn encode_uper_sensor_frame() {
+    fn encode_uper_environment_frame() {
         init_logger();
-        let frame = Message::SensorFrame(unsafe {
+        test_encode_uper(
+            create_environment_frame(),
+            &[
+                0x00, 0x00, 0x01, 0x90, 0x02, 0x02, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7,
+                0x3b, 0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00,
+            ],
+        );
+    }
+
+    #[test]
+    fn decode_uper_environment_frame() {
+        init_logger();
+        check_environment_frame(Message::try_decode_uper_environment_frame(&[
+            0x00, 0x00, 0x01, 0x90, 0x02, 0x02, 0x02, 0x01, 0x49, 0xf9, 0x51, 0x19, 0xc4, 0xf7,
+            0x3b, 0xb1, 0x25, 0xf2, 0x00, 0x00, 0x00,
+        ]));
+    }
+
+    #[test]
+    fn encode_xer_environment_frame() {
+        init_logger();
+        test_encode_xer(create_environment_frame(), XML_ENVIRONMENT_FRAME);
+    }
+
+    #[test]
+    fn decode_xer_environment_frame() {
+        init_logger();
+        check_environment_frame(Message::try_decode_xer_environment_frame(
+            XML_ENVIRONMENT_FRAME,
+        ))
+    }
+
+    fn create_sensor_frame() -> Message {
+        Message::SensorFrame(unsafe {
             let mut frame = Box::new(mem::zeroed::<SensorFrame>());
             raw::asn_set_empty(
                 &mut frame.object_detections as *mut _ as *mut ::std::os::raw::c_void,
@@ -630,24 +703,10 @@ mod tests {
             frame.envelope.reference_point.longitude = 99876076;
             frame.envelope.reference_point.altitude = 256000;
             frame
-        });
-        test_encode_uper(
-            frame,
-            &[
-                0x00, 0x00, 0x00, 0xc8, 0x02, 0x00, 0x15, 0x27, 0xe5, 0x44, 0x67, 0x13, 0xdc, 0xee,
-                0xc4, 0x97, 0xc8, 0x00, 0x00,
-            ],
-        );
+        })
     }
 
-    #[test]
-    fn decode_uper_sensor_frame() {
-        init_logger();
-        let message = Message::try_decode_uper_sensor_frame(&[
-            0x00, 0x00, 0x00, 0xc8, 0x02, 0x00, 0x15, 0x27, 0xe5, 0x44, 0x67, 0x13, 0xdc, 0xee,
-            0xc4, 0x97, 0xc8, 0x00, 0x00,
-        ]);
-        trace!("result: {:?}", message);
+    fn check_sensor_frame(message: Result<Message, ()>) {
         match message.expect("Message decoding failed") {
             Message::SensorFrame(ref frame) => {
                 assert_eq!(
@@ -671,23 +730,49 @@ mod tests {
     }
 
     #[test]
-    fn encode_uper_update_subscription() {
+    fn encode_uper_sensor_frame() {
         init_logger();
-        let subscription = Message::UpdateSubscription(unsafe {
+        test_encode_uper(
+            create_sensor_frame(),
+            &[
+                0x00, 0x00, 0x00, 0xc8, 0x02, 0x00, 0x15, 0x27, 0xe5, 0x44, 0x67, 0x13, 0xdc, 0xee,
+                0xc4, 0x97, 0xc8, 0x00, 0x00,
+            ],
+        );
+    }
+
+    #[test]
+    fn decode_uper_sensor_frame() {
+        init_logger();
+        check_sensor_frame(Message::try_decode_uper_sensor_frame(&[
+            0x00, 0x00, 0x00, 0xc8, 0x02, 0x00, 0x15, 0x27, 0xe5, 0x44, 0x67, 0x13, 0xdc, 0xee,
+            0xc4, 0x97, 0xc8, 0x00, 0x00,
+        ]));
+    }
+
+    #[test]
+    fn encode_xer_sensor_frame() {
+        init_logger();
+        test_encode_xer(create_sensor_frame(), XML_SENSOR_FRAME)
+    }
+
+    #[test]
+    fn decode_xer_sensor_frame() {
+        init_logger();
+        check_sensor_frame(Message::try_decode_xer_sensor_frame(XML_SENSOR_FRAME))
+    }
+
+    fn create_update_subscription() -> Message {
+        Message::UpdateSubscription(unsafe {
             let mut subscription = Box::new(mem::zeroed::<UpdateSubscription>());
             subscription.subscription_status =
                 SubscriptionStatus_SubscriptionStatus_subscribed as SubscriptionStatus_t;
             subscription.message_period = ptr::null_mut();
             subscription
-        });
-        test_encode_uper(subscription, &[0x40]);
+        })
     }
 
-    #[test]
-    fn decode_uper_update_subscription() {
-        init_logger();
-        let message = Message::try_decode_uper_update_subscription(&[0x40]);
-        trace!("result: {:?}", message);
+    fn check_update_subscription(message: Result<Message, ()>) {
         match message.expect("Message decoding failed") {
             Message::UpdateSubscription(ref sub) => {
                 assert_eq!(
@@ -701,24 +786,42 @@ mod tests {
     }
 
     #[test]
-    fn encode_uper_client_registration() {
+    fn encode_uper_update_subscription() {
         init_logger();
-        let registration = Message::Registration(unsafe {
+        test_encode_uper(create_update_subscription(), &[0x40]);
+    }
+
+    #[test]
+    fn decode_uper_update_subscription() {
+        init_logger();
+        check_update_subscription(Message::try_decode_uper_update_subscription(&[0x40]))
+    }
+
+    #[test]
+    fn encode_xer_update_subscription() {
+        init_logger();
+        test_encode_xer(create_update_subscription(), XML_UPDATE_SUBSCRIPTION);
+    }
+
+    #[test]
+    fn decode_xer_update_subscription() {
+        init_logger();
+        check_update_subscription(Message::try_decode_xer_update_subscription(
+            XML_UPDATE_SUBSCRIPTION,
+        ));
+    }
+
+    fn create_client_registration() -> Message {
+        Message::Registration(unsafe {
             let mut registration = Box::new(mem::zeroed::<ClientRegistration>());
             registration.type_ = ClientType_ClientType_vehicle as ClientType_t;
             registration.covered_area = ptr::null_mut();
             registration.minimum_message_period = ptr::null_mut();
             registration
-        });
-        test_encode_uper(registration, &[0x20])
+        })
     }
 
-    #[test]
-    fn decode_uper_client_registration() {
-        init_logger();
-        let message = Message::try_decode_uper_client_registration(&[0x20]);
-        trace!("result: {:?}", message);
-        assert!(message.is_ok());
+    fn check_client_registration(message: Result<Message, ()>) {
         match message.expect("Message decoding failed") {
             Message::Registration(ref reg) => {
                 assert_eq!(ClientType_ClientType_vehicle, reg.type_ as ClientType);
@@ -727,5 +830,31 @@ mod tests {
             }
             _ => panic!("Wrong message variant"),
         }
+    }
+
+    #[test]
+    fn encode_uper_client_registration() {
+        init_logger();
+        test_encode_uper(create_client_registration(), &[0x20])
+    }
+
+    #[test]
+    fn decode_uper_client_registration() {
+        init_logger();
+        check_client_registration(Message::try_decode_uper_client_registration(&[0x20]));
+    }
+
+    #[test]
+    fn encode_xer_client_registration() {
+        init_logger();
+        test_encode_xer(create_client_registration(), XML_CLIENT_REGISTRATION);
+    }
+
+    #[test]
+    fn decode_xer_client_registration() {
+        init_logger();
+        check_client_registration(Message::try_decode_xer_client_registration(
+            XML_CLIENT_REGISTRATION,
+        ));
     }
 }

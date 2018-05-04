@@ -14,7 +14,7 @@ const TYPE_ID_UPDATE_STATUS         : u32 = 8;
 
 #[derive(Debug)]
 pub enum Message {
-    Registration(Box<raw::ClientRegistration>),
+    ClientRegistration(Box<raw::ClientRegistration>),
     UpdateSubscription(Box<raw::UpdateSubscription>),
     SensorFrame(Box<raw::SensorFrame>),
     EnvironmentFrame(Box<raw::EnvironmentFrame>),
@@ -26,13 +26,13 @@ pub enum Message {
 
 impl Message {
     pub fn try_decode_uper_client_registration(buffer: &[u8]) -> Result<Message, ()> {
-        Ok(Message::Registration(
+        Ok(Message::ClientRegistration(
             <raw::ClientRegistration as AsnMessage>::try_decode_uper_from_buffer(buffer)?,
         ))
     }
 
     pub fn try_decode_xer_client_registration(xml: &str) -> Result<Message, ()> {
-        Ok(Message::Registration(
+        Ok(Message::ClientRegistration(
             <raw::ClientRegistration as AsnMessage>::try_decode_xer(xml)?,
         ))
     }
@@ -123,7 +123,7 @@ impl Message {
 
     pub fn type_id(&self) -> u32 {
         match self {
-            Message::Registration(_)        => <raw::ClientRegistration as AsnMessage>  ::type_id(),
+            Message::ClientRegistration(_)        => <raw::ClientRegistration as AsnMessage>  ::type_id(),
             Message::SensorFrame(_)         => <raw::SensorFrame as AsnMessage>         ::type_id(),
             Message::EnvironmentFrame(_)    => <raw::EnvironmentFrame as AsnMessage>    ::type_id(),
             Message::UpdateSubscription(_)  => <raw::UpdateSubscription as AsnMessage>  ::type_id(),
@@ -158,7 +158,7 @@ impl Message {
 
     pub fn try_encode_uper_to(&self, target: &mut [u8]) -> Result<usize, ()> {
         match self {
-            Message::Registration(ref v)        => v.try_encode_uper_to(target),
+            Message::ClientRegistration(ref v)        => v.try_encode_uper_to(target),
             Message::UpdateSubscription(ref v)  => v.try_encode_uper_to(target),
             Message::SensorFrame(ref v)         => v.try_encode_uper_to(target),
             Message::EnvironmentFrame(ref v)    => v.try_encode_uper_to(target),
@@ -171,7 +171,7 @@ impl Message {
 
     pub fn try_encode_uper_to_new_buffer(&self) -> Result<Vec<u8>, ()> {
         match self {
-            Message::Registration(v)        => v.try_encode_uper_to_new_buffer(),
+            Message::ClientRegistration(v)        => v.try_encode_uper_to_new_buffer(),
             Message::UpdateSubscription(v)  => v.try_encode_uper_to_new_buffer(),
             Message::SensorFrame(v)         => v.try_encode_uper_to_new_buffer(),
             Message::EnvironmentFrame(v)    => v.try_encode_uper_to_new_buffer(),
@@ -184,7 +184,7 @@ impl Message {
 
     pub fn try_encode_xer_to_new_string(&self) -> Result<String, ()> {
         match self {
-            Message::Registration(v)        => v.try_encode_xer_to_new_string(),
+            Message::ClientRegistration(v)        => v.try_encode_xer_to_new_string(),
             Message::UpdateSubscription(v)  => v.try_encode_xer_to_new_string(),
             Message::SensorFrame(v)         => v.try_encode_xer_to_new_string(),
             Message::EnvironmentFrame(v)    => v.try_encode_xer_to_new_string(),
@@ -812,7 +812,7 @@ mod tests {
     }
 
     fn create_client_registration() -> Message {
-        Message::Registration(unsafe {
+        Message::ClientRegistration(unsafe {
             let mut registration = Box::new(mem::zeroed::<ClientRegistration>());
             registration.type_ = ClientType_ClientType_vehicle as ClientType_t;
             registration.covered_area = ptr::null_mut();
@@ -823,7 +823,7 @@ mod tests {
 
     fn check_client_registration(message: Result<Message, ()>) {
         match message.expect("Message decoding failed") {
-            Message::Registration(ref reg) => {
+            Message::ClientRegistration(ref reg) => {
                 assert_eq!(ClientType_ClientType_vehicle, reg.type_ as ClientType);
                 assert_eq!(ptr::null_mut(), reg.covered_area);
                 assert_eq!(ptr::null_mut(), reg.minimum_message_period);

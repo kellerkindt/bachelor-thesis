@@ -67,7 +67,7 @@ pub fn map_message(
     message: Message,
 ) -> Result<client::Command<SensorFrame, EnvironmentFrame>, Error> {
     match message {
-        Message::Registration(ref reg) => Ok(client::Command::UpdateVariant(
+        Message::ClientRegistration(ref reg) => Ok(client::Command::UpdateVariant(
             variant_from_client_registration(reg)?,
         )),
         Message::UpdateSubscription(ref update) => match update.subscription_status

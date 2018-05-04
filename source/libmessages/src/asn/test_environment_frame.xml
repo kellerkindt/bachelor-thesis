@@ -1,0 +1,18 @@
+<EnvironmentFrame>
+    <header>
+        <timestamp>200</timestamp>
+    </header>
+    <envelope>
+        <version>1</version>
+        <server-id>0</server-id>
+        <reference-point>
+            <latitude>484010822</latitude>
+            <longitude>99876076</longitude>
+            <altitude>256000</altitude>
+        </reference-point>
+        <error-codes>
+        </error-codes>
+    </envelope>
+    <object-detections>
+    </object-detections>
+</EnvironmentFrame>

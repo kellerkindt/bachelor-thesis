@@ -1,0 +1,19 @@
+<SensorFrame>
+    <header>
+        <timestamp>100</timestamp>
+    </header>
+    <envelope>
+        <version>1</version>
+        <sensor-type><lidar/></sensor-type>
+        <sender-id>0</sender-id>
+        <pole-id>2</pole-id>
+        <reference-point>
+            <latitude>484010822</latitude>
+            <longitude>99876076</longitude>
+            <altitude>256000</altitude>
+        </reference-point>
+        <error-code>0</error-code>
+    </envelope>
+    <object-detections>
+    </object-detections>
+</SensorFrame>

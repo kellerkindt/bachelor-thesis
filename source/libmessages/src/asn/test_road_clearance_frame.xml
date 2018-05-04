@@ -1,0 +1,16 @@
+<RoadClearanceFrame>
+    <header>
+        <timestamp>300</timestamp>
+    </header>
+    <envelope>
+        <version>2</version>
+        <server-id>0</server-id>
+        <reference-point>
+            <latitude>484010822</latitude>
+            <longitude>99876076</longitude>
+            <altitude>256000</altitude>
+        </reference-point>
+    </envelope>
+    <road-sections>
+    </road-sections>
+</RoadClearanceFrame>

@@ -26,14 +26,16 @@ pub struct AsnAdapter<
     E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 'static,
 > {
     encoder: Wait<E>,
+    raw_init_message: Option<Arc<RawMessage<Message>>>,
 }
 
 impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 'static>
     AsnAdapter<E>
 {
-    pub fn new(encoder: E) -> AsnAdapter<E> {
+    pub fn new(encoder: E, init_message: Option<Arc<RawMessage<Message>>>) -> AsnAdapter<E> {
         AsnAdapter {
             encoder: encoder.wait(),
+            raw_init_message: init_message,
         }
     }
 
@@ -88,7 +90,11 @@ impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 's
     Adapter<EnvironmentFrame> for AsnAdapter<E>
 {
     fn init_vehicle(&mut self) -> Result<(), Error> {
-        self.remote_send(InitMessage::default())
+        if let Some(init) = self.raw_init_message.clone() {
+            self.remote_send_raw(init)
+        } else {
+            self.remote_send(InitMessage::default())
+        }
     }
 
     #[allow(unknown_lints)]

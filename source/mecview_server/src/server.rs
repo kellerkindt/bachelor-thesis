@@ -1,6 +1,9 @@
+use std::fs::File;
 use std::io::Error;
 use std::io::ErrorKind;
+use std::io::Read;
 use std::net::SocketAddr;
+use std::path::Path;
 use std::sync::Arc;
 use std::time::Duration;
 
@@ -25,7 +28,10 @@ use io::net::TcpStream;
 use io::Decoder;
 use io::Encoder;
 
+use messages::asn;
 use messages::asn::raw;
+use messages::asn::AsnMessage;
+use messages::asn::Generalize;
 use messages::RawMessage;
 
 use byteorder::ByteOrder;
@@ -45,6 +51,7 @@ pub struct Server {
     address: SocketAddr,
     runtime: Runtime,
     algorithm: Option<Alg>,
+    init_message: Option<Arc<RawMessage<asn::Message>>>,
 }
 
 impl Server {
@@ -53,7 +60,25 @@ impl Server {
             address,
             runtime: Runtime::new()?,
             algorithm: None,
+            init_message: None,
         })
+    }
+
+    // TODO this does not fit in here very well
+    pub fn load_init_message<P: AsRef<Path>>(&mut self, path: P) -> Result<(), Error> {
+        let mut xml = String::new();
+        let _ = File::open(path)?.read_to_string(&mut xml)?;
+        match <raw::InitMessage as asn::AsnMessage>::try_decode_xer(&xml) {
+            Err(_) => Err(Error::from(ErrorKind::InvalidData)),
+            Ok(init) => {
+                self.init_message = Some(Arc::new(
+                    init.try_encode_uper()
+                        .map_err(|_| Error::from(ErrorKind::InvalidData))?
+                        .generalize(),
+                ));
+                Ok(())
+            }
+        }
     }
 
     pub fn start(mut self) -> Result<Sender<Command>, Error> {
@@ -129,7 +154,7 @@ impl Server {
         let mut client = Client::new(
             client_tx.clone(),
             address,
-            AsnAdapter::new(encoder),
+            AsnAdapter::new(encoder, self.init_message.clone()),
             self.spawn_or_get_algorithm()?.clone(),
         );
 

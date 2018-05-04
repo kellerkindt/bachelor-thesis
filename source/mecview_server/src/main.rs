@@ -69,6 +69,7 @@ struct ServerConfig {
     ip: IpAddr,
     port: u16,
     log: Option<LevelFilter>,
+    init_message: Option<String>,
 }
 
 fn main() {
@@ -82,9 +83,14 @@ fn main() {
         address,
     );
 
-    let server = server::Server::new(address).unwrap();
-    let _server = server.start().unwrap();
+    let mut server = server::Server::new(address).unwrap();
 
+    if let Some(path) = config.init_message {
+        info!("Loading InitMessage from {}", path);
+        let _ = server.load_init_message(path).expect("Loading failed");
+    }
+
+    let _server = server.start().unwrap();
     info!("Server started successfully");
 
     let stdin = ::std::io::stdin();
@@ -121,6 +127,7 @@ fn parse_config() -> ServerConfig {
                 _ => panic!("Invalid log level"),
             })
             .or(None),
+        init_message: matches.value_of("init_message").map(|s| String::from(s)),
     }
 }
 
@@ -153,6 +160,14 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
                 .long("log")
                 .value_name("LEVEL")
                 .help("Sets the log level of the server")
+                .takes_value(true),
+        )
+        .arg(
+            Arg::with_name("init_message")
+                .short("v")
+                .long("init-message")
+                .value_name("PATH")
+                .help("The path to the InitMessage to send to a Vehicle")
                 .takes_value(true),
         )
 }

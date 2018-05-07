@@ -2,21 +2,37 @@
 \chapter{Systementwurf}
 
 In diesem Kapitel wird eine Entwurf für die Implementation des Systems aufgezeigt.
-Die Struktur des Systems wird durch einen Architekturentwurf vorgegeben, wogegen eine Unschärfe bei der Implementation der Details erlaubt wird \todo{...rly? satz}.
+Die Struktur des Systems wird durch einen Architekturentwurf visualisiert und die zu verwendeten Technologien erläutert.
+
+\section{Kein ASN.1 Compiler für Rust}
 
 Eine frühe Recherche hat ergeben, dass kein ASN.1 Compiler für Rust verfügbar ist.
-Zwar sind einige Rust-Bibliotheken für ASN.1 zu finden (\textit{yasna}, \textit{raisin}, \textit{rust-asn1}, ...), jedoch kann keine UPER.
-Keine der genannten Bibliotheken übersetzt, wie in der bisherigen Referenzimplementierung, die ASN.1 Datenstrukturen in native Datenstrukturen.
-Auch keiner der von der ITU genannten Compiler\footnote{\url{https://www.itu.int/en/ITU-T/asn1/Pages/Tools.aspx}} unterstützen Rust .
-Dieser Umstand erzwingt die Nutzung der C-Datenstrukturen der Referenzimplementierung mittels \gls{ffi} (siehe \autoref{rust:ffi}).
+Mit \textit{yasna}, \textit{raisin} und \textit{rust-asn1} sind ASN.1 Crates für Rust vorhanden, aber keine kann die benötigte UPER Codierung.
+Auch kann keine der genannten Crates die in ASN.1 Notation definierten Nachrichten in native Rust Datenstrukturen übersetzten.
+Die von der ITU genannten Compiler\footnote{\url{https://www.itu.int/en/ITU-T/asn1/Pages/Tools.aspx}} unterstützen Rust auch nicht.
+Dieser Umstand erzwingt die Nutzung der C-Datenstrukturen, wie die Referenzimplementierung, mittels \gls{ffi} (siehe \autoref{rust:ffi}).
 Zur besseren Kapselung ist die Einbindung der ASN.1 Nachrichten deswegen in mehreren Schritten in zwei Crates ausgelagert.
 
-\todo{vorweg, kein ASN.1 Rust compiler, dh c bibliothek einbinden, unabhängigkeit von asn/nachrichtentechnologie weil sauber + weil schonmal wechsel von protobuf}
+\section{Framework Tokio}
 
-\section{Architektur / Komponentendiagramme}
+Das Framework Tokio wird als Grundlage für die Umsetzung der Architektur genutzt.
+Tokio\footnote{\url{https://crates.io/crates/tokio}} bietet eine \enquote{Laufzeit zum schreiben von zuverlässigen, asynchrone und schlanke Anwendungen in Rust} \cite{rust:crate:tokio}.
+
+Tokio nutzt die Crates \textit{mio} und \textit{Future} um eine ereignisorientierte, asynchrone und daher nicht blockierende Ein-/Ausgabeplattform zu bieten.
+Bearbeitungsschritte sind in \enquote{Futures} (dt. Zukunft, hier in etwa: \enquote{ein zukünftiger Wert}) aneinandergereiht und verpackt.
+
+Neben den genannten technischen Funktionen ist hervorzuheben, dass das Framework von vielen Entwicklern aus dem Rust-Entwicklerteam mindestens mitentwickelt wird\footnote{u.a. Alex Crichton, Carl Lerche, Aaron Turon: \url{https://github.com/tokio-rs/tokio/graphs/contributors}}.
+Aufgrund dessen ist ein hoher Grad an Qualität und Aktualität des Frameworks zu erwarten.
+%Daher ist ein höherer Grad an Vertrauen in Qualität, Funktionstüchtigkeit und Aktualität gegeben.
+
+%\section{Rust Version 1.26}
+%\todo{nötig? impl ..., }
+
+
+\section{Architektur}
 		
-In \autoref{draft:architecture} ist ein Entwurf der Architektur zu sehen.
-Blau markierte Klassen haben als Aufgabengebiet die Kommunikation, grün markierte Klassen bilden die Geschäftslogik ab und rot markierte Klassen sind Spezialisierungen für ASN.1.
+In \autoref{draft:architecture} ist der Entwurf der Architektur visualisiert.
+Blau markierte Objekte haben als Aufgabengebiet die Kommunikation, grün markierte Objekte bilden die Geschäftslogik ab und rot markierte Objekte sind Spezialisierungen für ASN.1.
 
 
 \begin{figure}[H]
@@ -80,6 +96,7 @@ Hierzu zählt der Server, der asynchron zur Geschäftslogik neue Verbindungen an
 Die daraus resultierenden Clientinstanzen sollen zum Server und zueinander asynchron ihre Anfragen bearbeiten.
 Letztendlich soll auch der Algorithmus asynchron zu den Clients und dem Server das Umfeldmodell aktualisieren.
 
+\todo{tokio}
 
 ~\\ ~\\ ~\\
 

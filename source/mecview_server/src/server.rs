@@ -41,7 +41,8 @@ use bytes::BytesMut;
 
 const CHANNEL_BUFFER_SIZE_SERVER: usize = 10;
 const CHANNEL_BUFFER_SIZE_CLIENT: usize = 10;
-const CHANNEL_BUFFER_SIZE_ALGORITHM: usize = 10;
+const CHANNEL_BUFFER_SIZE_CLIENT_ALGORITHM: usize = 10;
+const CHANNEL_BUFFER_SIZE_ALGORITHM: usize = 128;
 
 const HEADER_SIZE: usize = 8;
 
@@ -149,6 +150,19 @@ impl Server {
         }
     }
 
+    fn new_client_to_algorithm_buffered_channel(&mut self) -> Result<Alg, Error> {
+        let (tx, rx) = channel(CHANNEL_BUFFER_SIZE_CLIENT_ALGORITHM);
+        let mut alg = self.spawn_or_get_algorithm()?.clone().wait();
+        self.runtime.spawn(
+            rx.for_each(move |v| {
+                alg
+                    .send(v)
+                    .map_err(|_| ())
+            })
+        );
+        Ok(tx)
+    }
+
     fn handle_new_client(&mut self, client: TcpStream) -> Result<(), Error> {
         let address = client.peer_addr()?;
         info!("Client connected from {}", address);
@@ -171,7 +185,7 @@ impl Server {
             client_tx.clone(),
             address,
             AsnAdapter::new(encoder, self.init_message.clone()),
-            self.spawn_or_get_algorithm()?.clone(),
+            self.new_client_to_algorithm_buffered_channel()?,
         );
 
         self.runtime.spawn(

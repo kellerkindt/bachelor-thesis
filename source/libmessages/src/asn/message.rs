@@ -213,7 +213,7 @@ impl<T: AsnMessage> Generalize<Arc<RawMessage<Message>>> for Arc<RawMessage<T>> 
     }
 }
 
-pub trait AsnMessage {
+pub trait AsnMessage: Default {
     fn type_id() -> u32;
 
     fn type_def() -> &'static mut raw::asn_TYPE_descriptor_t;

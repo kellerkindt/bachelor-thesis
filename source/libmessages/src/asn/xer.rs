@@ -14,11 +14,11 @@ pub fn encode_to_new_string<T>(
             let vec: &mut Vec<u8> = ::std::mem::transmute(vec);
             let slice: &[u8] = ::std::slice::from_raw_parts(buffer as *const u8, size);
 
-            for byte in slice.iter() {
-                vec.push(*byte);
+            use std::io::Write;
+            match vec.write_all(slice) {
+                Ok(_) => 0,
+                Err(_) => -1,
             }
-
-            0
         };
 
         raw::xer_encode(
@@ -36,8 +36,11 @@ pub fn encode_to_new_string<T>(
     }
 }
 
-pub fn decode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, xml: &str) -> Result<Box<T>, ()> {
-    let mut pointer: *mut T = ::std::ptr::null_mut();
+pub fn decode<T: Default>(
+    asn_type: &mut raw::asn_TYPE_descriptor_t,
+    xml: &str,
+) -> Result<Box<T>, ()> {
+    let mut pointer: *mut T = Box::into_raw(Box::new(Default::default()));
     let xml = xml.as_bytes();
     let result = unsafe {
         raw::xer_decode(
@@ -50,12 +53,8 @@ pub fn decode<T>(asn_type: &mut raw::asn_TYPE_descriptor_t, xml: &str) -> Result
     };
     trace!("result: {:?} for type: {:?}", result, asn_type);
     if result.code != raw::asn_dec_rval_code_e_RC_OK {
-        if pointer != ::std::ptr::null_mut() {
-            debug!("Freeing partially decoded data");
-            unsafe {
-                raw::free(asn_type, &*pointer as &T, false);
-            }
-        }
+        debug!("Freeing partially decoded data");
+        unsafe { drop(Box::from_raw(pointer)) };
         Err(())
     } else {
         Ok(unsafe { Box::from_raw(pointer) })

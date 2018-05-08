@@ -4,19 +4,35 @@ pub fn encode_to_new_buffer<T>(
     asn_type: &mut raw::asn_TYPE_descriptor_t,
     value: &T,
 ) -> Result<Vec<u8>, ()> {
-    let mut pointer: *mut u8 = ::std::ptr::null_mut();
+    let mut vec = Vec::new();
+
     let result = unsafe {
-        raw::uper_encode_to_new_buffer(
+        unsafe extern "C" fn write_to_vec(
+            buffer: *const ::std::os::raw::c_void,
+            size: usize,
+            application_specific_key: *mut ::std::os::raw::c_void,
+        ) -> ::std::os::raw::c_int {
+            let vec: &mut Vec<u8> = ::std::mem::transmute(application_specific_key as *mut Vec<u8>);
+            let data = ::std::slice::from_raw_parts(buffer as *const u8, size);
+
+            use std::io::Write;
+            match vec.write_all(data) {
+                Ok(_) => 0,
+                Err(_) => -1,
+            }
+        }
+
+        raw::uper_encode(
             asn_type as *mut raw::asn_TYPE_descriptor_t,
-            ::std::ptr::null_mut(),
             value as *const T as *mut T as *mut ::std::os::raw::c_void,
-            (&mut pointer as *mut *mut u8) as *mut *mut ::std::os::raw::c_void,
+            Some(write_to_vec),
+            &mut vec as *mut _ as *mut ::std::os::raw::c_void,
         )
     };
-    if result < 0 {
+    if result.encoded < 0 {
         Err(())
     } else {
-        Ok(unsafe { Vec::from_raw_parts(pointer, result as usize, result as usize) })
+        Ok(vec)
     }
 }
 
@@ -43,11 +59,11 @@ pub unsafe fn encode<T>(
     }
 }
 
-pub unsafe fn decode<T>(
+pub unsafe fn decode<T: Default>(
     asn_type: &mut raw::asn_TYPE_descriptor_t,
     buffer: &[u8],
 ) -> Result<Box<T>, ()> {
-    let mut pointer: *mut T = ::std::ptr::null_mut();
+    let mut pointer: *mut T = Box::into_raw(Box::new(Default::default()));
     let result = raw::uper_decode_complete(
         ::std::ptr::null_mut(),
         asn_type as *mut raw::asn_TYPE_descriptor_t,
@@ -59,10 +75,8 @@ pub unsafe fn decode<T>(
     trace!("result: {:?} for type: {:?}", result, asn_type);
     if result.code != raw::asn_dec_rval_code_e_RC_OK {
         warn!("Decoding failed: {:?}", result);
-        if pointer != ::std::ptr::null_mut() {
-            debug!("Freeing partially decoded data");
-            raw::free(asn_type, &*pointer as &T, false);
-        }
+        debug!("Freeing partially decoded data");
+        drop(Box::from_raw(pointer));
         Err(())
     } else {
         trace!("fine");

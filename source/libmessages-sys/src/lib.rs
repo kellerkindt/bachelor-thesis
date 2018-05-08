@@ -5,11 +5,26 @@
 
 #[macro_use]
 extern crate log;
+extern crate libc;
 
 #[allow(unknown_lints)]
 #[allow(clippy)]
 mod bindings;
 pub use bindings::*;
+
+pub unsafe fn zeroed<T>() -> *mut T {
+    ::libc::calloc(1, ::std::mem::size_of::<T>()) as *mut T
+}
+
+pub unsafe fn alloc<T>(v: T) -> *mut T {
+    let ptr = ::libc::malloc(::std::mem::size_of::<T>()) as *mut T;
+    *ptr = v;
+    ptr
+}
+
+pub unsafe fn free<T>(v: *mut T) {
+    ::libc::free(v as *mut libc::c_void);
+}
 
 unsafe impl Send for ClientRegistration {}
 unsafe impl Sync for ClientRegistration {}
@@ -166,10 +181,10 @@ impl Drop for InitMessage {
 }
 
 pub unsafe fn free_content<T>(asn_type: &mut asn_TYPE_descriptor_t, value: &T) {
-    free(asn_type, value, true)
+    free_struct(asn_type, value, true)
 }
 
-pub unsafe fn free<T>(asn_type: &mut asn_TYPE_descriptor_t, value: &T, only_content: bool) {
+pub unsafe fn free_struct<T>(asn_type: &mut asn_TYPE_descriptor_t, value: &T, only_content: bool) {
     trace!("asn_free type {:?}", asn_type);
     asn_type
         .free_struct

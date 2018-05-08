@@ -3,7 +3,11 @@ use std::net::SocketAddr;
 use std::ops::IndexMut;
 use std::sync::Arc;
 
+use messages::asn::raw;
 use messages::asn::raw::EnvironmentFrame;
+use messages::asn::raw::EnvironmentObjectDetection;
+use messages::asn::raw::MovingVector;
+use messages::asn::raw::PathPoint;
 use messages::asn::raw::SensorFrame;
 use messages::asn::AsnMessage;
 use messages::RawMessage;
@@ -89,15 +93,19 @@ impl SampleAlgorithm {
 
     fn on_update(&mut self, frame: &SensorFrame) {
         trace!("Sensor update received: {:?}", frame);
-        let env = self.environment_model(frame);
         let len = self.model_listener.len();
 
-        Self::retain_mut(&mut self.model_listener, |(_, active, listener)| {
-            !*active || listener(env.clone()).is_ok()
-        });
+        if len > 0 {
+            let env = self.environment_model(frame);
 
-        if len != self.model_listener.len() {
-            self.on_model_count_changed();
+            Self::retain_mut(&mut self.model_listener, |(addr, active, listener)| {
+                trace!("Sending model to ModelListener/{}", addr);
+                !*active || listener(env.clone()).is_ok()
+            });
+
+            if len != self.model_listener.len() {
+                self.on_model_count_changed();
+            }
         }
     }
 
@@ -123,14 +131,140 @@ impl SampleAlgorithm {
     }
 
     fn environment_model(&mut self, frame: &SensorFrame) -> Arc<RawMessage<EnvironmentFrame>> {
-        // TODO
-        if let Some(ref mut env) = self.environment_frame {
+        trace!("Going to create new RawMessage<EnvironmentFrame>");
+        let encoded = if let Some(ref mut env) = self.environment_frame {
+            trace!(
+                "Updating existing with timestamp: {}",
+                frame.header.timestamp
+            );
             env.header.timestamp = frame.header.timestamp;
-            Arc::new(env.try_encode_uper().unwrap())
+            trace!("Going to encode");
+            env.try_encode_uper()
         } else {
-            let mut env = EnvironmentFrame::default();
+            trace!("Create new instance");
+            let mut env = Box::new(EnvironmentFrame::default());
+            trace!("Populating frame");
+            Self::populate_default_frame(&mut env);
+            trace!("Frame: {:?}", env);
+            trace!("Setting timestamp: {}", frame.header.timestamp);
             env.header.timestamp = frame.header.timestamp;
-            Arc::new(env.try_encode_uper().unwrap())
+            trace!("Going to encode");
+            let encoded = env.try_encode_uper();
+            self.environment_frame = Some(env);
+            encoded
+        };
+
+        trace!("Checking encode result: {:?}", encoded);
+        match encoded {
+            Ok(raw) => Arc::new(raw),
+            Err(e) => {
+                error!("Failed to encode environment_model: {:?}", e);
+                panic!("Failed to encode environment_model: {:?}", e);
+            }
+        }
+    }
+
+    fn populate_default_frame(env: &mut EnvironmentFrame) {
+        // See 'environment_frame_provider.cpp' EnvironmentFrameProvider::CreateDefaultASN1Frame()
+
+        env.envelope.version = 1;
+        env.envelope.server_id = 0;
+
+        env.envelope.reference_point.latitude = 484010822;
+        env.envelope.reference_point.longitude = 99876076;
+        env.envelope.reference_point.altitude = 256000;
+
+        for object_count in 0..15 {
+            let mut object_detection =
+                Box::new(unsafe { ::std::mem::zeroed::<EnvironmentObjectDetection>() });
+
+            object_detection.global_id = object_count;
+            object_detection.probability_of_existence = 75_000;
+
+            object_detection.position_offset.position_north = 256;
+            object_detection.position_offset.std_dev_position_north = unsafe { raw::alloc(1) };
+
+            object_detection.position_offset.position_east = 5000;
+            object_detection.position_offset.std_dev_position_east = unsafe { raw::alloc(1) };
+
+            let mut moving_vector = unsafe { Box::from_raw(raw::zeroed::<MovingVector>()) };
+
+            moving_vector.velocity_north = 80;
+            moving_vector.std_dev_velocity_north = unsafe { raw::alloc(5) };
+
+            moving_vector.velocity_east = 266;
+            moving_vector.std_dev_velocity_east = unsafe { raw::alloc(5) };
+
+            object_detection.moving_vector = Box::into_raw(moving_vector);
+
+            object_detection.type_ = raw::ObjectType_ObjectType_car as raw::ObjectType_t;
+            object_detection.type_probability = 95_000;
+
+            // SIZE
+
+            object_detection.size.length = 450;
+            object_detection.size.std_dev_length = unsafe { raw::alloc(1) }; // optional
+
+            object_detection.size.width = unsafe { raw::alloc(230) }; // optional
+            object_detection.size.std_dev_width = unsafe { raw::alloc(1) }; // optional
+
+            object_detection.size.height = unsafe { raw::alloc(180) }; // optional
+            object_detection.size.std_dev_height = unsafe { raw::alloc(1) }; // optional
+
+            // COVARIANCE
+
+            object_detection.covariance.north_pos_east_pos = unsafe { raw::alloc(1_000_000) };
+            object_detection.covariance.north_pos_north_vel = unsafe { raw::alloc(1_000) };
+            object_detection.covariance.north_pos_east_vel = unsafe { raw::alloc(1_000) };
+
+            object_detection.covariance.east_pos_north_vel = unsafe { raw::alloc(1_000) };
+            object_detection.covariance.east_pos_east_vel = unsafe { raw::alloc(1_000) };
+            object_detection.covariance.north_vel_east_vel = unsafe { raw::alloc(100) };
+
+            object_detection.orientation = 25;
+            object_detection.std_dev_orientation = 950;
+            object_detection.measured = 1;
+
+            // PREDICTED PATH
+
+            object_detection.predicted_path.timestamp_dt = 10;
+
+            for _ in 0..10 {
+                let mut pathpoint = unsafe { Box::from_raw(raw::zeroed::<PathPoint>()) };
+
+                pathpoint.position_offset.position_north = 256;
+                pathpoint.position_offset.std_dev_position_north = unsafe { raw::alloc(1) };
+
+                pathpoint.position_offset.position_east = 5_000;
+                pathpoint.position_offset.std_dev_position_east = unsafe { raw::alloc(1) };
+
+                pathpoint.probybility = 195;
+
+                let result = unsafe {
+                    raw::asn_set_add(
+                        &mut object_detection.predicted_path.path as *mut _
+                            as *mut ::std::os::raw::c_void,
+                        Box::into_raw(pathpoint) as *mut ::std::os::raw::c_void,
+                    )
+                };
+
+                if result != 0 {
+                    error!("asn_set_add() failed to add PathPoint");
+                    panic!("asn_set_add() failed to add PathPoint");
+                }
+            }
+
+            let result = unsafe {
+                raw::asn_set_add(
+                    &mut env.object_detections as *mut _ as *mut ::std::os::raw::c_void,
+                    Box::into_raw(object_detection) as *mut ::std::os::raw::c_void,
+                )
+            };
+
+            if result != 0 {
+                error!("asn_set_add() failed to add ObjectDetection");
+                panic!("asn_set_add() failed to add ObjectDetection");
+            }
         }
     }
 }

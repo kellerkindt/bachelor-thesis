@@ -83,6 +83,7 @@ impl<
         self.algorithm.subscribe_environment_model(
             self.address,
             Box::new(move |e| {
+                trace!("Trying to send UpdateEnvironmentModel");
                 sender
                     .try_send(Command::UpdateEnvironmentModel(e))
                     .map_err(|_| Error::from(ErrorKind::UnexpectedEof))

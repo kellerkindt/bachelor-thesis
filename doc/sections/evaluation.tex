@@ -2,4 +2,161 @@
 			
 \chapter{Auswertung}
 
-\todo{eignet sich rust?}
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[ymin=0, ymax=4, xmin=0, xmax=50000, width=\textwidth, height=20em]
+	
+	\addplot gnuplot [raw gnuplot,id=bal,mark=none,very thick,color=brown!30]{
+		set xrange [1:50000];
+		f(x)=a*x+b;
+		fit f(x) "data/rust_times_for_1x25_60s_fixed.dat" via a,b;
+		plot f(x)};
+	\addplot plot
+	[only marks,mark=o,thick,color=brown] 
+	file {data/rust_times_for_1x25_60s_fixed.dat};
+	
+	\addplot gnuplot [raw gnuplot,id=bal,mark=none,very thick,color=blue!30]{
+		set xrange [10000:45000];
+		f(x)=a*x+b;
+		fit f(x) "data/cpp_times_for_1x25_60s.dat" via a,b;
+		plot f(x)};
+	\addplot plot
+	[only marks,mark=x,thick,color=blue] 
+	file {data/cpp_times_for_1x25_60s.dat};
+	
+	
+	\end{axis}
+	\end{tikzpicture}
+	\caption{1 Fahrzeug, 25 Sensoren}
+	\label{1x25} 
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[ymin=0, ymax=27, xmin=0, xmax=3800000, width=\textwidth, height=20em]
+	
+	\addplot gnuplot [raw gnuplot,id=bal,mark=none,very thick,color=brown!30]{
+		set xrange [1:3800000];
+		f(x)=a*x+b;
+		fit f(x) "data/rust_times_for_1x25_60s.dat" via a,b;
+		plot f(x)};
+	\addplot plot
+	[only marks,mark=o,thick,color=brown] 
+	file {data/rust_times_for_1x25_60s.dat};
+	
+	\addplot gnuplot [raw gnuplot,id=bal,mark=none,very thick,color=blue!30]{
+		set xrange [10000:45000];
+		f(x)=a*x+b;
+		fit f(x) "data/cpp_times_for_1x25_60s.dat" via a,b;
+		plot f(x)};
+	\addplot plot
+	[only marks,mark=x,thick,color=blue] 
+	file {data/cpp_times_for_1x25_60s.dat};
+	\end{axis}
+	\end{tikzpicture}
+	\caption{1 Fahrzeug, 25 Sensoren, ohne Fehlerbereinigung}
+	\label{1x25_unfixed} 
+\end{figure}
+
+Ln(x) aus \autoref{1x25} vmtl weil \enquote{unterfordert} und Thread dauernd pausiert, bei vielen Nachrichten weniger pausiert, weniger overhead zum wecken?
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[ymin=0, ymax=4, xmin=0, xmax=80000, width=\textwidth, height=20em]
+	
+	\addplot gnuplot
+	[raw gnuplot,id=bal,mark=none,very thick,color=brown!30]{
+		set xrange  [1:80000];
+		f(x)=a*x+b;
+		fit f(x) "data/rust_times_for_2x25_60s.dat" via a,b;
+		plot f(x)};
+	\addplot plot
+	[only marks,mark=o,thick,color=brown] 
+		file {data/rust_times_for_2x25_60s.dat};
+	
+	\addplot gnuplot
+	[raw gnuplot,id=bal,mark=none,very thick,color=blue!30]{
+		set xrange  [27000:72000];
+		f(x)=a*x+b;
+		fit f(x) "data/cpp_times_for_2x25_60s.dat" via a,b;
+		plot f(x)};
+	\addplot plot
+	[only marks,mark=x,thick,color=blue] 
+	file {data/cpp_times_for_2x25_60s.dat};
+	
+	
+	\end{axis}
+	\end{tikzpicture}
+	\caption{2 Fahrzeuge, 25 Sensoren}
+	\label{2x25} 
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[ymin=0, ymax=5, xmin=0, xmax=250000, width=\textwidth, height=20em]
+	
+	\addplot gnuplot
+	[raw gnuplot,id=bal,mark=none,very thick,color=brown!30]{
+		set xrange  [1:250000];
+		f(x)=a*x+b;
+		fit f(x) "data/rust_times_for_3x25_60s_fixed.dat" via a,b;
+		plot f(x)};
+	\addplot plot
+	[only marks,mark=o,thick,color=brown] 
+	file {data/rust_times_for_3x25_60s_fixed.dat};
+	
+	\addplot gnuplot
+	[raw gnuplot,id=bal,mark=none,very thick,color=blue!30]{
+		set xrange  [1:250000];
+		f(x)=a*x+b;
+		fit f(x) "data/cpp_times_for_3x25_60s.dat" via a,b;
+		plot f(x)};
+	\addplot plot
+	[only marks,mark=x,thick,color=blue] 
+	file {data/cpp_times_for_3x25_60s.dat};
+	
+	
+	\end{axis}
+	\end{tikzpicture}
+	\caption{3 Fahrzeuge, 25 Sensoren}
+	\label{3x25} 
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[ymin=0, ymax=5, xmin=0, xmax=250000, width=\textwidth, height=20em]
+	
+	\addplot gnuplot
+	[raw gnuplot,id=bal,mark=none,very thick,color=brown!30]{
+		set xrange  [1:250000];
+		f(x)=a*x+b;
+		fit f(x) "data/rust_times_for_3x25_60s.dat" via a,b;
+		plot f(x)};
+	\addplot plot
+	[only marks,mark=o,thick,color=brown] 
+	file {data/rust_times_for_3x25_60s.dat};
+	
+	\addplot gnuplot
+	[raw gnuplot,id=bal,mark=none,very thick,color=blue!30]{
+		set xrange  [1:250000];
+		f(x)=a*x+b;
+		fit f(x) "data/cpp_times_for_3x25_60s.dat" via a,b;
+		plot f(x)};
+	\addplot plot
+	[only marks,mark=x,thick,color=blue] 
+	file {data/cpp_times_for_3x25_60s.dat};
+	
+	
+	\end{axis}
+	\end{tikzpicture}
+	\caption{3 Fahrzeuge, 25 Sensoren ohne Fehlerbereinigung}
+	\label{3x25_unfixed} 
+\end{figure}
+
+	
+\todo{rust graphs}

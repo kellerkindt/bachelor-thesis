@@ -137,7 +137,7 @@ impl SampleAlgorithm {
                 "Updating existing with timestamp: {}",
                 frame.header.timestamp
             );
-            env.header.timestamp = frame.header.timestamp;
+            Self::update_for_roundtrip_measurement(env, frame);
             trace!("Going to encode");
             env.try_encode_uper()
         } else {
@@ -145,9 +145,7 @@ impl SampleAlgorithm {
             let mut env = Box::new(EnvironmentFrame::default());
             trace!("Populating frame");
             Self::populate_default_frame(&mut env);
-            trace!("Frame: {:?}", env);
-            trace!("Setting timestamp: {}", frame.header.timestamp);
-            env.header.timestamp = frame.header.timestamp;
+            Self::update_for_roundtrip_measurement(&mut env, frame);
             trace!("Going to encode");
             let encoded = env.try_encode_uper();
             self.environment_frame = Some(env);
@@ -162,6 +160,12 @@ impl SampleAlgorithm {
                 panic!("Failed to encode environment_model: {:?}", e);
             }
         }
+    }
+
+    fn update_for_roundtrip_measurement(env: &mut EnvironmentFrame, sensor: &SensorFrame) {
+        env.header.timestamp = sensor.header.timestamp;
+        env.envelope.server_id = sensor.envelope.sender_id;
+        env.envelope.version = sensor.envelope.pole_id;
     }
 
     fn populate_default_frame(env: &mut EnvironmentFrame) {

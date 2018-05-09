@@ -64,6 +64,7 @@ impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 's
 }
 
 pub fn map_message(
+    client_id: usize,
     message: Message,
 ) -> Result<client::Command<SensorFrame, EnvironmentFrame>, Error> {
     match message {
@@ -77,7 +78,10 @@ pub fn map_message(
             SubscriptionStatus_SubscriptionStatus_unsubscribed => Ok(client::Command::Unsubscribe),
             _ => Err(Error::from(ErrorKind::NotFound)),
         },
-        Message::SensorFrame(frame) => Ok(client::Command::UpdateAlgorithm(frame)),
+        Message::SensorFrame(mut frame) => {
+            frame.envelope.sender_id = client_id as ::std::os::raw::c_long;
+            Ok(client::Command::UpdateAlgorithm(frame))
+        },
         Message::EnvironmentFrame(_) => Err(Error::from(ErrorKind::InvalidInput)),
         Message::RoadClearanceFrame(_) => Err(Error::from(ErrorKind::InvalidInput)),
         Message::SensorIdleFrame(_) => Ok(client::Command::SensorIsIdle),

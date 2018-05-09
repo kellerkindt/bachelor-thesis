@@ -7,6 +7,7 @@ use std::path::Path;
 use std::sync::Arc;
 use std::time::Duration;
 
+use client;
 use client::Client;
 
 use adapter::asn::AsnAdapter;
@@ -46,6 +47,7 @@ const CHANNEL_BUFFER_SIZE_ALGORITHM: usize = 128;
 
 const HEADER_SIZE: usize = 8;
 
+type Clt = Sender<client::Command<raw::SensorFrame, raw::EnvironmentFrame>>;
 type Alg = Sender<algorithm::Command<raw::SensorFrame, raw::EnvironmentFrame, SocketAddr>>;
 
 pub struct Server {
@@ -54,6 +56,7 @@ pub struct Server {
     algorithm: Option<Alg>,
     init_message: Option<Arc<RawMessage<asn::Message>>>,
     environment_frame: Option<Box<raw::EnvironmentFrame>>,
+    clients: Vec<Clt>,
 }
 
 impl Server {
@@ -64,6 +67,7 @@ impl Server {
             algorithm: None,
             init_message: None,
             environment_frame: None,
+            clients: Vec::with_capacity(128),
         })
     }
 
@@ -164,8 +168,12 @@ impl Server {
     }
 
     fn handle_new_client(&mut self, client: TcpStream) -> Result<(), Error> {
+        let (client_tx, client_rx) = channel(CHANNEL_BUFFER_SIZE_CLIENT);
+
         let address = client.peer_addr()?;
-        info!("Client connected from {}", address);
+        let id = self.next_client_id(client_tx.clone());
+
+        info!("Client connected from {}, assigned id {}", address, id);
 
         if client.set_nodelay(true).is_err() {
             warn!("TCP nodelay couldn't be set");
@@ -178,11 +186,10 @@ impl Server {
             warn!("TCP keepalive couldn't be set");
         }
 
-        let (client_tx, client_rx) = channel(CHANNEL_BUFFER_SIZE_CLIENT);
 
         let (encoder, decoder) = client.framed(RawMessageCodec::default()).split();
         let mut client = Client::new(
-            client_tx.clone(),
+            client_tx,
             address,
             AsnAdapter::new(encoder, self.init_message.clone()),
             self.new_client_to_algorithm_buffered_channel()?,
@@ -191,9 +198,9 @@ impl Server {
         self.runtime.spawn(
             decoder
                 .map(|m| ::messages::asn::Message::try_decode_uper(&m))
-                .then(|r| match r {
+                .then(move |r| match r {
                     Ok(message) => match message {
-                        Ok(message) => ::adapter::asn::map_message(message),
+                        Ok(message) => ::adapter::asn::map_message(id, message),
                         Err(_) => Err(::std::io::Error::from(::std::io::ErrorKind::UnexpectedEof)),
                     },
                     Err(_) => Err(::std::io::Error::from(::std::io::ErrorKind::UnexpectedEof)),
@@ -211,7 +218,27 @@ impl Server {
                     Err(_) => Err(())
                 }),
         );
+
         Ok(())
+    }
+
+    fn next_client_id(&mut self, client: Clt) -> usize {
+        for id in 0..self.clients.len() {
+            if !self.is_client_alive(id) {
+                self.clients[id] = client;
+                return id;
+            }
+        }
+        let id = self.clients.len() as usize;
+        self.clients.push(client);
+        id
+    }
+
+    fn is_client_alive(&mut self, id: usize) -> bool {
+        self.clients
+            .get_mut(id)
+            .and_then(|ref mut channel| Some(!channel.poll_ready().is_err()))
+            .unwrap_or(false)
     }
 
     fn spawn_command_processor(mut self, receiver: Receiver<Command>) {

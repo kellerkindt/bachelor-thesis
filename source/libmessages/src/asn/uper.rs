@@ -4,7 +4,7 @@ pub fn encode_to_new_buffer<T>(
     asn_type: &mut raw::asn_TYPE_descriptor_t,
     value: &T,
 ) -> Result<Vec<u8>, ()> {
-    let mut vec = Vec::new();
+    let mut vec = Vec::with_capacity(5120);
 
     let result = unsafe {
         unsafe extern "C" fn write_to_vec(

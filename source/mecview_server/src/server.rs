@@ -41,8 +41,8 @@ use bytes::BufMut;
 use bytes::BytesMut;
 
 const CHANNEL_BUFFER_SIZE_SERVER: usize = 10;
-const CHANNEL_BUFFER_SIZE_CLIENT: usize = 10;
-const CHANNEL_BUFFER_SIZE_CLIENT_ALGORITHM: usize = 10;
+const CHANNEL_BUFFER_SIZE_CLIENT: usize = 64;
+const CHANNEL_BUFFER_SIZE_CLIENT_ALGORITHM: usize = 32;
 const CHANNEL_BUFFER_SIZE_ALGORITHM: usize = 128;
 
 const HEADER_SIZE: usize = 8;

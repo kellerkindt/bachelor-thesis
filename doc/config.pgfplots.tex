@@ -1,2 +1,21 @@
 \usepackage{environ}
 \usepackage{pgfplots}
+
+\pgfplotsset{compat=1.12}
+\usepgfplotslibrary{statistics}
+
+\newcommand*{\printboxplotdata}{%
+	\pgfextra{%
+		\typeout{Box plot values:}%
+		\printboxplotvalue{lower whisker}%
+		\printboxplotvalue{lower quartile}%
+		\printboxplotvalue{median}%
+		\printboxplotvalue{upper quartile}%
+		\printboxplotvalue{upper whisker}%
+		\printboxplotvalue{average}%
+		\typeout{}%
+	}%
+}
+\newcommand*{\printboxplotvalue}[1]{%
+	\typeout{* #1 = \boxplotvalue{#1}}%
+}

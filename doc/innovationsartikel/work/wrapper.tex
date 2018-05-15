@@ -1,0 +1,51 @@
+\documentclass[
+	10pt,
+	table,
+	ngerman,
+	a4paper,
+	DIV14,
+	1.1headlines,
+	pagesize,
+	oneside,
+	openright,
+	titlepage,
+	headsepline,
+	nochapterprefix,
+	bibtotoc,
+	tocindent,
+	listsindent,
+	pointlessnumbers,
+	cleardoubleempty,
+	fleqn,
+	halfparskip
+]{scrbook}
+
+\usepackage{fontspec}
+\usepackage[table]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage[ngerman]{babel}
+\usepackage{url}
+\usepackage[hang,multiple]{footmisc}
+\usepackage[bottom=0.5in,top=0.5in]{geometry}
+
+\newcommand{\bildI}{}
+\newcommand{\bildII}{}
+\newcommand{\bildIII}{}
+\newcommand{\bildIV}{}
+\newcommand{\bildV}{}
+\newcommand{\bildVI}{}
+\newcommand{\bildVII}{}
+\newcommand{\bildVIII}{}
+\newcommand{\bildIX}{}
+\newcommand{\bildX}{}
+
+
+\definecolor{hs_dunkelblau}{rgb}{0, 0, 1}
+\long\def\symbolfootnote[#1]#2{\begingroup%
+	\def\thefootnote{\fnsymbol{footnote}}\footnote[#1]{#2}\endgroup} 
+	
+\pagenumbering{gobble}
+\begin{document}
+	\input{innovationsartikel}
+\end{document}

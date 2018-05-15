@@ -53,7 +53,7 @@ Kevin Erath}}
   \begin{center}
   \includegraphics*[width=\linewidth]
 {../tmp/WatzkoMichael/MECView_Schaubild_BoschStyle_V2.png}
-  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize MECView-Schaubild der Robert Bosh GmbH}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize MEC-View-Schaubild der Robert Bosh GmbH}
   \end{center}
   \end{minipage}
  \end{center}
@@ -164,7 +164,7 @@ Im Resultat handelt das System total unvorhersehbar.
 
 Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt: die fehlerhaften Strategien zur Compilezeit findet und die Compilation stoppt; die trotz erzwungener Sicherheitsmaßnahmen, schnell und echtzeitnah reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
 
-%Diese Arbeit soll zeigen, dass Rust genau so eine Programmiersprache ist und sich für sicherheitsrelevante, hoch parallelisierte und echtzeitnahe Anwendungsfälle bestens eignet.
+Diese Arbeit soll zeigen, dass Rust genau so eine Programmiersprache ist und sich für sicherheitsrelevante, hoch parallelisierte und echtzeitnahe Anwendungsfälle bestens eignet.
 
 \subsection*{Die Programmiersprache Rust}
 
@@ -197,7 +197,8 @@ Bereits 2003 beschreibt Bruce Powel Douglass im Buch \enquote{Real-Time Design P
 In dem beschriebenen \enquote{Concurrency Pattern} werden Objekte eindeutig Eigentümern zugeordnet, um so eine sicherere Nebenläufigkeit zu erlauben.
 
 Diese Philosophie setzt Rust direkt in der Sprache um, denn in Rust darf ein Wert immer nur einen Eigentümer haben.
-Zusätzlich zu einem immer eindeutig identifizierbaren Eigentümer, kann der Wert auch ausgeliehen werden, um einen kurzzeitigen Zugriff zu erlauben; entweder exklusiv mit sowohl Lese- als auch Schreiberlaubnis, oder mehrfache mit nur Leseerlaubnis.
+Zusätzlich zu einem immer eindeutig identifizierbaren Eigentümer, kann der Wert auch ausgeliehen werden, um einen kurzzeitigen Zugriff zu erlauben.
+Eine Leihgabe ist entweder exklusiv und ermöglicht sowohl Lese- als auch Schreibzugriffe, oder sie ist auf einen Lesezugriff beschränkt und erlaubt im Gegenzug an mehreren Stellen gemeinsam genutzt zu werden.
 
 Eigentümerschaft kann auch übertragen werden, der vorherige Eigentümer kann danach nicht mehr auf den Wert zugreifen.
 Ein entsprechender Versuch wird mit einer Fehlermeldung durch den Compiler bemängelt.
@@ -208,7 +209,7 @@ Die Garantie, nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrer
 
 Eine sichere Nebenläufigkeit wird in Rust durch das Eigentümerprinzip in Kombination mit zusätzlichen Typmerkmalen erreicht.
 Dabei ist diese sichere Nebenläufigkeit meist unsichtbar (Seite 41, [1]), da der Compiler eine unsichere und damit syntaktisch falsche Verwendung nicht übersetzt.
-Ein Rust Programm das compiliert, ist daher, in vielerlei Hinsicht, sicher in der Nebenläufigkeit.
+Ein Rust Programm das kompiliert, ist daher, in vielerlei Hinsicht, sicher in der Nebenläufigkeit.
 Einzig ein \enquote{Deadlock} kann nicht statisch ermittelt und verhindert werden.
 
 Eine Wettlaufsituation (englisch \enquote{race condition}) um einen Wert ist in Rust nicht möglich.
@@ -220,10 +221,40 @@ Erst nach einer Fehlerauswertung kann auf den Wert zugegriffen werden.
 
 \subsection*{Anwendung im Projekt MEC-View}
 
+Das MEC-View Projekt befasst sich mit der Thematik hochautomatisierter Fahrzeuge und ist vom Bundesministerium für Wirtschaft und Energie (BMWi) gefördert.
+Im Rahmen des MEC-View Projekts soll erforscht werden, ob und in wie weit eine durch externe Sensorik geleistete Unterstützung nötig und möglich ist, um in eine Vorfahrtstraße automatisiert einzufahren.
+
 \bildIII
 
-Durch die u.a. hier erwähnten Garantien von Rust, soll eine funktional sichere Implementation einer Kommunikationsplattform, im Rahmen des MEC-View Forschungsprojektes, geschaffen werden.
-Im Umfeld des automatisierten Fahrens hat dies einen besonderen Stellenwert.
+Das Forschungsprojekt ist dabei ein Zusammenschluss mehrerer Unternehmen mit unterschiedlichen Themengebieten. Die IT-Designers Gruppe beschäftigt sich mit der Implementation des Kommunikationsservers, der auf der von Nokia zur Verfügung gestellten
+Infrastruktur im 5G Mobilfunk als MEC Server betrieben wird. Erkannte Fahrzeuge und
+andere Verkehrsteilnehmer werden von den Sensoren von Osram via Mobilfunk an den
+Kommunikationsserver übertragen. Der Kommunikationsserver stellt diese Informationen
+dem Fusionsalgorithmus der Universität Ulm zur Verfügung und leitet das daraus gewonnene Umfeldmodell an die hochautomatisierten Fahrzeuge der Robert Bosch GmbH und der Universität
+Ulm weiter. Durch hochgenaue, statische und dynamische Karten von TomTom und den
+Fahrstrategien von Daimler soll das Fahrzeug daraufhin automatisiert in die Kreuzung
+einfahren können.
+
+Die Kommunikationsplattform des Servers nimmt für das Forschungsprojekt eine zentrale Rolle ein.
+Falsche, verfälschte oder verspätete Informationen können für das Fahrzeug und andere Verkehrsteilnehmer verheerende Auswirkungen haben.
+Eine gewissenhafte und funktional sichere Implementation ist deswegen vonnöten und wird bereits durch eine Implementation in C++ bereitgestellt.
+
+Systemprogrammiersprachen, wie C und C++, werden in diesen Situationen gerne genutzt, da sie keine Laufzeitumgebung benötigen, sondern zu Maschinencode kompiliert werden.
+Auch Just-In-Time (JIT) Compiler oder Garbage Collectoren (GC) sind bei Anwendungsfällen im echtzeitnahen Umfeld ein Ausschlusskriterium.
+Mit ihnen variieren die Reaktionszeiten während der Laufzeit und eine maximale Reaktionszeit kann nicht garantiert werden.
+
+Eine funktional sichere Implementation in C++ zu schaffen ist jedoch eine erhebliche Herausforderung.
+Schnell können sich Fehler im Speichermanagement oder in Strategien zur Nebenläufigkeit einschleichen, die sich erst nach der Kompilation in Tests, Kontrollen durch Programme wie Valgrind oder im schlimmsten Fall während des Produktivbetriebs zeigen.
+
+\vfill\null
+\columnbreak
+
+Diese Bachelorarbeit beschäftigt sich mit der Implementierung der Kommunikationsplattform in Rust.
+Durch die u. a. hier erwähnten Garantien von Rust, sollte es möglich sein, eine ähnlich sichere Implementierung mit einem deutlich geringerem Aufwand zu schaffen.
+Zuletzt wird die Reaktionszeit der Rust-Kommunikationsplattform der C++-Referenzimplementation  gegenübergestellt, um zu prüfen, ob sich die Programmiersprache für den Einsatz in echtzeitnahen Systemen eignet.
+
+
+
 
 \bildII
 

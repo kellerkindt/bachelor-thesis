@@ -12,6 +12,7 @@ pub fn encode_to_new_buffer<T>(
             size: usize,
             application_specific_key: *mut ::std::os::raw::c_void,
         ) -> ::std::os::raw::c_int {
+            #[allow(unknown_lints)]
             #[allow(transmute_ptr_to_ref)]
             let vec: &mut Vec<u8> = ::std::mem::transmute(application_specific_key as *mut Vec<u8>);
             let data = ::std::slice::from_raw_parts(buffer as *const u8, size);

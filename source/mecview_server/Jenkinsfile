@@ -17,6 +17,8 @@ pipeline {
                 // sh "$RUSTUP update beta"
                 // sh "$RUSTUP update nightly"
                 // sh "cd $CRATE_SERVER; $CARGO clean"
+                sh "$CARGO --version"
+                sh "$RUSTUP run stable rustc --version"
             }
         }
         stage('Build-Debug') {

@@ -20,8 +20,6 @@ pipeline {
                 sh "$CARGO --version"
                 sh "$RUSTUP run stable rustc --version"
             }
-        }
-        stage('Build-Debug') {
             parallel {
                 stage('Clippy') {
                     steps {
@@ -41,11 +39,13 @@ pipeline {
                         }
                     }
                 }
-                stage('Build-Debug') {
-                    steps {
-                    	ansiColor('xterm') {
-                            sh "cd $CRATE_SERVER; $CARGO build"
-                        }
+            }
+        }
+        stage('Build-Debug') {
+            stage('Build-Debug') {
+                steps {
+                    ansiColor('xterm') {
+                        sh "cd $CRATE_SERVER; $CARGO build"
                     }
                 }
             }

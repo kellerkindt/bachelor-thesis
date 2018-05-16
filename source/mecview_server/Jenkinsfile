@@ -11,10 +11,9 @@ pipeline {
         stage('prepare') {
             steps {
                 sh "$RUSTUP --version || curl https://sh.rustup.rs -sSf | sh -s -- -y"
-                sh "$RUSTUP install beta"
                 sh "find . -name cobertura.xml -delete"
                 // sh "$RUSTUP install nightly"
-                // sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
+                sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
                 // sh "$RUSTUP update beta"
                 // sh "$RUSTUP update nightly"
                 // sh "cd $CRATE_SERVER; $CARGO clean"
@@ -23,7 +22,7 @@ pipeline {
         stage('Build-Debug') {
 			steps {
 			    ansiColor('xterm') {
-			        sh "cd $CRATE_SERVER; $CARGO +beta build"
+			        sh "cd $CRATE_SERVER; $CARGO build"
 			    }
 			}
         }
@@ -32,7 +31,7 @@ pipeline {
                 stage('Test-Debug') {
 				    steps {
 				        ansiColor('xterm') {
-				            sh "cd $CRATE_SERVER; $CARGO +beta test  -p libmessages -p libmessages-sys -p mecview_server"
+				            sh "cd $CRATE_SERVER; $CARGO test  -p libmessages -p libmessages-sys -p mecview_server"
 				            sh "cd $CRATE_SERVER; mv target/debug/mecview_server mecview_server_debug"
 							archiveArtifacts "$CRATE_SERVER/mecview_server_debug"
                                             fingerprint "$CRATE_SERVER/mecview_server_debug"
@@ -42,7 +41,7 @@ pipeline {
                 stage('Build-Release') {
 				    steps {
 				        ansiColor('xterm') {
-				            sh "cd $CRATE_SERVER; $CARGO +beta build --release"
+				            sh "cd $CRATE_SERVER; $CARGO build --release"
 				        }
 				    }
                 }
@@ -51,7 +50,7 @@ pipeline {
         stage('Test-Release') {
 			steps {
 			    ansiColor('xterm') {
-			        sh "cd $CRATE_SERVER; $CARGO +beta test  -p libmessages -p libmessages-sys -p mecview_server --release"
+			        sh "cd $CRATE_SERVER; $CARGO test  -p libmessages -p libmessages-sys -p mecview_server --release"
 		            sh "cd $CRATE_SERVER; mv target/release/mecview_server mecview_server"
 					archiveArtifacts "$CRATE_SERVER/mecview_server"
                                 fingerprint "$CRATE_SERVER/mecview_server"
@@ -80,9 +79,9 @@ pipeline {
 				}
 				stage('Coverage') {
 				    steps {
-				        sh "set +e; $CARGO +beta tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
-				        sh "cd $CRATE_SERVER; $CARGO +beta tarpaulin --all --skip-clean --out Xml"
-				        sh "cd $CRATE_LIBMSG; $CARGO +beta tarpaulin --all --skip-clean --out Xml"
+				        sh "set +e; $CARGO tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
+				        sh "cd $CRATE_SERVER; $CARGO tarpaulin --all --skip-clean --out Xml"
+				        sh "cd $CRATE_LIBMSG; $CARGO tarpaulin --all --skip-clean --out Xml"
 						step([$class: 'CoberturaPublisher',
 							  autoUpdateHealth    : false,
 							  autoUpdateStability : false,
@@ -93,12 +92,12 @@ pipeline {
 							  onlyStable          : false,
 							  sourceEncoding      : 'ASCII',
 							  zoomCoverageChart   : false])
-				        // sh "$CARGO +beta tarpaulin --all --skip-clean --out Xml --root $CRATE_LIBMSGSYS"
+				        // sh "$CARGO tarpaulin --all --skip-clean --out Xml --root $CRATE_LIBMSGSYS"
 					}
 				}
 				stage('Documentation') {
 				    steps {
-				        sh "cd $CRATE_SERVER; $CARGO +beta doc"
+				        sh "cd $CRATE_SERVER; $CARGO doc"
 				        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$CRATE_SERVER/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'Documentation', reportTitles: ''])
 				    }
 				}

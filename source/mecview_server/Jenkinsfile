@@ -44,11 +44,9 @@ pipeline {
             }
         }
         stage('Build-Debug') {
-            stage('Build-Debug') {
-                steps {
-                    ansiColor('xterm') {
-                        sh "cd $CRATE_SERVER; $CARGO build"
-                    }
+            steps {
+                ansiColor('xterm') {
+                    sh "cd $CRATE_SERVER; $CARGO build"
                 }
             }
         }

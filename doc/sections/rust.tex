@@ -435,21 +435,20 @@ Ein ergonomisches aber auch Fehler reduzierendes Feature.
 \subsection{Closure}
 \label{rust:closures}
 
-\todo{..}
 Mit Closures bietet Rust ein entsprechendes Sprachkonstrukt um Lambdas aus Programmiersprachen wie Java, JavaScripit, C\# und C++ darstellen zu können.
 Übergabeparameter befinden sich in der Notation zwischen zwei senkrechten Strichen, deren Typ nicht explizit angegeben werden muss.
 In geschweiften klammern ist anschließend der Rumpf zu finden.
 Wenn der Rumpf nur eine Zeile groß ist, sind die geschweiften Klammern optional: \rustcinline{let adder = \|a, b\| a + b;}.
 Der Aufruf unterscheidet sich nicht von einem normalen Funktionsaufruf: \rustcinline{let sum = adder(1, 2);}.
 
-Eine Closure ist eine automatisch generierte Datenstruktur, die eine der folgenden Merkmale automatisch implementiert:
+Eine Closure ist eine automatisch generierte Datenstruktur, die eines der folgenden Merkmale automatisch implementiert:
 \begin{itemize}
-	\item \rustcinline{Fn<Args>} mit \rustcinline{fn call(&self, arg: Args) -> Self::Output}: Ein mehrfacher Aufruf ist möglich, ohne das Nebeneffekte auftreten, da die Eigenreferenz unveränderlich ist.
+	\item \rustcinline{Fn<Args>} mit \rustcinline{fn call(&self, arg: Args) -> Self::Output}: Ein mehrfacher Aufruf ist möglich ohne das Nebeneffekte auftreten, da die Eigenreferenz unveränderlich ist.
 	\item \rustcinline{FnMut<Args>} mit \rustcinline{fn call_mut(&mut self, arg: Args) -> Self::Output}: Da die Eigenreferenz veränderlich ist, können Nebeneffekte auftreten.
 	\item \rustcinline{FnOnce<Args>} mit \rustcinline{fn call_once(self, arg: Args) -> Self::Output}: Ein Aufruf ist wegen des Eigenkonsums nur einmalig möglich.
 \end{itemize}
 
-Closures sind zudem sehr performant (siehe \autoref{rust:zero_cost}), weswegen eine Anwendung selbst in Zeitkritischen Anwendungsfällen problemlos möglich ist \cite[310]{rust:orly_programming}.
+Closures in Rust sind sehr performant (siehe \autoref{rust:zero_cost}), weswegen eine Anwendung selbst in Zeitkritischen Anwendungsfällen problemlos möglich ist \cite[310]{rust:orly_programming}.
 
 
 
@@ -457,9 +456,9 @@ Closures sind zudem sehr performant (siehe \autoref{rust:zero_cost}), weswegen e
 \label{rust:access_modifier}
 
 Zugriffsmodifikatoren erlauben es in Rust, Module, Datenstrukturen, Aufzählungen, Merkmale und Funktionen gegenüber Nutzern einer Crate und anderen Modulen sichtbar zu machen.
-Der standardmäßige Zugriffsmodifikator limitiert die Sichtbarkeit auf das Modul, in dem die Deklaration stattgefunden hat, und wird durch keine Notation eines Zugriffsmodifikators erreicht.
+Der standardmäßige Zugriffsmodifikator limitiert die Sichtbarkeit auf das Modul, in dem die Deklaration stattgefunden hat und wird durch keine Notation eines Zugriffsmodifikators erreicht.
 Um die Sichtbarkeit auf die gesamte Crate zu erhöhen, wird ein \rustcinline{pub(crate)} vorangestellt.
-\todo{..} \rustcinline{pub(super)} macht einen entsprechenden Typ dagegen nur für das hierarchisch darüber liegende Modul Sichtbar und mit \rustcinline{pub(foo::bar)} kann die Sichtbarkeit auch auf ein spezifiziertes Modul limitiert werden.
+Mit \rustcinline{pub(super)} wird der entsprechende Typ nur für das hierarchisch darüber liegende Modul Sichtbar und mit \rustcinline{pub(foo::bar)} kann die Sichtbarkeit auch auf ein spezifiziertes Modul limitiert werden.
 Mit \rustcinline{pub} ist die Deklaration für alle sichtbar.
 
 Zugriffsmodifikatoren können auch vor \rustcinline{use} Anweisungen geschrieben werden, um entsprechende Datentypen zusätzlich unter einem neuen Namensraum bekannt zu machen.
@@ -822,21 +821,21 @@ Ein Wert kann während einer Iteration nicht hinzugefügt oder entfernt werden.
 Es kann kein exklusiver Zugriff für die Kollektion erlangt werden, da die Kollektion bereits lesend (oder exklusiv) an die Iteration verliehen ist.
 Eine \javacinline{ConcurrentModificationException} (Java)  wird deshalb nicht benötigt \cite[116]{rust:orly_programming}.
 
-\section{Rust als funktionale Programmiersprache ??s}
+%\section{Rust als funktionale Programmiersprache ??s}
 
-\todo{functional programming -> no global state, no exceptions, find literature}
+%\todo{functional programming -> no global state, no exceptions, find literature}
 
-\todo{prove via code / closures}
+%\todo{prove via code / closures}
 
 
-\section{\todo{zu viel + unnötig?} Rust als Objekt-Orientierte Programmiersprache ??}
+%\section{\todo{zu viel + unnötig?} Rust als Objekt-Orientierte Programmiersprache ??}
 \label{rust:oop}
 
-Vererbung explizit nicht erwünscht, Composition over Inheritance, inheritance dissallows static sizes, enum allow passing by value
+%Vererbung explizit nicht erwünscht, Composition over Inheritance, inheritance dissallows static sizes, enum allow passing by value
 
-\todo{trait}
+%\todo{trait}
 
-\todo{prove via design patterns, a few? from faq::  Is Rust object oriented? It is multi-paradigm. Many things you can do in OO languages you can do in Rust, but not everything, and not always using the same abstraction you’re accustomed to.}
+%\todo{prove via design patterns, a few? from faq::  Is Rust object oriented? It is multi-paradigm. Many things you can do in OO languages you can do in Rust, but not everything, and not always using the same abstraction you’re accustomed to.}
 
 
 \section{Versprechen von Rust}
@@ -873,7 +872,17 @@ In manchen Szenarien hat die Variable dann den Wert, der in diesem Moment an der
 Sich darauf zu verlassen, dass neue Werte automatisch mit 0 initialisiert wurden, kann auf neuen Systemen oder mit anderen Compilern ein unvorhersehbares Verhalten provozieren.
 
 Rust lässt deshalb keinen Zugriff auf Variablen zu, die nicht zuvor initialisiert wurden \cite[126]{rust:orly_programming}.
-Der Compiler stoppt mit einem Fehler: \enquote{\textbf{\textcolor{red}{error[E0381]}: use of possibly uninitialized variable: `a`}}.
+Der Compiler stoppt mit einem Fehler:
+
+\begin{figure}[H]
+	\begin{tcolorbox}[colback=codeBackground,boxrule=0pt,arc=0pt]
+		\begin{scriptsize}
+			\textbf{\textcolor{red}{error[E0381]}: use of possibly uninitialized variable: `a`}
+		\end{scriptsize}
+	\end{tcolorbox}
+	\caption{Der Compiler bemängelt die Nutzung einer nicht initialisierten Variable}
+	\label{rust:rustc:error:no_unitialized_usage}
+\end{figure}
 
 
 \subsection{Keine vergessene Null-Pointer Prüfung}
@@ -955,14 +964,14 @@ Daraufhin wird versucht, mit dem gleichen Beispiel in \autoref{rust:owner:rust_b
 \begin{figure}[H]
 	\ccinclude
 	{rust:owner:c_bad_free}
-	{Negativbeispiel: Fehlerhafter Klon \todo{.}}
+	{Negativbeispiel: Fehlerhafter Klon in C}
 	{sections/rust.owner.free.c}
 \end{figure}
 
 \begin{figure}[H]
 	\rustcinclude
 	{rust:owner:rust_bad_free}
-	{Negativbeispiel: Fehlerhafter Klon in Rust\todo{.}}
+	{Negativbeispiel: Fehlerhafter Klon in Rust}
 	{sections/rust.owner.free.rs}
 \end{figure}
 
@@ -971,7 +980,18 @@ Das Feld \enquote{model} in der C-Struktur ist beim Erstellen der Eigentümer de
 Im Rust-Beispiel ist die Zeichenkette deswegen in Zeile 19 außerhalb der \rustcinline{erstelle_computer}-Funktion, da der Geltungsbereich ansonsten beim Verlassen der Funktion bereits zu Ende wäre und das Leihen an die Datenstruktur nicht möglich wäre.
 Dieser Unterschied ist gleichzeitig auch die Fehlerquelle im C-Beispiel.
 
-Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgehend dem Beispiel aus \autoref{rust:owner:c_bad_free}, zumindest genügend, um zu zeigen, dass der Rust Compiler den Fehler erkennt und die Kompilation abbricht: \textbf{\textcolor{red}{error[E0505]}: cannot move out of `c1` because it is borrowed} (für Zeile 25).
+Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgehend dem Beispiel aus \autoref{rust:owner:c_bad_free}, zumindest genügend, um zu zeigen, dass der Rust Compiler den Fehler erkennt und die Kompilation abbricht (für Zeile 25):
+
+\begin{figure}[H]
+	\begin{tcolorbox}[colback=codeBackground,boxrule=0pt,arc=0pt]
+		\begin{scriptsize}
+			\textbf{\textcolor{red}{error[E0505]}: cannot move out of `c1` because it is borrowed} .
+		\end{scriptsize}
+	\end{tcolorbox}
+	\caption{Der Compiler bemängelt den Versuch, eine Leihgabe länger als den Eigentümer leben zu lassen}
+	\label{rust:rustc:error:no_dangling_pointer}
+\end{figure}
+
 
 \subsection{Speichersicherheit}
 \label{rust:guarantee:memory_safety}
@@ -996,15 +1016,19 @@ Eine Wettlaufsituation (englisch \enquote{race condition}) um einen Wert ist in 
 Das Eigentümer- und Leihprinzip verhindert dies, denn es kann nur exklusiv schreibend auf einen Wert zugegriffen werden (siehe \autoref{rust:ownership}).
 Für einen Datenwettlauf muss dagegen, gleichzeitig zu einem schreibenden, ein lesender Zugriff erfolgen.
 
-Datentypen, die einen gemeinsamen Zugriff auf veränderliche Werte ermöglichen (\rustcinline{Mutex}, \rustcinline{RwLock} und im erweiterten Sinne \enquote{channels}), liefern immer ein Ergebnis ob der Versuch, einen exklusiven Schreib- oder Lesezugriff zu erhalten, geklappt hat.
-\todo{shiat: }
-Eine mögliche Fehlersituation ist ein Thread, bei dem eine \rustcinline{panic!} (siehe \autoref{rust:panic}) aufgetreten ist, während dieser einen exklusiven Schreibzugriff auf den geschützten Wert hatte.
-In diesem Fall wird ein \rustcinline{PoisonError} zurückgegeben, der einen direkten Zugriff auf den Wert verhindert und vermittelt, dass der geschützte Wert vermutlich in keinem konsistenten Zustand mehr ist.
+Datentypen, die einen gemeinsamen Zugriff auf veränderliche Werte ermöglichen (\rustcinline{Mutex}, \rustcinline{RwLock} und im erweiterten Sinne \enquote{channels}), liefern immer ein Ergebnis ob der Versuch, einen exklusiven Schreib- oder Lesezugriff zu erhalten, erfolgreich war.
+Vor einer Fehlerauswertung kann nicht auf den Wert zugegriffen werden (siehe \autoref{rust:result}).
 
 \todo{..}
-Ähnlich wie in C++ mit \ccinline{local_guard}, wird auch in Rust der exklusive Zugriff durch eine lokale Variable ermöglicht.
+Ein Sperrversuch kann einem Fehler beantwortet werden, wenn ein vorheriger Thread die Sperre nicht ordnungsgemäß, sondern mit einer \rustcinline{panic!}, beendet hat.
+In diesem Fall wird ein \rustcinline{PoisonError} zurückgegeben, der einen direkten Zugriff auf den Wert verhindert und darauf hinweist, dass der geschützte Wert vermutlich in keinem konsistenten Zustand mehr ist.
+Daraufhin kann versucht werden, wieder einen konsistenten Zustand zu erlangen.
+
+\todo{..}
+Ähnlich wie in C++ mit \ccinline{local_guard}, wird auch in Rust ein exklusive Zugriff durch das erlangen einer Sperre ermöglicht.
 Besonders ist hierbei jedoch, dass auf den geschützten Wert nur über diese lokale Sperre zugegriffen werden kann und diese automatisch bei Freigabe der Variable aufgehoben wird.
-Somit kann nicht vergessen werden, die Sperre zu erlangen oder diese freizugeben:
+Somit kann nicht vergessen werden, die Sperre zu erlangen oder diese freizugeben.
+Es wird nicht wie traditionell einen Codebereich, sondern einen Wert geschützt:
 
 \begin{figure}[H]
 	\rustcinclude
@@ -1013,9 +1037,9 @@ Somit kann nicht vergessen werden, die Sperre zu erlangen oder diese freizugeben
 		{sections/rust.lock.rs}
 \end{figure}
 
-\todo{interrior mutability pattern}
+%\todo{interrior mutability pattern}
 
-\todo{Mutex+RwLock: *Guard -> niemals vergessen lock zu lösen}
+%\todo{Mutex+RwLock: *Guard -> niemals vergessen lock zu lösen}
 
 \subsection{Zero Cost Abstraction}
 \label{rust:zero_cost}

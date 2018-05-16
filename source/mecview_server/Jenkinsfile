@@ -22,88 +22,90 @@ pipeline {
             }
         }
         stage('Build-Debug') {
-			steps {
-			    ansiColor('xterm') {
-			        sh "cd $CRATE_SERVER; $CARGO build"
-			    }
-			}
+            parallel {
+                stage('Clippy') {
+                    steps {
+                        ansiColor('xterm') {
+                            sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all || ($CARGO +nightly install clippy --version 0.0.195 --force && $CARGO +nightly clippy --all)"
+                        }
+                    }
+                }
+                stage('Rustfmt') {
+                    steps {
+                        ansiColor('xterm') {
+                                    // The build will fail if rustfmt thinks any changes are
+                                    // required.
+                            sh "$RUSTUP component add rustfmt-preview"
+                            sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
+                                    sh "cd $CRATE_SERVER; $CARGO +nightly fmt --all -- --write-mode diff"
+                        }
+                    }
+                }
+                stage('Build-Debug') {
+                    steps {
+                    	ansiColor('xterm') {
+                            sh "cd $CRATE_SERVER; $CARGO build"
+                        }
+                    }
+                }
+            }
         }
         stage('Build-Release-And-Test-Debug') {
             parallel {
                 stage('Test-Debug') {
-				    steps {
-				        ansiColor('xterm') {
-				            sh "cd $CRATE_SERVER; $CARGO test  -p libmessages -p libmessages-sys -p mecview_server"
-				            sh "cd $CRATE_SERVER; mv target/debug/mecview_server mecview_server_debug"
-							archiveArtifacts "$CRATE_SERVER/mecview_server_debug"
+                    steps {
+                        ansiColor('xterm') {
+                            sh "cd $CRATE_SERVER; $CARGO test  -p libmessages -p libmessages-sys -p mecview_server"
+                            sh "cd $CRATE_SERVER; mv target/debug/mecview_server mecview_server_debug"
+                            archiveArtifacts "$CRATE_SERVER/mecview_server_debug"
                                             fingerprint "$CRATE_SERVER/mecview_server_debug"
-				        }
-				    }
+                        }
+                    }
                 }
                 stage('Build-Release') {
-				    steps {
-				        ansiColor('xterm') {
-				            sh "cd $CRATE_SERVER; $CARGO build --release"
-				        }
-				    }
+                    steps {
+                        ansiColor('xterm') {
+                            sh "cd $CRATE_SERVER; $CARGO build --release"
+                        }
+                    }
                 }
             }
         }
         stage('Test-Release') {
-			steps {
-			    ansiColor('xterm') {
-			        sh "cd $CRATE_SERVER; $CARGO test  -p libmessages -p libmessages-sys -p mecview_server --release"
-		            sh "cd $CRATE_SERVER; mv target/release/mecview_server mecview_server"
-					archiveArtifacts "$CRATE_SERVER/mecview_server"
+            steps {
+                ansiColor('xterm') {
+                    sh "cd $CRATE_SERVER; $CARGO test  -p libmessages -p libmessages-sys -p mecview_server --release"
+                    sh "cd $CRATE_SERVER; mv target/release/mecview_server mecview_server"
+                    archiveArtifacts "$CRATE_SERVER/mecview_server"
                                 fingerprint "$CRATE_SERVER/mecview_server"
-			    }
-			}
+                }
+            }
         }
         stage('Post-Build') {
-		    parallel {
-				stage('Clippy') {
-				    steps {
-				        ansiColor('xterm') {
-				            sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all || ($CARGO +nightly install clippy --version 0.0.195 --force && $CARGO +nightly clippy --all)"
-				        }
-				    }
-				}
-				stage('Rustfmt') {
-				    steps {
-				        ansiColor('xterm') {
-						    // The build will fail if rustfmt thinks any changes are
-						    // required.
-				            sh "$RUSTUP component add rustfmt-preview"
-				            sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
-						    sh "cd $CRATE_SERVER; $CARGO +nightly fmt --all -- --write-mode diff"
-				        }
-				    }
-				}
-				stage('Coverage') {
-				    steps {
-				        sh "set +e; $CARGO tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
-				        sh "cd $CRATE_SERVER; $CARGO tarpaulin --all --skip-clean --out Xml"
-				        sh "cd $CRATE_LIBMSG; $CARGO tarpaulin --all --skip-clean --out Xml"
-						step([$class: 'CoberturaPublisher',
-							  autoUpdateHealth    : false,
-							  autoUpdateStability : false,
-							  coberturaReportFile : '**/cobertura.xml',
-							  failUnhealthy       : false,
-							  failUnstable        : false,
-							  maxNumberOfBuilds   : 0,
-							  onlyStable          : false,
-							  sourceEncoding      : 'ASCII',
-							  zoomCoverageChart   : false])
-				        // sh "$CARGO tarpaulin --all --skip-clean --out Xml --root $CRATE_LIBMSGSYS"
-					}
-				}
-				stage('Documentation') {
-				    steps {
-				        sh "cd $CRATE_SERVER; $CARGO doc"
-				        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$CRATE_SERVER/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'Documentation', reportTitles: ''])
-				    }
-				}
-		    }
+            stage('Coverage') {
+                steps {
+                    sh "set +e; $CARGO tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
+                    sh "cd $CRATE_SERVER; $CARGO tarpaulin --all --skip-clean --out Xml"
+                    sh "cd $CRATE_LIBMSG; $CARGO tarpaulin --all --skip-clean --out Xml"
+                    step([$class: 'CoberturaPublisher',
+                          autoUpdateHealth    : false,
+                          autoUpdateStability : false,
+                          coberturaReportFile : '**/cobertura.xml',
+                          failUnhealthy       : false,
+                          failUnstable        : false,
+                          maxNumberOfBuilds   : 0,
+                          onlyStable          : false,
+                          sourceEncoding      : 'ASCII',
+                          zoomCoverageChart   : false])
+                    // sh "$CARGO tarpaulin --all --skip-clean --out Xml --root $CRATE_LIBMSGSYS"
+                }
+            }
+            stage('Documentation') {
+                steps {
+                    sh "cd $CRATE_SERVER; $CARGO doc"
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$CRATE_SERVER/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'Documentation', reportTitles: ''])
+                }
+            }
         }
     }
     post {

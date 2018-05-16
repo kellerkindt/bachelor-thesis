@@ -20,6 +20,8 @@ pipeline {
                 sh "$CARGO --version"
                 sh "$RUSTUP run stable rustc --version"
             }
+        }
+        stage('check-src') {
             parallel {
                 stage('Clippy') {
                     steps {

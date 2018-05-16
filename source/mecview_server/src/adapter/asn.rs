@@ -81,7 +81,7 @@ pub fn map_message(
         Message::SensorFrame(mut frame) => {
             frame.envelope.sender_id = client_id as ::std::os::raw::c_long;
             Ok(client::Command::UpdateAlgorithm(frame))
-        },
+        }
         Message::EnvironmentFrame(_) => Err(Error::from(ErrorKind::InvalidInput)),
         Message::RoadClearanceFrame(_) => Err(Error::from(ErrorKind::InvalidInput)),
         Message::SensorIdleFrame(_) => Ok(client::Command::SensorIsIdle),

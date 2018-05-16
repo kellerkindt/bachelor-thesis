@@ -33,11 +33,11 @@ pipeline {
                 stage('Rustfmt') {
                     steps {
                         ansiColor('xterm') {
-                                    // The build will fail if rustfmt thinks any changes are
-                                    // required.
+                            // The build will fail if rustfmt thinks any changes are
+                            // required.
                             sh "$RUSTUP component add rustfmt-preview"
                             sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
-                                    sh "cd $CRATE_SERVER; $CARGO +nightly fmt --all -- --write-mode diff"
+                            sh "cd $CRATE_SERVER; $CARGO +nightly fmt --all -- --write-mode diff"
                         }
                     }
                 }

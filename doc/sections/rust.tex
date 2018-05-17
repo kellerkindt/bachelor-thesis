@@ -1016,19 +1016,17 @@ Eine Wettlaufsituation (englisch \enquote{race condition}) um einen Wert ist in 
 Das Eigentümer- und Leihprinzip verhindert dies, denn es kann nur exklusiv schreibend auf einen Wert zugegriffen werden (siehe \autoref{rust:ownership}).
 Für einen Datenwettlauf muss dagegen, gleichzeitig zu einem schreibenden, ein lesender Zugriff erfolgen.
 
-Datentypen, die einen gemeinsamen Zugriff auf veränderliche Werte ermöglichen (\rustcinline{Mutex}, \rustcinline{RwLock} und im erweiterten Sinne \enquote{channels}), liefern immer ein Ergebnis ob der Versuch, einen exklusiven Schreib- oder Lesezugriff zu erhalten, erfolgreich war.
-Vor einer Fehlerauswertung kann nicht auf den Wert zugegriffen werden (siehe \autoref{rust:result}).
+Datentypen, die einen gemeinsamen Zugriff auf veränderliche Werte ermöglichen (\rustcinline{Mutex}, \rustcinline{RwLock} und im erweiterten Sinne \enquote{channels}), liefern immer ein Ergebnis ob  Versuch, einen exklusiven Schreib- oder Lesezugriff zu erhalten, erfolgreich war.
+Vor einer Fehlerauswertung kann die Sperre nicht genutzt werden (siehe \autoref{rust:result}).
 
 \todo{..}
-Ein Sperrversuch kann einem Fehler beantwortet werden, wenn ein vorheriger Thread die Sperre nicht ordnungsgemäß, sondern mit einer \rustcinline{panic!}, beendet hat.
-In diesem Fall wird ein \rustcinline{PoisonError} zurückgegeben, der einen direkten Zugriff auf den Wert verhindert und darauf hinweist, dass der geschützte Wert vermutlich in keinem konsistenten Zustand mehr ist.
-Daraufhin kann versucht werden, wieder einen konsistenten Zustand zu erlangen.
+Ein Sperrversuch wird mit einem Fehler beantwortet, wenn ein vorheriger Thread die Sperre nicht ordnungsgemäß, sondern mit einer \rustcinline{panic!}, beendet hat.
+In diesem Fall wird ein \rustcinline{PoisonError} zurückgegeben, der einen direkten Zugriff auf den Wert verhindert.
+Damit wird darauf hingewiesen, dass der geschützte Wert aufgrund er \rustcinline{panic!} eventuell in keinem konsistenten Zustand mehr ist.
 
-\todo{..}
-Ähnlich wie in C++ mit \ccinline{local_guard}, wird auch in Rust ein exklusive Zugriff durch das erlangen einer Sperre ermöglicht.
-Besonders ist hierbei jedoch, dass auf den geschützten Wert nur über diese lokale Sperre zugegriffen werden kann und diese automatisch bei Freigabe der Variable aufgehoben wird.
-Somit kann nicht vergessen werden, die Sperre zu erlangen oder diese freizugeben.
-Es wird nicht wie traditionell einen Codebereich, sondern einen Wert geschützt:
+In Rust wird auf einen geschützten Wert durch eine gültige Sperre zugegriffen.
+Es wird nicht ein Codebereich exklusiv betreten, sondern ein Speicherbereich exklusiv genutzt.
+Ein Zugriff ohne gültige Sperre ist deshalb nicht möglich:
 
 \begin{figure}[H]
 	\rustcinclude

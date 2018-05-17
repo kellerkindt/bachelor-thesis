@@ -4,8 +4,8 @@ fn main() {
     let mutex = Mutex::new(0);
     let lock  = mutex.lock();
 
-    if let Ok(mut lock) = lock {
-        *lock += 1;
-        println!("Wert: {}", lock); // "Wert: 1"
+    if let Ok(mut counter) = lock {
+        *counter += 1;
+        println!("Zähler: {}", counter); // "Zähler: 1"
     }
 }

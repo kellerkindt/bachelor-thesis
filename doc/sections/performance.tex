@@ -22,28 +22,21 @@ Je nach Art des Echtzeitsystems, wird diese Frist jedoch unterschiedlich gewicht
 	
 	\item Bei einem weichen Echtzeitsystem resultiert die Überschreitung des vorgegebenen Zeitraums nicht in einer Katastrophe.
 	Es wird die durchschnittliche Reaktionszeit dem Zeitraum bis zur Frist gegenübergestellt. Eine seltene und unter Last auftretende Überschreitung wird in Kauf genommen \cite[76]{douglass2003real}.
-	Das System führt in so einem Fall weiterhin seine Aufgaben aus, die Performance wird aber \todo{abgewertet} eingestuft.
+	Das System führt in so einem Fall weiterhin seine Aufgaben aus, die Performance wird daraufhin aber als unzureichend eingestuft.
 %	Weiche Echtzeitsysteme können sogar überhaupt keine Frist haben, sondern die Aufgabe, die Antwortzeit so gering wie möglich zu gehalten \cite[4]{perf:buttazzo2006soft}.
 \end{itemize}
 
 \section{Mobile Edge Computing}
 
-\todo{refactor text}
-
+\todo{..}
 Mobile Edge Computing (\gls{mec}) bezeichnet Recheneinheiten, die eine Cloud-ähnliche Umgebung am Rande des Mobilfunknetzes schaffen \cite[4]{etsi:mec}.
 Wenn in dieser Arbeit auf MEC Bezug genommen wird, sind damit explizit direkt an Funkmasten montierte Recheneinheiten gemeint.
 Dadurch, dass die Recheneinheiten direkt an einen Funkmast angeschlossen sind, können sie Anfragen aus dem Abdeckungsbereich der Antenne deutlich schneller beantworten (Latenz kleiner 20ms) als Cloudlösungen (Latenz ca 100ms) \cite[2]{perf:mec:fraunhofer}.
 Hierfür werden die Anfragen aus dem Mobilfunknetz direkt an die Recheneinheit weitergeleitet, anstatt über einen Provider eine Internetverbindung zu einer Cloudlösung aufzubauen.
 
-In dem \gls{mec}-View Projekt wird eine \gls{vm} in einer \gls{mec} Recheneinheit ausgeführt.
-Die Verbindungen von Fahrzeugen und Sensoren in dem Abdeckungsbereich des Funkmastes werden anstatt über einen Provider direkt an die \gls{vm} geroutet.
+Die Serverimplementierung des \gls{mec}-View-Projekts wird in einer \gls{mec}-Recheneinheit ausgeführt, um die Sensordaten der Sensoren möglichst schnell an die Fahrzeuge des Abdeckungsbereichs weiterleiten zu können.
 
 
-%\section{Architekturmuster? oder erst während der Implementation?}
-%\subsection{Was ist dann ein hochperformantes System}
-%\section{Serverbasierte Kommunikationsplattform: MEC}
-
-		
 \input{sections/asn}
 
 	
@@ -62,7 +55,7 @@ Die Verbindungen von Fahrzeugen und Sensoren in dem Abdeckungsbereich des Funkma
 Bei der Test-getriebenen Entwicklung werden Tests in den Vordergrund gestellt.
 Die Implementierung einer neuen Funktionalität wird durch neue Tests, welche die Anforderung repräsentieren, eingeleitet.
 Erst nachdem ein Test erfolgreich feststellt, dass die geforderte Funktionalität noch nicht vorhanden ist, wird mit der Implementierung begonnen.
-Eine schnelle Implementierung hat hierbei die höchste Priorität und erlaubt temporär auch eine limitierende, \enquote{stinkende}\todo{cite} und naive Vorgehensweise \cite[7]{tdd}.
+Eine schnelle Implementierung hat hierbei die höchste Priorität und erlaubt temporär auch eine limitierende, \enquote{stinkende} und naive Vorgehensweise \cite[7]{tdd}.
 %Der neue Code, der den Test zufriedenstellt, darf hierbei kurzzeitig \enquote{stinken} \todo{cite} und Qualitätsstandards verletzten.
 Direkt im Anschluss wird ein Refactoring\footnote{Verbesserung des Codes und der Struktur ohne Änderung der Funktionalität} durchgeführt, um die Qualitätsstandards wieder einzuhalten.
 Diese drei Phasen werden \enquote{red/green/refactor} bezeichnet:
@@ -121,6 +114,7 @@ Eine Entwicklung nach ISO 26262 findet nicht statt, da dies zum Einen nicht durc
 	\cite[454]{rust:orly_programming}
 \end{quotation}
 
+\todo{..}
 Eine typische synchrone Kommunikation ist ein Funktionsaufruf.
 Zuerst werden die Parameter vorbereitet, dann die Funktion aufgerufen.
 Der weitere Code der aufrufenden Funktion wird nicht ausgeführt, bis der Aufruf der aufgerufenden Funktion beendet wurde.
@@ -144,38 +138,38 @@ Der Aufrufer teilt dem Aufgerufenem dabei die Anfrage und deren Parameter mit, o
 Stattdessen kontaktiert der Aufgerufene den ursprünglichen Aufrufer nachdem die Anfrage bearbeitet wurde.
 Ein solches System wird oft als \enquote{Aktorsystem} bezeichnet.
 
-\section{Stack und Heap Geschwindigkeit}
-
-\todo{.}
-
-Allokation von Speicher auf dem Stack und dem Heap unterscheiden sich in ihrer Geschwindigkeit und ihrer möglichen Verwendungsart.
-Eine Allokation auf dem Stack hat keine Laufzeitkosten, da sie zur Compilezeit ermittelt werden kann.
-Die Lebenszeit des allokierten Speichers ist aber durch die Lebenszeit der Funktion, in der der Speicher allokiert wurde, limitiert.
-Eine allokation auf dem Heap hat dagegen Laufzeitkosten, da dynamisch ein ausreichend großer und freier Speicherbereich gesucht werden muss.
-Ein Speicherbereich auf dem Heap ist in der Lebenszeit nicht eingeschränkt.
-
-Die Verwendung von kurzlebigen Datenstrukturen auf dem Stack anstatt auf dem Heap, kann eine performante Programmierung ermöglichen, birgt jedoch auch Gefahren.
-Wenn versucht wird, auf die Datenstruktur nach ihrer Lebenszeit zuzugreifen oder diese zu modifizieren, wird im besten Fall ein ungültiger Wert gelesen und im schlimmsten Fall \todo{der Stack überschrieben. Ein unvorhersehbares Verhalten kann die Folge sein.}
-
-Viele Programmiersprachen lassen sich in zwei Kategorien einteilen, die, bei denen das Speichermanagement soweit abstrahiert ist, dass eine 
-
-In vielen Programmiersprachen mit einer Laufzeitumgebung, wie C\# oder Java, ist diese Thematik der Allokation auf dem Stack oder Heap weitestgehend nicht vom Programmierer beeinflussbar.
-
-
-
-für performance abwägen,
-stack: kostenlos,
-heap: laufzeitkosten,
-nachträglich kopieren langsam weil kopieren,
-stack limitierend,
-stack in c++ gefährlich wenn pointer gespeichert wird,
-
-weil stack kostenlos, möglichst auf dem stack weil performanter
-
-Programmiersprachen wie java/c\# verstecken das
-
-C++ gefährlich
-
-\section{Continuous Integration}
-
-\todo{prüft regelmäßig ob eingescheckter code qualitätsansprüchen erfüllt bzw ob überhaupt funktionsfähig, metrik, nachvollziehbare builds}
+%
+%\section{Stack und Heap Geschwindigkeit}
+%
+%\todo{.}
+%Allokation von Speicher auf dem Stack und dem Heap unterscheiden sich in ihrer Geschwindigkeit und ihrer möglichen Verwendungsart.
+%Eine Allokation auf dem Stack hat keine Laufzeitkosten, da sie zur Compilezeit ermittelt werden kann.
+%Die Lebenszeit des allokierten Speichers ist aber durch die Lebenszeit der Funktion, in der der Speicher allokiert wurde, limitiert.
+%Eine allokation auf dem Heap hat dagegen Laufzeitkosten, da dynamisch ein ausreichend großer und freier Speicherbereich gesucht werden muss.
+%Ein Speicherbereich auf dem Heap ist in der Lebenszeit nicht eingeschränkt.
+%
+%Die Verwendung von kurzlebigen Datenstrukturen auf dem Stack anstatt auf dem Heap, kann eine performante Programmierung ermöglichen, birgt jedoch auch Gefahren.
+%Wenn versucht wird, auf die Datenstruktur nach ihrer Lebenszeit zuzugreifen oder diese zu modifizieren, wird im besten Fall ein ungültiger Wert gelesen und im schlimmsten Fall \todo{der Stack überschrieben. Ein unvorhersehbares Verhalten kann die Folge sein.}
+%
+%Viele Programmiersprachen lassen sich in zwei Kategorien einteilen, die, bei denen das Speichermanagement soweit abstrahiert ist, dass eine 
+%
+%In vielen Programmiersprachen mit einer Laufzeitumgebung, wie C\# oder Java, ist diese Thematik der Allokation auf dem Stack oder Heap weitestgehend nicht vom Programmierer beeinflussbar.
+%
+%
+%
+%für performance abwägen,
+%stack: kostenlos,
+%heap: laufzeitkosten,
+%nachträglich kopieren langsam weil kopieren,
+%stack limitierend,
+%stack in c++ gefährlich wenn pointer gespeichert wird,
+%
+%weil stack kostenlos, möglichst auf dem stack weil performanter
+%
+%Programmiersprachen wie java/c\# verstecken das
+%
+%C++ gefährlich
+%
+%\section{Continuous Integration}
+%
+%\todo{prüft regelmäßig ob eingescheckter code qualitätsansprüchen erfüllt bzw ob überhaupt funktionsfähig, metrik, nachvollziehbare builds}

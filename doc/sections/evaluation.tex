@@ -3,32 +3,56 @@
 \chapter{Auswertung}
 
 In diesem Kapitel wird die Implementation des MECViewServers in Rust mit der Referenzimplementation in C++ verglichen.
+Fahrzeuge und Sensoren werden mit einem Programm aus dem MEC-View C++ Projekt simuliert.
 
 test für durchsatz nur bedingt aussagekräftig
 
 gleicher dummy alg
 
-\subsection{Vorgehen und Testumgebung}
+\section{Testumgebung}
 
 Alle Tests sind auf der gleichen Hardware ausgeführt worden.
-Es handelt sich um einen Server mit zwei Intel Xeon CPUs (E5-2620 v4 @ 2.10GHz).
-Ubuntu Linux
-Govenor performance.
+Es handelt sich um einen Server mit zwei Intel Xeon CPUs (E5-2620 v4 @ 2.10GHz) und einer Ubuntu 16.04.4 LTS Installation.
+Während aller Test wurde der Intel CPU Gvernor auf \enquote{performance} gestellt, um keine Anwendung durch Energiesparmaßnahmen zu benachteiligen.
 
 Jede Kombination von Sensoren, Fahrzeugen und einer Serverimplementation sind in 10 Test-Durchläufen gemessen worden.
-Es ist immer nur ein Test-Durchlauf gleichzeitig auf dem System ausgeführt worden.
-Durch die Nutzung der Loopback-Netzwerkschnittstelle soll der Einfluss der 
+Zu jedem Zeitpunkt ist maximal ein Test-Durchlauf gleichzeitig auf dem System ausgeführt worden.
+
+Um Latenzen durch das Netzwerk auszuschließen, wurden auch die virtuellen Sensoren und Fahrzeuge auf dem Server ausgeführt und durch die Loopback-Netzwerkschnittstelle mit dem Server verbunden.
+Ein kurzer Test ergab hierbei einen Durchsatz von ca 40Gbit/s (mittels \textit{iperf}) und eine Latenz von ca 24us (mittels \textit{ping}) auf der Loopback-Netzwerkschnittstelle.
+Auswirkungen auf die Testergebnisse sind damit vernachlässigbar klein.
+
+\todo{no RCM}
+
+\todo{release mode}
+
+\section{Vorgehen}
+
+Das Vorgehen war für alle Tests gleich und wurde bis auf den Start des Servers durch ein Skript ausgeführt.
+Variiert wurden lediglich die Anzahl an Fahrzeugen und Sensoren, die als Übergabeparameter an das Skript übergeben werden.
+Das Vorgehen eines Testdurchlaufs sieht folgendermaßen aus:
 
 \begin{itemize}
-	\item Server starten, Log-Ausgabe ist auf das \enquote{info}-Level beschränkt
-	\item Geforderte Anzahl an Sensoren starten
-	\item Eine kurze Pause (2s) für Verbindungsaufbau der Sensoren einräumen
-	\item Geforderte Anzahl an Fahrzeugen starten. Nach einer kurzen Pause (5s) nach dem Verbindungsaufbau, fordern die Fahrzeuge das Umgebungsmodell für 60s an.
-	\item Nachdem die Fahrzeuginstanzen beendet wurden, werden alle Sensoren gestoppt
-	\item Kurze Pause (2s) vor erneutem Test-Durchlauf einräumen
+	\item Server mit Log-Level \enquote{info} starten, falls noch nicht gestartet
+	\item Sensoren starten
+	\item Eine kurze Pause (2 Sekunden) machen, um genügend Zeit für den Verbindungsaufbau der Sensoren zu geben
+	\item Fahrzeugen starten. 5 Sekunden nach dem Verbindungsaufbau abonnieren diese das Umgebungsmodell für 60 Sekunden.
+	\item Auf ende aller Fahrzeuge warten.
+	\item Alle Sensoren beenden
+	\item Kurze Pause (2 Sekunden) vor erneutem Test-Durchlauf einräumen
 \end{itemize}
 
-\subsection{Ergebnisse}
+Für jedes Umgebungsmodell, das von einem Fahrzeug empfangen wird, wird auf der Konsole die Latenz in ganzen Millisekunden ausgegeben.
+
+Die Latenz errechnet der C++ Clientsimulator, indem beim Versenden eines \textit{SensorFrame}s durch den simulierten Sensor die aktuelle Zeit in der Nachricht hinterlegt wird.
+Der Dummy-Algorithmus überträgt diesen \todo{Timestamp} in das \textit{EnvironmentFrame} und versendet dieses an die Fahrzeuge.
+Die simulierten Fahrzeuge errechnen die Differenz zwischen der aktuellen Zeit und dem \todo{timestamp}
+ und geben diesen auf der Konsole aus.
+ 
+Alle ausgegebenen Latenzen werden mittels \textit{bash}-Pipe in eine Datei übertragen.
+Bei der Auswertung wird der Durchschnitt errechnet.
+
+\section{Ergebnisse}
 
 \newcommand{\makeDias}[3]{
 	\begin{figure}[H]
@@ -92,9 +116,6 @@ Durch die Nutzung der Loopback-Netzwerkschnittstelle soll der Einfluss der
 }
 
 \makeDias{1x25_60s}{3.5}{52000}
-
-Ln(x) aus \autoref{1x25} vmtl weil \enquote{unterfordert} und Thread dauernd pausiert, bei vielen Nachrichten weniger pausiert, weniger overhead zum wecken?
-
 \makeDias{2x25_60s}{4.1}{120000}
 \makeDias{3x25_60s}{4.5}{200000}
 \makeDias{4x25_60s}{4.5}{270000}

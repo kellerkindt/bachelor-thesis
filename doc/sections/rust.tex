@@ -1128,13 +1128,13 @@ Der Zähler ist im Heap direkt vor dem beinhalteten Wert und nicht in einem extr
 \label{rust:zero_cost:closures}
 
 Durch das Eigentümerprinzip (siehe \autoref{rust:ownership}) und die statische Laufzeitanalyse (siehe \autoref{rust:static_analysis}), sind Closures (siehe \autoref{rust:closures}) so sicher wie ähnliche Sprachkonstrukte in Programmiersprachen mit \gls{gc} und so performant wie Lambdas in Programmiersprachen wie C++.
-Closures können sogar schneller als Funktionspointer sein \cite [310]{rust:orly_programming}, da ein \todo{Inlining} möglich ist und da sie auf dem Stack allokiert werden können.
-Der Compiler kann diese und weitere umfassende Optimierungen durchführen, da ihm der genaue Typ bekannt ist.
+Closures können sogar schneller als Funktionspointer sein \cite [310]{rust:orly_programming}, da ein \enquote{Inlining} möglich ist und da sie auf dem Stack allokiert werden können.
+Der Compiler kann diese und weitere umfassende Optimierungen durchführen, wenn ihm der genaue Typ bekannt ist.
 
-\todo{impl Trait since 1.26: ergonmisch ohne perfomance impact}
+%\todo{impl Trait since 1.26: ergonmisch ohne perfomance impact}
 
-\todo{zero cost: no heap, type explicit -> faaaaaast(er than function pointer p.310), impl Trait, }
-\todo{closures are fast, orly, p.310}
+%\todo{zero cost: no heap, type explicit -> faaaaaast(er than function pointer p.310), impl Trait, }
+%\todo{closures are fast, orly, p.310}
 
 \section{Einbinden von externen Bibliotheken}
 
@@ -1142,7 +1142,7 @@ Der Compiler kann diese und weitere umfassende Optimierungen durchführen, da ih
 \label{rust:ffi}
 \label{rust:ffi:datatypes}
 
-Rust bietet durch das \gls{ffi} \todo{(FFI)} die Möglichkeit, andere (System-)Bibliotheken einzubinden.
+Rust bietet durch das \gls{ffi} (FFI) die Möglichkeit, Funktionalität anderer (System-)Bibliotheken zu nutzen.
 Entsprechende Strukturen und Funktionen werden durch einen \rustcinline{extern} Block
 oder im Falle von Strukturen stattdessen optional mit einem \rustcinline{#[repr(C)]} gekennzeichnet.
 
@@ -1219,9 +1219,23 @@ Die Art der Definition einer externen Funktion unterscheidet sich nicht von eine
 
 \section{Unsafe}
 
-\todo{\enquote{To isolate unsafe code as much as possible, it’s a good idea to enclose unsafe code within a safe abstraction and provide a safe API} \url{https://doc.rust-lang.org/book/second-edition/ch19-01-unsafe-rust.html}}
+\todo{..}
+In manchen Situationen kann der Rust Compiler ein ordnungsgemäßes Speichermanagement nicht nachvollziehen.
+So ist zum Beispiel nicht nachvollziehbar, wie eine externe Funktion (siehe \autoref{rust:ffi}) mit einem übergebenem Zeiger umgeht.
+Ebenso unklar ist, ob ein zurückgegebener Zeiger immer gültig (\rustcinline{&T}) oder auch ungültig (\ccinline{NULL}/\rustcinline{Option<T>}) sein kann.
+Aus diesem Grund ist die Dereferenzierung von Zeigern als unsicher markiert.
+Eine Nutzung ist nur innerhalb \rustcinline{unsafe \{\}}-Blöcken möglich.
+Programmierer sollen dadurch besonders aufmerksam den (möglichst kleinen) Programmcode programmieren und prüfen.
 
-\todo{to make encapsulte unsafe stuff into safe interfaces, internal unsafe to make safe interface, rust programming cite!}
+\todo{..}
+Besondere Funktionen oder Datentypen, wie eine \rustcinline{Mutex}, die einen exklusiven Zugriff auf den inneren Wert ermöglicht, ohne selbst durch eine exklusive Referenz aufgerufen worden zu sein, sind nicht mit dem Eigentümerprinzip vereinbar.
+Die Implementation findet deswegen Teilweise auch in \rustcinline{unsafe \{\}}-Blöcken statt -
+für die Speichersicherheit sind dann die Entwickler (der Standardbibliothek) verantwortlich.
+
+\begin{quotation}
+	\textit{\enquote{To isolate unsafe code as much as possible, it’s a good idea to enclose unsafe code within a safe abstraction and provide a safe API}}
+	\cite[The Rust Programming Language - Unsafe Rust]{rust:book:unsafe}
+\end{quotation}
 
 \section{Beispiele der Verwendung von Rust}
 

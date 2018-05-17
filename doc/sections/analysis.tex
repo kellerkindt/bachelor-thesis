@@ -332,8 +332,6 @@ Für den Nachrichtentyp sind nur die in \autoref{message:types} gelisteten Werte
 \subsection{ClientRegistration}
 \label{msg:client_registration}
 
-\todo{Woher kommt die? Anforderungen? Use Cases? Kontextdiagramm?}
-
 Die ClientRegistration-Nachricht sendet der Client nach dem Verbindungsaufbau dem Server zu, um mitzuteilen, ob es sich um einen Sensor oder ein Fahrzeug handelt.
 
 \subsection{SensorFrame}
@@ -349,10 +347,9 @@ Die EnvironmentFrame-Nachricht wird vom Server an das Fahrzeug versendet und ent
 \subsection{UpdateSubscription}
 \label{msg:update_subscription}
 
+\todo{..}
 Die UpdateSubscription-Nachricht wird vom Server an den Sensor oder vom Fahrzeug an den Server gesendet.
-\todo{enthält subscribe oder unsubscribe}
-\todo{hier falsch: Der Sensor versendet bei einer Anmeldung erkannte Objekte (siehe \autoref{msg:sensor_frame}), während der Server dem Fahrzeug die Ergebnisse aus dem Fusions-Algorithmus (siehe \autoref{msg:environment_frame}) zusendet.
-Bei einer Abmeldung wird das Versenden der Nachrichten eingestellt.}
+Der Server kann sich damit am Sensor an einem SensorFrame-Abonnement anmelden oder abmelden, während der Client sich damit am Server am EnvironmentFrame-Abonnement anmelden oder abmelden kann.
 
 \subsection{InitMessage}
 \label{msg:init_message}
@@ -427,7 +424,7 @@ Die Anwesenheit des Sensors wird somit festgestellt.
 
 In diesem Kapitel werden die Schnittstellen analysiert, über die der MEC-Server mit dem Sensor und dem Client kommuniziert.
 Für die Darstellung werden Sequenzdiagramme verwendet.
-Aktionen in \enquote{loop}-Abschnitten werden so lange wiederholt, bis die erste darauf folgende Aktion außerhalb eines \enquote{loop}-Abschnittes eintritt \todo{satz}.
+Aktionen in \enquote{loop}-Abschnitten werden so lange wiederholt, bis die erste darauf folgende Aktion eintritt.
 
 \subsection{Sensor und MEC-Server}
 \begin{figure}[H]
@@ -470,7 +467,7 @@ Aktionen in \enquote{loop}-Abschnitten werden so lange wiederholt, bis die erste
 In \autoref{seq_dia:sensor} ist die Kommunikation zwischen einem Sensor und dem MEC-Server zu sehen.
 Nach Verbindungsaufbau versendet der Sensor eine \textit{ClientRegistration}-Nachricht (siehe \autoref{msg:client_registration}) um sich am Server als Sensor zu registrieren.
 Der Server beantwortet dies mit einer \textit{UpdateSubscription}-Nachricht (siehe \autoref{msg:update_subscription}) um klarzustellen, dass kein Abonnement gewünscht ist.
-Der Sensor versendet darauf folgend in regelmäßigen Abständen \textit{SensorIdleFrame}-Nachrichten (siehe \autoref{msg:sensor_idle_frame}) um \todo{seine Präsenz zu beteuern}.
+Der Sensor versendet darauf folgend in regelmäßigen Abständen \textit{SensorIdleFrame}-Nachrichten (siehe \autoref{msg:sensor_idle_frame}).
 Nach unbekannter Zeit kann der Server ein Abonnement erstellen, indem eine entsprechende \textit{UpdateSubscription}-Nachricht versendet wird.
 Daraufhin sendet der Sensor dem Server anstatt \textit{SensorIdleFrame}-Nachrichten \textit{SensorFrame}-Nachrichten (siehe \autoref{msg:sensor_frame}) zu, bis dieser das Abonnement mit einer \textit{UpdateSubscription}-Nachricht wieder aufkündigt.
 

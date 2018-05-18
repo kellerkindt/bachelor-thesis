@@ -891,7 +891,7 @@ Der Compiler stoppt mit einem Fehler:
 \begin{quotation}
 	\textit{\enquote{I call it my billion-dollar mistake. It was the invention of the null reference in 1965}}
 	\cite[Tony Hoare, QCon Software Konferenz in London, 2009]{rust:infoq:null}
-	\todo{cant find moment in video / presentation of this qutoe!?}
+	\todo{cant find moment in video / presentation of this quote!?}
 \end{quotation}
 
 Wie in \autoref{rust:no_null} bereits erwähnt, kennt Rust keinen \ccinline{NULL}-Pointer.
@@ -1219,6 +1219,11 @@ Die Art der Definition einer externen Funktion unterscheidet sich nicht von eine
 
 \section{Unsafe}
 
+\begin{quotation}
+	\textit{\enquote{To isolate unsafe code as much as possible, it’s a good idea to enclose unsafe code within a safe abstraction and provide a safe API}}
+	\cite[The Rust Programming Language - Unsafe Rust]{rust:book:unsafe}
+\end{quotation}
+
 \todo{..}
 In manchen Situationen kann der Rust Compiler ein ordnungsgemäßes Speichermanagement nicht nachvollziehen.
 So ist zum Beispiel nicht nachvollziehbar, wie eine externe Funktion (siehe \autoref{rust:ffi}) mit einem übergebenem Zeiger umgeht.
@@ -1232,10 +1237,6 @@ Besondere Funktionen oder Datentypen, wie eine \rustcinline{Mutex}, die einen ex
 Die Implementation findet deswegen Teilweise auch in \rustcinline{unsafe \{\}}-Blöcken statt -
 für die Speichersicherheit sind dann die Entwickler (der Standardbibliothek) verantwortlich.
 
-\begin{quotation}
-	\textit{\enquote{To isolate unsafe code as much as possible, it’s a good idea to enclose unsafe code within a safe abstraction and provide a safe API}}
-	\cite[The Rust Programming Language - Unsafe Rust]{rust:book:unsafe}
-\end{quotation}
 
 \section{Beispiele der Verwendung von Rust}
 

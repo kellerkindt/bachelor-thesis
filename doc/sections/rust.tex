@@ -763,7 +763,7 @@ Wichtige, aber auch bekannte Datentypen sind hierbei:
 
 Rust benutzt ein \enquote{statisches, automatisches Speichermanagement -- keinen Garbage Collector} \cite{rust:youtube:goto2017}.
 Das bedeutet, die Lebenszeit einer Variable wird statisch während der Compilezeit anhand des Geltungsbereichs ermittelt (siehe \autoref{rust:scope}).
-Durch diese statische Analyses findet der Compiler heraus, wann der Speicher einer Variable wieder freigegeben werden muss.
+Durch diese statische Analyse findet der Compiler heraus, wann der Speicher einer Variable wieder freigegeben werden muss.
 Dies ist genau dann, wenn der Geltungsbereich des Eigentümers zu Ende ist.
 Weder ein \gls{gc}, der dies zur Laufzeit nachverfolgt, noch ein manuelles Eingreifen durch den Entwickler (zum Beispiel durch \ccinline{free(*void)}, wie in C/C++ üblich) ist nötig.
 
@@ -795,8 +795,9 @@ Zusätzlich zu einem immer eindeutig identifizierbaren Eigentümer, kann der Wer
 Eigentümerschaft kann auch übertragen werden, der vorherige Eigentümer kann danach nicht mehr auf den Wert zugreifen.
 Ein entsprechender Versuch wird mit einer Fehlermeldung durch den Compiler bemängelt.
 
-Die Garantie, nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert (siehe \autoref{rust:scope}).
-Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nötig, weshalb diese Philosophie keinen Laufzeitkosten mit sich bringt.
+%Die Garantie, nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert (siehe \autoref{rust:scope}).
+Die statische Lebenszeitanalyse garantiert, dass es nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable gibt.
+Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nötig und diese Philosophie keinen Laufzeitkosten mit sich bringt.
 
 \begin{figure}[H]
 	\rustcinclude
@@ -1016,10 +1017,8 @@ Eine Wettlaufsituation (englisch \enquote{race condition}) um einen Wert ist in 
 Das Eigentümer- und Leihprinzip verhindert dies, denn es kann nur exklusiv schreibend auf einen Wert zugegriffen werden (siehe \autoref{rust:ownership}).
 Für einen Datenwettlauf muss dagegen, gleichzeitig zu einem schreibenden, ein lesender Zugriff erfolgen.
 
-Datentypen, die einen gemeinsamen Zugriff auf veränderliche Werte ermöglichen (\rustcinline{Mutex}, \rustcinline{RwLock} und im erweiterten Sinne \enquote{channels}), liefern immer ein Ergebnis ob  Versuch, einen exklusiven Schreib- oder Lesezugriff zu erhalten, erfolgreich war.
+Datentypen, die einen gemeinsamen Zugriff auf veränderliche Werte ermöglichen (\rustcinline{Mutex}, \rustcinline{RwLock} und im erweiterten Sinne \enquote{channels}), liefern immer ein Ergebnis, ob der  Versuch, einen exklusiven Schreib- oder Lesezugriff zu erhalten, erfolgreich war.
 Vor einer Fehlerauswertung kann die Sperre nicht genutzt werden (siehe \autoref{rust:result}).
-
-\todo{..}
 Ein Sperrversuch wird mit einem Fehler beantwortet, wenn ein vorheriger Thread die Sperre nicht ordnungsgemäß, sondern mit einer \rustcinline{panic!}, beendet hat.
 In diesem Fall wird ein \rustcinline{PoisonError} zurückgegeben, der einen direkten Zugriff auf den Wert verhindert.
 Damit wird darauf hingewiesen, dass der geschützte Wert aufgrund er \rustcinline{panic!} eventuell in keinem konsistenten Zustand mehr ist.
@@ -1224,15 +1223,13 @@ Die Art der Definition einer externen Funktion unterscheidet sich nicht von eine
 	\cite[The Rust Programming Language - Unsafe Rust]{rust:book:unsafe}
 \end{quotation}
 
-\todo{..}
-In manchen Situationen kann der Rust Compiler ein ordnungsgemäßes Speichermanagement nicht nachvollziehen.
+In manchen Situationen kann der Rust Compiler ein ordnungsgemäßes Speichermanagement nicht nachweisen.
 So ist zum Beispiel nicht nachvollziehbar, wie eine externe Funktion (siehe \autoref{rust:ffi}) mit einem übergebenem Zeiger umgeht.
 Ebenso unklar ist, ob ein zurückgegebener Zeiger immer gültig (\rustcinline{&T}) oder auch ungültig (\ccinline{NULL}/\rustcinline{Option<T>}) sein kann.
 Aus diesem Grund ist die Dereferenzierung von Zeigern als unsicher markiert.
 Eine Nutzung ist nur innerhalb \rustcinline{unsafe \{\}}-Blöcken möglich.
 Programmierer sollen dadurch besonders aufmerksam den (möglichst kleinen) Programmcode programmieren und prüfen.
 
-\todo{..}
 Besondere Funktionen oder Datentypen, wie eine \rustcinline{Mutex}, die einen exklusiven Zugriff auf den inneren Wert ermöglicht, ohne selbst durch eine exklusive Referenz aufgerufen worden zu sein, sind nicht mit dem Eigentümerprinzip vereinbar.
 Die Implementation findet deswegen Teilweise auch in \rustcinline{unsafe \{\}}-Blöcken statt -
 für die Speichersicherheit sind dann die Entwickler (der Standardbibliothek) verantwortlich.

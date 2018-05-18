@@ -1,10 +1,9 @@
 
 \chapter{Anforderungen}
 
-\todo{.}
 In diesem Kapitel sind die Anforderungen an das umzusetzende System gelistet.
 Die Anforderungen sind dabei in funktionale und nichtfunktionale Anforderungen sortiert.
-Funktionale Anforderungen beschreiben das gewünschte Verhalten des Systems, nichtfunktionale Anforderungen stellen dagegen Rahmenbedingungen bei der Umsetzung auf \cite[155]{goll2012methoden}.
+Funktionale Anforderungen beschreiben das gewünschte Verhalten des Systems, nichtfunktionale Anforderungen zeigen dagegen Rahmenbedingungen bei der Umsetzung auf \cite[155]{goll2012methoden}.
 
 \section{Funktionale Anforderungen}
 
@@ -30,13 +29,13 @@ Funktionale Anforderungen beschreiben das gewünschte Verhalten des Systems, nic
 
 \requirement{impl:algorithmus:from}{Umgebungsmodell weitergeben}{Ergebnisse des Fusions-Algorithmus sollen enkodiert un an die verbundenen Fahrzeuge mit einem Abonnement versendet werden.}
 
-\requirement{impl:algorithmus}{Fusions-Algorithmus}{Für den Testbetrieb soll der Fusions-Algorithmus aus der C++ Referenzimplementierung (\enquote{SampleAlgorithm}) auch in Rust umgesetzt werden. Dieser Fusions-Algorithmus ist eine \enquote{dummy} Implementation, d.h. eingehende Daten werden nach einem einfachen Schema wieder verschickt. Ob die Einbindung einer externen Bibliothek als Fusions-Algorithmus möglich ist, soll überprüft werden.\todo{zu lax}}
+\requirement{impl:algorithmus}{Fusions-Algorithmus}{Für den Testbetrieb soll der Fusions-Algorithmus aus der C++ Referenzimplementierung (\enquote{SampleAlgorithm}) in Rust nachempfunden werden. Dieser Fusions-Algorithmus ist eine \enquote{dummy} Implementation, d.h. eingehende Daten werden nach einem einfachen Schema wieder verschickt: jede empfangende \textit{SensorFrame}-Nachricht (siehe \autoref{msg:sensor_frame}) wird mit einer \textit{EnvironmentFrame}-Nachricht (siehe \autoref{msg:environment_frame}) an alle Fahrzeuge beantwortet. Der Zeitstempel der \textit{SensorFrame}-Nachricht wird hierbei auf die \textit{EnvironmentFrame}-Nachricht übertragen.}
 
 %\requirement{impl:roadclearance}{Road-Clearance}{\todo{...}}
 
-\requirement{impl:config}{Konfigurationsdateien}{\todo{/etc/MECViewServer/...}}
+\requirement{impl:config}{\todo{Konfigurationsdateien?}}{\todo{/etc/MECViewServer/...}}
 
-\requirement{impl:args}{Startparameter}{\todo{sample: send\_delay\_ms, sensor\_timeout\_ms, environment\_frame\_file, ...}}
+\requirement{impl:args}{\todo{Startparameter?}}{\todo{sample: send\_delay\_ms, sensor\_timeout\_ms, environment\_frame\_file, ...}}
 
 \section{Nichtfunktionale Anforderungen}
 
@@ -60,4 +59,6 @@ Funktionale Anforderungen beschreiben das gewünschte Verhalten des Systems, nic
 \requirement{dos:sensor}{Widerstand gegen Nachrichtenüberflutung}{Die Funktionalität des Servers gegenüber anderen Clients soll durch eine Überflutung von Daten eines einzelnen Sensors nicht beeinträchtigt werden.}
 
 \requirement{dos:car}{Widerstand gegen Nachrichtenrückstau}{Die Funktionalität des Servers gegenüber anderen Clients soll durch Fahrzeuge, für die sich ein Nachrichtenrückstau gebildet hat oder von einzelnen langsamen Verbindungen, nicht beeinträchtigt werden.}
+
+\requirement{possible:external_algorith}{Ob die Einbindung einer externen C++ Bibliothek als Fusions-Algorithmus möglich ist, soll überprüft werden.}
 

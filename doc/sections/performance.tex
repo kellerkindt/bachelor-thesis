@@ -28,13 +28,12 @@ Je nach Art des Echtzeitsystems, wird diese Frist jedoch unterschiedlich gewicht
 
 \section{Mobile Edge Computing}
 
-\todo{..}
 Mobile Edge Computing (\gls{mec}) bezeichnet Recheneinheiten, die eine Cloud-ähnliche Umgebung am Rande des Mobilfunknetzes schaffen \cite[4]{etsi:mec}.
 Wenn in dieser Arbeit auf MEC Bezug genommen wird, sind damit explizit direkt an Funkmasten montierte Recheneinheiten gemeint.
 Dadurch, dass die Recheneinheiten direkt an einen Funkmast angeschlossen sind, können sie Anfragen aus dem Abdeckungsbereich der Antenne deutlich schneller beantworten (Latenz kleiner 20ms) als Cloudlösungen (Latenz ca 100ms) \cite[2]{perf:mec:fraunhofer}.
 Hierfür werden die Anfragen aus dem Mobilfunknetz direkt an die Recheneinheit weitergeleitet, anstatt über einen Provider eine Internetverbindung zu einer Cloudlösung aufzubauen.
 
-Die Serverimplementierung des \gls{mec}-View-Projekts wird in einer \gls{mec}-Recheneinheit ausgeführt, um die Sensordaten der Sensoren möglichst schnell an die Fahrzeuge des Abdeckungsbereichs weiterleiten zu können.
+Die Serverimplementierung des \gls{mec}-View Projekts wird in einer \gls{mec}-Recheneinheit ausgeführt, um die Sensordaten der Sensoren möglichst schnell an die Fahrzeuge des Abdeckungsbereichs des Funkamstes weiterleiten zu können.
 
 
 \input{sections/asn}
@@ -114,7 +113,6 @@ Eine Entwicklung nach ISO 26262 findet nicht statt, da dies zum Einen nicht durc
 	\cite[454]{rust:orly_programming}
 \end{quotation}
 
-\todo{..}
 Eine typische synchrone Kommunikation ist ein Funktionsaufruf.
 Zuerst werden die Parameter vorbereitet, dann die Funktion aufgerufen.
 Der weitere Code der aufrufenden Funktion wird nicht ausgeführt, bis der Aufruf der aufgerufenden Funktion beendet wurde.
@@ -124,19 +122,19 @@ Hierbei beendet ein Funktionsaufruf für das Versenden oder Empfangen von Daten 
 
 Für einen Client, der nur zu einem Server eine Verbindung aufbaut, ist diese Herangehensweise aufgrund der niedrigen Komplexität gut geeignet.
 Für einen Server, der mit vielen Datenströmen gleichzeitig kommunizieren muss, ist diese Herangehensweise nicht geeignet.
-Eine sequentieller Sendeaufruf würde die Latenz des Servers pro Client um einen u.a. von der Verbindungsgeschwindigkeit abhängigen Wert erhöhen.
-Einen Sende- und Empfangsthread je Client würde das Problem der Latenz lösen, jedoch aufgrund des je Thread benötigten Stack und zusätzlichen Verwaltungsaufwand den Ressourcenverbrauch des Servers drastisch erhöhen.
+Eine sequentieller Sendeaufruf würde die Latenz des Servers pro Client um einen von der Verbindungsgeschwindigkeit abhängigen Wert erhöhen.
+Einen Sende- und Empfangsthread je Client würde das Problem der Latenz lösen, jedoch aufgrund des je Thread benötigten Stacks und zusätzlichen Verwaltungsaufwand den Ressourcenverbrauch des Servers drastisch erhöhen.
 
 Eine asynchrone Kommunikation ermöglicht dagegen die Kommunikation mit vielen Datenströmen gleichzeitig, ohne die zuvor erwähnte Probleme zu provozieren.
-Bei einem asynchronen Sende- oder Empfangsaufruf wird nicht auf dessen Fertigstellung gewartet, sondern in der darunterliegende Implementation wird die Anfrage notiert, sobald möglich abgearbeitet und der Aufrufer bei Fertigstellung informiert.
-Das erlaubt dem Aufrufer zum Beispiel dem nächsten Datenstrom Daten zuzusenden, ohne das dies durch die Fertigstellung des ersten Aufrufs verzögert wird.
+Bei einem asynchronen Sende- oder Empfangsaufruf wird nicht auf dessen Fertigstellung gewartet, sondern in der darunterliegende Implementation wird die Anfrage notiert, sobald möglich abgearbeitet und der Aufrufende bei Fertigstellung informiert.
+Das erlaubt dem Aufrufer dem nächsten Datenstrom Daten zuzusenden, ohne das dies durch die Fertigstellung des ersten Aufrufs verzögert wird.
 Eine asynchrone Kommunikation erhöht jedoch die Komplexität des Aufrufers (hier: des Servers), da nun zusätzlich der Status einer Sende- und Empfangsanfrage nachverfolgt werden muss.
 Im Gegenzug wird die Verwaltung von vielen Datenströmen bzw. Verbindungen mit wenigen Threads ermöglicht.
 
-Auch ein Funktionsaufruf kann asynchron erfolgen.
-Der Aufrufer teilt dem Aufgerufenem dabei die Anfrage und deren Parameter mit, ohne auf die Fertigstellung zu warten.
-Stattdessen kontaktiert der Aufgerufene den ursprünglichen Aufrufer nachdem die Anfrage bearbeitet wurde.
-Ein solches System wird oft als \enquote{Aktorsystem} bezeichnet.
+%Auch ein Funktionsaufruf kann asynchron erfolgen.
+%Der Aufrufer teilt dem Aufgerufenem dabei die Anfrage und deren Parameter mit, ohne auf die Fertigstellung zu warten.
+%Stattdessen kontaktiert der Aufgerufene den ursprünglichen Aufrufer nachdem die Anfrage bearbeitet wurde.
+%Ein solches System wird oft als \enquote{Aktorsystem} bezeichnet.
 
 %
 %\section{Stack und Heap Geschwindigkeit}

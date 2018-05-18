@@ -41,7 +41,7 @@ Kevin Erath}}
   \begin{center}
   \includegraphics*[width=.6\linewidth]
 {../tmp/WatzkoMichael/rustacean-flat-happy.png}
-  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize Inoffizielles Maskottchen der Programmiersprache Rust}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize Ferris, das inoffizielles Maskottchen der Programmiersprache Rust}
   \end{center}
   \end{minipage}
  \end{center}
@@ -53,7 +53,7 @@ Kevin Erath}}
   \begin{center}
   \includegraphics*[width=\linewidth]
 {../tmp/WatzkoMichael/MECView_Schaubild_BoschStyle_V2.png}
-  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize MEC-View-Schaubild der Robert Bosh GmbH}
+  \captionof{figure}{\fontspec{Lucida Sans} \footnotesize MEC-View-Schaubild der Robert Bosch GmbH}
   \end{center}
   \end{minipage}
  \end{center}
@@ -160,9 +160,9 @@ Es muss funktional sicher sein, Redundanzen und Notfallsysteme müssen jederzeit
 
 Komplexe Prüfalgorithmen und Notfallstrategien lösen diese Anforderung, schaffen aber auch einen Spielraum für Fehler.
 Schnell kompiliert etwas, dass in einem Randfall einen Speicherbereich doppelt freigibt, in eine Spezifikationslücke der Programmiersprache fällt oder einen Wettlaufsituation ermöglicht.
-Im Resultat handelt das System total unvorhersehbar.
+Im Resultat handelt das System total unvorhersehbar und gefährdet damit die Insassen und andere Verkehrsteilnehmer.
 
-Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt: die fehlerhaften Strategien zur Compilezeit findet und die Compilation stoppt; die trotz erzwungener Sicherheitsmaßnahmen, schnell und echtzeitnah reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
+Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt: die fehlerhaften Strategien im Speichermanagement zur Compilezeit findet und die Compilation stoppt; die trotz erzwungener Sicherheitsmaßnahmen, schnell und echtzeitnah reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
 
 Diese Arbeit soll zeigen, dass Rust genau so eine Programmiersprache ist und sich für sicherheitsrelevante, hoch parallelisierte und echtzeitnahe Anwendungsfälle bestens eignet.
 
@@ -184,9 +184,9 @@ Das Eigentümerprinzip und die Markierung von Datentypen durch Merkmale vereinfa
 
 Rust benutzt ein \symbol{8222}statisches, automatisches Speichermanagement - keinen Garbage Collector\symbol{8220} [2].
 Das bedeutet, die Lebenszeit einer Variable wird statisch während der Compilezeit anhand des Geltungsbereichs ermittelt.
-Durch diese statische Analyses findet der Compiler heraus, wann der Speicher einer Variable wieder freigegeben werden muss.
+Durch diese statische Analyse findet der Compiler heraus, wann der Speicher einer Variable wieder freigegeben werden muss.
 Dies ist genau dann, wenn der Geltungsbereich des Eigentümers zu Ende ist.
-Weder ein Garbage-Collector, der dies zur Laufzeit nachverfolgt, noch ein manuelles Eingreifen durch den Entwickler (zum Beispiel durch \textit{free(*void)}, wie in C/C++ üblich) ist nötig.
+Weder ein Garbage-Collector, der dies zur Laufzeit nachverfolgt, noch ein manuelles Eingreifen durch den Entwickler (zum Beispiel durch einen Aufruf von \textit{free()}, wie in C/C++ üblich) ist nötig.
 
 Falls der Compiler keine ordnungsgemäße Nutzung feststellen kann, wie zum Beispiel eine Referenz, die ihren referenzierten Wert überleben möchte, wird die Kompilation verweigert.
 Dadurch wird das Problem des \symbol{8222}dangling pointers\symbol{8220} verhindert, ohne Laufzeitkosten zu erzeugen.
@@ -203,7 +203,7 @@ Eine Leihgabe ist entweder exklusiv und ermöglicht sowohl Lese- als auch Schrei
 Eigentümerschaft kann auch übertragen werden, der vorherige Eigentümer kann danach nicht mehr auf den Wert zugreifen.
 Ein entsprechender Versuch wird mit einer Fehlermeldung durch den Compiler bemängelt.
 
-Die Garantie, nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable zu haben, wird durch die statische Lebenszeitanalyse garantiert.
+Die statische Lebenszeitanalyse garantiert, dass es nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable gibt.
 
 \subsection*{Sichere Nebenläufigkeit}
 
@@ -216,7 +216,7 @@ Eine Wettlaufsituation (englisch \enquote{race condition}) um einen Wert ist in 
 Das Eigentümer- und Leihprinzip verhindert dies, denn es kann nur exklusiv schreibend auf einen Wert zugegriffen werden.
 Für einen Datenwettlauf muss dagegen, gleichzeitig zu einem schreibenden, ein lesender Zugriff erfolgen.
 
-Datentypen, die einen gemeinsamen Zugriff auf veränderliche Werte ermöglichen, liefern immer ein Ergebnis ob der Versuch, einen exklusiven Schreib- oder Lesezugriff zu erhalten, geklappt hat.
+Datentypen, die einen gemeinsamen Zugriff auf veränderliche Werte ermöglichen, liefern immer ein Ergebnis, ob der Versuch, einen exklusiven Schreib- oder Lesezugriff zu erhalten, geklappt hat.
 Erst nach einer Fehlerauswertung kann auf den Wert zugegriffen werden.
 
 \subsection*{Anwendung im Projekt MEC-View}
@@ -227,7 +227,7 @@ Im Rahmen des MEC-View Projekts soll erforscht werden, ob und in wie weit eine d
 \bildIII
 
 Das Forschungsprojekt ist dabei ein Zusammenschluss mehrerer Unternehmen mit unterschiedlichen Themengebieten. Die IT-Designers Gruppe beschäftigt sich mit der Implementation des Kommunikationsservers, der auf der von Nokia zur Verfügung gestellten
-Infrastruktur im 5G Mobilfunk als MEC Server betrieben wird. Erkannte Fahrzeuge und
+Infrastruktur im 5G Mobilfunk als MEC-Server betrieben wird. Erkannte Fahrzeuge und
 andere Verkehrsteilnehmer werden von den Sensoren von Osram via Mobilfunk an den
 Kommunikationsserver übertragen. Der Kommunikationsserver stellt diese Informationen
 dem Fusionsalgorithmus der Universität Ulm zur Verfügung und leitet das daraus gewonnene Umfeldmodell an die hochautomatisierten Fahrzeuge der Robert Bosch GmbH und der Universität
@@ -250,8 +250,9 @@ Schnell können sich Fehler im Speichermanagement oder in Strategien zur Nebenl�
 \columnbreak
 
 Diese Bachelorarbeit beschäftigt sich mit der Implementierung der Kommunikationsplattform in Rust.
-Durch die u. a. hier erwähnten Garantien von Rust, sollte es möglich sein, eine ähnlich sichere Implementierung mit einem deutlich geringerem Aufwand zu schaffen.
-Zuletzt wird die Reaktionszeit der Rust-Kommunikationsplattform der C++-Referenzimplementation  gegenübergestellt, um zu prüfen, ob sich die Programmiersprache für den Einsatz in echtzeitnahen Systemen eignet.
+Durch die zuvor erwähnten Garantien von Rust, sollte eine höhere Stabilität und damit eine bessere Eignung für den Einsatzbereich in funktional sicheren Anwendungen resultieren, die Programmiersprachen wie C und C++ erst durch eine hohe Sorgfalt bei der Entwicklung erreichen.
+%Durch die zuvor erwähnten Garantien von Rust, sollte es möglich sein, eine stabile und damit sichere Implementierung mit einem deutlich geringerem Aufwand gegenüber Programmiersprachen wie C++ zu schaffen.
+Zuletzt wird die Reaktionszeit der Rust-Kommunikationsplattform der C++-Referenzimplementation  gegenübergestellt, um zu prüfen, ob sich die Programmiersprache auch für den Einsatz in echtzeitnahen Systemen eignet.
 
 
 
@@ -275,8 +276,8 @@ Zuletzt wird die Reaktionszeit der Rust-Kommunikationsplattform der C++-Referenz
 Bildquellen:
 \begin{itemize}
 	\item Abbildung 1: \url{https://www.rust-lang.org/logos/rust-logo-256x256.png}
-	\item Abbildung 2: \url{http://www.rustacean.net/}
-	\item Abbildung 3: \url{http://mec-view.de/}
+	\item Abbildung 2: \url{http://mec-view.de/}
+	\item Abbildung 3: \url{http://www.rustacean.net/}
 \end{itemize}
 
 \end{minipage} 

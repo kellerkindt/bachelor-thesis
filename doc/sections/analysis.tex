@@ -324,7 +324,6 @@ Für den Nachrichtentyp sind nur die in \autoref{message:types} gelisteten Werte
 		5 & InitMessage & ausgehend \\
 		6 & RoadClearanceFrame & ausgehend \\
 		7 & SensorIdleFrame & eingehend \\
-		8 & UpdateStatus & \todo{eingehend} \\
 	\end{tabular}
 	\caption{Gültige ASN.1 Nachrichtentypen}
 	\label{message:types}
@@ -348,9 +347,8 @@ Die EnvironmentFrame-Nachricht wird vom Server an das Fahrzeug versendet und ent
 \subsection{UpdateSubscription}
 \label{msg:update_subscription}
 
-\todo{..}
 Die UpdateSubscription-Nachricht wird vom Server an den Sensor oder vom Fahrzeug an den Server gesendet.
-Der Server kann sich damit am Sensor an einem SensorFrame-Abonnement anmelden oder abmelden, während der Client sich damit am Server am EnvironmentFrame-Abonnement anmelden oder abmelden kann.
+Der Server kann sich damit am Sensor an einem SensorFrame-Abonnement anmelden oder abmelden, während das Fahrzeug sich am Server am EnvironmentFrame-Abonnement anmelden oder abmelden kann.
 
 \subsection{InitMessage}
 \label{msg:init_message}
@@ -366,10 +364,6 @@ Die RoadClearanceFrame-Nachricht wird vom Server an das Fahrzeug versendet und k
 
 Die SensorIdleFrame-Nachricht wird vom Sensor in regelmäßigen Zeitintervallen an den Server versendet, wenn der Sensor nicht abonniert ist.
 Die Anwesenheit des Sensors wird somit festgestellt.
-
-\subsection{UpdateStatus}
-
-\todo{huh?}
 
 
 %\begin{figure}[H]
@@ -559,10 +553,10 @@ Durch eine \textit{UpdateSubscription}-Nachricht kann das Fahrzeug jederzeit das
 			\end{umlfragment}
 			
 			\umlsdnode[dt=11]{Fahrzeug}
-			\draw[dashed] (-2,-16.5) -- (14,-16.5);
-			\draw (9.225,-16.25) node {Fahrzeug trennt die Verbindung};
+			\draw[dashed] (-2,-17) -- (14,-17);
+			\draw (9.225,-16.75) node {Fahrzeug trennt die Verbindung};
 
-			\begin{umlcall}[dt=8,op={unsubscribe}, type=asynchron]{MEC-Server}{Sensor}
+			\begin{umlcall}[dt=9,op={unsubscribe}, type=asynchron]{MEC-Server}{Sensor}
 			\end{umlcall}
 			
 			\begin{umlfragment}[type=loop] 

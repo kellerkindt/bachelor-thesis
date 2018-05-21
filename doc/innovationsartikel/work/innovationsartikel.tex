@@ -162,14 +162,14 @@ Komplexe Prüfalgorithmen und Notfallstrategien lösen diese Anforderung, schaff
 Schnell kompiliert etwas, dass in einem Randfall einen Speicherbereich doppelt freigibt, in eine Spezifikationslücke der Programmiersprache fällt oder eine Wettlaufsituation ermöglicht.
 Im Resultat handelt das System total unvorhersehbar und gefährdet damit die Insassen und andere Verkehrsteilnehmer.
 
-Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt: die fehlerhaften Strategien im Speichermanagement zur Compilezeit findet und die Compilation stoppt; die trotz erzwungener Sicherheitsmaßnahmen, schnell und echtzeitnah reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
+Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt, die fehlerhaften Strategien im Speichermanagement zur Compilezeit findet und die Compilation stoppt; die trotz erzwungener Sicherheitsmaßnahmen, schnell und echtzeitnah reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
 
 Diese Arbeit soll zeigen, dass Rust genau so eine Programmiersprache ist und sich für sicherheitsrelevante, hoch parallelisierte und echtzeitnahe Anwendungsfälle bestens eignet.
 
 \subsection*{Die Programmiersprache Rust}
 
 Rust hat als Ziel, eine sichere und performante Systemprogrammiersprache zu sein.
-Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber keine unnötigen Performance-Einbußen verursachen.
+Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern, aber keine unnötigen Performanceeinbußen verursachen.
 
 \bildI
 
@@ -209,7 +209,7 @@ Die statische Lebenszeitanalyse garantiert, dass es nur einen Eigentümer, eine 
 
 Eine sichere Nebenläufigkeit wird in Rust durch das Eigentümerprinzip in Kombination mit zusätzlichen Typmerkmalen erreicht.
 Dabei ist diese sichere Nebenläufigkeit meist unsichtbar (Seite 41, [1]), da der Compiler eine unsichere und damit syntaktisch falsche Verwendung nicht übersetzt.
-Ein Rust Programm das kompiliert, ist daher, in vielerlei Hinsicht, sicher in der Nebenläufigkeit.
+Ein Rust Programm, das kompiliert, ist daher, in vielerlei Hinsicht, sicher in der Nebenläufigkeit.
 Einzig ein \enquote{Deadlock} kann nicht statisch ermittelt und verhindert werden.
 
 Eine Wettlaufsituation (englisch \enquote{race condition}) um einen Wert ist in Rust nicht möglich.
@@ -222,7 +222,7 @@ Erst nach einer Fehlerauswertung kann auf den Wert zugegriffen werden.
 \subsection*{Anwendung im Projekt MEC-View}
 
 Das MEC-View Projekt befasst sich mit der Thematik hochautomatisierter Fahrzeuge und ist vom Bundesministerium für Wirtschaft und Energie (BMWi) gefördert.
-Im Rahmen des MEC-View Projekts soll erforscht werden, ob und in wie weit eine durch externe Sensorik geleistete Unterstützung nötig und möglich ist, um in eine Vorfahrtstraße automatisiert einzufahren.
+Im Rahmen des MEC-View Projekts soll erforscht werden, ob und inwieweit eine durch externe Sensorik geleistete Unterstützung nötig und möglich ist, um in eine Vorfahrtstraße automatisiert einzufahren.
 
 \bildIII
 

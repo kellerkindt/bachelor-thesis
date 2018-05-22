@@ -90,25 +90,51 @@ Dies ist unumgänglich, weil sowohl der eingesetzte Algorithmus, der Mapper und 
 Zudem muss der Server mindestens indirekt die eingesetzte Technologie kennen, um die richtigen und zueinander kompatiblen Algorithmus-, Mapper- und Adapterimplementation zu instantiieren.
 Weitere Klassen agieren dagegen unabhängig von der eingesetzten Nachrichtentechnologie.
 
-\subsection{Asynchrone Kommunikation}
+\subsection{Kommunikationsarchitektur}
 
 Um ein Mehrkernsystem effizient zu nutzen, arbeiten einige Klassen asynchron zueinander.
-Hierzu zählt der Server, der asynchron neue Verbindungen annimmt.
+Hierzu zählt der Server, der fortlaufend neue Verbindungen annimmt.
 Die daraus resultierenden Clientinstanzen bearbeiteten asynchron eingehende Anfragen.
-Letztendlich aktualisiert auch der Algorithmus asynchron zu den Clients und dem Server das Umfeldmodell.
+Letztendlich aktualisiert auch der Algorithmus asynchron zu den Clientinstanzen und dem Server das Umfeldmodell.
 
-Das \enquote{Channel Architektur Pattern} \cite[157]{douglass2003real}, welches bereits von \textit{Tokio} (siehe \autoref{design:tokio}) verwendet wird, wird dies ermöglichen.
+Die Kommunikation zwischen einem TCP-Datenstrom und einer Clientinstanz soll mittels des \enquote{Channel Architektur Pattern} \cite[157]{douglass2003real} verwirklicht werden.
+Das Muster eignet sich besonders gut, da auf eingehende und ausgehende Datensätze eine immer gleiche Transformation angewandt werden muss:
 
-\todo{explain more channel system}
-
-
-
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
-	\includegraphics[width=1.0\textwidth]{dia/design_decode_state}
-	\caption{Channel physikalischer Client zu Clientinstanz}
+	\includegraphics[width=\textwidth]{dia/channel}
+	\caption{\enquote{Channel Architektur Pattern} zwischen einem TCP-Datenstrom (unten) und einer Clientinstanz (oben). Zu lesen von links unten, nach oben, nach rechts unten.}
 	\label{design:channel}
 \end{figure}
+
+\autoref{design:channel} beschreibt die nötigen Transformationen bis eine Anfrage bearbeitet werden kann und die nötigen Transformationen um eine Antwort zu versenden:
+\begin{itemize}
+	\item \textbf{Daten empfangen}: Die eingehenden Daten (hier Bytes) müssen angesammelt werden, bis sie eine komplette Anfrage abbilden.
+	\item \textbf{RawMessage dekodieren}: Die angesammelten Daten werden in eine RawMessage gewandelt. Nachrichtentyp und Korpus werden hierbei extrahiert.
+	\item \textbf{asn::Message dekodieren}: Aus dem Korpus wird eine ASN-Nachricht des entsprechenden Typs dekodiert.
+	\item \textbf{Anfrage zuordnen}: Die ASN-Nachricht wird einer Anfrage zugeordnet.
+	\item \textbf{Anfrage berabeiten}: Die Anfrage wird bearbeitet und eine Antwort generiert.
+	\item \textbf{asn::Message zuordnen}: Die Antwort wird eine ASN-Nachricht eingebettet.
+	\item \textbf{asn::Message encodieren}: Die ASN-Nachricht wird in eine RawMessage encodiert. Der Nachrichtentyp wird entsprechend gesetzt.
+	\item \textbf{RawMessage encodieren}: Die RawMessage wird in Bytes gewandelt.
+	\item \textbf{Daten versenden}: Die Bytes werden über den TCP-Datenstrom versandt.
+\end{itemize}
+
+Nach dem \enquote{Channel Architektur Pattern} ist sequentielle Bearbeitung zwischen dem TCP-Datenstrom und der Clientinstanz in jede Richtung als Kanal interpretierbar.
+Da jeder Zwischenschritt innerhalb eines Kanals lediglich von dem Ergebnis des vorhergehenden abhängig ist, können die einzelnen Schritte parallel zueinander bearbeiten werden.
+\todo{}
+Durch einen zusätzlichen, vorangestellten Multiplexer und nachfolgenden Demultiplexer könnten in einer späteren Version mehrere Kanäle parallel den Client oder Datenstrom speisen.
+Hiervon wird in der ersten Implementierung jedoch abgesehen, da je Client keine derart große Datenflut erwartet wird, die dies verlangen würde.
+Stattdessen soll lediglich jeder Kanal eines Clients parallel zum dazugehörigen Client und zu allen anderen Kanälen ausgeführt werden.
+
+\textit{Tokio} (siehe \autoref{design:tokio}) ermöglicht durch die Kombinationsmöglichkeiten von \textit{Future}s nicht blockierenden Kommunikationskanäle nach diesem Prinzip zu erstellen und zu betreiben.
+
+%Bei einer großen Datenmenge kann dies helfen, die Anforderungen von echtzeitnahen System zu erfüllen (\cite[161]{douglass2003real}).
+
+%Das \enquote{Channel Architektur Pattern} \cite[157]{douglass2003real}, welches bereits von \textit{Tokio} (siehe \autoref{design:tokio}) verwendet wird, wird dies ermöglichen.
+
+%\todo{explain more channel system}
+
 
 
 ~\\ ~\\ ~\\

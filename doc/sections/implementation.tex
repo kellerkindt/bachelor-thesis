@@ -22,6 +22,49 @@ In diesem Kapitel wird auf Besonderheiten bei der Implementierung eingegangen.
 
 \subsection{Continuous Integration mittels Jenkins}
 
+prepare -> check-src (clippy, rustfmt) -> build-debug -> Build-release-and-test-debug (build release, test debug) -> Test-Release -> Post-Build (Coverage, Documentation) | Test-Build, Release-Build, Coverage, Documentation |
+
+Die Rust-Implementation baut mittels \enquote{Continous Integration} auf einem Jenkins Server nach jeder Aktualisierung der Quellcode-Repository.
+In einem Jenkinsfile ist die folgende Pipeline definiert:
+
+\todo{pipeline Bild}
+
+\subsubsection{Stage 'prepare'}
+In diesem Schritt wird überprüft, ob die richtige Version von Rust installiert ist.
+Sowohl der Rust Compiler als auch Abhängigkeiten wie Cargo, Clippy oder Tarpaulin werden falls nötig  in diesem Schritt nachinstalliert und aktualisiert.
+
+\subsubsection{Stage 'check-src'}
+Hier wird der Quellcode auf schlechte Programmierstrategien durch Clippy und auf nicht standardkonforme Formatierung überprüft.
+Ein erkannter Mangel resultiert in einem abgebrochenem Bauversuch und einem entsprechendem roten Icon auf der Projektseite von Jenkins.
+Ein Quellcode, die diese Qualitätsstandards nicht erfüllt, wird somit schnellstmöglich abgelehnt.
+
+\subsubsection{Stage 'Build-Debug'}
+In diesem Schritt wird das Projekt und Abhängigkeiten im \enquote{debug}-Modus kompiliert.
+In einem \enquote{debug}-Modus werden nahezu keine Optimierungen durchgeführt, weswegen die Ausführgeschwindigkeit meist Mangelhaft ist.
+Im falle eines Fehlers in einem späteren Schritt, können in einem \enquote{debug}-Artefakt jedoch nützlich Informationen gewonnen werden.
+
+\subsubsection{Stage 'Build-Release-And-Test-Debug'}
+Wie der Name bereits vermuten lässt, wird in diesem Schritt das Projekt im \enquote{release}-Modus übersetzt.
+Gleichzeitig wird das zuvor erstellte \enquote{debug}-Artefakt auf Fehler überprüft, indem Unit-Tests ausgeführt werden.
+Ein \enquote{release}-Artefakt ist stark optimiert ist daher geeignet für den Produktivbetrieb.
+
+\subsubsection{Stage 'Test-Release'}
+In diesem Schritt wird auch das \enquote{release}-Artefakt auf Fehler mittels Unit-Tests überprüft.
+Hierdurch soll sichergestellt werden, dass kein Fehler durch Optimierungen des Compilers aufgedeckt oder verursacht wurden.
+
+\subsubsection{Stage 'Post-Build'}
+Dieser Schritt dient zur Zusammenstellung der Testabdeckung und der automatisierten Dokumentation.
+
+\subsubsection{Ergebnis}
+Jede Aktualisierung der Quellcoderepository resultiert bei erfolgreicher Kompilation und durchlaufen der Tests in den folgenden Artefakten:
+\begin{itemize}
+	\item \textbf{Debug-Artefakt}: Kompilation für eine manuelle Fehlersuche mit vielen auf den Quellcode bezogenen Symbolen und ohne Optimierungen durch den Compiler
+	\item \textbf{Release-Artefakt}: Artefakt für den Produktivbetrieb
+	\item \textbf{Test-\todo{Deckungsbericht}}: Bericht über automatisiert getesteten und nicht getesteten Quellcode
+	\item \textbf{Dokumentation}: \todo{.}
+\end{itemize}
+
+
 \todo{screenshot + explain}
 
 \todo{prüft rustfmt, wertet test-coverage aus und führt tests aus --> schnelle rückmeldung bei fehlern}
@@ -60,6 +103,8 @@ In diesem Kapitel wird auf Besonderheiten bei der Implementierung eingegangen.
 	\todo{Trailing zeroes issue, commit a02496d + tagged, libmessages/src/asn.rs:17 bzw :31 bzw :32 Ok((result.encoded as usize + 7) / 8}
 	
 	\todo{unterschiedlicher Heap libc / rust}
+	
+	\todo{jenkins clippy nightly often broken}
 	
 	
 	\subsection{--help}

@@ -119,3 +119,5 @@ source/**/*.iml
 source/.idea
 
 /doc/_minted-doc/
+*.gnuplot
+*.table

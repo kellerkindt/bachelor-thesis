@@ -2,8 +2,8 @@
 			
 \chapter{Auswertung}
 
-In diesem Kapitel wird die Implementation des MECViewServers in Rust mit der Referenzimplementation in C++ verglichen.
-Fahrzeuge und Sensoren werden mit einem Programm aus dem MEC-View C++ Projekt simuliert.
+In diesem Kapitel wird die Implementation des MEC-View-Servers in Rust mit der Referenzimplementation in C++ verglichen.
+Hierzu wird die Textumgebung aus dem C++ Projekt auch auf die Rust Implementation angewandt: Fahrzeuge und Sensoren werden simuliert.
 
 test für durchsatz nur bedingt aussagekräftig
 
@@ -13,16 +13,20 @@ gleicher dummy alg
 
 \section{Testumgebung}
 
-Alle Tests sind auf der gleichen Hardware ausgeführt worden.
-Es handelt sich um einen Server mit zwei Intel Xeon CPUs (E5-2620 v4 @ 2.10GHz) und einer Ubuntu 16.04.4 LTS Installation.
-Während aller Test wurde der Intel CPU Gvernor auf \enquote{performance} gestellt, um keine Anwendung durch Energiesparmaßnahmen zu benachteiligen.
+Alle Tests wurden auf dem selben Ubuntu 16.04.4 LTS Server mit zwei Intel Xeon CPUs (E5-2620 v4 @ 2.10GHz) ausgeführt.
+Der CPU Gvernor wurde für alle Tests auf \enquote{performance} gestellt, um Schwankungen in der CPU Taktung durch Energiesparmaßnahmen und damit Verfälschungen der Testergebnisse zu unterbinden.
 
-Jede Kombination von Sensoren, Fahrzeugen und einer Serverimplementation sind in 10 Test-Durchläufen gemessen worden.
-Zu jedem Zeitpunkt ist maximal ein Test-Durchlauf gleichzeitig auf dem System ausgeführt worden.
+Für jede Kombination aus Sensoren, Fahrzeugen und Serverimplementierung wurde 10 Tests durchgeführt.
+Während jedem Test ist für jede Empfangene Nachricht am Fahrzeug, die Latenz seit Versand am Sensor in eine Datei geschrieben worden.
+Nach einem Testdurchlauf wurden die Anzahl an Nachrichten gezählt und der Durchschnitt und Boxplots für die Latenzen gebildet.
 
-Um Latenzen durch das Netzwerk auszuschließen, wurden auch die virtuellen Sensoren und Fahrzeuge auf dem Server ausgeführt und durch die Loopback-Netzwerkschnittstelle mit dem Server verbunden.
+Zu jedem Zeitpunkt ist maximal ein Test gleichzeitig auf dem System ausgeführt worden.
+
+Um Latenzen durch das Netzwerk auszuschließen, wurden auch die virtuellen Sensoren und Fahrzeuge auf dem gleichen Server wie die Serverimplementation ausgeführt und durch die Loopback-Netzwerkschnittstelle mit der Serverimplementation verbunden.
 Ein kurzer Test ergab hierbei einen Durchsatz von ca 40Gbit/s (mittels \textit{iperf}) und eine Latenz von ca 24us (mittels \textit{ping}) auf der Loopback-Netzwerkschnittstelle.
 Auswirkungen auf die Testergebnisse sind damit vernachlässigbar klein.
+
+Beide Implementationen sind im Release-Modus und ohne \enquote{RoadClearanceModule} compiliert worden.
 
 \todo{no RCM}
 
@@ -64,7 +68,7 @@ Bei der Auswertung wird der Durchschnitt errechnet.
 			\begin{tikzpicture}
 			\begin{axis}[ymin=0, ymax=#2, xmin=0, xmax=#3, width=\textwidth, height=20em, xlabel={Anzahl der Nachrichten}, ylabel={Durchschnittliche Latenz in ms}]
 			
-			\addplot gnuplot [raw gnuplot,id=bal,mark=none,very thick,color=brown!30]{
+			\addplot gnuplot [raw gnuplot,id=rust#1,mark=none,very thick,color=brown!30]{
 				set xrange [1:#3];
 				f(x)=a*x+b;
 				fit f(x) "data/rust_times_for_#1.dat" via a,b;
@@ -73,7 +77,7 @@ Bei der Auswertung wird der Durchschnitt errechnet.
 			[only marks,mark=o,thick,color=brown] 
 			file {data/rust_times_for_#1.dat};
 			
-			\addplot gnuplot [raw gnuplot,id=bal,mark=none,very thick,color=blue!30]{
+			\addplot gnuplot [raw gnuplot,id=cpp#1,mark=none,very thick,color=blue!30]{
 				set xrange [1:#3];
 				f(x)=a*x+b;
 				fit f(x) "data/cpp_times_for_#1.dat" via a,b;
@@ -119,9 +123,9 @@ Bei der Auswertung wird der Durchschnitt errechnet.
 
 \makeDias{1x25_60s}{3.5}{52000}
 \makeDias{2x25_60s}{4.1}{120000}
-\makeDias{3x25_60s}{4.5}{200000}
-\makeDias{4x25_60s}{4.5}{270000}
-\makeDias{5x25_60s}{5.0}{370000}
+\makeDias{3x25_60s}{6.5}{300000}
+\makeDias{4x25_60s}{7.0}{400000}
+\makeDias{5x25_60s}{12.0}{900000}
 
 	
 \todo{rust graphs}

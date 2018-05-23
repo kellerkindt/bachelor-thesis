@@ -37,7 +37,7 @@ pipeline {
                             // required.
                             sh "$RUSTUP component add rustfmt-preview"
                             sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
-                            sh "cd $CRATE_SERVER; $CARGO +nightly fmt --all -- --write-mode diff"
+                            sh "cd $CRATE_SERVER; $CARGO +nightly fmt --all -- --check"
                         }
                     }
                 }

@@ -123,7 +123,7 @@ impl Message {
 
     pub fn type_id(&self) -> u32 {
         match self {
-            Message::ClientRegistration(_)        => <raw::ClientRegistration as AsnMessage>  ::type_id(),
+            Message::ClientRegistration(_)  => <raw::ClientRegistration as AsnMessage>  ::type_id(),
             Message::SensorFrame(_)         => <raw::SensorFrame as AsnMessage>         ::type_id(),
             Message::EnvironmentFrame(_)    => <raw::EnvironmentFrame as AsnMessage>    ::type_id(),
             Message::UpdateSubscription(_)  => <raw::UpdateSubscription as AsnMessage>  ::type_id(),

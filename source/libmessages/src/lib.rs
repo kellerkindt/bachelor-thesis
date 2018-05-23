@@ -79,9 +79,10 @@ impl RawMessageData {
     }
 
     fn bytes(&self) -> &[u8] {
+        let len = self.len();
         match self {
-            RawMessageData::BytesMut(bytes) => &bytes[..],
-            RawMessageData::Vec(vec) => &vec[..],
+            RawMessageData::BytesMut(bytes) => &bytes[..len],
+            RawMessageData::Vec(vec) => &vec[..len],
         }
     }
 }

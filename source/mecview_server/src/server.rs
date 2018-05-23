@@ -312,10 +312,8 @@ impl<T> Decoder for RawMessageCodec<T> {
 
             if src.len() >= total_length {
                 trace!("Going to read RawMessage, length={}, identifier={}, total_length={}, src.len={}", length, identifier, total_length, src.len());
-                let mut vec = vec![0u8; length];
                 let src = src.split_to(total_length);
-                vec[..length].clone_from_slice(&src[HEADER_SIZE..]);
-                match RawMessage::new(identifier, vec) {
+                match RawMessage::new(identifier, src) {
                     Ok(message) => Ok(Some(Arc::new(message))),
                     Err(_) => Err(Error::from(ErrorKind::InvalidData)),
                 }

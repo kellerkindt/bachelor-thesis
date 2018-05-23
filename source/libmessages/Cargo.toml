@@ -6,6 +6,7 @@ authors = ["Michael Watzko <michael@watzko.de>"]
 [dependencies]
 log = "0.4.1"
 log4rs = "0.8.0"
+bytes = "0.4.6"
 
 [dependencies.libmessages-sys]
 version = "0.1.1"

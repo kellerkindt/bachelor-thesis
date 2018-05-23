@@ -313,10 +313,8 @@ impl<T> Decoder for RawMessageCodec<T> {
             if src.len() >= total_length {
                 trace!("Going to read RawMessage, length={}, identifier={}, total_length={}, src.len={}", length, identifier, total_length, src.len());
                 let src = src.split_to(total_length);
-                match RawMessage::new(identifier, src) {
-                    Ok(message) => Ok(Some(Arc::new(message))),
-                    Err(_) => Err(Error::from(ErrorKind::InvalidData)),
-                }
+                Ok(Some(Arc::new(RawMessage::new(identifier, src)
+                    .map_err(|_| Error::from(ErrorKind::InvalidData))?)))
             } else {
                 let capacity = src.capacity();
                 if capacity < total_length {

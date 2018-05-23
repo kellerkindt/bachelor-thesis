@@ -1,10 +1,4 @@
 ASN_MODULE_SOURCES=	\
-	Header.c	\
-	ReferencePoint.c	\
-	PositionOffset.c	\
-	MovingVector.c	\
-	ObjectSize.c	\
-	ObjectType.c	\
 	Covariance.c	\
 	PathPoint.c	\
 	Path.c	\
@@ -20,12 +14,12 @@ ASN_MODULE_SOURCES=	\
 	Sector.c	\
 	Sectors.c	\
 	InitMessage.c	\
-	RoadClearanceEnvelope.c	\
-	Parameter.c	\
-	Parameters.c	\
-	RoadSection.c	\
-	RoadSections.c	\
-	RoadClearanceFrame.c	\
+	Header.c	\
+	ReferencePoint.c	\
+	PositionOffset.c	\
+	MovingVector.c	\
+	ObjectSize.c	\
+	ObjectType.c	\
 	ClientType.c	\
 	CoveredArea.c	\
 	SubscriptionStatus.c	\
@@ -33,6 +27,12 @@ ASN_MODULE_SOURCES=	\
 	UpdateSubscription.c	\
 	ConnectionStatus.c	\
 	UpdateStatus.c	\
+	RoadClearanceEnvelope.c	\
+	Parameter.c	\
+	Parameters.c	\
+	RoadSection.c	\
+	RoadSections.c	\
+	RoadClearanceFrame.c	\
 	SensorType.c	\
 	SensorEnvelope.c	\
 	SensorObjectDetection.c	\
@@ -41,12 +41,6 @@ ASN_MODULE_SOURCES=	\
 	SensorIdleFrame.c
 
 ASN_MODULE_HEADERS=	\
-	Header.h	\
-	ReferencePoint.h	\
-	PositionOffset.h	\
-	MovingVector.h	\
-	ObjectSize.h	\
-	ObjectType.h	\
 	Covariance.h	\
 	PathPoint.h	\
 	Path.h	\
@@ -62,12 +56,12 @@ ASN_MODULE_HEADERS=	\
 	Sector.h	\
 	Sectors.h	\
 	InitMessage.h	\
-	RoadClearanceEnvelope.h	\
-	Parameter.h	\
-	Parameters.h	\
-	RoadSection.h	\
-	RoadSections.h	\
-	RoadClearanceFrame.h	\
+	Header.h	\
+	ReferencePoint.h	\
+	PositionOffset.h	\
+	MovingVector.h	\
+	ObjectSize.h	\
+	ObjectType.h	\
 	ClientType.h	\
 	CoveredArea.h	\
 	SubscriptionStatus.h	\
@@ -75,6 +69,12 @@ ASN_MODULE_HEADERS=	\
 	UpdateSubscription.h	\
 	ConnectionStatus.h	\
 	UpdateStatus.h	\
+	RoadClearanceEnvelope.h	\
+	Parameter.h	\
+	Parameters.h	\
+	RoadSection.h	\
+	RoadSections.h	\
+	RoadClearanceFrame.h	\
 	SensorType.h	\
 	SensorEnvelope.h	\
 	SensorObjectDetection.h	\
@@ -168,5 +168,5 @@ clean:
 regen: regenerate-from-asn1-source
 
 regenerate-from-asn1-source:
-	asn1c -fcompound-names -fskeletons-copy -fnative-types -gen-PER /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK/proto/general.asn1 /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK/proto/environment.asn1 /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK/proto/road_clearance.asn1 /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK/proto/protocol.asn1 /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK/proto/sensor.asn1
+	asn1c -fcompound-names -Werror -gen-PER /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK/proto/environment.asn1 /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK/proto/general.asn1 /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK/proto/protocol.asn1 /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK/proto/road_clearance.asn1 /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK/proto/sensor.asn1
 

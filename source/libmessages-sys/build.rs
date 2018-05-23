@@ -6,7 +6,7 @@ use std::fs;
 use std::io::Write;
 use std::path::Path;
 
-const LIBRARY_FILE : &'static str = "libmessage.a";
+const LIBRARY_FILE: &'static str = "libmessage.a";
 const BINDINGS_FILE: &'static str = "src/bindings.rs";
 
 fn main() {
@@ -55,7 +55,7 @@ fn compile_sdk(sdk_dir: &str, out: &str) -> Vec<String> {
                 }
             }
 
-            gcc_build.include(sdk_dir).compile(out);
+            gcc_build.include(sdk_dir).opt_level(3).compile(out);
         }
     }
 

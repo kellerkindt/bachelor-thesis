@@ -1,0 +1,43 @@
+MECViewProtocolModule DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+IMPORTS
+    ReferencePoint
+FROM MECViewGeneralModule;
+
+ClientType ::= ENUMERATED {
+    sensor,
+    vehicle
+}
+
+CoveredArea ::= SEQUENCE OF ReferencePoint
+
+SubscriptionStatus ::= ENUMERATED {
+    unsubscribed,
+    subscribed
+}
+
+ClientRegistration ::= SEQUENCE {
+    type                    ClientType,
+    covered-area            CoveredArea OPTIONAL,
+    minimum-message-period  INTEGER (0..10000) OPTIONAL
+}
+
+UpdateSubscription ::= SEQUENCE {
+    subscription-status    SubscriptionStatus,
+    message-period         INTEGER (0..10000) OPTIONAL
+}
+
+ConnectionStatus ::= ENUMERATED {
+	connected,
+	disconnected,
+	faulty
+}
+
+UpdateStatus ::= SEQUENCE {
+	sensor-status ConnectionStatus,
+	ip-address UTF8String,
+	sensor-id INTEGER
+}
+
+END

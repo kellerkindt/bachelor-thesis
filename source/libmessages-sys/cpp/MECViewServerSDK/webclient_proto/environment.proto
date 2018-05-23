@@ -1,0 +1,77 @@
+syntax = "proto2";
+
+package mec.environment;
+import "general.proto";
+
+
+message Envelope {
+    required uint32         version         = 1;
+    required uint32         server_id       = 2;
+    required ReferencePoint reference_point = 3;
+    repeated Error	    error_codes	    = 4;
+}
+
+message Covariance {
+    optional sint32 north_pos_east_pos  = 1;    // [-22_500;22_500], resolution .0001 -> [-225_000_000;225_000_000]
+    optional sint32 north_pos_north_vel = 2;    // [ -4_500; 4_500], resolution .0005 -> [  -9_000_000;  9_000_000]
+    optional sint32 north_pos_east_vel  = 3;    // [ -4_500; 4_500], resolution .0005 -> [  -9_000_000;  9_000_000]
+    optional sint32 east_pos_north_vel  = 4;    // [ -4_500; 4_500], resolution .0005 -> [  -9_000_000;  9_000_000]
+    optional sint32 east_pos_east_vel   = 5;    // [ -4_500; 4_500], resolution .0005 -> [  -9_000_000;  9_000_000]
+    optional sint32 north_vel_east_vel  = 6;    // [   -900;   900], resolution .0025 -> [    -360_000;    360_000]
+}
+
+message PathPoint {
+    required PositionOffset position_offset = 1;
+    required uint32         probability     = 2; // [0;1], resolution .005 -> [0;200]
+}
+
+message PredictedPath {
+    required uint32         timestamp_dt   = 1;
+    repeated PathPoint      path           = 2;
+}
+
+message SectorIds {
+	required uint32	    id	= 1;	// [0..255]
+}
+
+message Error {
+	required uint32	    id = 1;	// [0...255]
+	required SectorIds sector_ids = 2;
+}
+
+message ObjectDetection {
+    required uint32         timestamp                   = 1;
+    required bool           measured                    = 2;
+    required uint32         global_id                   = 3;
+    required uint32         probability_of_existence    = 4; // [0;1], resolution .000_001 -> [0;1_000_000]
+    required PositionOffset position_offset             = 5;
+    optional MovingVector   moving_vector               = 6;
+    required ObjectType     type                        = 7;
+    required uint32         type_probability            = 8; // [0;1], resolution .000_001 -> [0;1_000_000]
+    required ObjectSize     size                        = 9;
+    required Covariance     covariance                  =10;
+    required uint32         orientation                 =11; // [0;360], resolution .1 -> [0;3_600]
+    required uint32         std_dev_orientation         =12; // [0;180], resolution .1 -> [0;1_800]
+    optional PredictedPath  predicted_path              =13;
+}
+
+message Sectors {
+    required uint32	    id = 1;	// [0...255]
+    repeated ReferencePoint area = 2;
+}
+
+message Header {
+    required uint64             timestamp           = 1;
+}
+
+message EnvironmentFrame {
+    required Header             header              = 1;
+    required Envelope           envelope            = 2;
+    repeated ObjectDetection    object_detections   = 3;
+}
+
+message InitMessage {
+    required Header		header		    = 1;
+    required Envelope		envelope	    = 2;
+    required Sectors		sectors		    = 3; 
+}

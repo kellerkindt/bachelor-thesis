@@ -1,8 +1,8 @@
-# Install script for directory: /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK
+# Install script for directory: /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK-Build")
+  set(CMAKE_INSTALL_PREFIX "/home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "")
+    set(CMAKE_INSTALL_CONFIG_NAME "Release")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -32,16 +32,21 @@ if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
   set(CMAKE_INSTALL_SO_NO_EXE "1")
 endif()
 
-if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/mecview-sdk" TYPE FILE FILES "/home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK-Build/version.h")
+# Is this installation the result of a crosscompile?
+if(NOT DEFINED CMAKE_CROSSCOMPILING)
+  set(CMAKE_CROSSCOMPILING "FALSE")
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/mecview-sdk" TYPE FILE FILES "/home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build/version.h")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK-Build/proto/cmake_install.cmake")
-  include("/home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK-Build/extension/cmake_install.cmake")
-  include("/home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK-Build/algorithm/cmake_install.cmake")
-  include("/home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK-Build/road_clearance/cmake_install.cmake")
+  include("/home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build/proto/cmake_install.cmake")
+  include("/home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build/extension/cmake_install.cmake")
+  include("/home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build/algorithm/cmake_install.cmake")
+  include("/home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build/road_clearance/cmake_install.cmake")
 
 endif()
 
@@ -53,5 +58,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/mi7wa6/Dokumente/2018-BA-Watzko/source/libmessages-sys/cpp/MECViewServerSDK-Build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -11,7 +11,7 @@ const std::string VERSION_MINOR = "@VERSION_MINOR@";
 const std::string VERSION_PATCH = "@VERSION_PATCH@";
 const std::string VERSION_SHORT = "@VERSION_SHORT@";
 
-const std::string SVN_REVISION_NUMBER = "@MY_WC_REVISION@";
+const std::string SVN_REVISION_NUMBER = "@MY_WC_LAST_CHANGED_REV@";
 
 const std::string VERSION = "v" + VERSION_SHORT + "-" + SVN_REVISION_NUMBER;
 

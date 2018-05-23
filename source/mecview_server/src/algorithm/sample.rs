@@ -180,10 +180,10 @@ impl SampleAlgorithm {
 
         for object_count in 0..15 {
             let mut object_detection =
-                Box::new(unsafe { ::std::mem::zeroed::<EnvironmentObjectDetection>() });
+                unsafe { Box::from_raw(raw::zeroed::<EnvironmentObjectDetection>()) };
 
             object_detection.global_id = object_count;
-            object_detection.probability_of_existence = 75_000;
+            object_detection.probability_of_existence = 150;
 
             object_detection.position_offset.position_north = 256;
             object_detection.position_offset.std_dev_position_north = unsafe { raw::alloc(1) };
@@ -202,7 +202,7 @@ impl SampleAlgorithm {
             object_detection.moving_vector = Box::into_raw(moving_vector);
 
             object_detection.type_ = raw::ObjectType_ObjectType_car as raw::ObjectType_t;
-            object_detection.type_probability = 95_000;
+            object_detection.type_probability = 190;
 
             // SIZE
 
@@ -242,7 +242,7 @@ impl SampleAlgorithm {
                 pathpoint.position_offset.position_east = 5_000;
                 pathpoint.position_offset.std_dev_position_east = unsafe { raw::alloc(1) };
 
-                pathpoint.probybility = 195;
+                pathpoint.probability = 195;
 
                 let result = unsafe {
                     raw::asn_set_add(

@@ -67,6 +67,7 @@ pub fn map_message(
     client_id: usize,
     message: Message,
 ) -> Result<client::Command<SensorFrame, EnvironmentFrame>, Error> {
+    trace!("Going to map Message={:?}", message);
     match message {
         Message::ClientRegistration(ref reg) => Ok(client::Command::UpdateVariant(
             variant_from_client_registration(reg)?,

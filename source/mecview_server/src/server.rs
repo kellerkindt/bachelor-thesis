@@ -291,7 +291,11 @@ impl<T> Encoder for RawMessageCodec<T> {
         dst.reserve(HEADER_SIZE + item.length() as usize);
         dst.put_slice(&header);
         dst.put_slice(item.bytes());
-        trace!("RawMessage written successfully");
+        trace!(
+            "RawMessage written successfully. Header: {:?}, Body: {:?}",
+            header,
+            item.bytes()
+        );
         Ok(())
     }
 }
@@ -311,9 +315,25 @@ impl<T> Decoder for RawMessageCodec<T> {
             let total_length = HEADER_SIZE + length;
 
             if src.len() >= total_length {
-                trace!("Going to read RawMessage, length={}, identifier={}, total_length={}, src.len={}", length, identifier, total_length, src.len());
-                let src = src.split_to(total_length);
-                Ok(Some(Arc::new(RawMessage::new(identifier, src)
+                trace!(
+                    "Going to read RawMessage, length={}, identifier={}, src={:?}",
+                    length,
+                    identifier,
+                    &src[..total_length]
+                );
+                let mut message = src.split_to(total_length);
+                trace!(
+                    "Complete message len={} {:?}",
+                    message.len(),
+                    &message[..message.len()]
+                );
+                let _header = message.split_to(HEADER_SIZE);
+                trace!(
+                    "Message body len={} {:?}",
+                    message.len(),
+                    &message[..message.len()]
+                );
+                Ok(Some(Arc::new(RawMessage::new(identifier, message)
                     .map_err(|_| Error::from(ErrorKind::InvalidData))?)))
             } else {
                 let capacity = src.capacity();

@@ -10,12 +10,12 @@ pipeline {
     stages {
         stage('prepare') {
             steps {
-                sh "$RUSTUP --version || curl https://sh.rustup.rs -sSf | sh -s -- -y"
+                // sh "$RUSTUP --version || curl https://sh.rustup.rs -sSf | sh -s -- -y"
                 sh "find . -name cobertura.xml -delete"
                 // sh "$RUSTUP install nightly"
-                sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
+                // sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
                 // sh "$RUSTUP update beta"
-                sh "$RUSTUP update nightly"
+                // sh "$RUSTUP update nightly"
                 // sh "cd $CRATE_SERVER; $CARGO clean"
                 sh "$CARGO --version"
                 sh "$RUSTUP run stable rustc --version"
@@ -26,7 +26,7 @@ pipeline {
                 stage('Clippy') {
                     steps {
                         ansiColor('xterm') {
-                            sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all || ($CARGO +nightly install clippy --force && $CARGO +nightly clippy --all)"
+                            sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all"
                         }
                     }
                 }
@@ -85,7 +85,7 @@ pipeline {
             parallel {
                 stage('Coverage') {
                     steps {
-                        sh "set +e; $CARGO tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
+                        // sh "set +e; $CARGO tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
                         sh "cd $CRATE_SERVER; $CARGO tarpaulin --all --skip-clean --out Xml"
                         sh "cd $CRATE_LIBMSG; $CARGO tarpaulin --all --skip-clean --out Xml"
                         step([$class: 'CoberturaPublisher',

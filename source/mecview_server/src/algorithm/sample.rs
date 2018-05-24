@@ -30,7 +30,7 @@ impl SampleAlgorithm {
 
     fn push_model_listener(&mut self, id: SocketAddr, sink: EnvironmentListener<EnvironmentFrame>) {
         trace!("Adding model listener with id={}", id);
-        let len = self.model_listener.len();
+        let before = self.model_listener.len();
         self.model_listener.push((id, false, sink));
 
         trace!(
@@ -38,22 +38,22 @@ impl SampleAlgorithm {
             self.model_listener.len()
         );
 
-        if len != self.model_listener.len() {
-            self.on_model_count_changed();
+        if before != self.model_listener.len() {
+            self.on_model_count_changed(before);
         }
     }
 
     fn remove_model_listener(&mut self, remove: SocketAddr) {
         trace!("Removing model listener with id={}", remove);
-        let len = self.model_listener.len();
+        let before = self.model_listener.len();
         self.model_listener.retain(|(id, _, _)| id.ne(&remove));
         trace!(
             "Removed {} matches, still subscribed: {}",
-            len - self.model_listener.len(),
+            before - self.model_listener.len(),
             self.model_listener.len()
         );
-        if len != self.model_listener.len() {
-            self.on_model_count_changed();
+        if before != self.model_listener.len() {
+            self.on_model_count_changed(before);
         }
     }
 
@@ -73,7 +73,7 @@ impl SampleAlgorithm {
 
     fn push_count_listener(&mut self, id: SocketAddr, mut sink: CountListener) {
         trace!("Adding count listener with id={}", id);
-        if sink(self.model_listener.len()).is_ok() {
+        if sink(0, self.model_listener.len()).is_ok() {
             self.count_listener.push((id, sink));
         }
         trace!(
@@ -93,9 +93,9 @@ impl SampleAlgorithm {
 
     fn on_update(&mut self, frame: &SensorFrame) {
         trace!("Sensor update received: {:?}", frame);
-        let len = self.model_listener.len();
+        let before = self.model_listener.len();
 
-        if len > 0 {
+        if before > 0 {
             let env = self.environment_model(frame);
 
             Self::retain_mut(&mut self.model_listener, |(addr, active, listener)| {
@@ -103,17 +103,17 @@ impl SampleAlgorithm {
                 !*active || listener(env.clone()).is_ok()
             });
 
-            if len != self.model_listener.len() {
-                self.on_model_count_changed();
+            if before != self.model_listener.len() {
+                self.on_model_count_changed(before);
             }
         }
     }
 
-    fn on_model_count_changed(&mut self) {
-        let count = self.model_listener.len();
-        trace!("on_model_count_changed, current count: {}", count);
+    fn on_model_count_changed(&mut self, before: usize) {
+        let after = self.model_listener.len();
+        trace!("on_model_count_changed, before/after: {}/{}", before, after);
         Self::retain_mut(&mut self.count_listener, |(_, listener)| {
-            listener(count).is_ok()
+            listener(before, after).is_ok()
         });
     }
 

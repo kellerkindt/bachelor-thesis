@@ -12,7 +12,7 @@ use async::Sender;
 
 use messages::RawMessage;
 
-pub type CountListener = Box<FnMut(usize) -> Result<(), Error> + Send + 'static>;
+pub type CountListener = Box<FnMut(usize, usize) -> Result<(), Error> + Send + 'static>;
 pub type EnvironmentListener<E> =
     Box<FnMut(Arc<RawMessage<E>>) -> Result<(), Error> + Send + 'static>;
 

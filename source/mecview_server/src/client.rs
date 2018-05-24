@@ -133,11 +133,13 @@ impl<
         let mut sender = self.myself.clone();
         self.algorithm.subscribe_listener_count(
             self.address,
-            Box::new(move |count| {
-                let command = if count > 0 {
+            Box::new(move |before, after| {
+                let command = if before == 0 && after > 0 {
                     Command::RemoteSubscribe
-                } else {
+                } else if before > 0 && after == 0 {
                     Command::RemoteUnsubscribe
+                } else {
+                    return Ok(());
                 };
                 sender
                     .try_send(command)

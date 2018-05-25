@@ -615,11 +615,11 @@ mod test {
         client.adapter.clear();
         client.algorithm.assert(0, 0, 0, 0, 0, 1, 0);
 
-        assert!(client.algorithm.subscribe_listener_count.index_mut(0).1(1).is_ok());
+        assert!(client.algorithm.subscribe_listener_count.index_mut(0).1(0, 1).is_ok());
         apply_all_commands(&mut receiver, &mut client);
         client.adapter.assert(0, 0, 1, 0);
 
-        assert!(client.algorithm.subscribe_listener_count.index_mut(0).1(0).is_ok());
+        assert!(client.algorithm.subscribe_listener_count.index_mut(0).1(1, 0).is_ok());
         apply_all_commands(&mut receiver, &mut client);
         client.adapter.assert(0, 1, 1, 0);
     }

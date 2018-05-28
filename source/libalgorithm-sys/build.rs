@@ -48,7 +48,11 @@ fn compile_sdk(sdk_dirs: &[&str], out: &str) -> Vec<String> {
     gcc_build.cpp(true);
     gcc_build.flag("-std=c++11");
 
-    fn include_dir_in_compilation(sdk_dir: &str, headers: &mut Vec<String>, gcc_build: &mut gcc::Build) {
+    fn include_dir_in_compilation(
+        sdk_dir: &str,
+        headers: &mut Vec<String>,
+        gcc_build: &mut gcc::Build,
+    ) {
         let dir = fs::read_dir(sdk_dir).unwrap();
         for file in dir {
             if let Ok(entry) = file {
@@ -132,18 +136,23 @@ fn generate_bindings(include: &str, header: &str, out: &str) {
         .header(header)
         // not supported/test fails (not needed?, via indirect include)
         .blacklist_type("max_align_t")
-        //.whitelist_recursively(false)
+        .whitelist_recursively(false)
+        .opaque_type("std::shared_ptr")
         .opaque_type("asn_struct_ctx_s")
         .opaque_type("asn_struct_ctx_t")
-        .opaque_type("std::shared_ptr")
         .opaque_type("RustShimInternal")
-        .opaque_type("RustEventListener")
+        .opaque_type("RustInstance")
         .opaque_type("EnvironmentFrame_t")
         .opaque_type("SensorFrame_t")
         .opaque_type("InitMessage_t")
+        .whitelist_type("EnvironmentFrame_t")
+        .whitelist_type("SensorFrame_t")
+        .whitelist_type("InitMessage_t")
         .whitelist_type("RustShim")
-        .whitelist_function("create_rust_shim_for_algorithm")
-        .whitelist_function("send_sensor_frame")
+        .whitelist_type("RustInstance")
+        .whitelist_function("shim_create")
+        .whitelist_function("shim_destroy")
+        .whitelist_function("shim_send_sensor_frame")
         .rustfmt_bindings(true)
         .impl_debug(true)
         .derive_copy(false)

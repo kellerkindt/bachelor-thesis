@@ -32,17 +32,17 @@ impl Default for SampleAlgorithm {
             model_listener: Default::default(),
             count_listener: Default::default(),
             environment_frame: Default::default(),
-            external: ExternalAlgorithm::new(
-                "/etc/mecview/algorithm.json",
-                Box::new(move |frame| {
-                    println!("Algorithm EnvironmentFrame: {:?}", frame);
-                    ::std::mem::forget(frame);
-                }),
-                Box::new(move |frame| {
-                    println!("Algorithm InitMessage: {:?}", frame);
-                    ::std::mem::forget(frame);
-                }),
-            )
+            external: unsafe {
+                ExternalAlgorithm::new(
+                    "/etc/mecview/algorithm.json",
+                    Box::new(move |frame| {
+                        println!("Algorithm EnvironmentFrame: {:?}", frame);
+                    }),
+                    Box::new(move |frame| {
+                        println!("Algorithm InitMessage: {:?}", frame);
+                    }),
+                ).expect("Creating ExternalAlgorithm failed")
+            }
         }
     }
 }

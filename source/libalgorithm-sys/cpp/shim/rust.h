@@ -14,14 +14,15 @@
 #include "update_queue.h"
 
 
-typedef void* RustEventListener;
+typedef void* RustInstance;
 struct RustShim;
 
 extern "C" {
-    RustShim* create_rust_shim_for_algorithm(char* config_file);
-    void send_sensor_frame(RustShim* shim, SensorFrame_t* frame);
-    void publish_environment_frame(RustShim* shim, EnvironmentFrame_t* frame);
-    void publish_init_message(RustShim* shim, InitMessage_t* message);
+    RustShim* shim_create(char *config_file);
+    void shim_destroy(RustShim *shim);
+    void shim_send_sensor_frame(RustShim *shim, SensorFrame_t *frame);
+    void shim_publish_environment_frame(RustShim *shim, EnvironmentFrame_t *frame);
+    void shim_publish_init_message(RustShim *shim, InitMessage_t *message);
 }
 
 
@@ -42,7 +43,14 @@ public:
     }
 
     ~RustShimInternal() {
-
+        if (this->algorithm) {
+            this->algorithm->Stop();
+            this->algorithm.reset();
+        }
+        if (this->algorithm_thread) {
+            this->algorithm_thread->join();
+            this->algorithm_thread.reset();
+        }
     }
 
     bool init_algorithm(std::string config_file) {
@@ -83,14 +91,9 @@ public:
      * @param frame An environment frame information.
      * @param time_reg Timestamp for performance measurements.
      */
-    void Update(std::shared_ptr<EnvironmentFrame_t> frame,
-                const struct timespec* time_reg = nullptr) {
-        std::cout << "RustShimInternal Update" << std::endl;
-        // keeper leaks the content
-        // std::shared_ptr<EnvironmentFrame_t> keeper((EnvironmentFrame_t*) calloc(1, sizeof(EnvironmentFrame_t)), [](EnvironmentFrame_t*){});
-        //frame.swap(keeper); // frame is now empty, keeper holds the frame
-        // EnvironmentFrame_t* raw = keeper.get();
-        publish_environment_frame(this->shim, frame.get());
+    void Update(std::shared_ptr<EnvironmentFrame_t> frame, const struct timespec* time_reg) {
+        std::cout << "RustShimInternal Update, time_reg=" << time_reg << std::endl;
+        shim_publish_environment_frame(this->shim, frame.get());
     }
 
     /**
@@ -100,50 +103,58 @@ public:
      */
     void Init(std::shared_ptr<InitMessage_t> init_message) {
         std::cout << "RustShimInternal Init" << std::endl;
-        // keeper leaks the content
-        std::shared_ptr<InitMessage_t> keeper((InitMessage_t*) calloc(1, sizeof(InitMessage_t)), [](InitMessage_t*){});
-        init_message.swap(keeper); // frame is now empty, keeper holds the frame
-        InitMessage_t* raw = keeper.get();
-        publish_init_message(this->shim, raw);
+        shim_publish_init_message(this->shim, init_message.get());
     }
 };
 
 struct RustShim {
-    void (*publish_environment_frame)(RustEventListener*, EnvironmentFrame_t*);
-    void (*publish_init_message)(RustEventListener*, InitMessage_t*);
+    void (*publish_environment_frame)(RustInstance*, EnvironmentFrame_t*);
+    void (*publish_init_message)(RustInstance*, InitMessage_t*);
+    RustInstance* instance;
     std::shared_ptr<RustShimInternal> internal;
-    RustEventListener* eventListener;
 };
 
 
-RustShim* create_rust_shim_for_algorithm(char* config_file) {
+RustShim* shim_create(char* config_file) {
     RustShim* shim = (RustShim*) calloc(1, sizeof(RustShim));
     std::cout << "calloc" << std::endl;
     if (shim != NULL) {
         std::cout << "succeeded" << std::endl << std::flush;
         shim->internal = std::make_shared<RustShimInternal>(shim);
         std::cout << "init_algorithm" << std::endl << std::flush;
-        shim->internal->init_algorithm(std::string(config_file));
-    } else {
-        std::cout << "failed" << std::endl;
+        if (!shim->internal->init_algorithm(std::string(config_file))) {
+            shim_destroy(shim);
+            shim = NULL;
+        }
     }
     return shim;
 }
 
-void send_sensor_frame(RustShim* shim, SensorFrame_t* frame) {
-    if (shim != nullptr) {
+void shim_send_sensor_frame(RustShim* shim, SensorFrame_t* frame) {
+    if (shim != NULL) {
         shim->internal->send_sensor_frame(frame);
     }
 }
 
-void publish_environment_frame(RustShim* shim, EnvironmentFrame_t* frame) {
-    if (shim != nullptr && shim->eventListener != nullptr) {
-        shim->publish_environment_frame(shim->eventListener, frame);
+void shim_publish_environment_frame(RustShim* shim, EnvironmentFrame_t* frame) {
+    std::cout << "shim_publish_environment_frame" << std::endl;
+    if (shim != NULL && shim->instance != NULL && shim->publish_environment_frame != NULL) {
+        std::cout << "shim_publish_environment_frame calling callback" << std::endl;
+        shim->publish_environment_frame(shim->instance, frame);
     }
 }
 
-void publish_init_message(RustShim* shim, InitMessage_t* message) {
-    if (shim != nullptr && shim->eventListener != nullptr) {
-        shim->publish_init_message(shim->eventListener, message);
+void shim_publish_init_message(RustShim* shim, InitMessage_t* message) {
+    std::cout << "shim_publish_init_message" << std::endl;
+    if (shim != NULL && shim->instance != NULL && shim->publish_init_message != NULL) {
+        std::cout << "shim_publish_init_message calling callback" << std::endl;
+        shim->publish_init_message(shim->instance, message);
+    }
+}
+
+void shim_destroy(RustShim* shim) {
+    if (shim != NULL) {
+        shim->internal.reset();
+        free(shim);
     }
 }

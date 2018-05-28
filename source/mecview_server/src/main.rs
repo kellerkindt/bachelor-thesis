@@ -73,6 +73,7 @@ struct ServerConfig {
     log: Option<LevelFilter>,
     init_message: Option<String>,
     environment_frame: Option<String>,
+    algorithm_config: String,
 }
 
 fn main() {
@@ -86,7 +87,7 @@ fn main() {
         address,
     );
 
-    let mut server = server::Server::new(address).unwrap();
+    let mut server = server::Server::new(address, config.algorithm_config).unwrap();
 
     if let Some(path) = config.init_message {
         info!("Loading InitMessage from {}", path);
@@ -139,6 +140,10 @@ fn parse_config() -> ServerConfig {
         environment_frame: matches
             .value_of("environment_frame")
             .map(|s| String::from(s)),
+        algorithm_config: matches
+            .value_of("algorithm_config")
+            .map(|s| String::from(s))
+            .unwrap(),
     }
 }
 
@@ -189,6 +194,15 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
                 .value_name("PATH")
                 .help("The path to the EnvironmentFrame to send to the Vehicles")
                 .takes_value(true),
+        )
+        .arg(
+            Arg::with_name("algorithm_config")
+                .short("a")
+                .long("algorithm")
+                .value_name("PATH")
+                .help("The path to the algorithm configuration file")
+                .takes_value(true)
+                .default_value("/etc/mecview/algorithm.json")
         )
 }
 

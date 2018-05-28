@@ -1,8 +1,8 @@
-mod sample;
+mod manager;
 mod vehicle;
 
 pub use self::vehicle::*;
-pub use self::sample::*;
+pub use self::manager::*;
 
 use std::fmt::Debug;
 use std::io::Error;
@@ -21,6 +21,7 @@ pub type EnvironmentListener<E> =
 
 pub enum Command<A: Send, E: Send, I: Debug + Send + Sized + 'static> {
     Update(Box<A>),
+    Publish(RawMessage<E>),
     SubscribeEnvironmentModel(I, EnvironmentListener<E>),
     UnsubscribeEnvironmentModel(I),
     SubscribeListenerCount(I, CountListener),
@@ -33,6 +34,8 @@ pub trait Algorithm<A: Send + Debug, E: Send + Debug> {
     type Identifier: Send + PartialEq + 'static;
 
     fn update(&mut self, update: Box<A>) -> Result<(), Error>;
+
+    fn publish(&mut self, model: RawMessage<E>) -> Result<(), Error>;
 
     fn subscribe_environment_model(
         &mut self,
@@ -70,6 +73,11 @@ impl<A: Send + Debug, E: Send + Debug, I: PartialEq + Debug + Send + Sized + 'st
         self.try_send(Command::Update(update))
             .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
     }
+
+    fn publish(&mut self, model: RawMessage<E>) -> Result<(), Error> {
+        self.try_send(Command::Publish(model))
+            .map_err(|_| Error::from(ErrorKind::UnexpectedEof))    }
+
 
     fn subscribe_environment_model(
         &mut self,
@@ -130,6 +138,7 @@ impl<
         trace!("Received command");
         let result = match command {
             Command::Update(model) => self.update(model),
+            Command::Publish(model) => self.publish(model),
             Command::SubscribeEnvironmentModel(id, listener) => {
                 self.subscribe_environment_model(id, listener)
             }

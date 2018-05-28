@@ -7,6 +7,8 @@
 #include <mutex>
 #include <chrono>
 
+#include <iostream>
+
 #include "../mecview-sdk/extension/queue_listener.h"
 
 namespace mec {
@@ -68,6 +70,7 @@ namespace mec {
             void Add(const std::shared_ptr<T> sensor_frame) {
                 {
                     std::unique_lock<std::mutex> lock(message_queue_lock);
+                    // std::cout << "manager Queue::Add" << std::endl << std::flush;
                     sensor_frame_queue.push_back(sensor_frame);
                     while (sensor_frame_queue.size() > 100) {
                         sensor_frame_queue.pop_front();
@@ -84,6 +87,7 @@ namespace mec {
 
             const std::shared_ptr<T> Pop() {
                 std::unique_lock<std::mutex> lock(message_queue_lock);
+                // std::cout << "manager Queue::Pop" << std::endl << std::flush;
 
                 if(this->sensor_frame_queue.size() <= 0) {
                     message_available.wait(lock,

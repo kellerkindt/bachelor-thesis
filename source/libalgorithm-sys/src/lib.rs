@@ -5,26 +5,34 @@
 #[allow(non_snake_case)]
 mod bindings;
 
-type EnvironmentFramePublisher<E> = Box<FnMut(&E) + Send + 'static>;
-type InnitMessagePublisher<I> = Box<FnMut(&I) + Send + 'static>;
-
-pub struct ExternalAlgorithm<I: Send, E: Send, S: Send> {
+pub struct ExternalAlgorithm<
+    I: Send,
+    E: Send,
+    S: Send,
+    FE: FnMut(&E) + Send + 'static,
+    FI: FnMut(&I) + Send + 'static,
+> {
     shim: *mut bindings::RustShim,
-    environment_frame_publisher: EnvironmentFramePublisher<E>,
-    init_message_publisher: InnitMessagePublisher<I>,
+    environment_frame_publisher: FE,
+    init_message_publisher: FI,
     _e: ::std::marker::PhantomData<E>,
     _s: ::std::marker::PhantomData<S>,
     _i: ::std::marker::PhantomData<I>,
 }
 
-unsafe impl<I: Send, E: Send, S: Send> Send for ExternalAlgorithm<I, E, S> {}
+unsafe impl<I: Send, E: Send, S: Send, FE: FnMut(&E) + Send + 'static, FI: FnMut(&I) + Send + 'static>
+    Send for ExternalAlgorithm<I, E, S, FE, FI>
+{
+}
 
-impl<I: Send, E: Send, S: Send> ExternalAlgorithm<I, E, S> {
+impl<I: Send, E: Send, S: Send, FE: FnMut(&E) + Send + 'static, FI: FnMut(&I) + Send + 'static>
+    ExternalAlgorithm<I, E, S, FE, FI>
+{
     pub unsafe fn new(
         config_file: &str,
-        environment_frame_publisher: EnvironmentFramePublisher<E>,
-        init_message_publisher: InnitMessagePublisher<I>,
-    ) -> Result<Box<ExternalAlgorithm<I, E, S>>, ()> {
+        environment_frame_publisher: FE,
+        init_message_publisher: FI,
+    ) -> Result<Box<ExternalAlgorithm<I, E, S, FE, FI>>, ()> {
         let mut algorithm = Box::new(ExternalAlgorithm {
             shim: {
                 let cstring = ::std::ffi::CString::new(config_file).unwrap();
@@ -56,7 +64,7 @@ impl<I: Send, E: Send, S: Send> ExternalAlgorithm<I, E, S> {
         instance: *mut bindings::RustInstance,
         frame: *mut bindings::EnvironmentFrame_t,
     ) {
-        let myself: &mut ExternalAlgorithm<I, E, S> = ::std::mem::transmute(instance);
+        let myself: &mut ExternalAlgorithm<I, E, S, FE, FI> = ::std::mem::transmute(instance);
         let frame: &E = ::std::mem::transmute(frame as *mut E);
         (myself.environment_frame_publisher)(frame);
     }
@@ -66,7 +74,7 @@ impl<I: Send, E: Send, S: Send> ExternalAlgorithm<I, E, S> {
         instance: *mut bindings::RustInstance,
         frame: *mut bindings::InitMessage_t,
     ) {
-        let myself: &mut ExternalAlgorithm<I, E, S> = ::std::mem::transmute(instance);
+        let myself: &mut ExternalAlgorithm<I, E, S, FE, FI> = ::std::mem::transmute(instance);
         let frame: &I = ::std::mem::transmute(frame as *mut I);
         (myself.init_message_publisher)(frame);
     }
@@ -81,7 +89,9 @@ impl<I: Send, E: Send, S: Send> ExternalAlgorithm<I, E, S> {
     }
 }
 
-impl<I: Send, E: Send, S: Send> Drop for ExternalAlgorithm<I, E, S> {
+impl<I: Send, E: Send, S: Send, FE: FnMut(&E) + Send + 'static, FI: FnMut(&I) + Send + 'static> Drop
+    for ExternalAlgorithm<I, E, S, FE, FI>
+{
     fn drop(&mut self) {
         if !self.shim.is_null() {
             unsafe {

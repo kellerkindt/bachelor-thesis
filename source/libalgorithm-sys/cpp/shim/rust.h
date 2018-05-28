@@ -35,11 +35,11 @@ private:
 
 public:
     RustShimInternal(RustShim* shim) {
-        std::cout << "RustShimInternal setting shim" << std::endl << std::flush;
+        // std::cout <<"RustShimInternal setting shim" << std::endl << std::flush;
         this->shim = shim;
-        std::cout << "RustShimInternal creating queue_listener" << std::endl << std::flush;
+        // std::cout <<"RustShimInternal creating queue_listener" << std::endl << std::flush;
         this->queue_listener = std::make_shared<mec::environment::UpdateQueue<SensorFrame_t>>();
-        std::cout << "RustShimInternal done" << std::endl << std::flush;
+        // std::cout <<"RustShimInternal done" << std::endl << std::flush;
     }
 
     ~RustShimInternal() {
@@ -54,9 +54,9 @@ public:
     }
 
     bool init_algorithm(std::string config_file) {
-        std::cout << "init_algorithm creating factory" << std::endl << std::flush;
+        // std::cout <<"init_algorithm creating factory" << std::endl << std::flush;
         auto factory = mec::algorithm::AlgorithmFactory();
-        std::cout << "init_algorithm creating instance with config from " << config_file << std::endl << std::flush;
+        // std::cout <<"init_algorithm creating instance with config from " << config_file << std::endl << std::flush;
         this->algorithm = factory.Create(
                 this->shared_from_this(),
                 queue_listener,
@@ -67,7 +67,7 @@ public:
             this->algorithm_thread = std::make_shared<std::thread>(std::bind(&mec::extension::Extension::Run, this->algorithm));
             return true;
         } else {
-            std::cout << "init_algorithm algorithm invalid " << std::endl << std::flush;
+            // std::cout <<"init_algorithm algorithm invalid " << std::endl << std::flush;
             return false;
         }
     }
@@ -77,7 +77,7 @@ public:
     }
 
     void send_sensor_frame(SensorFrame_t* frame) {
-        std::cout << "RustShimInternal adding SensorFrame" << std::endl << std::flush;
+        // std::cout <<"RustShimInternal adding SensorFrame" << std::endl << std::flush;
         this->queue_listener->Add(std::shared_ptr<SensorFrame_t>(frame, [](SensorFrame_t* f){
             asn_DEF_SensorFrame.free_struct(&asn_DEF_SensorFrame, f, 1);
         }));
@@ -91,8 +91,8 @@ public:
      * @param frame An environment frame information.
      * @param time_reg Timestamp for performance measurements.
      */
-    void Update(std::shared_ptr<EnvironmentFrame_t> frame, const struct timespec* time_reg) {
-        std::cout << "RustShimInternal Update, time_reg=" << time_reg << std::endl;
+    void Update(std::shared_ptr<EnvironmentFrame_t> frame, const struct timespec*) {
+        // std::cout <<"RustShimInternal Update, time_reg=" << time_reg << std::endl;
         shim_publish_environment_frame(this->shim, frame.get());
     }
 
@@ -102,7 +102,7 @@ public:
      * @param init_message The init message containing the sectors of the server.
      */
     void Init(std::shared_ptr<InitMessage_t> init_message) {
-        std::cout << "RustShimInternal Init" << std::endl;
+        // std::cout <<"RustShimInternal Init" << std::endl;
         shim_publish_init_message(this->shim, init_message.get());
     }
 };
@@ -117,11 +117,11 @@ struct RustShim {
 
 RustShim* shim_create(char* config_file) {
     RustShim* shim = (RustShim*) calloc(1, sizeof(RustShim));
-    std::cout << "calloc" << std::endl;
+    // std::cout <<"calloc" << std::endl;
     if (shim != NULL) {
-        std::cout << "succeeded" << std::endl << std::flush;
+        // std::cout <<"succeeded" << std::endl << std::flush;
         shim->internal = std::make_shared<RustShimInternal>(shim);
-        std::cout << "init_algorithm" << std::endl << std::flush;
+        // std::cout <<"init_algorithm" << std::endl << std::flush;
         if (!shim->internal->init_algorithm(std::string(config_file))) {
             shim_destroy(shim);
             shim = NULL;
@@ -137,17 +137,17 @@ void shim_send_sensor_frame(RustShim* shim, SensorFrame_t* frame) {
 }
 
 void shim_publish_environment_frame(RustShim* shim, EnvironmentFrame_t* frame) {
-    std::cout << "shim_publish_environment_frame" << std::endl;
+    // std::cout <<"shim_publish_environment_frame" << std::endl;
     if (shim != NULL && shim->instance != NULL && shim->publish_environment_frame != NULL) {
-        std::cout << "shim_publish_environment_frame calling callback" << std::endl;
+        // std::cout <<"shim_publish_environment_frame calling callback" << std::endl;
         shim->publish_environment_frame(shim->instance, frame);
     }
 }
 
 void shim_publish_init_message(RustShim* shim, InitMessage_t* message) {
-    std::cout << "shim_publish_init_message" << std::endl;
+    // std::cout <<"shim_publish_init_message" << std::endl;
     if (shim != NULL && shim->instance != NULL && shim->publish_init_message != NULL) {
-        std::cout << "shim_publish_init_message calling callback" << std::endl;
+        // std::cout <<"shim_publish_init_message calling callback" << std::endl;
         shim->publish_init_message(shim->instance, message);
     }
 }

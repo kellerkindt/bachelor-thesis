@@ -12,7 +12,7 @@ use client::Client;
 
 use adapter::asn::AsnAdapter;
 use algorithm;
-use algorithm::SampleAlgorithm;
+use algorithm::AlgorithmManager;
 
 use async::channel;
 use async::AsyncRead;
@@ -39,6 +39,7 @@ use byteorder::ByteOrder;
 use byteorder::NetworkEndian;
 use bytes::BufMut;
 use bytes::BytesMut;
+use libalgorithm_sys::ExternalAlgorithm;
 
 const CHANNEL_BUFFER_SIZE_SERVER: usize = 10;
 const CHANNEL_BUFFER_SIZE_CLIENT: usize = 64;
@@ -57,10 +58,11 @@ pub struct Server {
     init_message: Option<Arc<RawMessage<asn::Message>>>,
     environment_frame: Option<Box<raw::EnvironmentFrame>>,
     clients: Vec<Clt>,
+    algorithm_config: String,
 }
 
 impl Server {
-    pub fn new(address: SocketAddr) -> Result<Server, Error> {
+    pub fn new(address: SocketAddr, algorithm_config: String) -> Result<Server, Error> {
         Ok(Server {
             address,
             runtime: Runtime::new()?,
@@ -68,6 +70,7 @@ impl Server {
             init_message: None,
             environment_frame: None,
             clients: Vec::with_capacity(128),
+            algorithm_config,
         })
     }
 
@@ -130,7 +133,37 @@ impl Server {
 
     fn spawn_algorithm(&mut self) -> Result<(), Error> {
         let (tx, rx) = channel(CHANNEL_BUFFER_SIZE_ALGORITHM);
-        let mut sample = SampleAlgorithm::default();
+
+
+        let mut alg = unsafe {
+            let mut tx = tx.clone().wait();
+            ExternalAlgorithm::new(
+                &self.algorithm_config,
+                move |frame: &::messages::asn::raw::EnvironmentFrame| {
+                    trace!("EnvironmentFrame from ExternalAlgorithm received");
+                    match frame.try_encode_uper() {
+                        Err(e) => error!("Failed to encode EnvironmentFrame: {:?}", e),
+                        Ok(encoded) => {
+                            trace!("EnvironmentFrame from ExternalAlgorithm encoded successfully");
+                            let r = tx.send(::algorithm::Command::Publish(encoded));
+                            trace!("sending result {:?}", r.is_ok());
+                            if let Err(e) = r {
+                                trace!("sending error {:?}", e);
+                            }
+                        }
+                    }
+                },
+                move |frame: &::messages::asn::raw::InitMessage| {
+                    println!("Algorithm InitMessage: {:?}", frame);
+                },
+            ).expect("Creating ExternalAlgorithm failed")
+        };
+
+        let mut sample = AlgorithmManager::new(move |frame: Box<::messages::asn::raw::SensorFrame>| {
+            alg.send_sensor_frame(frame);
+        });
+
+
         sample.set_environment_frame(self.environment_frame.take());
         self.runtime.spawn(
             rx.for_each(move |command| match sample.process_command(command) {

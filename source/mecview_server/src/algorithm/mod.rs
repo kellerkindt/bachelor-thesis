@@ -1,8 +1,8 @@
 mod manager;
 mod vehicle;
 
-pub use self::vehicle::*;
 pub use self::manager::*;
+pub use self::vehicle::*;
 
 use std::fmt::Debug;
 use std::io::Error;
@@ -76,8 +76,8 @@ impl<A: Send + Debug, E: Send + Debug, I: PartialEq + Debug + Send + Sized + 'st
 
     fn publish(&mut self, model: RawMessage<E>) -> Result<(), Error> {
         self.try_send(Command::Publish(model))
-            .map_err(|_| Error::from(ErrorKind::UnexpectedEof))    }
-
+            .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
+    }
 
     fn subscribe_environment_model(
         &mut self,

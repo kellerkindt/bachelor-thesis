@@ -117,7 +117,9 @@ impl<T: FnMut(Box<SensorFrame>) + Send + 'static> AlgorithmManager<T> {
     }
 }
 
-impl<T: FnMut(Box<SensorFrame>) + Send + 'static> Algorithm<SensorFrame, EnvironmentFrame> for AlgorithmManager<T> {
+impl<T: FnMut(Box<SensorFrame>) + Send + 'static> Algorithm<SensorFrame, EnvironmentFrame>
+    for AlgorithmManager<T>
+{
     type Identifier = SocketAddr;
 
     fn update(&mut self, update: Box<SensorFrame>) -> Result<(), Error> {

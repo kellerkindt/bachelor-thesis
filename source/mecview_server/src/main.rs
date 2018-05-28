@@ -10,8 +10,8 @@ extern crate tokio_io;
 extern crate byteorder;
 extern crate bytes;
 
-extern crate libmessages as messages;
 extern crate libalgorithm_sys;
+extern crate libmessages as messages;
 
 mod adapter;
 mod algorithm;
@@ -202,7 +202,7 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
                 .value_name("PATH")
                 .help("The path to the algorithm configuration file")
                 .takes_value(true)
-                .default_value("/etc/mecview/algorithm.json")
+                .default_value("/etc/mecview/algorithm.json"),
         )
 }
 

@@ -134,7 +134,6 @@ impl Server {
     fn spawn_algorithm(&mut self) -> Result<(), Error> {
         let (tx, rx) = channel(CHANNEL_BUFFER_SIZE_ALGORITHM);
 
-
         let mut alg = unsafe {
             let mut tx = tx.clone().wait();
             ExternalAlgorithm::new(
@@ -159,10 +158,10 @@ impl Server {
             ).expect("Creating ExternalAlgorithm failed")
         };
 
-        let mut sample = AlgorithmManager::new(move |frame: Box<::messages::asn::raw::SensorFrame>| {
-            alg.send_sensor_frame(frame);
-        });
-
+        let mut sample =
+            AlgorithmManager::new(move |frame: Box<::messages::asn::raw::SensorFrame>| {
+                alg.send_sensor_frame(frame);
+            });
 
         sample.set_environment_frame(self.environment_frame.take());
         self.runtime.spawn(

@@ -63,7 +63,7 @@ Bei der Auswertung wird der Durchschnitt errechnet.
 \newcommand{\makeDias}[3]{
 	\begin{figure}[H]
 		\centering
-		\begin{subfigure}{.75\textwidth}
+		\begin{subfigure}{.65\textwidth}
 			\centering
 			\begin{tikzpicture}
 			\begin{axis}[
@@ -93,20 +93,29 @@ Bei der Auswertung wird der Durchschnitt errechnet.
 			[only marks,mark=x,thick,color=blue] 
 			file {data/cpp_times_for_#1.dat};
 			
+			\addplot gnuplot [raw gnuplot,id=cpp#1,mark=none,very thick,color=red!30]{
+				set xrange [0:#3];
+				f(x)=a*x+b;
+				fit f(x) "data/rust_cpp_alg_times_for_#1.dat" via a,b;
+				plot f(x)};
+			\addplot plot
+			[only marks,mark=x,thick,color=red] 
+			file {data/rust_cpp_alg_times_for_#1.dat};
+			
 			
 			\end{axis}
 			\end{tikzpicture}
 			\caption{Latenz-Nachrichtenanzahl Diagramm}
 			\label{#1} 
 		\end{subfigure}%
-		\begin{subfigure}{.25\textwidth}
+		\begin{subfigure}{.35\textwidth}
 			\centering
 			\begin{tikzpicture}
 			\begin{axis}[
 			ymin=0, ymax=#2,
 			boxplot/draw direction=y,
-			xtick={1,2},
-			xticklabels={Rust,C++},
+			xtick={1,2,3},
+			xticklabels={Rust,C++,C++A},
 			width=\textwidth,
 			height=20em
 			]
@@ -118,6 +127,11 @@ Bei der Auswertung wird der Durchschnitt errechnet.
 			\addplot+[
 			boxplot={average=auto},color=blue!80
 			] table {data/cpp_times_for_#1.dat}
+			\printboxplotdata;
+			
+			\addplot+[
+			boxplot={average=auto},color=red!80
+			] table {data/rust_cpp_alg_times_for_#1.dat}
 			\printboxplotdata;
 			
 			\end{axis}

@@ -79,7 +79,7 @@ public:
     void send_sensor_frame(SensorFrame_t* frame) {
         // std::cout <<"RustShimInternal adding SensorFrame" << std::endl << std::flush;
         this->queue_listener->Add(std::shared_ptr<SensorFrame_t>(frame, [](SensorFrame_t* f){
-            asn_DEF_SensorFrame.free_struct(&asn_DEF_SensorFrame, f, 1);
+            asn_DEF_SensorFrame.free_struct(&asn_DEF_SensorFrame, f, 0);
         }));
     }
 

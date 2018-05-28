@@ -1,4 +1,5 @@
 extern crate bindgen;
+extern crate gcc;
 extern crate walkdir;
 
 use std::fs;
@@ -8,6 +9,7 @@ use std::path::Path;
 use walkdir::DirEntry;
 use walkdir::WalkDir;
 
+const LIBRARY_FILE: &'static str = "libalgorithm.a";
 const BINDINGS_FILE: &'static str = "src/bindings.rs";
 
 fn main() {
@@ -19,16 +21,60 @@ fn main() {
     headers.append(&mut find_headers("cpp/shim"));
     headers.append(&mut find_headers("cpp/impl"));
 
-    if !Path::new(BINDINGS_FILE).exists() {
-        let main_header = "cpp/wrapper/wrapper.cpp";
+    let main_header = "cpp/wrapper/wrapper.cpp";
 
-        generate_main_header(&headers, main_header);
-        generate_bindings(
-            "cpp/",
-            main_header,
-            Path::new(BINDINGS_FILE).to_str().unwrap(),
-        );
+    generate_main_header(&headers, main_header);
+
+    if !Path::new(LIBRARY_FILE).exists() || !Path::new(BINDINGS_FILE).exists() {
+        let _headers = compile_sdk(&["cpp/impl", "cpp/wrapper/"], LIBRARY_FILE);
+
+        if !Path::new(BINDINGS_FILE).exists() {
+            generate_bindings(
+                "cpp/",
+                main_header,
+                Path::new(BINDINGS_FILE).to_str().unwrap(),
+            );
+        }
     }
+}
+
+fn compile_sdk(sdk_dirs: &[&str], out: &str) -> Vec<String> {
+    let mut headers = Vec::new();
+
+    let mut gcc_build = gcc::Build::new();
+
+    gcc_build.include("cpp/");
+    gcc_build.include("cpp/mecview-sdk/proto/");
+    gcc_build.cpp(true);
+    gcc_build.flag("-std=c++11");
+
+    fn include_dir_in_compilation(sdk_dir: &str, headers: &mut Vec<String>, gcc_build: &mut gcc::Build) {
+        let dir = fs::read_dir(sdk_dir).unwrap();
+        for file in dir {
+            if let Ok(entry) = file {
+                if let Ok(t) = entry.file_type() {
+                    if t.is_file() {
+                        let path = entry.path();
+                        let str = path.to_str().unwrap();
+                        if str.ends_with(".c") || str.ends_with(".cpp") {
+                            gcc_build.file(str);
+                        } else if str.ends_with(".h") {
+                            headers.push(str.into());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    for dir in sdk_dirs {
+        gcc_build.include(*dir);
+        include_dir_in_compilation(dir, &mut headers, &mut gcc_build);
+    }
+
+    gcc_build.compile(out);
+
+    headers
 }
 
 fn find_headers(sdk_dir: &str) -> Vec<String> {
@@ -73,8 +119,6 @@ fn generate_main_header(headers: &[String], out: &str) {
             header.split("cpp/").last().unwrap(),
         );
     }
-
-    let _ = writeln!(file, "\n\nint main() {{ return 0; }}");
 }
 
 fn generate_bindings(include: &str, header: &str, out: &str) {

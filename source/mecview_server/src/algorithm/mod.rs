@@ -1,4 +1,7 @@
 mod sample;
+mod vehicle;
+
+pub use self::vehicle::*;
 pub use self::sample::*;
 
 use std::fmt::Debug;

@@ -17,3 +17,7 @@ clap = "2.31.2"
 [dependencies.libmessages]
 version = "0.1.1"
 path = "../libmessages/"
+
+[dependencies.libalgorithm-sys]
+version = "0.1.0"
+path = "../libalgorithm-sys/"

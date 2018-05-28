@@ -28,12 +28,24 @@ public:
 	virtual ~Extension() {}
 
 	/**
+	 * Initialise the extension.
+	 *
+	 * This operation is NOT executed in the own thread context. This should be used
+	 * to setup the extension for execution. (Start incoming message queues, etc.)
+	 */
+	virtual void Init() = 0;
+
+	/**
 	 * Run Extension.
+	 *
+	 * This is executed in an own thread context.
 	 */
 	virtual void Run() = 0;
 
 	/**
 	 * The MEC-Server calls the stop method as a part of shutdown process.
+	 *
+	 * This operation is NOT executed in the own thread context.
 	 */
 	virtual void Stop() = 0;
 

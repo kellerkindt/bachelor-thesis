@@ -4,6 +4,7 @@ use std::ops::IndexMut;
 use std::sync::Arc;
 
 use messages::asn::raw;
+use messages::asn::raw::InitMessage;
 use messages::asn::raw::EnvironmentFrame;
 use messages::asn::raw::EnvironmentObjectDetection;
 use messages::asn::raw::MovingVector;
@@ -16,11 +17,34 @@ use super::Algorithm;
 use super::CountListener;
 use super::EnvironmentListener;
 
-#[derive(Default)]
+use libalgorithm_sys::ExternalAlgorithm;
+
 pub struct SampleAlgorithm {
     model_listener: Vec<(SocketAddr, bool, EnvironmentListener<EnvironmentFrame>)>,
     count_listener: Vec<(SocketAddr, CountListener)>,
     environment_frame: Option<Box<EnvironmentFrame>>,
+    external: Box<ExternalAlgorithm<InitMessage, EnvironmentFrame, SensorFrame>>,
+}
+
+impl Default for SampleAlgorithm {
+    fn default() -> Self {
+        SampleAlgorithm {
+            model_listener: Default::default(),
+            count_listener: Default::default(),
+            environment_frame: Default::default(),
+            external: ExternalAlgorithm::new(
+                "/etc/mecview/algorithm.json",
+                Box::new(move |frame| {
+                    println!("Algorithm EnvironmentFrame: {:?}", frame);
+                    ::std::mem::forget(frame);
+                }),
+                Box::new(move |frame| {
+                    println!("Algorithm InitMessage: {:?}", frame);
+                    ::std::mem::forget(frame);
+                }),
+            )
+        }
+    }
 }
 
 impl SampleAlgorithm {
@@ -91,12 +115,13 @@ impl SampleAlgorithm {
         );
     }
 
-    fn on_update(&mut self, frame: &SensorFrame) {
+    fn on_update(&mut self, frame: Box<SensorFrame>) {
         trace!("Sensor update received: {:?}", frame);
         let before = self.model_listener.len();
 
         if before > 0 {
-            let env = self.environment_model(frame);
+            let env = self.environment_model(&frame);
+            self.external.send_sensor_frame(frame);
 
             Self::retain_mut(&mut self.model_listener, |(addr, active, listener)| {
                 trace!("Sending model to ModelListener/{}", addr);
@@ -277,7 +302,7 @@ impl Algorithm<SensorFrame, EnvironmentFrame> for SampleAlgorithm {
     type Identifier = SocketAddr;
 
     fn update(&mut self, update: Box<SensorFrame>) -> Result<(), Error> {
-        self.on_update(&update);
+        self.on_update(update);
         Ok(())
     }
 

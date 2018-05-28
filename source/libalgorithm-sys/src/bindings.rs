@@ -10,6 +10,14 @@ pub type EnvironmentFrame_t = [u64; 30usize];
 pub type InitMessage_t = [u64; 30usize];
 pub type SensorFrame_t = [u64; 27usize];
 pub type RustEventListener = u64;
+extern "C" {
+    pub fn create_rust_shim_for_algorithm(
+        config_file: *mut ::std::os::raw::c_char,
+    ) -> *mut RustShim;
+}
+extern "C" {
+    pub fn send_sensor_frame(shim: *mut RustShim, frame: *mut SensorFrame_t);
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct RustShimInternal {
@@ -94,12 +102,4 @@ fn bindgen_test_layout_RustShim() {
             stringify!(eventListener)
         )
     );
-}
-extern "C" {
-    pub fn create_rust_shim_for_algorithm(
-        config_file: *mut ::std::os::raw::c_char,
-    ) -> *mut RustShim;
-}
-extern "C" {
-    pub fn send_sensor_frame(shim: *mut RustShim, frame: *mut SensorFrame_t);
 }

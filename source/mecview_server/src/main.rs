@@ -11,6 +11,7 @@ extern crate byteorder;
 extern crate bytes;
 
 extern crate libmessages as messages;
+extern crate libalgorithm_sys;
 
 mod adapter;
 mod algorithm;
@@ -80,7 +81,7 @@ fn main() {
     let address = SocketAddr::new(config.ip, config.port);
 
     info!(
-        "Staring Server v{} on interface {}",
+        "Starting Server v{} on interface {}",
         env!("CARGO_PKG_VERSION"),
         address,
     );

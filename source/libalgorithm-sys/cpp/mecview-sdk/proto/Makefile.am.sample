@@ -168,5 +168,5 @@ clean:
 regen: regenerate-from-asn1-source
 
 regenerate-from-asn1-source:
-	asn1c -fcompound-names -fskeletons-copy -fnative-types -gen-PER /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK/proto/environment.asn1 /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK/proto/general.asn1 /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK/proto/protocol.asn1 /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK/proto/road_clearance.asn1 /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK/proto/sensor.asn1
+	asn1c -fcompound-names -Werror -gen-PER /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK/proto/environment.asn1 /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK/proto/general.asn1 /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK/proto/protocol.asn1 /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK/proto/road_clearance.asn1 /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK/proto/sensor.asn1
 

@@ -48,10 +48,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK
+CMAKE_SOURCE_DIR = /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build
+CMAKE_BINARY_DIR = /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -126,14 +126,14 @@ list_install_components/fast: list_install_components
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(CMAKE_COMMAND) -E cmake_progress_start /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build/CMakeFiles /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build/proto/CMakeFiles/progress.marks
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f CMakeFiles/Makefile2 proto/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build/CMakeFiles 0
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(CMAKE_COMMAND) -E cmake_progress_start /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build/CMakeFiles /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build/proto/CMakeFiles/progress.marks
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f CMakeFiles/Makefile2 proto/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f CMakeFiles/Makefile2 proto/clean
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f CMakeFiles/Makefile2 proto/clean
 .PHONY : clean
 
 # The main clean target
@@ -143,22 +143,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f CMakeFiles/Makefile2 proto/preinstall
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f CMakeFiles/Makefile2 proto/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f CMakeFiles/Makefile2 proto/preinstall
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f CMakeFiles/Makefile2 proto/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 proto/CMakeFiles/messages.dir/rule:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f CMakeFiles/Makefile2 proto/CMakeFiles/messages.dir/rule
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f CMakeFiles/Makefile2 proto/CMakeFiles/messages.dir/rule
 .PHONY : proto/CMakeFiles/messages.dir/rule
 
 # Convenience name for target.
@@ -168,7 +168,7 @@ messages: proto/CMakeFiles/messages.dir/rule
 
 # fast build rule for target.
 messages/fast:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/build
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/build
 .PHONY : messages/fast
 
 Area.o: Area.c.o
@@ -177,7 +177,7 @@ Area.o: Area.c.o
 
 # target to build an object file
 Area.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Area.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Area.c.o
 .PHONY : Area.c.o
 
 Area.i: Area.c.i
@@ -186,7 +186,7 @@ Area.i: Area.c.i
 
 # target to preprocess a source file
 Area.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Area.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Area.c.i
 .PHONY : Area.c.i
 
 Area.s: Area.c.s
@@ -195,7 +195,7 @@ Area.s: Area.c.s
 
 # target to generate assembly for a file
 Area.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Area.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Area.c.s
 .PHONY : Area.c.s
 
 BIT_STRING.o: BIT_STRING.c.o
@@ -204,7 +204,7 @@ BIT_STRING.o: BIT_STRING.c.o
 
 # target to build an object file
 BIT_STRING.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/BIT_STRING.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/BIT_STRING.c.o
 .PHONY : BIT_STRING.c.o
 
 BIT_STRING.i: BIT_STRING.c.i
@@ -213,7 +213,7 @@ BIT_STRING.i: BIT_STRING.c.i
 
 # target to preprocess a source file
 BIT_STRING.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/BIT_STRING.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/BIT_STRING.c.i
 .PHONY : BIT_STRING.c.i
 
 BIT_STRING.s: BIT_STRING.c.s
@@ -222,7 +222,7 @@ BIT_STRING.s: BIT_STRING.c.s
 
 # target to generate assembly for a file
 BIT_STRING.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/BIT_STRING.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/BIT_STRING.c.s
 .PHONY : BIT_STRING.c.s
 
 BOOLEAN.o: BOOLEAN.c.o
@@ -231,7 +231,7 @@ BOOLEAN.o: BOOLEAN.c.o
 
 # target to build an object file
 BOOLEAN.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/BOOLEAN.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/BOOLEAN.c.o
 .PHONY : BOOLEAN.c.o
 
 BOOLEAN.i: BOOLEAN.c.i
@@ -240,7 +240,7 @@ BOOLEAN.i: BOOLEAN.c.i
 
 # target to preprocess a source file
 BOOLEAN.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/BOOLEAN.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/BOOLEAN.c.i
 .PHONY : BOOLEAN.c.i
 
 BOOLEAN.s: BOOLEAN.c.s
@@ -249,7 +249,7 @@ BOOLEAN.s: BOOLEAN.c.s
 
 # target to generate assembly for a file
 BOOLEAN.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/BOOLEAN.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/BOOLEAN.c.s
 .PHONY : BOOLEAN.c.s
 
 ClientRegistration.o: ClientRegistration.c.o
@@ -258,7 +258,7 @@ ClientRegistration.o: ClientRegistration.c.o
 
 # target to build an object file
 ClientRegistration.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ClientRegistration.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ClientRegistration.c.o
 .PHONY : ClientRegistration.c.o
 
 ClientRegistration.i: ClientRegistration.c.i
@@ -267,7 +267,7 @@ ClientRegistration.i: ClientRegistration.c.i
 
 # target to preprocess a source file
 ClientRegistration.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ClientRegistration.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ClientRegistration.c.i
 .PHONY : ClientRegistration.c.i
 
 ClientRegistration.s: ClientRegistration.c.s
@@ -276,7 +276,7 @@ ClientRegistration.s: ClientRegistration.c.s
 
 # target to generate assembly for a file
 ClientRegistration.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ClientRegistration.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ClientRegistration.c.s
 .PHONY : ClientRegistration.c.s
 
 ClientType.o: ClientType.c.o
@@ -285,7 +285,7 @@ ClientType.o: ClientType.c.o
 
 # target to build an object file
 ClientType.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ClientType.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ClientType.c.o
 .PHONY : ClientType.c.o
 
 ClientType.i: ClientType.c.i
@@ -294,7 +294,7 @@ ClientType.i: ClientType.c.i
 
 # target to preprocess a source file
 ClientType.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ClientType.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ClientType.c.i
 .PHONY : ClientType.c.i
 
 ClientType.s: ClientType.c.s
@@ -303,7 +303,7 @@ ClientType.s: ClientType.c.s
 
 # target to generate assembly for a file
 ClientType.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ClientType.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ClientType.c.s
 .PHONY : ClientType.c.s
 
 ConnectionStatus.o: ConnectionStatus.c.o
@@ -312,7 +312,7 @@ ConnectionStatus.o: ConnectionStatus.c.o
 
 # target to build an object file
 ConnectionStatus.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ConnectionStatus.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ConnectionStatus.c.o
 .PHONY : ConnectionStatus.c.o
 
 ConnectionStatus.i: ConnectionStatus.c.i
@@ -321,7 +321,7 @@ ConnectionStatus.i: ConnectionStatus.c.i
 
 # target to preprocess a source file
 ConnectionStatus.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ConnectionStatus.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ConnectionStatus.c.i
 .PHONY : ConnectionStatus.c.i
 
 ConnectionStatus.s: ConnectionStatus.c.s
@@ -330,7 +330,7 @@ ConnectionStatus.s: ConnectionStatus.c.s
 
 # target to generate assembly for a file
 ConnectionStatus.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ConnectionStatus.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ConnectionStatus.c.s
 .PHONY : ConnectionStatus.c.s
 
 Covariance.o: Covariance.c.o
@@ -339,7 +339,7 @@ Covariance.o: Covariance.c.o
 
 # target to build an object file
 Covariance.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Covariance.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Covariance.c.o
 .PHONY : Covariance.c.o
 
 Covariance.i: Covariance.c.i
@@ -348,7 +348,7 @@ Covariance.i: Covariance.c.i
 
 # target to preprocess a source file
 Covariance.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Covariance.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Covariance.c.i
 .PHONY : Covariance.c.i
 
 Covariance.s: Covariance.c.s
@@ -357,7 +357,7 @@ Covariance.s: Covariance.c.s
 
 # target to generate assembly for a file
 Covariance.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Covariance.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Covariance.c.s
 .PHONY : Covariance.c.s
 
 CoveredArea.o: CoveredArea.c.o
@@ -366,7 +366,7 @@ CoveredArea.o: CoveredArea.c.o
 
 # target to build an object file
 CoveredArea.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/CoveredArea.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/CoveredArea.c.o
 .PHONY : CoveredArea.c.o
 
 CoveredArea.i: CoveredArea.c.i
@@ -375,7 +375,7 @@ CoveredArea.i: CoveredArea.c.i
 
 # target to preprocess a source file
 CoveredArea.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/CoveredArea.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/CoveredArea.c.i
 .PHONY : CoveredArea.c.i
 
 CoveredArea.s: CoveredArea.c.s
@@ -384,7 +384,7 @@ CoveredArea.s: CoveredArea.c.s
 
 # target to generate assembly for a file
 CoveredArea.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/CoveredArea.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/CoveredArea.c.s
 .PHONY : CoveredArea.c.s
 
 EnvironmentEnvelope.o: EnvironmentEnvelope.c.o
@@ -393,7 +393,7 @@ EnvironmentEnvelope.o: EnvironmentEnvelope.c.o
 
 # target to build an object file
 EnvironmentEnvelope.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentEnvelope.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentEnvelope.c.o
 .PHONY : EnvironmentEnvelope.c.o
 
 EnvironmentEnvelope.i: EnvironmentEnvelope.c.i
@@ -402,7 +402,7 @@ EnvironmentEnvelope.i: EnvironmentEnvelope.c.i
 
 # target to preprocess a source file
 EnvironmentEnvelope.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentEnvelope.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentEnvelope.c.i
 .PHONY : EnvironmentEnvelope.c.i
 
 EnvironmentEnvelope.s: EnvironmentEnvelope.c.s
@@ -411,7 +411,7 @@ EnvironmentEnvelope.s: EnvironmentEnvelope.c.s
 
 # target to generate assembly for a file
 EnvironmentEnvelope.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentEnvelope.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentEnvelope.c.s
 .PHONY : EnvironmentEnvelope.c.s
 
 EnvironmentFrame.o: EnvironmentFrame.c.o
@@ -420,7 +420,7 @@ EnvironmentFrame.o: EnvironmentFrame.c.o
 
 # target to build an object file
 EnvironmentFrame.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentFrame.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentFrame.c.o
 .PHONY : EnvironmentFrame.c.o
 
 EnvironmentFrame.i: EnvironmentFrame.c.i
@@ -429,7 +429,7 @@ EnvironmentFrame.i: EnvironmentFrame.c.i
 
 # target to preprocess a source file
 EnvironmentFrame.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentFrame.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentFrame.c.i
 .PHONY : EnvironmentFrame.c.i
 
 EnvironmentFrame.s: EnvironmentFrame.c.s
@@ -438,7 +438,7 @@ EnvironmentFrame.s: EnvironmentFrame.c.s
 
 # target to generate assembly for a file
 EnvironmentFrame.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentFrame.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentFrame.c.s
 .PHONY : EnvironmentFrame.c.s
 
 EnvironmentObjectDetection.o: EnvironmentObjectDetection.c.o
@@ -447,7 +447,7 @@ EnvironmentObjectDetection.o: EnvironmentObjectDetection.c.o
 
 # target to build an object file
 EnvironmentObjectDetection.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentObjectDetection.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentObjectDetection.c.o
 .PHONY : EnvironmentObjectDetection.c.o
 
 EnvironmentObjectDetection.i: EnvironmentObjectDetection.c.i
@@ -456,7 +456,7 @@ EnvironmentObjectDetection.i: EnvironmentObjectDetection.c.i
 
 # target to preprocess a source file
 EnvironmentObjectDetection.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentObjectDetection.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentObjectDetection.c.i
 .PHONY : EnvironmentObjectDetection.c.i
 
 EnvironmentObjectDetection.s: EnvironmentObjectDetection.c.s
@@ -465,7 +465,7 @@ EnvironmentObjectDetection.s: EnvironmentObjectDetection.c.s
 
 # target to generate assembly for a file
 EnvironmentObjectDetection.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentObjectDetection.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentObjectDetection.c.s
 .PHONY : EnvironmentObjectDetection.c.s
 
 EnvironmentObjectDetections.o: EnvironmentObjectDetections.c.o
@@ -474,7 +474,7 @@ EnvironmentObjectDetections.o: EnvironmentObjectDetections.c.o
 
 # target to build an object file
 EnvironmentObjectDetections.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentObjectDetections.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentObjectDetections.c.o
 .PHONY : EnvironmentObjectDetections.c.o
 
 EnvironmentObjectDetections.i: EnvironmentObjectDetections.c.i
@@ -483,7 +483,7 @@ EnvironmentObjectDetections.i: EnvironmentObjectDetections.c.i
 
 # target to preprocess a source file
 EnvironmentObjectDetections.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentObjectDetections.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentObjectDetections.c.i
 .PHONY : EnvironmentObjectDetections.c.i
 
 EnvironmentObjectDetections.s: EnvironmentObjectDetections.c.s
@@ -492,7 +492,7 @@ EnvironmentObjectDetections.s: EnvironmentObjectDetections.c.s
 
 # target to generate assembly for a file
 EnvironmentObjectDetections.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentObjectDetections.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/EnvironmentObjectDetections.c.s
 .PHONY : EnvironmentObjectDetections.c.s
 
 Error.o: Error.c.o
@@ -501,7 +501,7 @@ Error.o: Error.c.o
 
 # target to build an object file
 Error.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Error.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Error.c.o
 .PHONY : Error.c.o
 
 Error.i: Error.c.i
@@ -510,7 +510,7 @@ Error.i: Error.c.i
 
 # target to preprocess a source file
 Error.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Error.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Error.c.i
 .PHONY : Error.c.i
 
 Error.s: Error.c.s
@@ -519,7 +519,7 @@ Error.s: Error.c.s
 
 # target to generate assembly for a file
 Error.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Error.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Error.c.s
 .PHONY : Error.c.s
 
 Errors.o: Errors.c.o
@@ -528,7 +528,7 @@ Errors.o: Errors.c.o
 
 # target to build an object file
 Errors.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Errors.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Errors.c.o
 .PHONY : Errors.c.o
 
 Errors.i: Errors.c.i
@@ -537,7 +537,7 @@ Errors.i: Errors.c.i
 
 # target to preprocess a source file
 Errors.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Errors.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Errors.c.i
 .PHONY : Errors.c.i
 
 Errors.s: Errors.c.s
@@ -546,7 +546,7 @@ Errors.s: Errors.c.s
 
 # target to generate assembly for a file
 Errors.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Errors.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Errors.c.s
 .PHONY : Errors.c.s
 
 Header.o: Header.c.o
@@ -555,7 +555,7 @@ Header.o: Header.c.o
 
 # target to build an object file
 Header.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Header.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Header.c.o
 .PHONY : Header.c.o
 
 Header.i: Header.c.i
@@ -564,7 +564,7 @@ Header.i: Header.c.i
 
 # target to preprocess a source file
 Header.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Header.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Header.c.i
 .PHONY : Header.c.i
 
 Header.s: Header.c.s
@@ -573,7 +573,7 @@ Header.s: Header.c.s
 
 # target to generate assembly for a file
 Header.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Header.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Header.c.s
 .PHONY : Header.c.s
 
 INTEGER.o: INTEGER.c.o
@@ -582,7 +582,7 @@ INTEGER.o: INTEGER.c.o
 
 # target to build an object file
 INTEGER.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/INTEGER.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/INTEGER.c.o
 .PHONY : INTEGER.c.o
 
 INTEGER.i: INTEGER.c.i
@@ -591,7 +591,7 @@ INTEGER.i: INTEGER.c.i
 
 # target to preprocess a source file
 INTEGER.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/INTEGER.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/INTEGER.c.i
 .PHONY : INTEGER.c.i
 
 INTEGER.s: INTEGER.c.s
@@ -600,7 +600,7 @@ INTEGER.s: INTEGER.c.s
 
 # target to generate assembly for a file
 INTEGER.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/INTEGER.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/INTEGER.c.s
 .PHONY : INTEGER.c.s
 
 InitMessage.o: InitMessage.c.o
@@ -609,7 +609,7 @@ InitMessage.o: InitMessage.c.o
 
 # target to build an object file
 InitMessage.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/InitMessage.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/InitMessage.c.o
 .PHONY : InitMessage.c.o
 
 InitMessage.i: InitMessage.c.i
@@ -618,7 +618,7 @@ InitMessage.i: InitMessage.c.i
 
 # target to preprocess a source file
 InitMessage.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/InitMessage.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/InitMessage.c.i
 .PHONY : InitMessage.c.i
 
 InitMessage.s: InitMessage.c.s
@@ -627,7 +627,7 @@ InitMessage.s: InitMessage.c.s
 
 # target to generate assembly for a file
 InitMessage.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/InitMessage.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/InitMessage.c.s
 .PHONY : InitMessage.c.s
 
 MovingVector.o: MovingVector.c.o
@@ -636,7 +636,7 @@ MovingVector.o: MovingVector.c.o
 
 # target to build an object file
 MovingVector.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/MovingVector.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/MovingVector.c.o
 .PHONY : MovingVector.c.o
 
 MovingVector.i: MovingVector.c.i
@@ -645,7 +645,7 @@ MovingVector.i: MovingVector.c.i
 
 # target to preprocess a source file
 MovingVector.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/MovingVector.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/MovingVector.c.i
 .PHONY : MovingVector.c.i
 
 MovingVector.s: MovingVector.c.s
@@ -654,7 +654,7 @@ MovingVector.s: MovingVector.c.s
 
 # target to generate assembly for a file
 MovingVector.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/MovingVector.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/MovingVector.c.s
 .PHONY : MovingVector.c.s
 
 NativeEnumerated.o: NativeEnumerated.c.o
@@ -663,7 +663,7 @@ NativeEnumerated.o: NativeEnumerated.c.o
 
 # target to build an object file
 NativeEnumerated.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/NativeEnumerated.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/NativeEnumerated.c.o
 .PHONY : NativeEnumerated.c.o
 
 NativeEnumerated.i: NativeEnumerated.c.i
@@ -672,7 +672,7 @@ NativeEnumerated.i: NativeEnumerated.c.i
 
 # target to preprocess a source file
 NativeEnumerated.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/NativeEnumerated.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/NativeEnumerated.c.i
 .PHONY : NativeEnumerated.c.i
 
 NativeEnumerated.s: NativeEnumerated.c.s
@@ -681,7 +681,7 @@ NativeEnumerated.s: NativeEnumerated.c.s
 
 # target to generate assembly for a file
 NativeEnumerated.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/NativeEnumerated.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/NativeEnumerated.c.s
 .PHONY : NativeEnumerated.c.s
 
 NativeInteger.o: NativeInteger.c.o
@@ -690,7 +690,7 @@ NativeInteger.o: NativeInteger.c.o
 
 # target to build an object file
 NativeInteger.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/NativeInteger.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/NativeInteger.c.o
 .PHONY : NativeInteger.c.o
 
 NativeInteger.i: NativeInteger.c.i
@@ -699,7 +699,7 @@ NativeInteger.i: NativeInteger.c.i
 
 # target to preprocess a source file
 NativeInteger.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/NativeInteger.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/NativeInteger.c.i
 .PHONY : NativeInteger.c.i
 
 NativeInteger.s: NativeInteger.c.s
@@ -708,7 +708,7 @@ NativeInteger.s: NativeInteger.c.s
 
 # target to generate assembly for a file
 NativeInteger.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/NativeInteger.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/NativeInteger.c.s
 .PHONY : NativeInteger.c.s
 
 OCTET_STRING.o: OCTET_STRING.c.o
@@ -717,7 +717,7 @@ OCTET_STRING.o: OCTET_STRING.c.o
 
 # target to build an object file
 OCTET_STRING.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/OCTET_STRING.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/OCTET_STRING.c.o
 .PHONY : OCTET_STRING.c.o
 
 OCTET_STRING.i: OCTET_STRING.c.i
@@ -726,7 +726,7 @@ OCTET_STRING.i: OCTET_STRING.c.i
 
 # target to preprocess a source file
 OCTET_STRING.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/OCTET_STRING.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/OCTET_STRING.c.i
 .PHONY : OCTET_STRING.c.i
 
 OCTET_STRING.s: OCTET_STRING.c.s
@@ -735,7 +735,7 @@ OCTET_STRING.s: OCTET_STRING.c.s
 
 # target to generate assembly for a file
 OCTET_STRING.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/OCTET_STRING.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/OCTET_STRING.c.s
 .PHONY : OCTET_STRING.c.s
 
 ObjectSize.o: ObjectSize.c.o
@@ -744,7 +744,7 @@ ObjectSize.o: ObjectSize.c.o
 
 # target to build an object file
 ObjectSize.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ObjectSize.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ObjectSize.c.o
 .PHONY : ObjectSize.c.o
 
 ObjectSize.i: ObjectSize.c.i
@@ -753,7 +753,7 @@ ObjectSize.i: ObjectSize.c.i
 
 # target to preprocess a source file
 ObjectSize.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ObjectSize.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ObjectSize.c.i
 .PHONY : ObjectSize.c.i
 
 ObjectSize.s: ObjectSize.c.s
@@ -762,7 +762,7 @@ ObjectSize.s: ObjectSize.c.s
 
 # target to generate assembly for a file
 ObjectSize.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ObjectSize.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ObjectSize.c.s
 .PHONY : ObjectSize.c.s
 
 ObjectType.o: ObjectType.c.o
@@ -771,7 +771,7 @@ ObjectType.o: ObjectType.c.o
 
 # target to build an object file
 ObjectType.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ObjectType.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ObjectType.c.o
 .PHONY : ObjectType.c.o
 
 ObjectType.i: ObjectType.c.i
@@ -780,7 +780,7 @@ ObjectType.i: ObjectType.c.i
 
 # target to preprocess a source file
 ObjectType.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ObjectType.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ObjectType.c.i
 .PHONY : ObjectType.c.i
 
 ObjectType.s: ObjectType.c.s
@@ -789,7 +789,7 @@ ObjectType.s: ObjectType.c.s
 
 # target to generate assembly for a file
 ObjectType.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ObjectType.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ObjectType.c.s
 .PHONY : ObjectType.c.s
 
 Parameter.o: Parameter.c.o
@@ -798,7 +798,7 @@ Parameter.o: Parameter.c.o
 
 # target to build an object file
 Parameter.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Parameter.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Parameter.c.o
 .PHONY : Parameter.c.o
 
 Parameter.i: Parameter.c.i
@@ -807,7 +807,7 @@ Parameter.i: Parameter.c.i
 
 # target to preprocess a source file
 Parameter.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Parameter.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Parameter.c.i
 .PHONY : Parameter.c.i
 
 Parameter.s: Parameter.c.s
@@ -816,7 +816,7 @@ Parameter.s: Parameter.c.s
 
 # target to generate assembly for a file
 Parameter.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Parameter.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Parameter.c.s
 .PHONY : Parameter.c.s
 
 Parameters.o: Parameters.c.o
@@ -825,7 +825,7 @@ Parameters.o: Parameters.c.o
 
 # target to build an object file
 Parameters.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Parameters.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Parameters.c.o
 .PHONY : Parameters.c.o
 
 Parameters.i: Parameters.c.i
@@ -834,7 +834,7 @@ Parameters.i: Parameters.c.i
 
 # target to preprocess a source file
 Parameters.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Parameters.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Parameters.c.i
 .PHONY : Parameters.c.i
 
 Parameters.s: Parameters.c.s
@@ -843,7 +843,7 @@ Parameters.s: Parameters.c.s
 
 # target to generate assembly for a file
 Parameters.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Parameters.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Parameters.c.s
 .PHONY : Parameters.c.s
 
 Path.o: Path.c.o
@@ -852,7 +852,7 @@ Path.o: Path.c.o
 
 # target to build an object file
 Path.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Path.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Path.c.o
 .PHONY : Path.c.o
 
 Path.i: Path.c.i
@@ -861,7 +861,7 @@ Path.i: Path.c.i
 
 # target to preprocess a source file
 Path.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Path.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Path.c.i
 .PHONY : Path.c.i
 
 Path.s: Path.c.s
@@ -870,7 +870,7 @@ Path.s: Path.c.s
 
 # target to generate assembly for a file
 Path.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Path.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Path.c.s
 .PHONY : Path.c.s
 
 PathPoint.o: PathPoint.c.o
@@ -879,7 +879,7 @@ PathPoint.o: PathPoint.c.o
 
 # target to build an object file
 PathPoint.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PathPoint.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PathPoint.c.o
 .PHONY : PathPoint.c.o
 
 PathPoint.i: PathPoint.c.i
@@ -888,7 +888,7 @@ PathPoint.i: PathPoint.c.i
 
 # target to preprocess a source file
 PathPoint.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PathPoint.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PathPoint.c.i
 .PHONY : PathPoint.c.i
 
 PathPoint.s: PathPoint.c.s
@@ -897,7 +897,7 @@ PathPoint.s: PathPoint.c.s
 
 # target to generate assembly for a file
 PathPoint.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PathPoint.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PathPoint.c.s
 .PHONY : PathPoint.c.s
 
 PositionOffset.o: PositionOffset.c.o
@@ -906,7 +906,7 @@ PositionOffset.o: PositionOffset.c.o
 
 # target to build an object file
 PositionOffset.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PositionOffset.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PositionOffset.c.o
 .PHONY : PositionOffset.c.o
 
 PositionOffset.i: PositionOffset.c.i
@@ -915,7 +915,7 @@ PositionOffset.i: PositionOffset.c.i
 
 # target to preprocess a source file
 PositionOffset.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PositionOffset.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PositionOffset.c.i
 .PHONY : PositionOffset.c.i
 
 PositionOffset.s: PositionOffset.c.s
@@ -924,7 +924,7 @@ PositionOffset.s: PositionOffset.c.s
 
 # target to generate assembly for a file
 PositionOffset.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PositionOffset.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PositionOffset.c.s
 .PHONY : PositionOffset.c.s
 
 PredictedPath.o: PredictedPath.c.o
@@ -933,7 +933,7 @@ PredictedPath.o: PredictedPath.c.o
 
 # target to build an object file
 PredictedPath.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PredictedPath.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PredictedPath.c.o
 .PHONY : PredictedPath.c.o
 
 PredictedPath.i: PredictedPath.c.i
@@ -942,7 +942,7 @@ PredictedPath.i: PredictedPath.c.i
 
 # target to preprocess a source file
 PredictedPath.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PredictedPath.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PredictedPath.c.i
 .PHONY : PredictedPath.c.i
 
 PredictedPath.s: PredictedPath.c.s
@@ -951,7 +951,7 @@ PredictedPath.s: PredictedPath.c.s
 
 # target to generate assembly for a file
 PredictedPath.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PredictedPath.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/PredictedPath.c.s
 .PHONY : PredictedPath.c.s
 
 ReferencePoint.o: ReferencePoint.c.o
@@ -960,7 +960,7 @@ ReferencePoint.o: ReferencePoint.c.o
 
 # target to build an object file
 ReferencePoint.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ReferencePoint.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ReferencePoint.c.o
 .PHONY : ReferencePoint.c.o
 
 ReferencePoint.i: ReferencePoint.c.i
@@ -969,7 +969,7 @@ ReferencePoint.i: ReferencePoint.c.i
 
 # target to preprocess a source file
 ReferencePoint.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ReferencePoint.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ReferencePoint.c.i
 .PHONY : ReferencePoint.c.i
 
 ReferencePoint.s: ReferencePoint.c.s
@@ -978,7 +978,7 @@ ReferencePoint.s: ReferencePoint.c.s
 
 # target to generate assembly for a file
 ReferencePoint.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ReferencePoint.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ReferencePoint.c.s
 .PHONY : ReferencePoint.c.s
 
 RoadClearanceEnvelope.o: RoadClearanceEnvelope.c.o
@@ -987,7 +987,7 @@ RoadClearanceEnvelope.o: RoadClearanceEnvelope.c.o
 
 # target to build an object file
 RoadClearanceEnvelope.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadClearanceEnvelope.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadClearanceEnvelope.c.o
 .PHONY : RoadClearanceEnvelope.c.o
 
 RoadClearanceEnvelope.i: RoadClearanceEnvelope.c.i
@@ -996,7 +996,7 @@ RoadClearanceEnvelope.i: RoadClearanceEnvelope.c.i
 
 # target to preprocess a source file
 RoadClearanceEnvelope.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadClearanceEnvelope.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadClearanceEnvelope.c.i
 .PHONY : RoadClearanceEnvelope.c.i
 
 RoadClearanceEnvelope.s: RoadClearanceEnvelope.c.s
@@ -1005,7 +1005,7 @@ RoadClearanceEnvelope.s: RoadClearanceEnvelope.c.s
 
 # target to generate assembly for a file
 RoadClearanceEnvelope.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadClearanceEnvelope.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadClearanceEnvelope.c.s
 .PHONY : RoadClearanceEnvelope.c.s
 
 RoadClearanceFrame.o: RoadClearanceFrame.c.o
@@ -1014,7 +1014,7 @@ RoadClearanceFrame.o: RoadClearanceFrame.c.o
 
 # target to build an object file
 RoadClearanceFrame.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadClearanceFrame.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadClearanceFrame.c.o
 .PHONY : RoadClearanceFrame.c.o
 
 RoadClearanceFrame.i: RoadClearanceFrame.c.i
@@ -1023,7 +1023,7 @@ RoadClearanceFrame.i: RoadClearanceFrame.c.i
 
 # target to preprocess a source file
 RoadClearanceFrame.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadClearanceFrame.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadClearanceFrame.c.i
 .PHONY : RoadClearanceFrame.c.i
 
 RoadClearanceFrame.s: RoadClearanceFrame.c.s
@@ -1032,7 +1032,7 @@ RoadClearanceFrame.s: RoadClearanceFrame.c.s
 
 # target to generate assembly for a file
 RoadClearanceFrame.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadClearanceFrame.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadClearanceFrame.c.s
 .PHONY : RoadClearanceFrame.c.s
 
 RoadSection.o: RoadSection.c.o
@@ -1041,7 +1041,7 @@ RoadSection.o: RoadSection.c.o
 
 # target to build an object file
 RoadSection.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadSection.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadSection.c.o
 .PHONY : RoadSection.c.o
 
 RoadSection.i: RoadSection.c.i
@@ -1050,7 +1050,7 @@ RoadSection.i: RoadSection.c.i
 
 # target to preprocess a source file
 RoadSection.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadSection.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadSection.c.i
 .PHONY : RoadSection.c.i
 
 RoadSection.s: RoadSection.c.s
@@ -1059,7 +1059,7 @@ RoadSection.s: RoadSection.c.s
 
 # target to generate assembly for a file
 RoadSection.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadSection.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadSection.c.s
 .PHONY : RoadSection.c.s
 
 RoadSections.o: RoadSections.c.o
@@ -1068,7 +1068,7 @@ RoadSections.o: RoadSections.c.o
 
 # target to build an object file
 RoadSections.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadSections.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadSections.c.o
 .PHONY : RoadSections.c.o
 
 RoadSections.i: RoadSections.c.i
@@ -1077,7 +1077,7 @@ RoadSections.i: RoadSections.c.i
 
 # target to preprocess a source file
 RoadSections.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadSections.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadSections.c.i
 .PHONY : RoadSections.c.i
 
 RoadSections.s: RoadSections.c.s
@@ -1086,7 +1086,7 @@ RoadSections.s: RoadSections.c.s
 
 # target to generate assembly for a file
 RoadSections.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadSections.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/RoadSections.c.s
 .PHONY : RoadSections.c.s
 
 Sector.o: Sector.c.o
@@ -1095,7 +1095,7 @@ Sector.o: Sector.c.o
 
 # target to build an object file
 Sector.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Sector.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Sector.c.o
 .PHONY : Sector.c.o
 
 Sector.i: Sector.c.i
@@ -1104,7 +1104,7 @@ Sector.i: Sector.c.i
 
 # target to preprocess a source file
 Sector.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Sector.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Sector.c.i
 .PHONY : Sector.c.i
 
 Sector.s: Sector.c.s
@@ -1113,7 +1113,7 @@ Sector.s: Sector.c.s
 
 # target to generate assembly for a file
 Sector.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Sector.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Sector.c.s
 .PHONY : Sector.c.s
 
 SectorIds.o: SectorIds.c.o
@@ -1122,7 +1122,7 @@ SectorIds.o: SectorIds.c.o
 
 # target to build an object file
 SectorIds.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SectorIds.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SectorIds.c.o
 .PHONY : SectorIds.c.o
 
 SectorIds.i: SectorIds.c.i
@@ -1131,7 +1131,7 @@ SectorIds.i: SectorIds.c.i
 
 # target to preprocess a source file
 SectorIds.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SectorIds.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SectorIds.c.i
 .PHONY : SectorIds.c.i
 
 SectorIds.s: SectorIds.c.s
@@ -1140,7 +1140,7 @@ SectorIds.s: SectorIds.c.s
 
 # target to generate assembly for a file
 SectorIds.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SectorIds.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SectorIds.c.s
 .PHONY : SectorIds.c.s
 
 Sectors.o: Sectors.c.o
@@ -1149,7 +1149,7 @@ Sectors.o: Sectors.c.o
 
 # target to build an object file
 Sectors.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Sectors.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Sectors.c.o
 .PHONY : Sectors.c.o
 
 Sectors.i: Sectors.c.i
@@ -1158,7 +1158,7 @@ Sectors.i: Sectors.c.i
 
 # target to preprocess a source file
 Sectors.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Sectors.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Sectors.c.i
 .PHONY : Sectors.c.i
 
 Sectors.s: Sectors.c.s
@@ -1167,7 +1167,7 @@ Sectors.s: Sectors.c.s
 
 # target to generate assembly for a file
 Sectors.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Sectors.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/Sectors.c.s
 .PHONY : Sectors.c.s
 
 SensorEnvelope.o: SensorEnvelope.c.o
@@ -1176,7 +1176,7 @@ SensorEnvelope.o: SensorEnvelope.c.o
 
 # target to build an object file
 SensorEnvelope.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorEnvelope.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorEnvelope.c.o
 .PHONY : SensorEnvelope.c.o
 
 SensorEnvelope.i: SensorEnvelope.c.i
@@ -1185,7 +1185,7 @@ SensorEnvelope.i: SensorEnvelope.c.i
 
 # target to preprocess a source file
 SensorEnvelope.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorEnvelope.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorEnvelope.c.i
 .PHONY : SensorEnvelope.c.i
 
 SensorEnvelope.s: SensorEnvelope.c.s
@@ -1194,7 +1194,7 @@ SensorEnvelope.s: SensorEnvelope.c.s
 
 # target to generate assembly for a file
 SensorEnvelope.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorEnvelope.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorEnvelope.c.s
 .PHONY : SensorEnvelope.c.s
 
 SensorFrame.o: SensorFrame.c.o
@@ -1203,7 +1203,7 @@ SensorFrame.o: SensorFrame.c.o
 
 # target to build an object file
 SensorFrame.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorFrame.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorFrame.c.o
 .PHONY : SensorFrame.c.o
 
 SensorFrame.i: SensorFrame.c.i
@@ -1212,7 +1212,7 @@ SensorFrame.i: SensorFrame.c.i
 
 # target to preprocess a source file
 SensorFrame.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorFrame.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorFrame.c.i
 .PHONY : SensorFrame.c.i
 
 SensorFrame.s: SensorFrame.c.s
@@ -1221,7 +1221,7 @@ SensorFrame.s: SensorFrame.c.s
 
 # target to generate assembly for a file
 SensorFrame.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorFrame.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorFrame.c.s
 .PHONY : SensorFrame.c.s
 
 SensorIdleFrame.o: SensorIdleFrame.c.o
@@ -1230,7 +1230,7 @@ SensorIdleFrame.o: SensorIdleFrame.c.o
 
 # target to build an object file
 SensorIdleFrame.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorIdleFrame.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorIdleFrame.c.o
 .PHONY : SensorIdleFrame.c.o
 
 SensorIdleFrame.i: SensorIdleFrame.c.i
@@ -1239,7 +1239,7 @@ SensorIdleFrame.i: SensorIdleFrame.c.i
 
 # target to preprocess a source file
 SensorIdleFrame.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorIdleFrame.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorIdleFrame.c.i
 .PHONY : SensorIdleFrame.c.i
 
 SensorIdleFrame.s: SensorIdleFrame.c.s
@@ -1248,7 +1248,7 @@ SensorIdleFrame.s: SensorIdleFrame.c.s
 
 # target to generate assembly for a file
 SensorIdleFrame.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorIdleFrame.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorIdleFrame.c.s
 .PHONY : SensorIdleFrame.c.s
 
 SensorObjectDetection.o: SensorObjectDetection.c.o
@@ -1257,7 +1257,7 @@ SensorObjectDetection.o: SensorObjectDetection.c.o
 
 # target to build an object file
 SensorObjectDetection.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorObjectDetection.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorObjectDetection.c.o
 .PHONY : SensorObjectDetection.c.o
 
 SensorObjectDetection.i: SensorObjectDetection.c.i
@@ -1266,7 +1266,7 @@ SensorObjectDetection.i: SensorObjectDetection.c.i
 
 # target to preprocess a source file
 SensorObjectDetection.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorObjectDetection.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorObjectDetection.c.i
 .PHONY : SensorObjectDetection.c.i
 
 SensorObjectDetection.s: SensorObjectDetection.c.s
@@ -1275,7 +1275,7 @@ SensorObjectDetection.s: SensorObjectDetection.c.s
 
 # target to generate assembly for a file
 SensorObjectDetection.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorObjectDetection.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorObjectDetection.c.s
 .PHONY : SensorObjectDetection.c.s
 
 SensorObjectDetections.o: SensorObjectDetections.c.o
@@ -1284,7 +1284,7 @@ SensorObjectDetections.o: SensorObjectDetections.c.o
 
 # target to build an object file
 SensorObjectDetections.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorObjectDetections.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorObjectDetections.c.o
 .PHONY : SensorObjectDetections.c.o
 
 SensorObjectDetections.i: SensorObjectDetections.c.i
@@ -1293,7 +1293,7 @@ SensorObjectDetections.i: SensorObjectDetections.c.i
 
 # target to preprocess a source file
 SensorObjectDetections.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorObjectDetections.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorObjectDetections.c.i
 .PHONY : SensorObjectDetections.c.i
 
 SensorObjectDetections.s: SensorObjectDetections.c.s
@@ -1302,7 +1302,7 @@ SensorObjectDetections.s: SensorObjectDetections.c.s
 
 # target to generate assembly for a file
 SensorObjectDetections.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorObjectDetections.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorObjectDetections.c.s
 .PHONY : SensorObjectDetections.c.s
 
 SensorType.o: SensorType.c.o
@@ -1311,7 +1311,7 @@ SensorType.o: SensorType.c.o
 
 # target to build an object file
 SensorType.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorType.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorType.c.o
 .PHONY : SensorType.c.o
 
 SensorType.i: SensorType.c.i
@@ -1320,7 +1320,7 @@ SensorType.i: SensorType.c.i
 
 # target to preprocess a source file
 SensorType.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorType.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorType.c.i
 .PHONY : SensorType.c.i
 
 SensorType.s: SensorType.c.s
@@ -1329,7 +1329,7 @@ SensorType.s: SensorType.c.s
 
 # target to generate assembly for a file
 SensorType.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorType.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SensorType.c.s
 .PHONY : SensorType.c.s
 
 SubscriptionStatus.o: SubscriptionStatus.c.o
@@ -1338,7 +1338,7 @@ SubscriptionStatus.o: SubscriptionStatus.c.o
 
 # target to build an object file
 SubscriptionStatus.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SubscriptionStatus.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SubscriptionStatus.c.o
 .PHONY : SubscriptionStatus.c.o
 
 SubscriptionStatus.i: SubscriptionStatus.c.i
@@ -1347,7 +1347,7 @@ SubscriptionStatus.i: SubscriptionStatus.c.i
 
 # target to preprocess a source file
 SubscriptionStatus.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SubscriptionStatus.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SubscriptionStatus.c.i
 .PHONY : SubscriptionStatus.c.i
 
 SubscriptionStatus.s: SubscriptionStatus.c.s
@@ -1356,7 +1356,7 @@ SubscriptionStatus.s: SubscriptionStatus.c.s
 
 # target to generate assembly for a file
 SubscriptionStatus.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SubscriptionStatus.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/SubscriptionStatus.c.s
 .PHONY : SubscriptionStatus.c.s
 
 UTF8String.o: UTF8String.c.o
@@ -1365,7 +1365,7 @@ UTF8String.o: UTF8String.c.o
 
 # target to build an object file
 UTF8String.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UTF8String.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UTF8String.c.o
 .PHONY : UTF8String.c.o
 
 UTF8String.i: UTF8String.c.i
@@ -1374,7 +1374,7 @@ UTF8String.i: UTF8String.c.i
 
 # target to preprocess a source file
 UTF8String.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UTF8String.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UTF8String.c.i
 .PHONY : UTF8String.c.i
 
 UTF8String.s: UTF8String.c.s
@@ -1383,7 +1383,7 @@ UTF8String.s: UTF8String.c.s
 
 # target to generate assembly for a file
 UTF8String.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UTF8String.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UTF8String.c.s
 .PHONY : UTF8String.c.s
 
 UpdateStatus.o: UpdateStatus.c.o
@@ -1392,7 +1392,7 @@ UpdateStatus.o: UpdateStatus.c.o
 
 # target to build an object file
 UpdateStatus.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UpdateStatus.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UpdateStatus.c.o
 .PHONY : UpdateStatus.c.o
 
 UpdateStatus.i: UpdateStatus.c.i
@@ -1401,7 +1401,7 @@ UpdateStatus.i: UpdateStatus.c.i
 
 # target to preprocess a source file
 UpdateStatus.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UpdateStatus.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UpdateStatus.c.i
 .PHONY : UpdateStatus.c.i
 
 UpdateStatus.s: UpdateStatus.c.s
@@ -1410,7 +1410,7 @@ UpdateStatus.s: UpdateStatus.c.s
 
 # target to generate assembly for a file
 UpdateStatus.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UpdateStatus.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UpdateStatus.c.s
 .PHONY : UpdateStatus.c.s
 
 UpdateSubscription.o: UpdateSubscription.c.o
@@ -1419,7 +1419,7 @@ UpdateSubscription.o: UpdateSubscription.c.o
 
 # target to build an object file
 UpdateSubscription.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UpdateSubscription.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UpdateSubscription.c.o
 .PHONY : UpdateSubscription.c.o
 
 UpdateSubscription.i: UpdateSubscription.c.i
@@ -1428,7 +1428,7 @@ UpdateSubscription.i: UpdateSubscription.c.i
 
 # target to preprocess a source file
 UpdateSubscription.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UpdateSubscription.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UpdateSubscription.c.i
 .PHONY : UpdateSubscription.c.i
 
 UpdateSubscription.s: UpdateSubscription.c.s
@@ -1437,7 +1437,7 @@ UpdateSubscription.s: UpdateSubscription.c.s
 
 # target to generate assembly for a file
 UpdateSubscription.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UpdateSubscription.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/UpdateSubscription.c.s
 .PHONY : UpdateSubscription.c.s
 
 asn_SEQUENCE_OF.o: asn_SEQUENCE_OF.c.o
@@ -1446,7 +1446,7 @@ asn_SEQUENCE_OF.o: asn_SEQUENCE_OF.c.o
 
 # target to build an object file
 asn_SEQUENCE_OF.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_SEQUENCE_OF.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_SEQUENCE_OF.c.o
 .PHONY : asn_SEQUENCE_OF.c.o
 
 asn_SEQUENCE_OF.i: asn_SEQUENCE_OF.c.i
@@ -1455,7 +1455,7 @@ asn_SEQUENCE_OF.i: asn_SEQUENCE_OF.c.i
 
 # target to preprocess a source file
 asn_SEQUENCE_OF.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_SEQUENCE_OF.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_SEQUENCE_OF.c.i
 .PHONY : asn_SEQUENCE_OF.c.i
 
 asn_SEQUENCE_OF.s: asn_SEQUENCE_OF.c.s
@@ -1464,7 +1464,7 @@ asn_SEQUENCE_OF.s: asn_SEQUENCE_OF.c.s
 
 # target to generate assembly for a file
 asn_SEQUENCE_OF.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_SEQUENCE_OF.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_SEQUENCE_OF.c.s
 .PHONY : asn_SEQUENCE_OF.c.s
 
 asn_SET_OF.o: asn_SET_OF.c.o
@@ -1473,7 +1473,7 @@ asn_SET_OF.o: asn_SET_OF.c.o
 
 # target to build an object file
 asn_SET_OF.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_SET_OF.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_SET_OF.c.o
 .PHONY : asn_SET_OF.c.o
 
 asn_SET_OF.i: asn_SET_OF.c.i
@@ -1482,7 +1482,7 @@ asn_SET_OF.i: asn_SET_OF.c.i
 
 # target to preprocess a source file
 asn_SET_OF.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_SET_OF.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_SET_OF.c.i
 .PHONY : asn_SET_OF.c.i
 
 asn_SET_OF.s: asn_SET_OF.c.s
@@ -1491,7 +1491,7 @@ asn_SET_OF.s: asn_SET_OF.c.s
 
 # target to generate assembly for a file
 asn_SET_OF.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_SET_OF.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_SET_OF.c.s
 .PHONY : asn_SET_OF.c.s
 
 asn_codecs_prim.o: asn_codecs_prim.c.o
@@ -1500,7 +1500,7 @@ asn_codecs_prim.o: asn_codecs_prim.c.o
 
 # target to build an object file
 asn_codecs_prim.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_codecs_prim.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_codecs_prim.c.o
 .PHONY : asn_codecs_prim.c.o
 
 asn_codecs_prim.i: asn_codecs_prim.c.i
@@ -1509,7 +1509,7 @@ asn_codecs_prim.i: asn_codecs_prim.c.i
 
 # target to preprocess a source file
 asn_codecs_prim.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_codecs_prim.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_codecs_prim.c.i
 .PHONY : asn_codecs_prim.c.i
 
 asn_codecs_prim.s: asn_codecs_prim.c.s
@@ -1518,7 +1518,7 @@ asn_codecs_prim.s: asn_codecs_prim.c.s
 
 # target to generate assembly for a file
 asn_codecs_prim.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_codecs_prim.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/asn_codecs_prim.c.s
 .PHONY : asn_codecs_prim.c.s
 
 ber_decoder.o: ber_decoder.c.o
@@ -1527,7 +1527,7 @@ ber_decoder.o: ber_decoder.c.o
 
 # target to build an object file
 ber_decoder.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_decoder.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_decoder.c.o
 .PHONY : ber_decoder.c.o
 
 ber_decoder.i: ber_decoder.c.i
@@ -1536,7 +1536,7 @@ ber_decoder.i: ber_decoder.c.i
 
 # target to preprocess a source file
 ber_decoder.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_decoder.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_decoder.c.i
 .PHONY : ber_decoder.c.i
 
 ber_decoder.s: ber_decoder.c.s
@@ -1545,7 +1545,7 @@ ber_decoder.s: ber_decoder.c.s
 
 # target to generate assembly for a file
 ber_decoder.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_decoder.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_decoder.c.s
 .PHONY : ber_decoder.c.s
 
 ber_tlv_length.o: ber_tlv_length.c.o
@@ -1554,7 +1554,7 @@ ber_tlv_length.o: ber_tlv_length.c.o
 
 # target to build an object file
 ber_tlv_length.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_tlv_length.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_tlv_length.c.o
 .PHONY : ber_tlv_length.c.o
 
 ber_tlv_length.i: ber_tlv_length.c.i
@@ -1563,7 +1563,7 @@ ber_tlv_length.i: ber_tlv_length.c.i
 
 # target to preprocess a source file
 ber_tlv_length.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_tlv_length.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_tlv_length.c.i
 .PHONY : ber_tlv_length.c.i
 
 ber_tlv_length.s: ber_tlv_length.c.s
@@ -1572,7 +1572,7 @@ ber_tlv_length.s: ber_tlv_length.c.s
 
 # target to generate assembly for a file
 ber_tlv_length.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_tlv_length.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_tlv_length.c.s
 .PHONY : ber_tlv_length.c.s
 
 ber_tlv_tag.o: ber_tlv_tag.c.o
@@ -1581,7 +1581,7 @@ ber_tlv_tag.o: ber_tlv_tag.c.o
 
 # target to build an object file
 ber_tlv_tag.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_tlv_tag.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_tlv_tag.c.o
 .PHONY : ber_tlv_tag.c.o
 
 ber_tlv_tag.i: ber_tlv_tag.c.i
@@ -1590,7 +1590,7 @@ ber_tlv_tag.i: ber_tlv_tag.c.i
 
 # target to preprocess a source file
 ber_tlv_tag.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_tlv_tag.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_tlv_tag.c.i
 .PHONY : ber_tlv_tag.c.i
 
 ber_tlv_tag.s: ber_tlv_tag.c.s
@@ -1599,7 +1599,7 @@ ber_tlv_tag.s: ber_tlv_tag.c.s
 
 # target to generate assembly for a file
 ber_tlv_tag.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_tlv_tag.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/ber_tlv_tag.c.s
 .PHONY : ber_tlv_tag.c.s
 
 constr_SEQUENCE.o: constr_SEQUENCE.c.o
@@ -1608,7 +1608,7 @@ constr_SEQUENCE.o: constr_SEQUENCE.c.o
 
 # target to build an object file
 constr_SEQUENCE.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SEQUENCE.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SEQUENCE.c.o
 .PHONY : constr_SEQUENCE.c.o
 
 constr_SEQUENCE.i: constr_SEQUENCE.c.i
@@ -1617,7 +1617,7 @@ constr_SEQUENCE.i: constr_SEQUENCE.c.i
 
 # target to preprocess a source file
 constr_SEQUENCE.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SEQUENCE.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SEQUENCE.c.i
 .PHONY : constr_SEQUENCE.c.i
 
 constr_SEQUENCE.s: constr_SEQUENCE.c.s
@@ -1626,7 +1626,7 @@ constr_SEQUENCE.s: constr_SEQUENCE.c.s
 
 # target to generate assembly for a file
 constr_SEQUENCE.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SEQUENCE.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SEQUENCE.c.s
 .PHONY : constr_SEQUENCE.c.s
 
 constr_SEQUENCE_OF.o: constr_SEQUENCE_OF.c.o
@@ -1635,7 +1635,7 @@ constr_SEQUENCE_OF.o: constr_SEQUENCE_OF.c.o
 
 # target to build an object file
 constr_SEQUENCE_OF.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SEQUENCE_OF.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SEQUENCE_OF.c.o
 .PHONY : constr_SEQUENCE_OF.c.o
 
 constr_SEQUENCE_OF.i: constr_SEQUENCE_OF.c.i
@@ -1644,7 +1644,7 @@ constr_SEQUENCE_OF.i: constr_SEQUENCE_OF.c.i
 
 # target to preprocess a source file
 constr_SEQUENCE_OF.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SEQUENCE_OF.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SEQUENCE_OF.c.i
 .PHONY : constr_SEQUENCE_OF.c.i
 
 constr_SEQUENCE_OF.s: constr_SEQUENCE_OF.c.s
@@ -1653,7 +1653,7 @@ constr_SEQUENCE_OF.s: constr_SEQUENCE_OF.c.s
 
 # target to generate assembly for a file
 constr_SEQUENCE_OF.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SEQUENCE_OF.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SEQUENCE_OF.c.s
 .PHONY : constr_SEQUENCE_OF.c.s
 
 constr_SET_OF.o: constr_SET_OF.c.o
@@ -1662,7 +1662,7 @@ constr_SET_OF.o: constr_SET_OF.c.o
 
 # target to build an object file
 constr_SET_OF.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SET_OF.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SET_OF.c.o
 .PHONY : constr_SET_OF.c.o
 
 constr_SET_OF.i: constr_SET_OF.c.i
@@ -1671,7 +1671,7 @@ constr_SET_OF.i: constr_SET_OF.c.i
 
 # target to preprocess a source file
 constr_SET_OF.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SET_OF.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SET_OF.c.i
 .PHONY : constr_SET_OF.c.i
 
 constr_SET_OF.s: constr_SET_OF.c.s
@@ -1680,7 +1680,7 @@ constr_SET_OF.s: constr_SET_OF.c.s
 
 # target to generate assembly for a file
 constr_SET_OF.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SET_OF.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_SET_OF.c.s
 .PHONY : constr_SET_OF.c.s
 
 constr_TYPE.o: constr_TYPE.c.o
@@ -1689,7 +1689,7 @@ constr_TYPE.o: constr_TYPE.c.o
 
 # target to build an object file
 constr_TYPE.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_TYPE.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_TYPE.c.o
 .PHONY : constr_TYPE.c.o
 
 constr_TYPE.i: constr_TYPE.c.i
@@ -1698,7 +1698,7 @@ constr_TYPE.i: constr_TYPE.c.i
 
 # target to preprocess a source file
 constr_TYPE.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_TYPE.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_TYPE.c.i
 .PHONY : constr_TYPE.c.i
 
 constr_TYPE.s: constr_TYPE.c.s
@@ -1707,7 +1707,7 @@ constr_TYPE.s: constr_TYPE.c.s
 
 # target to generate assembly for a file
 constr_TYPE.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_TYPE.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constr_TYPE.c.s
 .PHONY : constr_TYPE.c.s
 
 constraints.o: constraints.c.o
@@ -1716,7 +1716,7 @@ constraints.o: constraints.c.o
 
 # target to build an object file
 constraints.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constraints.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constraints.c.o
 .PHONY : constraints.c.o
 
 constraints.i: constraints.c.i
@@ -1725,7 +1725,7 @@ constraints.i: constraints.c.i
 
 # target to preprocess a source file
 constraints.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constraints.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constraints.c.i
 .PHONY : constraints.c.i
 
 constraints.s: constraints.c.s
@@ -1734,7 +1734,7 @@ constraints.s: constraints.c.s
 
 # target to generate assembly for a file
 constraints.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constraints.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/constraints.c.s
 .PHONY : constraints.c.s
 
 converter-sample.o: converter-sample.c.o
@@ -1743,7 +1743,7 @@ converter-sample.o: converter-sample.c.o
 
 # target to build an object file
 converter-sample.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/converter-sample.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/converter-sample.c.o
 .PHONY : converter-sample.c.o
 
 converter-sample.i: converter-sample.c.i
@@ -1752,7 +1752,7 @@ converter-sample.i: converter-sample.c.i
 
 # target to preprocess a source file
 converter-sample.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/converter-sample.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/converter-sample.c.i
 .PHONY : converter-sample.c.i
 
 converter-sample.s: converter-sample.c.s
@@ -1761,7 +1761,7 @@ converter-sample.s: converter-sample.c.s
 
 # target to generate assembly for a file
 converter-sample.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/converter-sample.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/converter-sample.c.s
 .PHONY : converter-sample.c.s
 
 der_encoder.o: der_encoder.c.o
@@ -1770,7 +1770,7 @@ der_encoder.o: der_encoder.c.o
 
 # target to build an object file
 der_encoder.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/der_encoder.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/der_encoder.c.o
 .PHONY : der_encoder.c.o
 
 der_encoder.i: der_encoder.c.i
@@ -1779,7 +1779,7 @@ der_encoder.i: der_encoder.c.i
 
 # target to preprocess a source file
 der_encoder.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/der_encoder.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/der_encoder.c.i
 .PHONY : der_encoder.c.i
 
 der_encoder.s: der_encoder.c.s
@@ -1788,7 +1788,7 @@ der_encoder.s: der_encoder.c.s
 
 # target to generate assembly for a file
 der_encoder.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/der_encoder.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/der_encoder.c.s
 .PHONY : der_encoder.c.s
 
 per_decoder.o: per_decoder.c.o
@@ -1797,7 +1797,7 @@ per_decoder.o: per_decoder.c.o
 
 # target to build an object file
 per_decoder.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_decoder.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_decoder.c.o
 .PHONY : per_decoder.c.o
 
 per_decoder.i: per_decoder.c.i
@@ -1806,7 +1806,7 @@ per_decoder.i: per_decoder.c.i
 
 # target to preprocess a source file
 per_decoder.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_decoder.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_decoder.c.i
 .PHONY : per_decoder.c.i
 
 per_decoder.s: per_decoder.c.s
@@ -1815,7 +1815,7 @@ per_decoder.s: per_decoder.c.s
 
 # target to generate assembly for a file
 per_decoder.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_decoder.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_decoder.c.s
 .PHONY : per_decoder.c.s
 
 per_encoder.o: per_encoder.c.o
@@ -1824,7 +1824,7 @@ per_encoder.o: per_encoder.c.o
 
 # target to build an object file
 per_encoder.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_encoder.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_encoder.c.o
 .PHONY : per_encoder.c.o
 
 per_encoder.i: per_encoder.c.i
@@ -1833,7 +1833,7 @@ per_encoder.i: per_encoder.c.i
 
 # target to preprocess a source file
 per_encoder.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_encoder.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_encoder.c.i
 .PHONY : per_encoder.c.i
 
 per_encoder.s: per_encoder.c.s
@@ -1842,7 +1842,7 @@ per_encoder.s: per_encoder.c.s
 
 # target to generate assembly for a file
 per_encoder.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_encoder.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_encoder.c.s
 .PHONY : per_encoder.c.s
 
 per_opentype.o: per_opentype.c.o
@@ -1851,7 +1851,7 @@ per_opentype.o: per_opentype.c.o
 
 # target to build an object file
 per_opentype.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_opentype.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_opentype.c.o
 .PHONY : per_opentype.c.o
 
 per_opentype.i: per_opentype.c.i
@@ -1860,7 +1860,7 @@ per_opentype.i: per_opentype.c.i
 
 # target to preprocess a source file
 per_opentype.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_opentype.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_opentype.c.i
 .PHONY : per_opentype.c.i
 
 per_opentype.s: per_opentype.c.s
@@ -1869,7 +1869,7 @@ per_opentype.s: per_opentype.c.s
 
 # target to generate assembly for a file
 per_opentype.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_opentype.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_opentype.c.s
 .PHONY : per_opentype.c.s
 
 per_support.o: per_support.c.o
@@ -1878,7 +1878,7 @@ per_support.o: per_support.c.o
 
 # target to build an object file
 per_support.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_support.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_support.c.o
 .PHONY : per_support.c.o
 
 per_support.i: per_support.c.i
@@ -1887,7 +1887,7 @@ per_support.i: per_support.c.i
 
 # target to preprocess a source file
 per_support.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_support.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_support.c.i
 .PHONY : per_support.c.i
 
 per_support.s: per_support.c.s
@@ -1896,7 +1896,7 @@ per_support.s: per_support.c.s
 
 # target to generate assembly for a file
 per_support.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_support.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/per_support.c.s
 .PHONY : per_support.c.s
 
 xer_decoder.o: xer_decoder.c.o
@@ -1905,7 +1905,7 @@ xer_decoder.o: xer_decoder.c.o
 
 # target to build an object file
 xer_decoder.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_decoder.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_decoder.c.o
 .PHONY : xer_decoder.c.o
 
 xer_decoder.i: xer_decoder.c.i
@@ -1914,7 +1914,7 @@ xer_decoder.i: xer_decoder.c.i
 
 # target to preprocess a source file
 xer_decoder.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_decoder.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_decoder.c.i
 .PHONY : xer_decoder.c.i
 
 xer_decoder.s: xer_decoder.c.s
@@ -1923,7 +1923,7 @@ xer_decoder.s: xer_decoder.c.s
 
 # target to generate assembly for a file
 xer_decoder.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_decoder.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_decoder.c.s
 .PHONY : xer_decoder.c.s
 
 xer_encoder.o: xer_encoder.c.o
@@ -1932,7 +1932,7 @@ xer_encoder.o: xer_encoder.c.o
 
 # target to build an object file
 xer_encoder.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_encoder.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_encoder.c.o
 .PHONY : xer_encoder.c.o
 
 xer_encoder.i: xer_encoder.c.i
@@ -1941,7 +1941,7 @@ xer_encoder.i: xer_encoder.c.i
 
 # target to preprocess a source file
 xer_encoder.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_encoder.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_encoder.c.i
 .PHONY : xer_encoder.c.i
 
 xer_encoder.s: xer_encoder.c.s
@@ -1950,7 +1950,7 @@ xer_encoder.s: xer_encoder.c.s
 
 # target to generate assembly for a file
 xer_encoder.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_encoder.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_encoder.c.s
 .PHONY : xer_encoder.c.s
 
 xer_support.o: xer_support.c.o
@@ -1959,7 +1959,7 @@ xer_support.o: xer_support.c.o
 
 # target to build an object file
 xer_support.c.o:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_support.c.o
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_support.c.o
 .PHONY : xer_support.c.o
 
 xer_support.i: xer_support.c.i
@@ -1968,7 +1968,7 @@ xer_support.i: xer_support.c.i
 
 # target to preprocess a source file
 xer_support.c.i:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_support.c.i
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_support.c.i
 .PHONY : xer_support.c.i
 
 xer_support.s: xer_support.c.s
@@ -1977,7 +1977,7 @@ xer_support.s: xer_support.c.s
 
 # target to generate assembly for a file
 xer_support.c.s:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_support.c.s
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(MAKE) -f proto/CMakeFiles/messages.dir/build.make proto/CMakeFiles/messages.dir/xer_support.c.s
 .PHONY : xer_support.c.s
 
 # Help Target
@@ -2205,6 +2205,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/mi7wa6/Dokumente/2018-BA-Watzko/source/libsdk-sys/cpp/MECViewServerSDK-Build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/mi7wa6/Dokumente/mecview_2018-05-18/MECViewServerSDK-Build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

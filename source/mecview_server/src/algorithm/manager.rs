@@ -98,22 +98,9 @@ impl<T: FnMut(Box<SensorFrame>) + Send + 'static> AlgorithmManager<T> {
     fn on_model_count_changed(&mut self, before: usize) {
         let after = self.model_listener.len();
         trace!("on_model_count_changed, before/after: {}/{}", before, after);
-        Self::retain_mut(&mut self.count_listener, |(_, listener)| {
+        retain_mut(&mut self.count_listener, |(_, listener)| {
             listener(before, after).is_ok()
         });
-    }
-
-    fn retain_mut<V, F: Fn(&mut V) -> bool>(vec: &mut Vec<V>, keep: F) {
-        // nightly: see Vec::drain_filter
-        // Vec::retain only provides &T and not &mut T :(
-        let mut index = 0_usize;
-        for _ in 0..vec.len() {
-            if !keep(vec.index_mut(index)) {
-                vec.swap_remove(index);
-            } else {
-                index += 1;
-            }
-        }
     }
 }
 
@@ -132,7 +119,7 @@ impl<T: FnMut(Box<SensorFrame>) + Send + 'static> Algorithm<SensorFrame, Environ
     fn publish(&mut self, model: RawMessage<EnvironmentFrame>) -> Result<(), Error> {
         let before = self.model_listener.len();
         let env = Arc::new(model);
-        Self::retain_mut(&mut self.model_listener, |(addr, active, listener)| {
+        retain_mut(&mut self.model_listener, |(addr, active, listener)| {
             trace!("Sending model to ModelListener/{}", addr);
             !*active || listener(env.clone()).is_ok()
         });
@@ -194,14 +181,28 @@ impl<T: FnMut(Box<SensorFrame>) + Send + 'static> Algorithm<SensorFrame, Environ
     }
 }
 
+
+fn retain_mut<V, F: Fn(&mut V) -> bool>(vec: &mut Vec<V>, keep: F) {
+    // nightly: see Vec::drain_filter
+    // Vec::retain only provides &T and not &mut T :(
+    let mut index = 0_usize;
+    for _ in 0..vec.len() {
+        if !keep(vec.index_mut(index)) {
+            vec.swap_remove(index);
+        } else {
+            index += 1;
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
 
     #[test]
     fn retain_mut_removes_correct() {
-        let mut list = vec![1, 2, 3, 4, 5];
-        AlgorithmManager::retain_mut(&mut list, |i| *i % 2 == 0);
+        let mut list : Vec<i32> = vec![1, 2, 3, 4, 5];
+        retain_mut(&mut list, |i| *i % 2 == 0);
         assert_eq!(2, list.len());
         assert!(list.contains(&2));
         assert!(list.contains(&4));

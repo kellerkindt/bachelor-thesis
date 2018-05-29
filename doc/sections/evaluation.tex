@@ -58,7 +58,7 @@ Für jede Implementation werden 10 Tests mit 1 bis 5 Fahrzeugen durchgeführt.
 
 Zum jetzigen Zeitpunkt ist eine \textit{SensorFrame}-Nachricht 517 Bytes groß und eine \textit{EnvironmentFrame}-Nachricht 2153 Bytes groß.
 
-%\todo{Unfair für Server weil für jede eingehende eine versendet wird}
+\todo{Unfair für Server weil für jede eingehende eine versendet wird, erhöhter stress}
 
 \section{Ergebnisse}
 
@@ -79,6 +79,8 @@ Zum jetzigen Zeitpunkt ist eine \textit{SensorFrame}-Nachricht 517 Bytes groß u
 			]
 			
 			\legend{Rust,,C++,,Rust mit C++ Alg.,}
+			
+			\draw[very thick,color=black!10] (0,5) -- (#3,5);
 			
 			\addplot gnuplot [raw gnuplot,id=rust#1,mark=none,very thick,color=brown!30]{
 				set xrange [0:#3];
@@ -150,12 +152,15 @@ Zum jetzigen Zeitpunkt ist eine \textit{SensorFrame}-Nachricht 517 Bytes groß u
 }
 
 \makeDias{25_60s}{10.5}{90000}
+
+\subsubsection{Beschreibung}
 In der \autoref{dia_25_60s} sind auf der linken Seite die Messergebnisse aufgelistet, die durch das in \autoref{eval:howto} beschrieben Vorgehen gesammelt wurden.
 Auf der rechten Seite ist für jede Implementation ein Boxplot für die Werte auf der Y-Achse aufgezeichnet.
 
 Die Y-Achse gibt die durchschnittliche Latenz in Millisekunden pro Nachricht und die X-Achse die Anzahl an Nachrichten für einen Test wieder.
 Braune Kreise markieren einzelne Testergebnisse mit der Rust Implementation, blaue Kreuze mit der C++ Implementation und rote Kreuze mit der Rust Implementation und dem C++ Algorithmus.
 Über alle Testergebnisse einer Implementation ist in der jeweiligen Farbe eine Trendlinie gelegt.
+Zudem verläuft eine waagrechte Gerade auf Höhe von 5ms. Sie markiert die maximale Latenz bei zwei Fahrzeugen (ca 30.000 Nachrichten) aus Anforderung \reqNumberForLabel{exec:time} (siehe \autoref{req:exec:time}).
 
 Es sind 5 Gruppierungen je Implementation auf der X-Achse zu erkennen (bei etwa 15.000, 30.000, 45.000, 60.000 und 75.000 Nachrichten).
 Dies resultiert aus der unterschiedlichen Anzahl an Fahrzeugen und der deshalb multiplikativ wachsenden Gesamtanzahl an übermittelten Nachrichten.
@@ -167,6 +172,23 @@ Dies ist durch die jeweilig steigende Trendlinie gut zu erkennen.
 Die Rust und C++ Implementierung weisen bei einem Client etwa die selbe durchschnittliche Latenz auf, während die Rust Implementation mit dem C++ Algorithmus hier eine leicht erhöhte Latenz aufweist.
 Die Trendlinie der C++ Implementation verläuft bei steigender Anzahl an Nachrichten deutlich steiler wie die Trendlinie der anderen zwei Implementationen.
 Bei zwei Fahrzeugen sind die beiden Rust Implementationen gleichauf und bei weiteren Fahrzeugen hat die die Rust Implementation mit dem C++ Algorithmus eine geringere durchschnittliche Latenz wie die reine Rust und die C++ Implementation.
+
+\subsubsection{Auswertung}
+
+Aus dem Diagramm ist zu erkennen, das sowohl die C++ Implementation, als auch die Rust Implementationen, trotz erhöhtem Stress, die Anforderung \reqNumberForLabel{exec:time} (siehe \autoref{req:exec:time}) erfüllen, 2 Fahrzeuge gleichzeitig und in unter 5ms bedienen zu können.
+Im Gegensatz zur C++ Implementation, erfüllen die Rust Implementationen dies auch noch bei mehr als  Fahrzeugen (getestet bis inklusive 5, die Trendlinie lässt aber noch mehr vermuten).
+
+Interessant ist der verlauf der roten Linie (Rust mit C++ Algorithmus) zur braunen Linie (Rust Algorithmus).
+Eine Verschlechterung der Reaktionszeit, wie mit nur einem Fahrzeug (etwa 15.000 Nachrichten), gegenüber der reinen Rust Implementation war, durch die erhöhte Komplexität und die weitere Schichten zur Einbindung des C++ Algorithmus, zu erwarten gewesen.
+Eine bessere Reaktionszeit ab 3 Fahrzeugen ist dagegen unerwartet gewesen.
+Erst bei einer Codanalyse wurde klar, dass dies vermutlich daran liegt, dass der C++ Algorithmus parallel zum Rust Algorithmus-Adapter ausgeführt wird.
+Die Encodierung der Antwort (\textit{EnvironmentFrame}-Nachricht nach \textit{RawMessage}, etwa 130\textmu s) wird daher asynchron zum aufbereiten der nächsten und weiterleiten der vorherigen Nachricht an die Fahrzeuge ausgeführt.
+Dieses weitere asynchrone Verhalten setzt eines der für das\enquote{Channel Architektur Pattern} erwähnten Optimierungsmöglichkeiten um (siehe \autoref{design:communication:architecture}).
+Wie in \todo{Seite} \cite[157]{douglass2003real} beschrieben, wird bei \todo{Datenflut blubber mehr}. 
+
+Die Rust Implementationen sind somit schneller wie die C++ Implementation.
+
+\todo{bei einem Fahrzeug ~15.000 Nachrichten ist effektiv der Ursprung, davor macht kein Sinn (0 Fahrzeuge...)}
 
 
 %\makeDias{128_60s}{20.5}{900000}

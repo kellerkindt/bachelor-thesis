@@ -371,6 +371,7 @@ mod test {
     #[derive(Default)]
     struct MockAlgorithm<A: Send + Debug, E: Send + Debug> {
         update: Vec<Box<A>>,
+        publish: Vec<RawMessage<E>>,
         subscribe_environment_model: Vec<(SocketAddr, EnvironmentListener<E>)>,
         unsubscribe_environment_model: Vec<(SocketAddr)>,
         activate_environment_model_subscription: Vec<SocketAddr>,
@@ -382,6 +383,7 @@ mod test {
         fn assert(
             &self,
             update: usize,
+            publish: usize,
             subscribe_environment_model: usize,
             unsubscribe_environment_model: usize,
             activate_environment_model_subscription: usize,
@@ -390,6 +392,7 @@ mod test {
             unsubscribe_listener_count: usize,
         ) {
             assert_eq!(update, self.update.len(), "update");
+            assert_eq!(publish, self.publish.len(), "publish");
             assert_eq!(
                 subscribe_environment_model,
                 self.subscribe_environment_model.len(),
@@ -424,6 +427,7 @@ mod test {
 
         fn clear(&mut self) {
             self.update.clear();
+            self.publish.clear();
             self.subscribe_environment_model.clear();
             self.unsubscribe_environment_model.clear();
             self.activate_environment_model_subscription.clear();
@@ -437,6 +441,11 @@ mod test {
 
         fn update(&mut self, update: Box<A>) -> Result<(), Error> {
             self.update.push(update);
+            Ok(())
+        }
+
+        fn publish(&mut self, model: RawMessage<E>) -> Result<(), Error> {
+            self.publish.push(model);
             Ok(())
         }
 
@@ -581,7 +590,7 @@ mod test {
                 .process_command(Command::UpdateVariant(Variant::Sensor))
                 .is_ok()
         );
-        client.algorithm.assert(0, 0, 0, 0, 0, 1, 0);
+        client.algorithm.assert(0, 0, 0, 0, 0, 0, 1, 0);
         assert_eq!(
             client.address,
             client.algorithm.subscribe_listener_count[0].0,
@@ -592,7 +601,7 @@ mod test {
     fn test_sensor_remote_subscribing_unsubscribe() {
         let (_, mut client) = variant_client(Variant::Sensor, true);
         assert!(client.process_command(Command::RemoteSubscribe).is_ok());
-        client.algorithm.assert(0, 0, 0, 0, 0, 0, 0);
+        client.algorithm.assert(0, 0, 0, 0, 0, 0, 0, 0);
         client.adapter.assert(0, 0, 1, 0);
         client.adapter.clear();
         assert!(client.process_command(Command::RemoteUnsubscribe).is_ok());
@@ -604,7 +613,7 @@ mod test {
         let (_, mut client) = variant_client(Variant::Sensor, true);
         assert!(client.process_command(Command::Subscribe).is_err());
         assert!(client.process_command(Command::Unsubscribe).is_err());
-        client.algorithm.assert(0, 0, 0, 0, 0, 0, 0);
+        client.algorithm.assert(0, 0, 0, 0, 0, 0, 0, 0);
         client.adapter.assert(0, 0, 0, 0);
     }
 
@@ -613,7 +622,7 @@ mod test {
         let (mut receiver, mut client) = variant_client(Variant::Sensor, false);
         client.adapter.assert(0, 0, 0, 0);
         client.adapter.clear();
-        client.algorithm.assert(0, 0, 0, 0, 0, 1, 0);
+        client.algorithm.assert(0, 0, 0, 0, 0, 0, 1, 0);
 
         assert!(client.algorithm.subscribe_listener_count.index_mut(0).1(0, 1).is_ok());
         apply_all_commands(&mut receiver, &mut client);
@@ -633,7 +642,7 @@ mod test {
                 .is_ok()
         );
         client.adapter.assert(0, 0, 0, 0);
-        client.algorithm.assert(1, 0, 0, 0, 0, 0, 0);
+        client.algorithm.assert(1, 0, 0, 0, 0, 0, 0, 0);
     }
 
     #[test]
@@ -647,7 +656,7 @@ mod test {
                 .is_ok()
         );
         client.adapter.assert(0, 0, 0, 1);
-        client.algorithm.assert(0, 0, 0, 0, 0, 0, 0);
+        client.algorithm.assert(0, 0, 0, 0, 0, 0, 0, 0);
     }
 
     #[test]
@@ -655,10 +664,10 @@ mod test {
         let (_, mut client) = variant_client(Variant::Vehicle, true);
         assert!(client.process_command(Command::Subscribe).is_ok());
         client.adapter.assert(0, 0, 0, 0);
-        client.algorithm.assert(0, 0, 0, 1, 0, 0, 0);
+        client.algorithm.assert(0, 0, 0, 0, 1, 0, 0, 0);
         assert!(client.process_command(Command::Unsubscribe).is_ok());
         client.adapter.assert(0, 0, 0, 0);
-        client.algorithm.assert(0, 0, 0, 1, 1, 0, 0);
+        client.algorithm.assert(0, 0, 0, 0, 1, 1, 0, 0);
     }
 
     #[test]

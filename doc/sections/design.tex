@@ -120,14 +120,15 @@ Das Muster eignet sich besonders gut, da auf eingehende und ausgehende Datensät
 	\item \textbf{Daten versenden}: Die Bytes werden über den TCP-Datenstrom versandt.
 \end{itemize}
 
-Nach dem \enquote{Channel Architektur Pattern} ist sequentielle Bearbeitung zwischen dem TCP-Datenstrom und der Clientinstanz in jede Richtung als Kanal interpretierbar.
+Nach dem \enquote{Channel Architektur Pattern} ist eine sequentielle Bearbeitung zwischen dem TCP-Datenstrom und der Clientinstanz in jede Richtung als Kanal interpretierbar.
 Da jeder Zwischenschritt innerhalb eines Kanals lediglich von dem Ergebnis des vorhergehenden abhängig ist, können die einzelnen Schritte parallel zueinander bearbeiten werden.
 \todo{}
-Durch einen zusätzlichen, vorangestellten Multiplexer und nachfolgenden Demultiplexer könnten in einer späteren Version mehrere Kanäle parallel den Client oder Datenstrom speisen.
+Durch einen zusätzlichen, vorangestellten Multiplexer und nachfolgenden Demultiplexer könnten in einer späteren Version mehrere Kanäle parallel den Client oder den Datenstrom speisen.
 Hiervon wird in der ersten Implementierung jedoch abgesehen, da je Client keine derart große Datenflut erwartet wird, die dies verlangen würde.
-Stattdessen soll lediglich jeder Kanal eines Clients parallel zum dazugehörigen Client und zu allen anderen Kanälen ausgeführt werden.
+Stattdessen soll lediglich jeder Kanal eines Clients parallel zu allen den Kanälen anderer Clients ausgeführt werden.
 
-\textit{Tokio} (siehe \autoref{design:tokio}) ermöglicht durch die Kombinationsmöglichkeiten von \textit{Future}s nicht blockierenden Kommunikationskanäle nach diesem Prinzip zu erstellen und zu betreiben.
+Als Framework zur Umsetzung wird \textit{Tokio} (siehe \autoref{design:tokio}) verwendet.
+Durch die Kombinationsmöglichkeiten von \textit{Future}s nicht blockierenden Kommunikationskanäle ermöglicht es, ein System nach diesem Prinzip zu erstellen.
 
 %Bei einer großen Datenmenge kann dies helfen, die Anforderungen von echtzeitnahen System zu erfüllen (\cite[161]{douglass2003real}).
 

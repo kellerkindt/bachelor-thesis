@@ -3,60 +3,62 @@
 \chapter{Auswertung}
 
 In diesem Kapitel wird die Implementation des MEC-View-Servers in Rust mit der Referenzimplementation in C++ verglichen.
-Hierzu wird die Textumgebung aus dem C++ Projekt auch auf die Rust Implementation angewandt: Fahrzeuge und Sensoren werden simuliert.
+Hierzu wird die Testumgebung aus dem C++ Projekt auch auf die Rust Implementation angewandt: Fahrzeuge und Sensoren werden simuliert und die Laufzeit dazwischen gemessen.
 
-test für durchsatz nur bedingt aussagekräftig
+Im ersten Testszenario führt die Implementation in Rust eine in Rust geschriebene Algorithmusimplementation aus.
+Im zweiten Schritt wird stattdessen die C++ Algorithmusimplementation geladen.
 
-gleicher dummy alg
 
-\todo{Während den tests zeigte sich ein Fehler im C++ Server. Race-conditional missing cleanup for closed sockets in certain error cases?}
 
 \section{Testumgebung}
 
-Alle Tests wurden auf dem selben Ubuntu 16.04.4 LTS Server mit zwei Intel Xeon CPUs (E5-2620 v4 @ 2.10GHz) ausgeführt.
-Der CPU Gvernor wurde für alle Tests auf \enquote{performance} gestellt, um Schwankungen in der CPU Taktung durch Energiesparmaßnahmen und damit Verfälschungen der Testergebnisse zu unterbinden.
+Die Testumgebung wird auf einem Ubuntu 16.04.4 LTS Server mit zwei Intel Xeon CPUs (E5-2620 v4 @ 2.10GHz) ausgeführt.
+Der CPU Governor wurde für alle Tests auf \enquote{performance} gestellt, um Schwankungen in der CPU Taktung durch Energiesparmaßnahmen -- und damit Verfälschungen der Testergebnisse -- zu unterbinden.
 
-Für jede Kombination aus Sensoren, Fahrzeugen und Serverimplementierung wurde 10 Tests durchgeführt.
-Während jedem Test ist für jede Empfangene Nachricht am Fahrzeug, die Latenz seit Versand am Sensor in eine Datei geschrieben worden.
-Nach einem Testdurchlauf wurden die Anzahl an Nachrichten gezählt und der Durchschnitt und Boxplots für die Latenzen gebildet.
+Für jede Kombination aus Sensoren, Fahrzeugen und Serverimplementierung wurden 10 Tests durchgeführt.
+Während jedem Test wird für jede empfangene Nachricht am Fahrzeug, die Latenz seit dem Versand am Sensor in eine Datei geschrieben.
+Nach einem Testdurchlauf werden die Anzahl an Nachrichten gezählt und der Durchschnitt für die Latenzen gebildet.
 
-Zu jedem Zeitpunkt ist maximal ein Test gleichzeitig auf dem System ausgeführt worden.
+Zu jedem Zeitpunkt wird maximal ein Test gleichzeitig auf dem System ausgeführt.
 
-Um Latenzen durch das Netzwerk auszuschließen, wurden auch die virtuellen Sensoren und Fahrzeuge auf dem gleichen Server wie die Serverimplementation ausgeführt und durch die Loopback-Netzwerkschnittstelle mit der Serverimplementation verbunden.
+Um Latenzen durch das Netzwerk auszuschließen, werden auch die virtuellen Sensoren und Fahrzeuge auf dem gleichen Server wie die Serverimplementation ausgeführt und durch die Loopback-Netzwerkschnittstelle verbunden.
 Ein kurzer Test ergab hierbei einen Durchsatz von ca 40Gbit/s (mittels \textit{iperf}) und eine Latenz von ca 24us (mittels \textit{ping}) auf der Loopback-Netzwerkschnittstelle.
 Auswirkungen auf die Testergebnisse sind damit vernachlässigbar klein.
 
-Beide Implementationen sind im Release-Modus und ohne \enquote{RoadClearanceModule} compiliert worden.
-
-\todo{no RCM}
-
-\todo{release mode}
+Beide Implementationen sind im Release-Modus compiliert und in der C++ Implementation ist das \enquote{RoadClearanceModule} abgeschaltet.
 
 \section{Vorgehen}
+\label{eval:howto}
 
-Das Vorgehen war für alle Tests gleich und wurde bis auf den Start des Servers durch ein Skript ausgeführt.
-Variiert wurden lediglich die Anzahl an Fahrzeugen und Sensoren, die als Übergabeparameter an das Skript übergeben werden.
-Das Vorgehen eines Testdurchlaufs sieht folgendermaßen aus:
+Das Vorgehen ist für alle Tests gleich und ist bis auf den Start des Servers durch ein Bash-Skript automatisiert.
+Lediglich die Anzahl an Fahrzeugen und Sensoren, die als Übergabeparameter an das Skript übergeben werden, variieren je Testdurchlauf (10 Tests).
+Das Vorgehen eines Tests sieht folgendermaßen aus:
 
 \begin{itemize}
-	\item Server mit Log-Level \enquote{info} starten, falls noch nicht gestartet
-	\item Sensoren starten
-	\item Eine kurze Pause (2 Sekunden) machen, um genügend Zeit für den Verbindungsaufbau der Sensoren zu geben
-	\item Fahrzeugen starten. 5 Sekunden nach dem Verbindungsaufbau abonnieren diese das Umgebungsmodell für 60 Sekunden.
-	\item Auf ende aller Fahrzeuge warten.
-	\item Alle Sensoren beenden
-	\item Kurze Pause (2 Sekunden) vor erneutem Test-Durchlauf einräumen
+	\item Server mit Log-Level \enquote{info} starten
+	\item Skript starten
+	\item Skript startet die Sensoren als Hintergrundprozesse
+	\item Skript pausiert für 2 Sekunden um genügend Zeit für den Verbindungsaufbau der Sensoren einzuräumen
+	\item Skript startet die Fahrzeugen, die 5 Sekunden nach dem Verbindungsaufbau das Umfeldmodell für 60 Sekunden abonnieren.
+	\item Skript wartet auf Prozessende der Fahrzeuge
+	\item Skript beendet alle Sensoren
+	\item Skript pausiert für 2 Sekunden um dem Server genügend Zeit für den Verbindungsabbau der Sensoren und Fahrzeuge einzuräumen
+	\item Skript wird erneut gestartet (weitere 9 mal, siehe Schritt 2)
 \end{itemize}
 
-Für jedes Umgebungsmodell, das von einem Fahrzeug empfangen wird, wird auf der Konsole die Latenz in ganzen Millisekunden ausgegeben.
+Für jedes Umfeldmodell, das von einem Fahrzeug empfangen wird, wird auf der Konsole die Latenz in ganzen Millisekunden ausgegeben.
+Diese Latenz wird anhand der Differenz zwischen dem Zeitstempel in der empfangenen Nachricht und der aktuellen Zeit errechnet.
+Alle ausgegebenen Latenzen werden mittels \textit{bash}-Pipe (und einem \textit{grep} und \textit{cut}) in eine Datei gespeichert.
+Bei der Auswertung wird der Durchschnitt errechnet (mittels \textit{awk}-Skript).
 
-Die Latenz errechnet der C++ Clientsimulator, indem beim Versenden eines \textit{SensorFrame}s durch den simulierten Sensor die aktuelle Zeit in der Nachricht hinterlegt wird.
-Der Dummy-Algorithmus überträgt diesen \todo{Timestamp} in das \textit{EnvironmentFrame} und versendet dieses an die Fahrzeuge.
-Die simulierten Fahrzeuge errechnen die Differenz zwischen der aktuellen Zeit und dem \todo{timestamp}
- und geben diesen auf der Konsole aus.
- 
-Alle ausgegebenen Latenzen werden mittels \textit{bash}-Pipe in eine Datei übertragen.
-Bei der Auswertung wird der Durchschnitt errechnet.
+Für jeden Test werden 25 virtuelle Sensoren mit der Serverinstanz verbunden.
+Jeder dieser Sensoren versendet in Intervallen von 100ms eine \textit{SensorFrame}-Nachricht.
+Hieraus resultieren 250 Nachrichten pro Sekunden, weshalb die Anforderung \reqNumberForLabel{exec:time} (siehe \autoref{req:exec:time}) mit 200 Nachrichten pro Sekunde ($6*10 + 7*20$) übererfüllt wird.
+Für jede Implementation werden 10 Tests mit 1 bis 5 Fahrzeugen durchgeführt.
+
+Zum jetzigen Zeitpunkt ist eine \textit{SensorFrame}-Nachricht 517 Bytes groß und eine \textit{EnvironmentFrame}-Nachricht 2153 Bytes groß.
+
+%\todo{Unfair für Server weil für jede eingehende eine versendet wird}
 
 \section{Ergebnisse}
 
@@ -73,7 +75,10 @@ Bei der Auswertung wird der Durchschnitt errechnet.
 				xlabel={Anzahl der Nachrichten},
 				ylabel={Durchschnittliche Latenz in ms},
 				boxplot/draw direction=y,
+				legend pos=north west,
 			]
+			
+			\legend{Rust,,C++,,Rust mit C++ Alg.,}
 			
 			\addplot gnuplot [raw gnuplot,id=rust#1,mark=none,very thick,color=brown!30]{
 				set xrange [0:#3];
@@ -115,7 +120,7 @@ Bei der Auswertung wird der Durchschnitt errechnet.
 			ymin=0, ymax=#2,
 			boxplot/draw direction=y,
 			xtick={1,2,3},
-			xticklabels={Rust,C++,C++A},
+			xticklabels={Rust,C++,R++},
 			width=\textwidth,
 			height=20em
 			]
@@ -139,10 +144,31 @@ Bei der Auswertung wird der Durchschnitt errechnet.
 			\caption{Boxplot für\\die Latenz}
 			\label{#1_boxplot}
 		\end{subfigure}
+		\caption{Laufzeitverhalten der MEC-View-Server Implementationen}
+		\label{dia_#1}
 	\end{figure}
 }
 
 \makeDias{25_60s}{10.5}{90000}
+In der \autoref{dia_25_60s} sind auf der linken Seite die Messergebnisse aufgelistet, die durch das in \autoref{eval:howto} beschrieben Vorgehen gesammelt wurden.
+Auf der rechten Seite ist für jede Implementation ein Boxplot für die Werte auf der Y-Achse aufgezeichnet.
+
+Die Y-Achse gibt die durchschnittliche Latenz in Millisekunden pro Nachricht und die X-Achse die Anzahl an Nachrichten für einen Test wieder.
+Braune Kreise markieren einzelne Testergebnisse mit der Rust Implementation, blaue Kreuze mit der C++ Implementation und rote Kreuze mit der Rust Implementation und dem C++ Algorithmus.
+Über alle Testergebnisse einer Implementation ist in der jeweiligen Farbe eine Trendlinie gelegt.
+
+Es sind 5 Gruppierungen je Implementation auf der X-Achse zu erkennen (bei etwa 15.000, 30.000, 45.000, 60.000 und 75.000 Nachrichten).
+Dies resultiert aus der unterschiedlichen Anzahl an Fahrzeugen und der deshalb multiplikativ wachsenden Gesamtanzahl an übermittelten Nachrichten.
+Auf der Y-Achse ist dagegen für jede Gruppe eine Streuung zu sehen.
+Während sich die Streuung bei den Rust Implementation mit zunehmenden Fahrzeugen eher verringert, steigt bei der C++ Implementation die Streuung deutlich.
+Jeder Gruppierung einer Implementation hat zudem die Tendenz, eine höhere durchschnittliche Latenz wie ihre vorgehende Gruppe aufzuweisen.
+Dies ist durch die jeweilig steigende Trendlinie gut zu erkennen.
+
+Die Rust und C++ Implementierung weisen bei einem Client etwa die selbe durchschnittliche Latenz auf, während die Rust Implementation mit dem C++ Algorithmus hier eine leicht erhöhte Latenz aufweist.
+Die Trendlinie der C++ Implementation verläuft bei steigender Anzahl an Nachrichten deutlich steiler wie die Trendlinie der anderen zwei Implementationen.
+Bei zwei Fahrzeugen sind die beiden Rust Implementationen gleichauf und bei weiteren Fahrzeugen hat die die Rust Implementation mit dem C++ Algorithmus eine geringere durchschnittliche Latenz wie die reine Rust und die C++ Implementation.
+
+
 %\makeDias{128_60s}{20.5}{900000}
 %\makeDias{2x25_60s}{4.1}{120000}
 %\makeDias{3x25_60s}{6.5}{300000}
@@ -150,3 +176,6 @@ Bei der Auswertung wird der Durchschnitt errechnet.
 %\makeDias{5x25_60s}{12.0}{900000}
 
 \subsection{profiler?}
+
+\section{..}
+\todo{Während den tests zeigte sich ein Fehler im C++ Server. Race-conditional missing cleanup for closed sockets in certain error cases?}

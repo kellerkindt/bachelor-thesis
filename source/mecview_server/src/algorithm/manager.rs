@@ -181,7 +181,6 @@ impl<T: FnMut(Box<SensorFrame>) + Send + 'static> Algorithm<SensorFrame, Environ
     }
 }
 
-
 fn retain_mut<V, F: Fn(&mut V) -> bool>(vec: &mut Vec<V>, keep: F) {
     // nightly: see Vec::drain_filter
     // Vec::retain only provides &T and not &mut T :(
@@ -201,7 +200,7 @@ mod test {
 
     #[test]
     fn retain_mut_removes_correct() {
-        let mut list : Vec<i32> = vec![1, 2, 3, 4, 5];
+        let mut list: Vec<i32> = vec![1, 2, 3, 4, 5];
         retain_mut(&mut list, |i| *i % 2 == 0);
         assert_eq!(2, list.len());
         assert!(list.contains(&2));

@@ -76,10 +76,14 @@ public:
         return this->shared_from_this();
     }
 
-    void send_sensor_frame(SensorFrame_t* frame) {
+    void send_sensor_frame(SensorFrame_t* frame, void (*drop_sensor_frame)(SensorFrame_t*)) {
         // std::cout <<"RustShimInternal adding SensorFrame" << std::endl << std::flush;
-        this->queue_listener->Add(std::shared_ptr<SensorFrame_t>(frame, [](SensorFrame_t* f){
-            asn_DEF_SensorFrame.free_struct(&asn_DEF_SensorFrame, f, 0);
+        this->queue_listener->Add(std::shared_ptr<SensorFrame_t>(frame, [drop_sensor_frame](SensorFrame_t* f) {
+            if (drop_sensor_frame != NULL) {
+                drop_sensor_frame(f);
+            } else {
+                std::cerr << "MISSING DROP FUNCTION FOR SENSOR_FRAME. LEAKING MEMORY" << std::endl;
+            }
         }));
     }
 
@@ -110,6 +114,7 @@ public:
 struct RustShim {
     void (*publish_environment_frame)(RustInstance*, EnvironmentFrame_t*);
     void (*publish_init_message)(RustInstance*, InitMessage_t*);
+    void (*drop_sensor_frame)(SensorFrame_t*);
     RustInstance* instance;
     std::shared_ptr<RustShimInternal> internal;
 };
@@ -132,7 +137,7 @@ RustShim* shim_create(char* config_file) {
 
 void shim_send_sensor_frame(RustShim* shim, SensorFrame_t* frame) {
     if (shim != NULL) {
-        shim->internal->send_sensor_frame(frame);
+        shim->internal->send_sensor_frame(frame, shim->drop_sensor_frame);
     }
 }
 

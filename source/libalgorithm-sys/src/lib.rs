@@ -56,6 +56,7 @@ impl<I: Send, E: Send, S: Send, FE: FnMut(&E) + Send + 'static, FI: FnMut(&I) + 
         (*algorithm.shim).instance = algorithm.as_mut() as *mut _ as *mut bindings::RustInstance;
         (*algorithm.shim).publish_environment_frame = Some(Self::publish_environment_frame);
         (*algorithm.shim).publish_init_message = Some(Self::publish_init_message);
+        (*algorithm.shim).drop_sensor_frame = Some(Self::drop_sensor_frame);
         Ok(algorithm)
     }
 
@@ -77,6 +78,13 @@ impl<I: Send, E: Send, S: Send, FE: FnMut(&E) + Send + 'static, FI: FnMut(&I) + 
         let myself: &mut ExternalAlgorithm<I, E, S, FE, FI> = ::std::mem::transmute(instance);
         let frame: &I = ::std::mem::transmute(frame as *mut I);
         (myself.init_message_publisher)(frame);
+    }
+
+    #[no_mangle]
+    unsafe extern "C" fn drop_sensor_frame(frame: *mut bindings::SensorFrame_t) {
+        // turning the raw pointer in the box causes
+        // it to be dropped correctly by the rust deallocator
+        Box::from_raw(frame as *mut S);
     }
 
     pub fn send_sensor_frame(&mut self, frame: Box<S>) {

@@ -21,6 +21,7 @@ pub struct RustShim {
     pub publish_init_message: ::std::option::Option<
         unsafe extern "C" fn(arg1: *mut RustInstance, arg2: *mut InitMessage_t),
     >,
+    pub drop_sensor_frame: ::std::option::Option<unsafe extern "C" fn(arg1: *mut SensorFrame_t)>,
     pub instance: *mut RustInstance,
     pub internal: [u64; 2usize],
 }
@@ -28,7 +29,7 @@ pub struct RustShim {
 fn bindgen_test_layout_RustShim() {
     assert_eq!(
         ::std::mem::size_of::<RustShim>(),
-        40usize,
+        48usize,
         concat!("Size of: ", stringify!(RustShim))
     );
     assert_eq!(
@@ -59,8 +60,18 @@ fn bindgen_test_layout_RustShim() {
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<RustShim>())).instance as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<RustShim>())).drop_sensor_frame as *const _ as usize },
         16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(RustShim),
+            "::",
+            stringify!(drop_sensor_frame)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<RustShim>())).instance as *const _ as usize },
+        24usize,
         concat!(
             "Offset of field: ",
             stringify!(RustShim),
@@ -70,7 +81,7 @@ fn bindgen_test_layout_RustShim() {
     );
     assert_eq!(
         unsafe { &(*(::std::ptr::null::<RustShim>())).internal as *const _ as usize },
-        24usize,
+        32usize,
         concat!(
             "Offset of field: ",
             stringify!(RustShim),

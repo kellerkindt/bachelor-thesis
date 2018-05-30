@@ -6,18 +6,6 @@ In diesem Kapitel wird auf Besonderheiten und Schwierigkeiten bei der Implementi
 
 %Weitestgehend wie in \autoref{draft:architecture}, aber Futures, tokio, Queues
 
-\todo{proxy communication}
-
-\section{Bindgen für ASN}
-
-\label{impl:issue:ffi}
-\todo{schnell problem: kein asn->rs compiler, c bindings aufwending -> autogen via bindgen}
-
-\todo{link issues fixed in commit d5d694c}
-
-\todo{impl Drop / free structs, important but do not overengineer}
-
-
 \section{Continuous Integration mittels Jenkins}
 
 Mittels der Continuous Integration Software Jenkins wird die Rust-Implementation nach jeder Aktualisierung der Quellcode-Repository gebaut.
@@ -89,6 +77,19 @@ Die frühen und starken Schwankungen resultieren aus Testdurchläufen bei der Ei
 \autoref{impl:jenkins:warnings:graph} zeigt Warnungen die der Rust Compiler für die verschiedenen Builds ausgegeben hat.
 
 Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingerichtet wurden.
+
+
+\subsection{?? Unsichtbare Asynchronität des Algorithmus}
+\todo{impl Algorithm for Sender<..> proxy communication}
+
+\section{?? Bindgen für ASN}
+
+\label{impl:issue:ffi}
+\todo{schnell problem: kein asn->rs compiler, c bindings aufwending -> autogen via bindgen}
+
+\todo{link issues fixed in commit d5d694c}
+
+\todo{impl Drop / free structs, important but do not overengineer}
 
 \section{...}
 

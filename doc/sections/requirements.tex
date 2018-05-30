@@ -33,9 +33,22 @@ Funktionale Anforderungen beschreiben das gewünschte Verhalten des Systems, nic
 
 %\requirement{impl:roadclearance}{Road-Clearance}{\todo{...}}
 
-\requirement{impl:config}{\todo{Konfigurationsdateien?}}{\todo{/etc/MECViewServer/...}}
+%\requirement{impl:config}{\todo{Konfigurationsdateien?}}{\todo{/etc/MECViewServer/...}}
 
-\requirement{impl:args}{\todo{Startparameter?}}{\todo{sample: send\_delay\_ms, sensor\_timeout\_ms, environment\_frame\_file, ...}}
+\requirement{impl:args}{Startparameter}{
+Der Server soll es ermöglichen, folgendes mittels Startparameter zu konfigurieren:
+\begin{itemize}
+	\item Mindestlevel (\enquote{err}, \enquote{warn}, \enquote{info}, \enquote{debug} und \enquote{trace}) für Logausgaben die auf der Konsole erscheinen,
+	\item die Netzwerkadresse, an der auf neue Verbindungen gehört werden soll (Standardwert 0.0.0.0 bzw. an alle),
+	\item der Port, an dem auf neue Verbindungen gehört werden soll (Standardwert 2000),
+	\item der Pfad zu einer Datei mit einer in XER-Codierten \textit{InitMessage}-Nachricht, die an neu Verbundene Fahrzeuge versendet werden soll,
+	\item nur, wenn kein C++ Algorithmus geladen wird: Der Pfad zu einer Datei mit einer in XER-Codierten \textit{EnvironmentFrame}-Nachricht, die an die Fahrzeuge versendet werden soll,
+	\item Nur, wenn ein C++ Algorithmus geladen wird: Den Pfad zur Konfigurationsdatei die der C++ Algorithmus benötigt (Standardwert \enquote{/etc/MECViewServer/algorithmus.json}),
+\end{itemize}
+}
+
+\requirement{possible:external_algorith}{OPTIONAL: Einbinden eines C++ Algorithmus}{Die C++ Referenzimplementation definiert die Schnittstellen \textit{Algorithmus}, \textit{EventListener},  \textit{UpdateQueue} und die Methode \textit{AlgorithmFactory::Create}. Dadurch ist es der C++ Implementation möglich, wahlweise mit dem \enquote{Dummy}-Algorithmus oder mit dem Fusionsalgorithmus der Universität Ulm compiliert zu werden. Die Rust Implementation soll ebenfalls einen Algorithmus, der diesen Schnittstellen entspricht, nutzen können.}
+
 
 \section{Nichtfunktionale Anforderungen}
 
@@ -59,6 +72,4 @@ Funktionale Anforderungen beschreiben das gewünschte Verhalten des Systems, nic
 \requirement{dos:sensor}{Widerstand gegen Nachrichtenüberflutung}{Die Funktionalität des Servers gegenüber anderen Clients soll durch eine Überflutung von Daten eines einzelnen Sensors nicht beeinträchtigt werden.}
 
 \requirement{dos:car}{Widerstand gegen Nachrichtenrückstau}{Die Funktionalität des Servers gegenüber anderen Clients soll durch Fahrzeuge, für die sich ein Nachrichtenrückstau gebildet hat oder von einzelnen langsamen Verbindungen, nicht beeinträchtigt werden.}
-
-\requirement{possible:external_algorith}{Ob die Einbindung einer externen C++ Bibliothek als Fusions-Algorithmus möglich ist, soll überprüft werden.}
 

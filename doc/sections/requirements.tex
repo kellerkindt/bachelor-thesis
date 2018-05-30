@@ -29,7 +29,7 @@ Funktionale Anforderungen beschreiben das gewünschte Verhalten des Systems, nic
 
 \requirement{impl:algorithmus:from}{Umgebungsmodell weitergeben}{Ergebnisse des Fusions-Algorithmus sollen enkodiert un an die verbundenen Fahrzeuge mit einem Abonnement versendet werden.}
 
-\requirement{impl:algorithmus}{Fusions-Algorithmus}{Für den Testbetrieb soll der Fusions-Algorithmus aus der C++ Referenzimplementierung (\enquote{SampleAlgorithm}) in Rust nachempfunden werden. Dieser Fusions-Algorithmus ist eine \enquote{dummy} Implementation, d.h. eingehende Daten werden nach einem einfachen Schema wieder verschickt: jede empfangende \textit{SensorFrame}-Nachricht (siehe \autoref{msg:sensor_frame}) wird mit einer \textit{EnvironmentFrame}-Nachricht (siehe \autoref{msg:environment_frame}) an alle Fahrzeuge beantwortet. Der Zeitstempel der \textit{SensorFrame}-Nachricht wird hierbei auf die \textit{EnvironmentFrame}-Nachricht übertragen.}
+\requirement{impl:algorithmus}{Fusions-Algorithmus}{Für den Testbetrieb soll der Fusions-Algorithmus aus der C++ Referenzimplementierung (\enquote{SampleAlgorithm}) in Rust nachempfunden werden. Dieser Fusions-Algorithmus ist eine \enquote{Dummy}-Implementation, d.h. eingehende Daten werden nach einem einfachen Schema wieder verschickt: jede empfangende \textit{SensorFrame}-Nachricht (siehe \autoref{msg:sensor_frame}) wird mit einer \textit{EnvironmentFrame}-Nachricht (siehe \autoref{msg:environment_frame}) an alle Fahrzeuge beantwortet. Der Zeitstempel der \textit{SensorFrame}-Nachricht wird hierbei auf die \textit{EnvironmentFrame}-Nachricht übertragen.}
 
 %\requirement{impl:roadclearance}{Road-Clearance}{\todo{...}}
 

@@ -1,12 +1,10 @@
 
 \chapter{Implementierung}
 
-In diesem Kapitel wird auf Besonderheiten bei der Implementierung eingegangen.
+In diesem Kapitel wird auf Besonderheiten und Schwierigkeiten bei der Implementierung eingegangen.
 
 
 %Weitestgehend wie in \autoref{draft:architecture}, aber Futures, tokio, Queues
-
-\todo{diagramm message decode steps}
 
 \todo{proxy communication}
 
@@ -20,7 +18,7 @@ In diesem Kapitel wird auf Besonderheiten bei der Implementierung eingegangen.
 \todo{impl Drop / free structs, important but do not overengineer}
 
 
-\subsection{Continuous Integration mittels Jenkins}
+\section{Continuous Integration mittels Jenkins}
 
 Mittels der Continuous Integration Software Jenkins wird die Rust-Implementation nach jeder Aktualisierung der Quellcode-Repository gebaut.
 In einem Jenkinsfile ist hierzu die folgende Pipeline definiert:
@@ -40,13 +38,13 @@ Sowohl der Rust Compiler als auch Abhängigkeiten wie Cargo, Clippy oder Tarpaul
 
 \subsubsection{Schritt \enquote{check-src}}
 Hier wird der Quellcode auf einen schlechtem Programmierstil oder schlechte Programmierpraktiken durch Clippy und auf eine nicht standardkonforme Formatierung überprüft.
-Ein erkannter Mangel resultiert in einem abgebrochenem Bauversuch und einem entsprechendem roten Icon auf der Projektseite auf Jenkins.
+Ein erkannter Mangel resultiert in einen Abbruch und einem entsprechendem roten Icon auf der Projektseite auf Jenkins.
 Ein Quellcode, der diese Qualitätsstandards nicht erfüllt, wird somit schnellstmöglich abgelehnt.
 
 \subsubsection{Schritt \enquote{Build-Debug}}
-In diesem Schritt wird das Projekt und Abhängigkeiten im Debug-Modus kompiliert.
+In diesem Schritt wird das Projekt im Debug-Modus kompiliert.
 In einem Debug-Modus werden nahezu keine Optimierungen durchgeführt, weswegen die Ausführgeschwindigkeit meist mangelhaft ist.
-Im falle eines Fehlers in einem Unit-Test, können in aus einem Debug-Artefakt jedoch nützlich Informationen gewonnen werden.
+Im falle eines Fehlers in einem Unit-Test, können aus einem Debug-Artefakt jedoch nützlich Informationen gewonnen werden.
 
 \subsubsection{Schritt \enquote{Build-Release-And-Test-Debug}}
 Wie der Name bereits vermuten lässt, wird in diesem Schritt das Projekt im Release-Modus übersetzt.
@@ -55,8 +53,8 @@ Ein Release-Artefakt ist stark optimiert und ist für den Produktivbetrieb gedac
 
 \subsubsection{Schritt \enquote{Test-Release}}
 In diesem Schritt wird das Release-Artefakt mittels Unit-Tests auf Fehler überprüft.
-Hierdurch soll sichergestellt werden, dass kein Fehler durch Optimierungen des Compilers aufgedeckt oder verursacht wurden.
-\todo{.} Auch soll kein Artefakt für den Produktivbetrieb empfohlen werden, das nicht auf Fehler überprüft wurde.
+Hierdurch soll sichergestellt werden, dass kein Fehler durch Optimierungen des Compilers aufgedeckt oder verursacht wurde.
+Des weiteren soll kein Artefakt archiviert werden, das nicht auf Fehler überprüft wurde.
 
 \subsubsection{Schritt \enquote{Post-Build}}
 Dieser Schritt dient zur Zusammenstellung der Testabdeckung der Unit-Tests und der automatisierten  Erstellung der Dokumentation.
@@ -66,8 +64,8 @@ Jede Aktualisierung der Quellcoderepository resultiert bei erfolgreicher Kompila
 \begin{itemize}
 	\item \textbf{Debug-Artefakt}: Kompilation für eine manuelle Fehlersuche mit vielen auf den Quellcode bezogenen Symbolen und ohne Optimierungen durch den Compiler
 	\item \textbf{Release-Artefakt}: Kompilat mit Optimierungen für den Produktivbetrieb
-	\item \textbf{\todo{Unit-Test-Abdeckungsbericht}}: Bericht über wie viele Zeilen, Dateien, Klassen und Verzweigungen durch die Unit-Tests getestet wurden.
-	\item \textbf{Dokumentation}: \todo{.}
+	\item \textbf{Testbericht}: Bericht über wie viele Zeilen, Dateien, Klassen und Verzweigungen durch die Unit-Tests getestet wurden.
+	\item \textbf{Dokumentation}: Die aus dem Quellcode generierte Dokumentation inklusive der Dokumentationen der Abhängigkeiten.
 \end{itemize}
 
 Für jeden erfolgreichen Bauvorgang, werden die erhobenen Informationen in die folgenden Graphen auf der Projektseite auf Jenkins übernommen:
@@ -88,13 +86,14 @@ Für jeden erfolgreichen Bauvorgang, werden die erhobenen Informationen in die f
 
 \autoref{impl:jenkins:coverage:graph} zeigt die Testabdeckung seit Aufzeichnungsbeginn.
 Die frühen und starken Schwankungen resultieren aus Testdurchläufen bei der Einrichtung des Graphen.
-\autoref{impl:jenkins:warnings:graph} zeigt Warnungen die der sehr \todo{pingelige} Rust Compiler für die verschiedenen Builds ausgegeben hat.
+\autoref{impl:jenkins:warnings:graph} zeigt Warnungen die der Rust Compiler für die verschiedenen Builds ausgegeben hat.
 
-Die Graphen starten bei unterschiedlichen Baunummern, da sie nacheinander eingerichtet wurden.
+Die Graphen starten bei unterschiedlichen Nummern, da sie nacheinander eingerichtet wurden.
+
+\section{...}
 
 \todo{bzgl coverage viele tests für encodieren / decodieren, server instanz nicht getestet weil nur mit tokio verdrahtet... schwierig zu testen}
 
-\section{...}
 
 \todo{tdd schwierig weil viel integration mit framework / async, schnell wird daraus integrationstest(?, unerwünscht)}
 
@@ -114,6 +113,12 @@ Die Graphen starten bei unterschiedlichen Baunummern, da sie nacheinander einger
 \todo{catch panic? mention how in \autoref{rust:no_null}}
 
 \todo{SRP, impl Object separat from impl CommandProcessor for Object, testability?}
+
+
+\section{Schwierigkeit: Heap nicht gleich Heap}
+
+\todo{deadlock im heap allokieren, rust heap muss von rust aufgeräumt werden, libc von libc, asn+c++-alg -> libc}
+
 
 \subsection{Tokio}
 

@@ -2,18 +2,22 @@
 
 \chapter{Systemanalyse}
 
-\todo{..}
-\cite[502]{goll2012methoden}
+In diesem Kapitel wird analysiert, wie sich das umzusetzende System in unterschiedlichen Situationen und gegenüber anderen Systemen verhalten muss.
+Um eine Gesamtübersicht über das System zu erhalten, wird zuerst ein Systemkontextdiagramm und Anwendungsfalldiagramme aufgezeigt, daraufhin eine Nachrichtenanalyse und eine Schnittstellenanalyse durchgeführt.
+
+%\todo{..}
+%Systemkontextdiagramme \cite[501]{goll2012methoden}
 
 
 \section{Systemkontextdiagramm}
+\label{system_context}
 
-In der folgenden Abbildung sind die Systemgrenzen aufgezeigt.
+%In der folgenden Abbildung sind die Systemgrenzen aufgezeigt.
 
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
 		\node [draw, rectangle, drop shadow, fill=white] (F) {Fahrzeug};
-		\node [draw, circle, drop shadow, fill=white, text width=3cm, align=center] (C) [below right=of F] {MEC-Server};
+		\node [draw, circle, drop shadow, fill=white, text width=3cm, align=center] (C) [below right=of F] {MEC-View Server};
 		\node [draw, rectangle, drop shadow, fill=white] (S) [below right=of C] {Sensor};
 %		\node [draw, rectangle, drop shadow, fill=white] (A) [above right=of C] {Fusions-Algorithmus};
 		
@@ -79,15 +83,18 @@ In der folgenden Abbildung sind die Systemgrenzen aufgezeigt.
 		%\umlinherit{S}{L}
 	\end{tikzpicture}
 	\centering
-	\label{system_context}
 	\caption{Systemkontextdiagramm}
+	\label{system_context_diagramm}
 \end{figure}
 
+In \autoref{system_context_diagramm} ist das System \enquote{MEC-View Server} abgebildet.
+Die Pfeile zeigen Kontroll- und Datenflüsse auf andere  Systeme mit denen eine wechselwirkung stattfindet \cite[501]{goll2012methoden}.
 
 \section{Anwendungsfalldiagramme}
-\todo{was wirklich umgesetzt sein wird}
 
-\subsection{MEC-Server}
+In diesem Kapitel werden die Kontroll- und Datenflüsse aus \autoref{system_context} in Anwendungsfalldiagramme genauer analysiert.
+
+\subsection{MEC-View Server}
 
 Das Anwendungsfalldiagramm in \autoref{use_case:car} zeigt die Funktionalität des Servers, die gegenüber einem Fahrzeug un einem Sensor zur Verfügung stellt werden soll.
 Darauf folgend sind diese Anwendungsfälle genauer erklärt.

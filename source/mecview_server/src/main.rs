@@ -72,7 +72,6 @@ struct ServerConfig {
     port: u16,
     log: Option<LevelFilter>,
     init_message: Option<String>,
-    environment_frame: Option<String>,
     algorithm_config: String,
 }
 
@@ -92,11 +91,6 @@ fn main() {
     if let Some(path) = config.init_message {
         info!("Loading InitMessage from {}", path);
         let _ = server.load_init_message(path).expect("Loading failed");
-    }
-
-    if let Some(path) = config.environment_frame {
-        info!("Loading EnvironmentFrame from {}", path);
-        let _ = server.load_environment_frame(path).expect("Loading failed");
     }
 
     let _server = server.start().unwrap();
@@ -137,9 +131,6 @@ fn parse_config() -> ServerConfig {
             })
             .or(None),
         init_message: matches.value_of("init_message").map(|s| String::from(s)),
-        environment_frame: matches
-            .value_of("environment_frame")
-            .map(|s| String::from(s)),
         algorithm_config: matches
             .value_of("algorithm_config")
             .map(|s| String::from(s))

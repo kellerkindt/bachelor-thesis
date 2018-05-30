@@ -1,38 +1,35 @@
+use std::fmt::Debug;
 use std::io::Error;
 use std::net::SocketAddr;
 use std::ops::IndexMut;
 use std::sync::Arc;
 
-use messages::asn::raw::EnvironmentFrame;
-use messages::asn::raw::SensorFrame;
 use messages::RawMessage;
 
 use super::Algorithm;
 use super::CountListener;
 use super::EnvironmentListener;
 
-pub struct AlgorithmManager<T: FnMut(Box<SensorFrame>) + Send + 'static> {
-    model_listener: Vec<(SocketAddr, bool, EnvironmentListener<EnvironmentFrame>)>,
+pub struct AlgorithmManager<S: Debug + Send, E: Debug + Send, T: FnMut(Box<S>) + Send + 'static> {
+    model_listener: Vec<(SocketAddr, bool, EnvironmentListener<E>)>,
     count_listener: Vec<(SocketAddr, CountListener)>,
-    environment_frame: Option<Box<EnvironmentFrame>>,
     sensor_frame_sink: T,
+    _s: ::std::marker::PhantomData<S>,
 }
 
-impl<T: FnMut(Box<SensorFrame>) + Send + 'static> AlgorithmManager<T> {
+impl<S: Debug + Send, E: Debug + Send, T: FnMut(Box<S>) + Send + 'static>
+    AlgorithmManager<S, E, T>
+{
     pub fn new(sensor_frame_sink: T) -> Self {
         AlgorithmManager {
             model_listener: Default::default(),
             count_listener: Default::default(),
-            environment_frame: Default::default(),
+            _s: Default::default(),
             sensor_frame_sink,
         }
     }
 
-    pub fn set_environment_frame(&mut self, frame: Option<Box<EnvironmentFrame>>) {
-        self.environment_frame = frame;
-    }
-
-    fn push_model_listener(&mut self, id: SocketAddr, sink: EnvironmentListener<EnvironmentFrame>) {
+    fn push_model_listener(&mut self, id: SocketAddr, sink: EnvironmentListener<E>) {
         trace!("Adding model listener with id={}", id);
         let before = self.model_listener.len();
         self.model_listener.push((id, false, sink));
@@ -104,19 +101,18 @@ impl<T: FnMut(Box<SensorFrame>) + Send + 'static> AlgorithmManager<T> {
     }
 }
 
-impl<T: FnMut(Box<SensorFrame>) + Send + 'static> Algorithm<SensorFrame, EnvironmentFrame>
-    for AlgorithmManager<T>
+impl<S: Debug + Send, E: Debug + Send, T: FnMut(Box<S>) + Send + 'static> Algorithm<S, E>
+    for AlgorithmManager<S, E, T>
 {
     type Identifier = SocketAddr;
 
-    fn update(&mut self, update: Box<SensorFrame>) -> Result<(), Error> {
-        trace!("SensorFrame received: {:?}", update);
-        // let env = self.environment_model(&frame);
+    fn update(&mut self, update: Box<S>) -> Result<(), Error> {
+        trace!("Update received: {:?}", update);
         (self.sensor_frame_sink)(update);
         Ok(())
     }
 
-    fn publish(&mut self, model: RawMessage<EnvironmentFrame>) -> Result<(), Error> {
+    fn publish(&mut self, model: RawMessage<E>) -> Result<(), Error> {
         let before = self.model_listener.len();
         let env = Arc::new(model);
         retain_mut(&mut self.model_listener, |(addr, active, listener)| {
@@ -132,8 +128,8 @@ impl<T: FnMut(Box<SensorFrame>) + Send + 'static> Algorithm<SensorFrame, Environ
 
     fn subscribe_environment_model(
         &mut self,
-        identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
-        sink: EnvironmentListener<EnvironmentFrame>,
+        identifier: <Self as Algorithm<S, E>>::Identifier,
+        sink: EnvironmentListener<E>,
     ) -> Result<(), Error> {
         self.push_model_listener(identifier, sink);
         Ok(())
@@ -141,7 +137,7 @@ impl<T: FnMut(Box<SensorFrame>) + Send + 'static> Algorithm<SensorFrame, Environ
 
     fn unsubscribe_environment_model(
         &mut self,
-        identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
+        identifier: <Self as Algorithm<S, E>>::Identifier,
     ) -> Result<(), Error> {
         self.remove_model_listener(identifier);
         Ok(())
@@ -149,7 +145,7 @@ impl<T: FnMut(Box<SensorFrame>) + Send + 'static> Algorithm<SensorFrame, Environ
 
     fn activate_environment_model_subscription(
         &mut self,
-        identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
+        identifier: <Self as Algorithm<S, E>>::Identifier,
     ) -> Result<(), Error> {
         self.activate_model_listener(identifier);
         Ok(())
@@ -157,7 +153,7 @@ impl<T: FnMut(Box<SensorFrame>) + Send + 'static> Algorithm<SensorFrame, Environ
 
     fn deactivate_environment_model_subscription(
         &mut self,
-        identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
+        identifier: <Self as Algorithm<S, E>>::Identifier,
     ) -> Result<(), Error> {
         self.deactivate_model_listener(identifier);
         Ok(())
@@ -165,7 +161,7 @@ impl<T: FnMut(Box<SensorFrame>) + Send + 'static> Algorithm<SensorFrame, Environ
 
     fn subscribe_listener_count(
         &mut self,
-        identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
+        identifier: <Self as Algorithm<S, E>>::Identifier,
         sink: CountListener,
     ) -> Result<(), Error> {
         self.push_count_listener(identifier, sink);
@@ -174,7 +170,7 @@ impl<T: FnMut(Box<SensorFrame>) + Send + 'static> Algorithm<SensorFrame, Environ
 
     fn unsubscribe_listener_count(
         &mut self,
-        identifier: <Self as Algorithm<SensorFrame, EnvironmentFrame>>::Identifier,
+        identifier: <Self as Algorithm<S, E>>::Identifier,
     ) -> Result<(), Error> {
         self.remove_count_listener(identifier);
         Ok(())

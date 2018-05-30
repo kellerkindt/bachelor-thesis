@@ -56,7 +56,6 @@ pub struct Server {
     runtime: Runtime,
     algorithm: Option<Alg>,
     init_message: Option<Arc<RawMessage<asn::Message>>>,
-    environment_frame: Option<Box<raw::EnvironmentFrame>>,
     clients: Vec<Clt>,
     algorithm_config: String,
 }
@@ -68,7 +67,6 @@ impl Server {
             runtime: Runtime::new()?,
             algorithm: None,
             init_message: None,
-            environment_frame: None,
             clients: Vec::with_capacity(128),
             algorithm_config,
         })
@@ -86,19 +84,6 @@ impl Server {
                         .map_err(|_| Error::from(ErrorKind::InvalidData))?
                         .generalize(),
                 ));
-                Ok(())
-            }
-        }
-    }
-
-    // TODO this does not fit in here very well
-    pub fn load_environment_frame<P: AsRef<Path>>(&mut self, path: P) -> Result<(), Error> {
-        let mut xml = String::new();
-        let _ = File::open(path)?.read_to_string(&mut xml)?;
-        match <raw::EnvironmentFrame as asn::AsnMessage>::try_decode_xer(&xml) {
-            Err(_) => Err(Error::from(ErrorKind::InvalidData)),
-            Ok(init) => {
-                self.environment_frame = Some(init);
                 Ok(())
             }
         }
@@ -163,7 +148,6 @@ impl Server {
                 alg.send_sensor_frame(frame);
             });
 
-        sample.set_environment_frame(self.environment_frame.take());
         self.runtime.spawn(
             rx.for_each(move |command| match sample.process_command(command) {
                 Ok(_) => Ok(()),

@@ -34,18 +34,27 @@ Aufgrund dessen ist ein hoher Grad an Qualität und Aktualität des Frameworks z
 		
 In \autoref{draft:architecture} ist der Entwurf der Architektur visualisiert.
 Blau markierte Klassen haben als Aufgabengebiet die Kommunikation, grün markierte Klassen bilden die Geschäftslogik ab und rot markierte Klassen sind Spezialisierungen für ASN.1.
+Die folgenden ASN.1 Nachrichten sind aufgrund der Textlänge im Diagramm abgekürzt:
+\begin{itemize}
+	\item \textbf{asn::CR}: \textit{ClientRegistration}-Nachricht (siehe \autoref{msg:client_registration}),
+	\item \textbf{asn::IM}: \textit{InitMessage}-Nachricht (siehe \autoref{msg:init_message}),
+	\item \textbf{asn::US}: \textit{UpdateSubscription}-Nachricht (siehe \autoref{msg:update_subscription}),
+	\item \textbf{asn::EF}: \textit{EnvironmentFrame}-Nachricht (siehe \autoref{msg:environment_frame}),
+	\item \textbf{asn::SIF}: \textit{SensorIdleFrame}-Nachricht (siehe \autoref{msg:sensor_idle_frame}) und
+	\item \textbf{asn::SF}: \textit{SensorFrame}-Nachricht (siehe \autoref{msg:sensor_frame}).
+\end{itemize}
 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=2.0\textwidth]{dia/architecture}
+	\includegraphics[width=1.9\textwidth]{dia/architecture}
 	\caption{Architekturentwurf}
 	\label{draft:architecture}
 \end{figure}
 
-\todo{explain asn:: message}
-
-\todo{nachrichten überall generic, deswegen keine abhängigkeiten}
+\todo{vllt eher in Implementation?}
+Die grün und blau markierten Klassen aus \autoref{draft:architecture} haben keine direkten Abhängigkeiten zu den ASN.1 Nachrichtentypen, da sie \textit{Generics} verwenden und nicht auf den Nachrichteninhalt zugreifen müssen (so muss der Client \textit{SensorFrame}-Nachrichten an den Algorithmus weiterleiten, den konkreten Typ jedoch nicht kennen).
+Lediglich durch die Nutzung in Kombination mit den ASN.1 Nachrichtentypen entstehen zur Compilezeit Abhängigkeiten, die aufgrund der Übersicht aber nicht eingezeichnet sind. 
 
 Die Implementation ist in drei Crates aufgeteilt:
 \begin{itemize}

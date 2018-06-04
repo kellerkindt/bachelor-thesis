@@ -53,7 +53,7 @@ Alle ausgegebenen Latenzen werden mittels \textit{Bash}-Pipe (und einem \textit{
 Der Client wird hierbei nicht durch den Dateizugriff gebremst, da dies asynchron im letzten Prozess der \textit{Bash}-Pipe geschieht.
 Bei der Auswertung wird der Durchschnitt errechnet (mittels \textit{awk}-Skript).
 
-Für jeden Test werden 25 virtuelle Sensoren mit der Serverinstanz verbunden.
+Für jeden Test werden 25 virtuelle Sensoren mit der Server-Instanz verbunden.
 Jeder dieser Sensoren versendet in Intervallen von 100ms eine \textit{SensorFrame}-Nachricht.
 Hieraus resultieren 250 Nachrichten pro Sekunde.
 Die Anforderung \reqNumberForLabel{exec:time} (siehe \autoref{req:exec:time}) mit 200 Nachrichten pro Sekunde ($6*10 + 7*20$) ist somit übererfüllt.

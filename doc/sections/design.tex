@@ -116,30 +116,29 @@ Das Muster eignet sich besonders gut, da auf eingehende und ausgehende Datensät
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=\textwidth]{dia/channel}
-	\caption{\enquote{Channel Architektur Pattern} zwischen einem TCP-Datenstrom (unten) und einer Client-Instanz (oben). Zu lesen von links unten, nach oben, nach rechts unten.}
+	\includegraphics[width=1.4\textwidth]{dia/channel_sep}
+	\caption{Aktivitätsdiagramme zum dekodieren einer Anfrage aus dem TCP-Datenstrom (unten) und zum versenden einer Aufforderung (oben).}
 	\label{design:channel}
 \end{figure}
 
-\autoref{design:channel} beschreibt die nötigen Transformationen, bis eine Anfrage bearbeitet werden kann, und die nötigen Transformationen, um eine Antwort zu versenden:
+Die Aktivitätsdiagramme in \autoref{design:channel} beschreiben die nötigen Transformationen, um eine empfangene Anfrage zu dekodieren und um eine Aufforderung zu encodieren und zu versenden:
+
 \begin{itemize}
 	\item \textbf{Daten empfangen}: Die eingehenden Daten (hier Bytes) müssen angesammelt werden, bis sie eine komplette Anfrage abbilden.
-	\item \textbf{RawMessage dekodieren}: Die angesammelten Daten werden in eine RawMessage gewandelt. Nachrichtentyp und Korpus werden hierbei extrahiert.
-	\item \textbf{asn::Message dekodieren}: Aus dem Korpus wird eine ASN-Nachricht des entsprechenden Typs dekodiert.
+	\item \textbf{RawMessage dekodieren}: Die angesammelten Daten werden in eine RawMessage gewandelt. Nachrichtentyp und Inhalt werden hierbei extrahiert.
+	\item \textbf{asn::Message dekodieren}: Aus dem Inhalt wird eine ASN-Nachricht des entsprechenden Typs dekodiert.
 	\item \textbf{Anfrage zuordnen}: Die ASN-Nachricht wird einer Anfrage zugeordnet.
-	\item \textbf{Anfrage berabeiten}: Die Anfrage wird bearbeitet und eine Antwort generiert.
-	\item \textbf{asn::Message zuordnen}: Die Antwort wird in eine ASN-Nachricht eingebettet.
+	\item \textbf{asn::Message zuordnen}: Die Aufforderung wird in eine ASN-Nachricht eingebettet.
 	\item \textbf{asn::Message encodieren}: Die ASN-Nachricht wird in eine RawMessage encodiert. Der Nachrichtentyp wird entsprechend gesetzt.
 	\item \textbf{RawMessage encodieren}: Die RawMessage wird in Bytes gewandelt.
 	\item \textbf{Daten versenden}: Die Bytes werden über den TCP-Datenstrom versandt.
 \end{itemize}
 
-Nach dem \enquote{Channel Architektur Pattern} ist eine sequentielle Bearbeitung zwischen dem TCP-Datenstrom und der Client-Instanz in jede Richtung als Kanal interpretierbar.
-Da jeder Zwischenschritt innerhalb eines Kanals lediglich von dem Ergebnis des vorhergehenden abhängig ist, können die einzelnen Schritte parallel zueinander bearbeiten werden.
-\todo{}
-Durch einen zusätzlichen, vorangestellten Multiplexer und nachfolgenden Demultiplexer könnten in einer späteren Version mehrere Kanäle parallel den Client oder den Datenstrom speisen.
-Hiervon wird in der ersten Implementierung jedoch abgesehen, da je Client keine derart große Datenflut erwartet wird, die dies verlangen würde.
-Stattdessen soll lediglich jeder Kanal eines Clients parallel zu allen den Kanälen anderer Clients ausgeführt werden.
+Nach dem \enquote{Channel Architektur Pattern} ist eine sequentielle Bearbeitung zwischen dem TCP-Datenstrom und der Client-Instanz in jede Richtung als Kanal interpretierbar (sprich jedes Aktivitätsdiagramm aus \autoref{design:channel}).
+Da jeder Zwischenschritt innerhalb eines Kanals lediglich von dem Ergebnis des vorhergehenden abhängig ist, könnten die einzelnen Schritte parallel zueinander bearbeiten werden.
+Durch einen zusätzlichen, vorangestellten Multiplexer und nachfolgenden Demultiplexer könnten zudem mehrere Kanäle parallel die Client-Instanz oder den Datenstrom speisen.
+Hiervon wird in der ersten Implementierung jedoch abgesehen, da je Client keine derart große Datenflut erwartet wird.
+Stattdessen werden viele Clients erwartet, weshalb jeder Kanal eines Clients parallel zu den Kanälen anderer Clients ausgeführt werden soll.
 
 Als Framework zur Umsetzung wird \textit{Tokio} (siehe \autoref{design:tokio}) verwendet.
 Durch die Kombinationsmöglichkeiten von \textit{Future}s nicht blockierenden Kommunikationskanäle ermöglicht es, ein System nach diesem Prinzip zu erstellen.

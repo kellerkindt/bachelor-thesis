@@ -90,16 +90,10 @@ Um eine Gesamtübersicht über das System zu erhalten, wird zuerst ein Systemkon
 In \autoref{system_context_diagramm} ist das System \enquote{MEC-View Server} abgebildet.
 Die Pfeile zeigen Kontroll- und Datenflüsse auf andere  Systeme mit denen eine wechselwirkung stattfindet \cite[501]{goll2012methoden}.
 
-\section{Anwendungsfalldiagramme}
+\section{Gesamtübersicht der Anwendungsfälle}
 
-In diesem Kapitel werden die Kontroll- und Datenflüsse aus \autoref{system_context} in Anwendungsfalldiagramme genauer analysiert.
-
-\todo{\textbf{soll}}
-
-\subsection{MEC-View Server}
-
-Das Anwendungsfalldiagramm in \autoref{use_case:car} zeigt die Funktionalität des Servers, die gegenüber einem Fahrzeug und einem Sensor zur Verfügung stellt werden soll.
-Darauf folgend sind diese Anwendungsfälle genauer erklärt.
+In diesem Kapitel werden die Kontroll- und Datenflüsse aus \autoref{system_context} genauer analysiert.
+Aufgrund des Umfangs ist dies in zwei Anwendungsfalldiagramme aufgeteilt.
 
 \begin{figure}[H]
 	\begin{tikzpicture}[node distance=5]
@@ -108,29 +102,51 @@ Darauf folgend sind diese Anwendungsfälle genauer erklärt.
 			\umlusecase[y=2,name=u3]{Als Fahrzeug registrieren}
 			\umlusecase[y=0,name=u1]{Umgebungsmodell abonnieren}
 			\umlusecase[y=-2,name=u2]{Umgebungsmodell deabonnieren}
-			\umlusecase[y=-4,name=u4]{Als Sensor registrieren}
-			\umlusecase[y=-6,name=u5]{SensorFrame zusenden}
-			\umlusecase[y=-8,name=u6]{SensorIdleFrame zusenden}
+			\umlusecase[y=-4,name=u9]{Fahrzeug Sektoren zusenden}
+			\umlusecase[y=-6,name=u10]{Fahrzeug Umgebungsmodell zusenden}
 %			\umlusecase[y=-4,name=u4]{Umfeldmodel übergeben}
 		\end{umlsystem}
-		\umlactor[x=-6.5,y=0]{Fahrzeug}
-%		\umlactor[x=-6,y=-4]{Fusions-Algorithmus}
-		\umlactor[x=6.5,y=-6]{Sensor}
-%		\umlassoc{Fahrzeug}{u0}
+		\umlactor[x=-9.5,y=-2]{Fahrzeug}
 		\umlassoc{Fahrzeug}{u1}
 		\umlassoc{Fahrzeug}{u2}
 		\umlassoc{Fahrzeug}{u3}
-%		\umlassoc{Sensor}{u0}
-%		\umlassoc{Sensor}{u1}
-		\umlassoc{Sensor}{u4}
-		\umlassoc{Sensor}{u5}
-		\umlassoc{Sensor}{u6}
-%		\umlassoc{Fusions-Algorithmus}{u4}
+		\umlassoc{Fahrzeug}{u9}
+		\umlassoc{Fahrzeug}{u10}
 	\end{tikzpicture}
 	\centering
-	\caption{Anwendungsfalldiagramm des MEC-View-Servers}
+	\caption{Anwendungsfalldiagramm des MEC-View-Servers für den Akteur \enquote{Fahrzeug}}
 	\label{use_case:car}
 \end{figure}
+
+Das Anwendungsfalldiagramm in \autoref{use_case:car} zeigt die Funktionalität des Servers, die gegenüber einem Fahrzeug zur Verfügung gestellt werden soll.
+Das folgende Anwendungsfalldiagramm in \autoref{use_case:sensor} zeigt dagegen die Funktionalität, die einem Sensor zur Verfügung gestellt werden soll.
+
+\begin{figure}[H]
+	\begin{tikzpicture}[node distance=5]
+	\begin{umlsystem}{MEC-View-Server}
+	\umlusecase[y=-4,name=u4]{Als Sensor registrieren}
+	\umlusecase[y=-6,name=u5]{SensorFrame zusenden}
+	\umlusecase[y=-8,name=u6]{SensorIdleFrame zusenden}
+	\umlusecase[y=-10,name=u7]{Sensor abonnieren}
+	\umlusecase[y=-12,name=u8]{Sensor deabonnieren}
+	\end{umlsystem}
+	\umlactor[x=-9.5,y=-8]{Sensor}
+	\umlassoc{Sensor}{u4}
+	\umlassoc{Sensor}{u5}
+	\umlassoc{Sensor}{u6}
+	\umlassoc{Sensor}{u7}
+	\umlassoc{Sensor}{u8}
+	%		\umlassoc{Fusions-Algorithmus}{u4}
+	\end{tikzpicture}
+	\centering
+	\caption{Anwendungsfalldiagramm des MEC-View-Servers für den Aktuer \enquote{Sensor}}
+	\label{use_case:sensor}
+\end{figure}
+
+
+\section{Beschreibung der Anwendungsfälle}
+
+Die Anwendungsfälle aus \autoref{use_case:car} und \autoref{use_case:sensor} sollen in diesem Kapitel genauer erklärt.
 
 \newcommand{\usecasetablewidth}{11.5cm}
 \newcommand{\usecase}[7]{\subsection{#1}
@@ -143,7 +159,7 @@ Darauf folgend sind diese Anwendungsfälle genauer erklärt.
 		\textbf{Nachbedingung:} & #7 \\
 	\end{tabular}
 }
-	
+
 \usecase{Als Fahrzeug registrieren}
 	{Fahrzeug}
 	{Fahrzeug}
@@ -157,7 +173,7 @@ Darauf folgend sind diese Anwendungsfälle genauer erklärt.
 	{Fahrzeug}
 	{Fahrzeug}
 	{Ist als Fahrzeug registriert}
-	{Ein Fahrzeug kann das Umgebungsmodell abonnieren, woraufhin neue Modelle vom Server an das Fahrzeug übermittelt werden sollen.
+	{Ein Fahrzeug kann das Umgebungsmodell abonnieren, woraufhin neue Modelle vom Server an das Fahrzeug übermittelt werden.
 		Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription})}
 	{--}
 	{Neue Umgebungsmodelle werden an das Fahrzeug übermittelt.}
@@ -167,7 +183,7 @@ Darauf folgend sind diese Anwendungsfälle genauer erklärt.
 	{Fahrzeug}
 	{Fahrzeug}
 	{Umgebungsmodell ist abonniert}
-	{Ein Fahrzeug kann das Umgebungsmodell deabonnieren, woraufhin keine neuen Modelle mehr vom Server an das Fahrzeug übermittelt werden sollen.
+	{Ein Fahrzeug kann das Umgebungsmodell deabonnieren, woraufhin keine neuen Modelle mehr vom Server an das Fahrzeug übermittelt werden.
 		Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).}
 	{--}
 	{Es werden keine weiteren Umgebungsmodelle an das Fahrzeug übermittelt.}
@@ -193,71 +209,31 @@ Darauf folgend sind diese Anwendungsfälle genauer erklärt.
 \usecase{SensorIdleFrame zusenden}
 	{Sensor}
 	{Sensor}
-	{Ist als Sensor registriert}
+	{Ist als Sensor registriert, Sensor ist nicht abonniert}
 	{Ein Sensor kann dem Server eine \textit{SensorIdleFrame}-Nachricht übermitteln.}
 	{--}
 	{--}
 	
-\subsection{Sensor}
 
-In \autoref{use_case:server_sensor} sind Anwendungsfälle aufgezeigt, die durch den Sensor dem MEC-View-Server angeboten werden.
-
-
-\begin{figure}[H]
-	\begin{tikzpicture}[node distance=5]
-		\begin{umlsystem}{Sensor}
-			\umlusecase[y=0,name=u1]{deabonnieren}
-			\umlusecase[y=2,name=u2]{abonnieren}
-		\end{umlsystem} 
-		\umlactor[x=-4.5,y=1]{MEC-View-Server}
-		\umlassoc{MEC-View-Server}{u1}
-		\umlassoc{MEC-View-Server}{u2} 
-	\end{tikzpicture}
-	\centering
-	\caption{Anwendungsfalldiagramm des Sensors}
-	\label{use_case:server_sensor}
-\end{figure}
-
-\usecase{Abonnieren}
+\usecase{Sensor abonnieren}
 	{MEC-View-Server}
 	{Sensor}
 	{Ist als Sensor registriert}
-	{Der MEC-View-Server kann einen Sensor abonnieren um \textit{SensorFrame}-Nachrichten (siehe \autoref{msg:sensor_frame}) zu erhalten.
-		Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).}
+	{Der MEC-View-Server sendet eine \textit{UpdateSubscription}-Nachricht (siehe \autoref{msg:update_subscription}), um ein Abonnement zu erstellen.}
 	{--}
-	{Der MEC-View-Server erhält \textit{SensorFrame}-Nachrichten.}
+	{Der MEC-View-Server erhält \textit{SensorFrame}-Nachrichten und keine \textit{SensorIdleFrame}-Nachrichten.}
 	
-\usecase{Deabonnieren}
+\usecase{Sensor deabonnieren}
 	{MEC-View-Server}
 	{Sensor}
 	{Ist als Sensor registriert}
-	{Der MEC-View-Server kann ein Abonnement aufkündigen um keine weiteren \textit{SensorFrame}-Nachrichten (siehe \autoref{msg:sensor_frame}) zu erhalten.
-		Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).}
+	{Der MEC-View-Server sendet eine \textit{UpdateSubscription}-Nachricht (siehe \autoref{msg:update_subscription}), um ein Abonnement zu beenden.}
 	{--}
-	{Der MEC-View-Server erhält keine \textit{SensorFrame}-Nachrichten.}
+	{Der MEC-View-Server erhält keine weiteren \textit{SensorFrame}-Nachrichten, jedoch \textit{SensorIdleFrame}-Nachrichten.}
 	
 
 
-\section{Fahrzeug}
-
-In \autoref{use_case:server_vehicle} sind Anwendungsfälle aufgezeigt, die durch das Fahrzeug dem MEC-View-Server angeboten werden.
-
-\begin{figure}[H]
-	\begin{tikzpicture}[node distance=5]
-		\begin{umlsystem}{Fahrzeug}
-			\umlusecase[y=0,name=u1]{Umgebungsmodell zusenden}
-			\umlusecase[y=2,name=u2]{Sektoren zusenden}
-		\end{umlsystem} 
-		\umlactor[x=-6,y=1]{MEC-View-Server}
-		\umlassoc{MEC-View-Server}{u1}
-		\umlassoc{MEC-View-Server}{u2}
-	\end{tikzpicture}
-	\centering
-	\caption{Anwendungsfalldiagramm des Fahrzeugs}
-	\label{use_case:server_vehicle}
-\end{figure}
-
-\usecase{Sektoren zusenden}
+\usecase{Fahrzeug Sektoren zusenden}
 	{MEC-View-Server}
 	{Fahrzeug}
 	{Ist als Fahrzeug registriert, Sektoren noch nicht übermittelt}
@@ -265,7 +241,7 @@ In \autoref{use_case:server_vehicle} sind Anwendungsfälle aufgezeigt, die durch
 	{--}
 	{Sektoren können nicht erneut zugesendet werden.}
 	
-\usecase{Umgebungsmodell zusenden}
+\usecase{Fahrzeug Umgebungsmodell zusenden}
 	{MEC-View-Server}
 	{Fahrzeug}
 	{Fahrzeug ist abonniert}

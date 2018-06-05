@@ -2,10 +2,8 @@
 extern crate log;
 #[cfg(test)]
 extern crate log4rs;
-extern crate libasn_sys as raw;
+pub extern crate libasn_sys as raw;
 extern crate libmessages;
-
-use std::os;
 
 use libmessages::RawMessage;
 

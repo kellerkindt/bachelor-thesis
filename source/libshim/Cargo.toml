@@ -1,0 +1,19 @@
+[package]
+name = "libshim"
+version = "0.1.0"
+authors = ["Michael Watzko <michael@watzko.de>"]
+
+[dependencies]
+log = "0.4.1"
+
+[dependencies.libshim-sys]
+path = "../libshim-sys/"
+
+[dependencies.libalgorithm]
+path = "../libalgorithm/"
+
+[dependencies.libasn]
+path = "../libasn/"
+
+[dependencies.libmessages]
+path = "../libmessages/"

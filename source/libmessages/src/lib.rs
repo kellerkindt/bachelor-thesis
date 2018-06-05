@@ -40,27 +40,11 @@ impl<T: ?Sized> RawMessage<T> {
     pub fn bytes(&self) -> &[u8] {
         self.data.bytes()
     }
-
-    pub(crate) fn into<T2>(self) -> RawMessage<T2> {
-        unsafe { ::std::mem::transmute(self) }
-    }
-
-    pub(crate) fn arc_into<T2>(myself: Arc<RawMessage<T>>) -> Arc<RawMessage<T2>> {
-        unsafe { ::std::mem::transmute(myself) }
-    }
 }
 
-/*
-impl<T: Clone> Clone for RawMessage<T> {
-    fn clone(&self) -> Self {
-        RawMessage {
-            identifier: self.identifier,
-            bytes: self.bytes.clone(),
-            _t: self._t.clone(),
-        }
-    }
+pub trait Generalize<T> {
+
 }
-*/
 
 #[derive(Debug)]
 pub enum RawMessageData {

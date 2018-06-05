@@ -1,7 +1,11 @@
 #[macro_use]
 extern crate log;
+#[cfg(test)]
+extern crate log4rs;
 extern crate libasn_sys as raw;
 extern crate libmessages;
+
+use std::os;
 
 use libmessages::RawMessage;
 
@@ -129,14 +133,14 @@ impl Message {
 
     pub fn type_id(&self) -> u32 {
         match self {
-            Message::ClientRegistration(_)  => <raw::ClientRegistration as AsnMessage>  ::type_id(),
-            Message::SensorFrame(_)         => <raw::SensorFrame as AsnMessage>         ::type_id(),
-            Message::EnvironmentFrame(_)    => <raw::EnvironmentFrame as AsnMessage>    ::type_id(),
-            Message::UpdateSubscription(_)  => <raw::UpdateSubscription as AsnMessage>  ::type_id(),
-            Message::InitMessage(_)         => <raw::InitMessage as AsnMessage>         ::type_id(),
-            Message::RoadClearanceFrame(_)  => <raw::RoadClearanceFrame as AsnMessage>  ::type_id(),
-            Message::SensorIdleFrame(_)     => <raw::SensorIdleFrame as AsnMessage>     ::type_id(),
-            Message::UpdateStatus(_)        => <raw::UpdateStatus as AsnMessage>        ::type_id(),
+            Message::ClientRegistration(_)  => <raw::ClientRegistration as AsnMessage>::type_id(),
+            Message::SensorFrame(_)         => <raw::SensorFrame        as AsnMessage>::type_id(),
+            Message::EnvironmentFrame(_)    => <raw::EnvironmentFrame   as AsnMessage>::type_id(),
+            Message::UpdateSubscription(_)  => <raw::UpdateSubscription as AsnMessage>::type_id(),
+            Message::InitMessage(_)         => <raw::InitMessage        as AsnMessage>::type_id(),
+            Message::RoadClearanceFrame(_)  => <raw::RoadClearanceFrame as AsnMessage>::type_id(),
+            Message::SensorIdleFrame(_)     => <raw::SensorIdleFrame    as AsnMessage>::type_id(),
+            Message::UpdateStatus(_)        => <raw::UpdateStatus       as AsnMessage>::type_id(),
         }
     }
 
@@ -164,7 +168,7 @@ impl Message {
 
     pub fn try_encode_uper_to(&self, target: &mut [u8]) -> Result<usize, ()> {
         match self {
-            Message::ClientRegistration(ref v)        => v.try_encode_uper_to(target),
+            Message::ClientRegistration(ref v)  => v.try_encode_uper_to(target),
             Message::UpdateSubscription(ref v)  => v.try_encode_uper_to(target),
             Message::SensorFrame(ref v)         => v.try_encode_uper_to(target),
             Message::EnvironmentFrame(ref v)    => v.try_encode_uper_to(target),
@@ -199,23 +203,6 @@ impl Message {
             Message::UpdateStatus(v)        => v.try_encode_xer_to_new_string(),
             Message::InitMessage(v)         => v.try_encode_xer_to_new_string(),
         }
-    }
-}
-
-pub trait Generalize<T> {
-    fn generalize(self) -> T;
-}
-
-impl<T: AsnMessage> Generalize<RawMessage<Message>> for RawMessage<T> {
-    fn generalize(self) -> RawMessage<Message> {
-        self.into()
-    }
-}
-
-use std::sync::Arc;
-impl<T: AsnMessage> Generalize<Arc<RawMessage<Message>>> for Arc<RawMessage<T>> {
-    fn generalize(self) -> Arc<RawMessage<Message>> {
-        RawMessage::arc_into(self)
     }
 }
 

@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate log;
+extern crate libmessages;
 
 use std::fmt::Debug;
 use std::io::Error;
@@ -17,51 +18,41 @@ pub type CountListener = Box<FnMut(usize, usize) -> Result<(), Error> + Send + '
 pub type EnvironmentListener<E> =
     Box<FnMut(Arc<RawMessage<E>>) -> Result<(), Error> + Send + 'static>;
 
-pub trait Algorithm {
-    /// The message being sent by the sensor to this algorithm
-    type SensorMessage: Send + Debug;
+/// `S`: The message being sent by the sensor to this algorithm
+/// `E`: The model being calculated by this algorithm
+/// `I`: The identifier used to
+pub trait Algorithm<S: Send + Debug, E: Send + Debug, I: Send + PartialEq + 'static> {
+    /// Updates the Algorithm with the new `S`,
+    fn update(&mut self, update: Box<S>);
 
-    /// The model being calculated by this algorithm
-    type EnvironmentModel: Send + Debug;
-
-    /// The identifier used to
-    type Identifier: Send + PartialEq + 'static;
-
-    /// Updates the Algorithm with the new `SensorMessage`,
-    fn update(&mut self, update: Box<Self::SensorMessage>);
-
-    /// Publishes the given `EnvironmentModel` to all subscribed `EnvironmentListener`s
-    fn publish(&mut self, model: RawMessage<Self::EnvironmentModel>);
+    /// Publishes the given `E` to all subscribed `EnvironmentListener`s
+    fn publish(&mut self, model: RawMessage<E>);
 
     /// Adds the given `EnvironmentListener` to the list of listeners
-    /// to notify on publications of a new `EnvironmentModel`.
+    /// to notify on publications of a new `E`.
     /// The new `EnvironmentListener` is set as inactive initially
-    fn subscribe_environment_model(
-        &mut self,
-        identifier: Self::Identifier,
-        listener: EnvironmentListener<Self::EnvironmentModel>,
-    );
+    fn subscribe_environment_model(&mut self, identifier: I, listener: EnvironmentListener<E>);
 
     /// Removes the `EnvironmentListener` for the given identifier
-    /// and therefore no longer publishes `EnvironmentModel`s to it
-    fn unsubscribe_environment_model(&mut self, identifier: Self::Identifier);
+    /// and therefore no longer publishes `E`s to it
+    fn unsubscribe_environment_model(&mut self, identifier: I);
 
     /// Activates the `EnvironmentListener` for the given identifier,
-    /// thus notifying it on publications of new `EnvironmentModel`s
-    fn activate_environment_model_subscription(&mut self, identifier: Self::Identifier);
+    /// thus notifying it on publications of new `E`s
+    fn activate_environment_model_subscription(&mut self, identifier: I);
 
     /// Deactivates the `EnvironmentListener` for the given identifier,
-    /// thus no longer notifying it on publications of new `EnvironmentModel`s but
+    /// thus no longer notifying it on publications of new `E`s but
     /// not removing the listener completly
-    fn deactivate_environment_model_subscription(&mut self, identifier: Self::Identifier);
+    fn deactivate_environment_model_subscription(&mut self, identifier: I);
 
     /// Adds the given `CountListener` to the list of listeners to notify
     /// on a count change of `EnvironmentListener`s
-    fn subscribe_listener_count(&mut self, identifier: Self::Identifier, listener: CountListener);
+    fn subscribe_listener_count(&mut self, identifier: I, listener: CountListener);
 
     /// Remove the `CountListener` for the given identifier from the list of
     /// listeners to notify on a count change of `EnvironmentListener`s
-    fn unsubscribe_listener_count(&mut self, identifier: Self::Identifier);
+    fn unsubscribe_listener_count(&mut self, identifier: I);
 }
 
 /// This struct manages the algorithm organizational
@@ -79,7 +70,7 @@ impl<S: Send + Debug, E: Send + Debug, I: Send + Debug + PartialEq + 'static>
 {
     pub fn add_environment_listener(&mut self, identifier: I, listener: EnvironmentListener<E>) {
         trace!("Adding model listener with id={:?}", identifier);
-        let before = self.model_listener.len();
+        let before = self.model_listeners.len();
         self.model_listeners.push((identifier, false, listener));
 
         trace!(
@@ -95,13 +86,13 @@ impl<S: Send + Debug, E: Send + Debug, I: Send + Debug + PartialEq + 'static>
     pub fn remove_environment_listener(&mut self, identifier: I) {
         trace!("Removing model listener with id={:?}", identifier);
         let before = self.model_listeners.len();
-        self.model_listeners.retain(|(id, _, _)| id.ne(&remove));
+        self.model_listeners.retain(|(id, _, _)| id.ne(&identifier));
         trace!(
             "Removed {} matches, still subscribed: {}",
             before - self.model_listeners.len(),
             self.model_listeners.len()
         );
-        if before != self.model_listener.len() {
+        if before != self.model_listeners.len() {
             self.on_model_count_changed(before);
         }
     }
@@ -172,11 +163,8 @@ pub enum Command<U: Send + Debug, E: Send + Debug, I: Send + Debug + Sized + 'st
     DeactivateEnvironmentModelSubscription(I),
 }
 
-impl<S: Send + Debug, E: Send + Debug, I: Send + Debug + Sized + 'static> Command<S, E, I> {
-    pub fn apply(
-        self,
-        algorithm: &mut Algorithm<SensorMessage = S, EnvironmentModel = E, Identifier = I>,
-    ) {
+impl<S: Send + Debug, E: Send + Debug, I: Send + Debug + PartialEq + 'static> Command<S, E, I> {
+    pub fn apply(self, algorithm: &mut Algorithm<S, E, I>) {
         match self {
             Command::Update(update) => algorithm.update(update),
             Command::Publish(model) => algorithm.publish(model),
@@ -205,57 +193,39 @@ impl<S: Send + Debug, E: Send + Debug, I: Send + Debug + Sized + 'static> Comman
 impl<
         S: Send + Debug,
         E: Send + Debug,
-        I: Send + Debug + Sized + 'static,
+        I: Send + Debug + PartialEq + 'static,
         F: FnMut(Command<S, E, I>),
-    > Algorithm for F
+    > Algorithm<S, E, I> for F
 {
-    type SensorMessage = S;
-    type EnvironmentModel = E;
-    type Identifier = I;
-
-    fn update(&mut self, update: Box<<Self as Algorithm>::SensorFrame>) {
+    fn update(&mut self, update: Box<S>) {
         self(Command::Update(update));
     }
 
-    fn publish(&mut self, model: RawMessage<<Self as Algorithm>::EnvironmentModel>) {
+    fn publish(&mut self, model: RawMessage<E>) {
         self(Command::Publish(model));
     }
 
-    fn subscribe_environment_model(
-        &mut self,
-        identifier: <Self as Algorithm>::Identifier,
-        listener: EnvironmentListener<<Self as Algorithm>::EnvironmentModel>,
-    ) {
+    fn subscribe_environment_model(&mut self, identifier: I, listener: EnvironmentListener<E>) {
         self(Command::SubscribeEnvironmentModel(identifier, listener));
     }
 
-    fn unsubscribe_environment_model(&mut self, identifier: <Self as Algorithm>::Identifier) {
+    fn unsubscribe_environment_model(&mut self, identifier: I) {
         self(Command::UnsubscribeEnvironmentModel(identifier));
     }
 
-    fn activate_environment_model_subscription(
-        &mut self,
-        identifier: <Self as Algorithm>::Identifier,
-    ) {
+    fn activate_environment_model_subscription(&mut self, identifier: I) {
         self(Command::ActivateEnvironmentModelSubscription(identifier));
     }
 
-    fn deactivate_environment_model_subscription(
-        &mut self,
-        identifier: <Self as Algorithm>::Identifier,
-    ) {
+    fn deactivate_environment_model_subscription(&mut self, identifier: I) {
         self(Command::DeactivateEnvironmentModelSubscription(identifier));
     }
 
-    fn subscribe_listener_count(
-        &mut self,
-        identifier: <Self as Algorithm>::Identifier,
-        listener: CountListener,
-    ) {
+    fn subscribe_listener_count(&mut self, identifier: I, listener: CountListener) {
         self(Command::SubscribeListenerCount(identifier, listener));
     }
 
-    fn unsubscribe_listener_count(&mut self, identifier: <Self as Algorithm>::Identifier) {
+    fn unsubscribe_listener_count(&mut self, identifier: I) {
         self(Command::UnsubscribeListenerCount(identifier));
     }
 }

@@ -1,0 +1,14 @@
+[package]
+name = "libasn"
+version = "0.1.0"
+authors = ["Michael Watzko <michael@watzko.de>"]
+
+[dependencies]
+log = "0.4.1"
+
+[dependencies.libasn_sys]
+path = "../libasn-sys/"
+
+[dependencies.libmessages]
+path = "../libmessages/"
+

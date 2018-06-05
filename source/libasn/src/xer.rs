@@ -1,4 +1,4 @@
-use asn::raw;
+use raw;
 
 pub fn encode_to_new_string<T>(
     asn_type: &mut raw::asn_TYPE_descriptor_t,

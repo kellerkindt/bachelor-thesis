@@ -1,7 +1,13 @@
-use asn;
-use asn::raw;
+#[macro_use]
+extern crate log;
+extern crate libasn_sys as raw;
+extern crate libmessages;
 
-use RawMessage;
+use libmessages::RawMessage;
+
+mod uper;
+mod xer;
+
 
 const TYPE_ID_REGISTRATION          : u32 = 1;
 const TYPE_ID_SENSOR_FRAME          : u32 = 2;
@@ -219,52 +225,52 @@ pub trait AsnMessage: Default {
     fn type_def() -> &'static mut raw::asn_TYPE_descriptor_t;
 
     fn try_encode_uper_to(&self, buffer: &mut [u8]) -> Result<usize, ()>
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
-        unsafe { asn::uper::encode(Self::type_def(), self, buffer) }
+        unsafe { uper::encode(Self::type_def(), self, buffer) }
     }
 
     fn try_encode_uper_to_new_buffer(&self) -> Result<Vec<u8>, ()>
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
-        asn::uper::encode_to_new_buffer(Self::type_def(), self)
+        uper::encode_to_new_buffer(Self::type_def(), self)
     }
 
     fn try_encode_uper(&self) -> Result<RawMessage<Self>, ()>
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
         RawMessage::new(Self::type_id(), self.try_encode_uper_to_new_buffer()?)
     }
 
     fn try_decode_uper_from_buffer(buffer: &[u8]) -> Result<Box<Self>, ()>
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
-        unsafe { asn::uper::decode(Self::type_def(), buffer) }
+        unsafe { uper::decode(Self::type_def(), buffer) }
     }
 
     fn try_decode_uper(raw: &RawMessage<Self>) -> Result<Box<Self>, ()>
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
         Self::try_decode_uper_from_buffer(raw.bytes())
     }
 
     fn try_encode_xer_to_new_string(&self) -> Result<String, ()>
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
-        asn::xer::encode_to_new_string(Self::type_def(), self)
+        xer::encode_to_new_string(Self::type_def(), self)
     }
 
     fn try_decode_xer(xml: &str) -> Result<Box<Self>, ()>
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
-        asn::xer::decode(Self::type_def(), xml)
+        xer::decode(Self::type_def(), xml)
     }
 }
 
@@ -350,7 +356,6 @@ impl AsnMessage for raw::UpdateStatus {
 
 #[cfg(test)]
 mod tests {
-    use super::super::tests::init_logger;
     use super::raw::*;
     use super::*;
     use std::mem;
@@ -364,6 +369,56 @@ mod tests {
     const XML_SENSOR_FRAME:         &'static str = include_str!("test_sensor_frame.xml");
     const XML_UPDATE_SUBSCRIPTION:  &'static str = include_str!("test_update_subscription.xml");
     const XML_CLIENT_REGISTRATION:  &'static str = include_str!("test_client_registration.xml");
+
+    pub fn init_logger() {
+        use log::LevelFilter;
+        use log4rs::append::console::ConsoleAppender;
+        use log4rs::config::Appender;
+        use log4rs::config::Config;
+        use log4rs::config::Root;
+        use log4rs::encode::pattern::PatternEncoder;
+
+        let encoder = PatternEncoder::new("{d(%Y-%m-%d %H:%M:%S)} {T} {M}:{L} {l} - {m}{n}");
+
+        let appender = ConsoleAppender::builder()
+            .encoder(Box::new(encoder))
+            .build();
+
+        let config = Config::builder()
+            .appender(Appender::builder().build("stdout", Box::new(appender)))
+            .build(Root::builder().appender("stdout").build(LevelFilter::Warn))
+            .unwrap();
+
+        let _ = log4rs::init_config(config);
+    }
+
+    #[test]
+    fn library_link_valid_do_not_panic() {
+        init_logger();
+        unsafe {
+            let mut buffer = [0u8; 32];
+            let mut p = mem::zeroed::<PositionOffset>();
+            p.position_north = 77 as os::raw::c_long;
+            p.position_east = 77 as os::raw::c_long;
+            p.std_dev_position_east = ptr::null_mut();
+            p.std_dev_position_north = ptr::null_mut();
+
+            trace!(
+                "{:?}",
+                uper_encode_to_buffer(
+                    &mut asn_DEF_PositionOffset as *mut asn_TYPE_descriptor_s,
+                    &mut p as *mut _ as *mut os::raw::c_void,
+                    buffer.as_mut_ptr() as *mut os::raw::c_void,
+                    buffer.len() as usize
+                )
+            );
+            let mut string = String::new();
+            for byte in buffer.iter() {
+                string.push_str(&format!("{:02x} ", byte));
+            }
+            trace!("{}", string)
+        }
+    }
 
     fn test_encode_uper(message: Message, should_be: &[u8]) {
         let mut buffer = vec![0u8; should_be.len()];

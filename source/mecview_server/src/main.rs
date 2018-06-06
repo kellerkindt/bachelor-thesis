@@ -11,11 +11,11 @@ extern crate byteorder;
 extern crate bytes;
 
 // project crates
-extern crate sample_algorithm;
 extern crate libalgorithm;
 extern crate libasn;
 extern crate libmessages;
 extern crate libshim;
+extern crate sample_algorithm;
 
 mod adapter;
 mod client;

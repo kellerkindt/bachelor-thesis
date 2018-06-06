@@ -293,9 +293,7 @@ impl<S: Debug + Send + Sized + 'static> Command<S> {
                     client.deactivate_algorithm_model_subscription();
                     Ok(())
                 }
-                Command::UpdateEnvironmentModel(model) => {
-                    client.update_environment_model(model)
-                }
+                Command::UpdateEnvironmentModel(model) => client.update_environment_model(model),
                 _ => Err(Error::from(ErrorKind::InvalidInput)),
             },
         };
@@ -506,11 +504,7 @@ mod test {
         Client<M, MockAlgorithm<M>, MockAdapter>,
     ) {
         let (receiver, mut client) = test_client();
-        assert!(
-            Command::UpdateVariant(variant)
-                .apply(&mut client)
-                .is_ok()
-        );
+        assert!(Command::UpdateVariant(variant).apply(&mut client).is_ok());
         if cleared {
             client.algorithm.clear();
             client.adapter.clear();
@@ -657,12 +651,7 @@ mod test {
 
     fn test_update_variant_for_client_type(variant: Variant) {
         let (_, mut client) = test_client();
-        ;
-        assert!(
-            Command::UpdateVariant(variant)
-                .apply(&mut client)
-                .is_ok()
-        );
+        assert!(Command::UpdateVariant(variant).apply(&mut client).is_ok());
         assert_eq!(variant, client.variant);
     }
 }

@@ -146,13 +146,12 @@ impl Server {
     fn new_client_to_algorithm_buffered_channel(&mut self) -> Result<Alg, Error> {
         let (tx, rx) = channel(CHANNEL_BUFFER_SIZE_CLIENT_ALGORITHM);
         let mut alg = self.spawn_or_get_algorithm()?.clone().wait();
-        self.runtime
-            .spawn(rx.for_each(move |v| {
-                trace!("Forwarding command from client to algorithm...");
-                let result = alg.send(v).map_err(|_| ());
-                trace!("Forwarding command from client to algorithm... done");
-                result
-            }));
+        self.runtime.spawn(rx.for_each(move |v| {
+            trace!("Forwarding command from client to algorithm...");
+            let result = alg.send(v).map_err(|_| ());
+            trace!("Forwarding command from client to algorithm... done");
+            result
+        }));
         Ok(tx)
     }
 
@@ -255,7 +254,6 @@ impl Command {
 
 #[derive(Default)]
 pub struct RawMessageCodec();
-
 
 impl Encoder for RawMessageCodec {
     type Item = Arc<RawMessage>;

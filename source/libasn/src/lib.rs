@@ -142,7 +142,7 @@ impl Message {
         }
     }
 
-    pub fn try_decode_uper(raw: &RawMessage<Message>) -> Result<Message, ()> {
+    pub fn try_decode_uper(raw: &RawMessage) -> Result<Message, ()> {
         Self::try_decode_uper_from(raw.identifier(), raw.bytes())
     }
 
@@ -160,7 +160,7 @@ impl Message {
         }
     }
 
-    pub fn try_encode_uper(self) -> Result<RawMessage<Message>, ()> {
+    pub fn try_encode_uper(self) -> Result<RawMessage, ()> {
         RawMessage::new(self.type_id(), self.try_encode_uper_to_new_buffer()?)
     }
 
@@ -223,7 +223,7 @@ pub trait AsnMessage: Default {
         uper::encode_to_new_buffer(Self::type_def(), self)
     }
 
-    fn try_encode_uper(&self) -> Result<RawMessage<Self>, ()>
+    fn try_encode_uper(&self) -> Result<RawMessage, ()>
         where
             Self: Sized,
     {
@@ -237,7 +237,7 @@ pub trait AsnMessage: Default {
         unsafe { uper::decode(Self::type_def(), buffer) }
     }
 
-    fn try_decode_uper(raw: &RawMessage<Self>) -> Result<Box<Self>, ()>
+    fn try_decode_uper(raw: &RawMessage) -> Result<Box<Self>, ()>
         where
             Self: Sized,
     {

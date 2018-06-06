@@ -1,3 +1,4 @@
+use std::fmt::Debug;
 use std::fs::File;
 use std::io::Error;
 use std::io::ErrorKind;
@@ -11,8 +12,6 @@ use client;
 use client::Client;
 
 use adapter::asn::AsnAdapter;
-use algorithm;
-use algorithm::AlgorithmManager;
 
 use async::channel;
 use async::AsyncRead;
@@ -29,17 +28,17 @@ use io::net::TcpStream;
 use io::Decoder;
 use io::Encoder;
 
-use messages::asn;
-use messages::asn::raw;
-use messages::asn::AsnMessage;
-use messages::asn::Generalize;
-use messages::RawMessage;
+use libalgorithm;
+use libasn;
+use libasn::raw;
+use libasn::AsnMessage;
+use libmessages::RawMessage;
+use libshim::ExternalAlgorithm;
 
 use byteorder::ByteOrder;
 use byteorder::NetworkEndian;
 use bytes::BufMut;
 use bytes::BytesMut;
-use libalgorithm_sys::ExternalAlgorithm;
 
 const CHANNEL_BUFFER_SIZE_SERVER: usize = 10;
 const CHANNEL_BUFFER_SIZE_CLIENT: usize = 64;
@@ -48,14 +47,14 @@ const CHANNEL_BUFFER_SIZE_ALGORITHM: usize = 128;
 
 const HEADER_SIZE: usize = 8;
 
-type Clt = Sender<client::Command<raw::SensorFrame, raw::EnvironmentFrame>>;
-type Alg = Sender<algorithm::Command<raw::SensorFrame, raw::EnvironmentFrame, SocketAddr>>;
+type Clt = Sender<client::Command<raw::SensorFrame>>;
+type Alg = Sender<libalgorithm::Command<raw::SensorFrame, SocketAddr>>;
 
 pub struct Server {
     address: SocketAddr,
     runtime: Runtime,
     algorithm: Option<Alg>,
-    init_message: Option<Arc<RawMessage<asn::Message>>>,
+    init_message: Option<Arc<RawMessage>>,
     clients: Vec<Clt>,
     algorithm_config: String,
 }
@@ -76,14 +75,12 @@ impl Server {
     pub fn load_init_message<P: AsRef<Path>>(&mut self, path: P) -> Result<(), Error> {
         let mut xml = String::new();
         let _ = File::open(path)?.read_to_string(&mut xml)?;
-        match <raw::InitMessage as asn::AsnMessage>::try_decode_xer(&xml) {
+        match <raw::InitMessage as libasn::AsnMessage>::try_decode_xer(&xml) {
             Err(_) => Err(Error::from(ErrorKind::InvalidData)),
             Ok(init) => {
-                self.init_message = Some(Arc::new(
-                    init.try_encode_uper()
-                        .map_err(|_| Error::from(ErrorKind::InvalidData))?
-                        .generalize(),
-                ));
+                self.init_message = Some(Arc::new(init
+                    .try_encode_uper()
+                    .map_err(|_| Error::from(ErrorKind::InvalidData))?));
                 Ok(())
             }
         }
@@ -119,40 +116,15 @@ impl Server {
     fn spawn_algorithm(&mut self) -> Result<(), Error> {
         let (tx, rx) = channel(CHANNEL_BUFFER_SIZE_ALGORITHM);
 
-        let mut alg = unsafe {
-            let mut tx = tx.clone().wait();
-            ExternalAlgorithm::new(
-                &self.algorithm_config,
-                move |frame: &::messages::asn::raw::EnvironmentFrame| {
-                    trace!("EnvironmentFrame from ExternalAlgorithm received");
-                    match frame.try_encode_uper() {
-                        Err(e) => error!("Failed to encode EnvironmentFrame: {:?}", e),
-                        Ok(encoded) => {
-                            trace!("EnvironmentFrame from ExternalAlgorithm encoded successfully");
-                            let r = tx.send(::algorithm::Command::Publish(encoded));
-                            trace!("sending result {:?}", r.is_ok());
-                            if let Err(e) = r {
-                                trace!("sending error {:?}", e);
-                            }
-                        }
-                    }
-                },
-                move |frame: &::messages::asn::raw::InitMessage| {
-                    println!("Algorithm InitMessage: {:?}", frame);
-                },
-            ).expect("Creating ExternalAlgorithm failed")
-        };
-
-        let mut sample =
-            AlgorithmManager::new(move |frame: Box<::messages::asn::raw::SensorFrame>| {
-                alg.send_sensor_frame(frame);
-            });
+        let mut algorithm = ExternalAlgorithm::new(&self.algorithm_config)
+            .map_err(|_e| Error::from(ErrorKind::Other))?;
 
         self.runtime.spawn(
-            rx.for_each(move |command| match sample.process_command(command) {
-                Ok(_) => Ok(()),
-                Err(_) => Err(()),
-            }),
+            rx.for_each(
+                move |command: libalgorithm::Command<raw::SensorFrame, SocketAddr>| {
+                    command.apply(&mut algorithm)
+                },
+            ).map_err(|_e| ()),
         );
         self.algorithm = Some(tx);
         Ok(())
@@ -207,7 +179,7 @@ impl Server {
 
         self.runtime.spawn(
             decoder
-                .map(|m| ::messages::asn::Message::try_decode_uper(&m))
+                .map(|m| ::libasn::Message::try_decode_uper(&m))
                 .then(move |r| match r {
                     Ok(message) => match message {
                         Ok(message) => ::adapter::asn::map_message(id, message),
@@ -287,7 +259,7 @@ impl<T> Default for RawMessageCodec<T> {
 }
 
 impl<T> Encoder for RawMessageCodec<T> {
-    type Item = Arc<RawMessage<T>>;
+    type Item = Arc<RawMessage>;
     type Error = Error;
 
     fn encode(
@@ -317,7 +289,7 @@ impl<T> Encoder for RawMessageCodec<T> {
 }
 
 impl<T> Decoder for RawMessageCodec<T> {
-    type Item = Arc<RawMessage<T>>;
+    type Item = Arc<RawMessage>;
     type Error = Error;
 
     fn decode(
@@ -371,7 +343,7 @@ mod tests {
 
     #[test]
     fn test_encoder() {
-        let msg: RawMessage<()> = RawMessage::new(0xFF, vec![0x01, 0xFF, 0x90]).unwrap();
+        let msg: RawMessage = RawMessage::new(0xFF, vec![0x01, 0xFF, 0x90]).unwrap();
         let mut codec = RawMessageCodec::default();
         let mut bytes = BytesMut::new();
         codec

@@ -10,11 +10,14 @@ extern crate tokio_io;
 extern crate byteorder;
 extern crate bytes;
 
-extern crate libalgorithm_sys;
-extern crate libmessages as messages;
+// project crates
+extern crate SampleAlgorithm;
+extern crate libalgorithm;
+extern crate libasn;
+extern crate libmessages;
+extern crate libshim;
 
 mod adapter;
-mod algorithm;
 mod client;
 mod command_processor;
 mod server;

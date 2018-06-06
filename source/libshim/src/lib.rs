@@ -25,13 +25,13 @@ use bindings::AlgorithmShim;
 use bindings::Publisher;
 
 pub struct ExternalAlgorithm<I: Send + Debug + PartialEq + 'static> {
-    mgr: Arc<Mutex<ListenerManager<SensorFrame, EnvironmentFrame, I>>>,
+    mgr: Arc<Mutex<ListenerManager<SensorFrame, I>>>,
     shim: Box<AlgorithmShim<InitMessage, EnvironmentFrame, SensorFrame, EnvironmentFramePublisher<I>, InitFramePublisher<I>>>,
 }
 
 impl<I: Send + Debug + PartialEq + 'static> ExternalAlgorithm<I> {
-    fn new(config_file: &str) -> Result<Self, ()> {
-        let mgr: Arc<Mutex<ListenerManager<SensorFrame, EnvironmentFrame, I>>> =
+    pub fn new(config_file: &str) -> Result<Self, ()> {
+        let mgr: Arc<Mutex<ListenerManager<SensorFrame, I>>> =
             Arc::new(Mutex::new(ListenerManager::default()));
         let shim: Box<
             AlgorithmShim<InitMessage, EnvironmentFrame, SensorFrame, _, _>,
@@ -47,14 +47,14 @@ impl<I: Send + Debug + PartialEq + 'static> ExternalAlgorithm<I> {
 }
 
 
-impl<I: Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, EnvironmentFrame, I>
+impl<I: Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, I>
     for ExternalAlgorithm<I>
 {
     fn update(&mut self, update: Box<SensorFrame>) {
         self.shim.send_sensor_frame(update);
     }
 
-    fn publish(&mut self, model: RawMessage<EnvironmentFrame>) {
+    fn publish(&mut self, model: RawMessage) {
         match self.mgr.lock() {
             Err(e) => error!("Failed to lock ListenerManager: {:?}", e),
             Ok(ref mut mgr) => mgr.publish_environment_model(Arc::new(model)),
@@ -64,7 +64,7 @@ impl<I: Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, EnvironmentFr
     fn subscribe_environment_model(
         &mut self,
         identifier: I,
-        listener: EnvironmentListener<EnvironmentFrame>,
+        listener: EnvironmentListener,
     ) {
         match self.mgr.lock() {
             Err(e) => error!("Failed to lock ListenerManager: {:?}", e),
@@ -110,7 +110,7 @@ impl<I: Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, EnvironmentFr
 
 
 
-struct EnvironmentFramePublisher<I: Send + Debug + PartialEq + 'static>(Arc<Mutex<ListenerManager<SensorFrame, EnvironmentFrame, I>>>);
+struct EnvironmentFramePublisher<I: Send + Debug + PartialEq + 'static>(Arc<Mutex<ListenerManager<SensorFrame, I>>>);
 
 impl<I: Send + Debug + PartialEq + 'static> Publisher<EnvironmentFrame> for EnvironmentFramePublisher<I> {
     fn publish(&mut self, frame: &EnvironmentFrame) {
@@ -124,10 +124,10 @@ impl<I: Send + Debug + PartialEq + 'static> Publisher<EnvironmentFrame> for Envi
     }
 }
 
-struct InitFramePublisher<I: Send + Debug + PartialEq + 'static>(Arc<Mutex<ListenerManager<SensorFrame, EnvironmentFrame, I>>>);
+struct InitFramePublisher<I: Send + Debug + PartialEq + 'static>(Arc<Mutex<ListenerManager<SensorFrame, I>>>);
 
 impl<I: Send + Debug + PartialEq + 'static> Publisher<InitMessage> for InitFramePublisher<I> {
     fn publish(&mut self, _: &InitMessage) {
-        trace!("Received InitMessage from external algorithm, but ignoring it");
+        warn!("Received InitMessage from external algorithm, but ignoring it");
     }
 }

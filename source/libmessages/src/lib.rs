@@ -8,15 +8,21 @@ extern crate bytes;
 use std::sync::Arc;
 
 
+
 #[derive(Debug)]
-pub struct RawMessage<T: ?Sized> {
-    identifier: u32,
-    data: RawMessageData,
-    _t: ::std::marker::PhantomData<T>,
+pub enum RawMessageData {
+    BytesMut(bytes::BytesMut),
+    Vec(Vec<u8>),
 }
 
-impl<T: ?Sized> RawMessage<T> {
-    pub fn new<I: Into<RawMessageData>>(identifier: u32, data: I) -> Result<RawMessage<T>, ()> {
+#[derive(Debug)]
+pub struct RawMessage {
+    identifier: u32,
+    data: RawMessageData,
+}
+
+impl RawMessage {
+    pub fn new<I: Into<RawMessageData>>(identifier: u32, data: I) -> Result<RawMessage, ()> {
         let data = data.into();
         if data.len() > ::std::u32::MAX as usize {
             Err(())
@@ -24,7 +30,6 @@ impl<T: ?Sized> RawMessage<T> {
             Ok(RawMessage {
                 identifier,
                 data,
-                _t: ::std::marker::PhantomData,
             })
         }
     }
@@ -40,16 +45,6 @@ impl<T: ?Sized> RawMessage<T> {
     pub fn bytes(&self) -> &[u8] {
         self.data.bytes()
     }
-}
-
-pub trait Generalize<T> {
-
-}
-
-#[derive(Debug)]
-pub enum RawMessageData {
-    BytesMut(bytes::BytesMut),
-    Vec(Vec<u8>),
 }
 
 impl RawMessageData {

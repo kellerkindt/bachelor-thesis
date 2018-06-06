@@ -11,28 +11,24 @@ use std::sync::Arc;
 use async::sink::Wait;
 use async::Sink;
 
-use messages::asn::raw::*;
-use messages::asn::AsnMessage;
-use messages::asn::Generalize;
-use messages::asn::Message;
-use messages::RawMessage;
+use libasn::raw::*;
+use libasn::AsnMessage;
+use libasn::Message;
+
+use libmessages::RawMessage;
 
 use adapter::Adapter;
 
 const CLIENT_TYPE_SENSOR: ClientType_t = ClientType_ClientType_sensor as ClientType_t;
 const CLIENT_TYPE_VEHICLE: ClientType_t = ClientType_ClientType_vehicle as ClientType_t;
 
-pub struct AsnAdapter<
-    E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 'static,
-> {
+pub struct AsnAdapter<E: Sink<SinkItem = Arc<RawMessage>, SinkError = Error> + Send + 'static> {
     encoder: Wait<E>,
-    raw_init_message: Option<Arc<RawMessage<Message>>>,
+    raw_init_message: Option<Arc<RawMessage>>,
 }
 
-impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 'static>
-    AsnAdapter<E>
-{
-    pub fn new(encoder: E, init_message: Option<Arc<RawMessage<Message>>>) -> AsnAdapter<E> {
+impl<E: Sink<SinkItem = Arc<RawMessage>, SinkError = Error> + Send + 'static> AsnAdapter<E> {
+    pub fn new(encoder: E, init_message: Option<Arc<RawMessage>>) -> AsnAdapter<E> {
         AsnAdapter {
             encoder: encoder.wait(),
             raw_init_message: init_message,
@@ -51,13 +47,13 @@ impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 's
         match message.try_encode_uper() {
             Err(_) => Err(Error::from(ErrorKind::InvalidData)),
             Ok(raw) => {
-                self.encoder.send(Arc::new(raw.generalize()))?;
+                self.encoder.send(Arc::new(raw))?;
                 self.encoder.flush()
             }
         }
     }
 
-    fn remote_send_raw(&mut self, message: Arc<RawMessage<Message>>) -> Result<(), Error> {
+    fn remote_send_raw(&mut self, message: Arc<RawMessage>) -> Result<(), Error> {
         self.encoder.send(message)?;
         self.encoder.flush()
     }
@@ -66,7 +62,7 @@ impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 's
 pub fn map_message(
     client_id: usize,
     message: Message,
-) -> Result<client::Command<SensorFrame, EnvironmentFrame>, Error> {
+) -> Result<client::Command<SensorFrame>, Error> {
     trace!("Going to map Message={:?}", message);
     match message {
         Message::ClientRegistration(ref reg) => Ok(client::Command::UpdateVariant(
@@ -91,8 +87,8 @@ pub fn map_message(
     }
 }
 
-impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 'static>
-    Adapter<EnvironmentFrame> for AsnAdapter<E>
+impl<E: Sink<SinkItem = Arc<RawMessage>, SinkError = Error> + Send + 'static> Adapter
+    for AsnAdapter<E>
 {
     fn init_vehicle(&mut self) -> Result<(), Error> {
         if let Some(init) = self.raw_init_message.clone() {
@@ -118,11 +114,8 @@ impl<E: Sink<SinkItem = Arc<RawMessage<Message>>, SinkError = Error> + Send + 's
         ))
     }
 
-    fn update_environment_model(
-        &mut self,
-        model: Arc<RawMessage<EnvironmentFrame>>,
-    ) -> Result<(), Error> {
-        self.remote_send_raw(model.generalize())
+    fn update_environment_model(&mut self, model: Arc<RawMessage>) -> Result<(), Error> {
+        self.remote_send_raw(model)
     }
 }
 

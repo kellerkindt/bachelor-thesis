@@ -15,23 +15,22 @@ pub type CountListener = Box<FnMut(usize, usize) -> Result<(), Error> + Send + '
 
 /// Listens for environment model updates, returns an `Error`
 /// if this listener is no longer valid
-pub type EnvironmentListener<E> =
-    Box<FnMut(Arc<RawMessage<E>>) -> Result<(), Error> + Send + 'static>;
+pub type EnvironmentListener = Box<FnMut(Arc<RawMessage>) -> Result<(), Error> + Send + 'static>;
 
 /// `S`: The message being sent by the sensor to this algorithm
 /// `E`: The model being calculated by this algorithm
 /// `I`: The identifier used to
-pub trait Algorithm<S: Send + Debug, E: Send + Debug, I: Send + PartialEq + 'static> {
+pub trait Algorithm<S: Send + Debug, I: Send + PartialEq + 'static> {
     /// Updates the Algorithm with the new `S`,
     fn update(&mut self, update: Box<S>);
 
     /// Publishes the given `E` to all subscribed `EnvironmentListener`s
-    fn publish(&mut self, model: RawMessage<E>);
+    fn publish(&mut self, model: RawMessage);
 
     /// Adds the given `EnvironmentListener` to the list of listeners
     /// to notify on publications of a new `E`.
     /// The new `EnvironmentListener` is set as inactive initially
-    fn subscribe_environment_model(&mut self, identifier: I, listener: EnvironmentListener<E>);
+    fn subscribe_environment_model(&mut self, identifier: I, listener: EnvironmentListener);
 
     /// Removes the `EnvironmentListener` for the given identifier
     /// and therefore no longer publishes `E`s to it
@@ -57,18 +56,24 @@ pub trait Algorithm<S: Send + Debug, E: Send + Debug, I: Send + PartialEq + 'sta
 
 /// This struct manages the algorithm organizational
 /// overhead of the listeners
-#[derive(Default)]
-pub struct ListenerManager<S: Send + Debug, E: Send + Debug, I: Send + Debug + PartialEq + 'static>
-{
-    model_listeners: Vec<(I, bool, EnvironmentListener<E>)>,
+pub struct ListenerManager<S: Send + Debug, I: Send + Debug + PartialEq + 'static> {
+    model_listeners: Vec<(I, bool, EnvironmentListener)>,
     count_listeners: Vec<(I, CountListener)>,
     _s: ::std::marker::PhantomData<S>,
 }
 
-impl<S: Send + Debug, E: Send + Debug, I: Send + Debug + PartialEq + 'static>
-    ListenerManager<S, E, I>
-{
-    pub fn add_environment_listener(&mut self, identifier: I, listener: EnvironmentListener<E>) {
+impl<S: Send + Debug, I: Send + Debug + PartialEq + 'static> Default for ListenerManager<S, I> {
+    fn default() -> Self {
+        ListenerManager {
+            model_listeners: Vec::new(),
+            count_listeners: Vec::new(),
+            _s: ::std::marker::PhantomData,
+        }
+    }
+}
+
+impl<S: Send + Debug, I: Send + Debug + PartialEq + 'static> ListenerManager<S, I> {
+    pub fn add_environment_listener(&mut self, identifier: I, listener: EnvironmentListener) {
         trace!("Adding model listener with id={:?}", identifier);
         let before = self.model_listeners.len();
         self.model_listeners.push((identifier, false, listener));
@@ -139,8 +144,7 @@ impl<S: Send + Debug, E: Send + Debug, I: Send + Debug + PartialEq + 'static>
         );
     }
 
-    pub fn publish_environment_model<M: Into<Arc<RawMessage<E>>>>(&mut self, model: M) {
-        let model = model.into();
+    pub fn publish_environment_model(&mut self, model: Arc<RawMessage>) {
         let before = self.model_listeners.len();
         retain_mut(&mut self.model_listeners, |(id, active, listener)| {
             trace!("Sending EnvironmentModel to listener with id={:?}", id);
@@ -152,10 +156,10 @@ impl<S: Send + Debug, E: Send + Debug, I: Send + Debug + PartialEq + 'static>
     }
 }
 
-pub enum Command<U: Send + Debug, E: Send + Debug, I: Send + Debug + Sized + 'static> {
+pub enum Command<U: Send + Debug, I: Send + Debug + Sized + 'static> {
     Update(Box<U>),
-    Publish(RawMessage<E>),
-    SubscribeEnvironmentModel(I, EnvironmentListener<E>),
+    Publish(RawMessage),
+    SubscribeEnvironmentModel(I, EnvironmentListener),
     UnsubscribeEnvironmentModel(I),
     SubscribeListenerCount(I, CountListener),
     UnsubscribeListenerCount(I),
@@ -163,8 +167,8 @@ pub enum Command<U: Send + Debug, E: Send + Debug, I: Send + Debug + Sized + 'st
     DeactivateEnvironmentModelSubscription(I),
 }
 
-impl<S: Send + Debug, E: Send + Debug, I: Send + Debug + PartialEq + 'static> Command<S, E, I> {
-    pub fn apply(self, algorithm: &mut Algorithm<S, E, I>) {
+impl<S: Send + Debug, I: Send + Debug + PartialEq + 'static> Command<S, I> {
+    pub fn apply(self, algorithm: &mut Algorithm<S, I>) {
         match self {
             Command::Update(update) => algorithm.update(update),
             Command::Publish(model) => algorithm.publish(model),
@@ -192,20 +196,19 @@ impl<S: Send + Debug, E: Send + Debug, I: Send + Debug + PartialEq + 'static> Co
 
 impl<
         S: Send + Debug,
-        E: Send + Debug,
         I: Send + Debug + PartialEq + 'static,
-        F: FnMut(Command<S, E, I>),
-    > Algorithm<S, E, I> for F
+        F: FnMut(Command<S, I>),
+    > Algorithm<S, I> for F
 {
     fn update(&mut self, update: Box<S>) {
         self(Command::Update(update));
     }
 
-    fn publish(&mut self, model: RawMessage<E>) {
+    fn publish(&mut self, model: RawMessage) {
         self(Command::Publish(model));
     }
 
-    fn subscribe_environment_model(&mut self, identifier: I, listener: EnvironmentListener<E>) {
+    fn subscribe_environment_model(&mut self, identifier: I, listener: EnvironmentListener) {
         self(Command::SubscribeEnvironmentModel(identifier, listener));
     }
 

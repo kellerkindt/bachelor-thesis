@@ -11,38 +11,35 @@ use async::Sender;
 
 use adapter::Adapter;
 
-use algorithm::Algorithm;
-
-use messages::RawMessage;
+use libalgorithm::Algorithm;
+use libmessages::RawMessage;
 
 pub struct Client<
-    A: Debug + Send + Sized + 'static,
-    E: Debug + Sized + Sync + Send + 'static,
-    G: Algorithm<A, E, Identifier = SocketAddr> + Sized + 'static,
-    D: Adapter<E> + Send + 'static,
+    S: Debug + Send + Sized + 'static,
+    A: Algorithm<S, SocketAddr> + Sized + 'static,
+    D: Adapter + Send + 'static,
 > {
     address: SocketAddr,
-    myself: Sender<Command<A, E>>,
+    myself: Sender<Command<S>>,
     adapter: D,
-    algorithm: G,
+    algorithm: A,
     variant: Variant,
     subscribed_model: bool,
     subscribed_count: bool,
 }
 
 impl<
-        A: Debug + Send + Sized + 'static,
-        E: Debug + Sized + Send + Sync + 'static,
-        G: Algorithm<A, E, Identifier = SocketAddr> + Sized + 'static,
-        D: Adapter<E> + Send + 'static,
-    > Client<A, E, G, D>
+        S: Debug + Send + Sized + 'static,
+        G: Algorithm<S, SocketAddr> + Sized + 'static,
+        D: Adapter + Send + 'static,
+    > Client<S, G, D>
 {
     pub fn new(
-        myself: Sender<Command<A, E>>,
+        myself: Sender<Command<S>>,
         address: SocketAddr,
         adapter: D,
         algorithm: G,
-    ) -> Client<A, E, G, D> {
+    ) -> Client<S, G, D> {
         Client {
             address,
             myself,
@@ -60,7 +57,8 @@ impl<
             self.address,
             self.variant
         );
-        self.subscribe_to_algorithm_as_sensor()
+        self.subscribe_to_algorithm_as_sensor();
+        Ok(())
     }
 
     fn init_as_vehicle(&mut self) -> Result<(), Error> {
@@ -70,10 +68,11 @@ impl<
             self.variant
         );
         self.remote_init()?;
-        self.subscribe_to_algorithm_as_vehicle()
+        self.subscribe_to_algorithm_as_vehicle();
+        Ok(())
     }
 
-    fn subscribe_to_algorithm_as_vehicle(&mut self) -> Result<(), Error> {
+    fn subscribe_to_algorithm_as_vehicle(&mut self) {
         trace!(
             "Client/{}/{:?} is subscribing to algorithm",
             self.address,
@@ -88,43 +87,41 @@ impl<
                     .try_send(Command::UpdateEnvironmentModel(e))
                     .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
             }),
-        )?;
+        );
         self.subscribed_model = true;
-        Ok(())
     }
 
-    fn unsubscribe_from_algorithm_as_vehicle(&mut self) -> Result<(), Error> {
+    fn unsubscribe_from_algorithm_as_vehicle(&mut self) {
         trace!(
             "Client/{}/{:?} is unsubscribing from algorithm",
             self.address,
             self.variant
         );
-        self.algorithm.unsubscribe_environment_model(self.address)?;
+        self.algorithm.unsubscribe_environment_model(self.address);
         self.subscribed_model = false;
-        Ok(())
     }
 
-    fn activate_algorithm_model_subscription(&mut self) -> Result<(), Error> {
+    fn activate_algorithm_model_subscription(&mut self) {
         trace!(
             "Client/{}/{:?} is activating model subscription",
             self.address,
             self.variant
         );
         self.algorithm
-            .activate_environment_model_subscription(self.address)
+            .activate_environment_model_subscription(self.address);
     }
 
-    fn deactivate_algorithm_model_subscription(&mut self) -> Result<(), Error> {
+    fn deactivate_algorithm_model_subscription(&mut self) {
         trace!(
             "Client/{}/{:?} is deactivating model subscription",
             self.address,
             self.variant
         );
         self.algorithm
-            .deactivate_environment_model_subscription(self.address)
+            .deactivate_environment_model_subscription(self.address);
     }
 
-    fn subscribe_to_algorithm_as_sensor(&mut self) -> Result<(), Error> {
+    fn subscribe_to_algorithm_as_sensor(&mut self) {
         trace!(
             "Client/{}/{:?} is subscribing to algorithm",
             self.address,
@@ -145,23 +142,21 @@ impl<
                     .try_send(command)
                     .map_err(|_| Error::from(ErrorKind::UnexpectedEof))
             }),
-        )?;
+        );
         self.subscribed_count = true;
-        Ok(())
     }
 
-    fn unsubscribe_from_algorithm_as_sensor(&mut self) -> Result<(), Error> {
+    fn unsubscribe_from_algorithm_as_sensor(&mut self) {
         trace!(
             "Client/{}/{:?} is unsubscribing from algorithm",
             self.address,
             self.variant
         );
-        self.algorithm.unsubscribe_listener_count(self.address)?;
+        self.algorithm.unsubscribe_listener_count(self.address);
         self.subscribed_count = false;
-        Ok(())
     }
 
-    fn update_environment_model(&mut self, model: Arc<RawMessage<E>>) -> Result<(), Error> {
+    fn update_environment_model(&mut self, model: Arc<RawMessage>) -> Result<(), Error> {
         trace!(
             "Client/{}/{:?} received environment model: {:?}",
             self.address,
@@ -171,14 +166,14 @@ impl<
         self.adapter.update_environment_model(model)
     }
 
-    fn update_algorithm(&mut self, update: Box<A>) -> Result<(), Error> {
+    fn update_algorithm(&mut self, update: Box<S>) {
         trace!(
             "Client/{}/{:?} received algorithm update: {:?}",
             self.address,
             self.variant,
             update
         );
-        self.algorithm.update(update)
+        self.algorithm.update(update);
     }
 
     fn remote_init(&mut self) -> Result<(), Error> {
@@ -206,10 +201,9 @@ impl<
 
 impl<
         A: Debug + Send + Sized + 'static,
-        E: Debug + Sized + Send + Sync + 'static,
-        G: Algorithm<A, E, Identifier = SocketAddr> + Sized + 'static,
-        D: Adapter<E> + Send + 'static,
-    > Drop for Client<A, E, G, D>
+        G: Algorithm<A, SocketAddr> + Sized + 'static,
+        D: Adapter + Send + 'static,
+    > Drop for Client<A, G, D>
 {
     fn drop(&mut self) {
         info!(
@@ -236,13 +230,12 @@ impl<
 }
 
 impl<
-        A: Debug + Send + Sized + 'static,
-        E: Debug + Sized + Send + Sync + 'static,
-        G: Algorithm<A, E, Identifier = SocketAddr> + Sized + 'static,
-        D: Adapter<E> + Send + 'static,
-    > CommandProcessor<Command<A, E>> for Client<A, E, G, D>
+        S: Debug + Send + Sized + 'static,
+        A: Algorithm<S, SocketAddr> + Sized + 'static,
+        D: Adapter + Send + 'static,
+    > CommandProcessor<Command<S>> for Client<S, A, D>
 {
-    fn process_command(&mut self, command: Command<A, E>) -> Result<(), Error> {
+    fn process_command(&mut self, command: Command<S>) -> Result<(), Error> {
         trace!(
             "Client/{}/{:?} is going to process command: {:?}",
             self.address,
@@ -265,16 +258,28 @@ impl<
             Variant::Sensor => {
                 match command {
                     Command::SensorIsIdle => Ok(()), // great... I guess
-                    Command::UpdateAlgorithm(update) => self.update_algorithm(update),
+                    Command::UpdateAlgorithm(update) => {
+                        self.update_algorithm(update);
+                        Ok(())
+                    }
                     Command::RemoteSubscribe => self.remote_subscribe(),
                     Command::RemoteUnsubscribe => self.remote_unsubscribe(),
                     _ => Err(Error::from(ErrorKind::InvalidInput)),
                 }
             }
             Variant::Vehicle => match command {
-                Command::Subscribe => self.activate_algorithm_model_subscription(),
-                Command::Unsubscribe => self.deactivate_algorithm_model_subscription(),
-                Command::UpdateEnvironmentModel(model) => self.update_environment_model(model),
+                Command::Subscribe => {
+                    self.activate_algorithm_model_subscription();
+                    Ok(())
+                }
+                Command::Unsubscribe => {
+                    self.deactivate_algorithm_model_subscription();
+                    Ok(())
+                }
+                Command::UpdateEnvironmentModel(model) => {
+                    self.update_environment_model(model);
+                    Ok(())
+                }
                 _ => Err(Error::from(ErrorKind::InvalidInput)),
             },
         };
@@ -291,13 +296,13 @@ pub enum Variant {
 }
 
 #[derive(Debug, Clone)]
-pub enum Command<A, E: Debug + Send + Sized + 'static> {
+pub enum Command<A> {
     UpdateVariant(Variant),
     SensorIsIdle,
     Subscribe,
     Unsubscribe,
     UpdateAlgorithm(Box<A>),
-    UpdateEnvironmentModel(Arc<RawMessage<E>>),
+    UpdateEnvironmentModel(Arc<RawMessage>),
     RemoteSubscribe,
     RemoteUnsubscribe,
 }
@@ -305,23 +310,24 @@ pub enum Command<A, E: Debug + Send + Sized + 'static> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use algorithm::CountListener;
-    use algorithm::EnvironmentListener;
     use async::Receiver;
     use async::Stream;
+    use libalgorithm::CountListener;
+    use libalgorithm::EnvironmentListener;
     use std::ops::IndexMut;
 
     #[derive(Default, Debug)]
     struct M();
 
     #[derive(Default, Debug)]
-    struct MockAdapter<E: Debug> {
+    struct MockAdapter {
         init_vehicle: usize,
         unsubscribe: usize,
         subscribe: usize,
-        update_environment_model: Vec<Arc<RawMessage<E>>>,
+        update_environment_model: Vec<Arc<RawMessage>>,
     }
-    impl<E: Debug> MockAdapter<E> {
+
+    impl MockAdapter {
         fn assert(
             &self,
             init_vehicle: usize,
@@ -346,7 +352,7 @@ mod test {
             self.update_environment_model.clear();
         }
     }
-    impl<E: Debug> Adapter<E> for MockAdapter<E> {
+    impl Adapter for MockAdapter {
         fn init_vehicle(&mut self) -> Result<(), Error> {
             self.init_vehicle += 1;
             Ok(())
@@ -362,24 +368,24 @@ mod test {
             Ok(())
         }
 
-        fn update_environment_model(&mut self, model: Arc<RawMessage<E>>) -> Result<(), Error> {
+        fn update_environment_model(&mut self, model: Arc<RawMessage>) -> Result<(), Error> {
             self.update_environment_model.push(model);
             Ok(())
         }
     }
 
     #[derive(Default)]
-    struct MockAlgorithm<A: Send + Debug, E: Send + Debug> {
+    struct MockAlgorithm<A: Send + Debug> {
         update: Vec<Box<A>>,
-        publish: Vec<RawMessage<E>>,
-        subscribe_environment_model: Vec<(SocketAddr, EnvironmentListener<E>)>,
+        publish: Vec<RawMessage>,
+        subscribe_environment_model: Vec<(SocketAddr, EnvironmentListener)>,
         unsubscribe_environment_model: Vec<(SocketAddr)>,
         activate_environment_model_subscription: Vec<SocketAddr>,
         deactivate_environment_model_subscription: Vec<SocketAddr>,
         subscribe_listener_count: Vec<(SocketAddr, CountListener)>,
         unsubscribe_listener_count: Vec<SocketAddr>,
     }
-    impl<A: Send + Debug, E: Send + Debug> MockAlgorithm<A, E> {
+    impl<A: Send + Debug> MockAlgorithm<A> {
         fn assert(
             &self,
             update: usize,
@@ -436,76 +442,50 @@ mod test {
             self.unsubscribe_listener_count.clear();
         }
     }
-    impl<A: Send + Debug, E: Send + Debug> Algorithm<A, E> for MockAlgorithm<A, E> {
-        type Identifier = SocketAddr;
-
-        fn update(&mut self, update: Box<A>) -> Result<(), Error> {
+    impl<A: Send + Debug> Algorithm<A, SocketAddr> for MockAlgorithm<A> {
+        fn update(&mut self, update: Box<A>) {
             self.update.push(update);
-            Ok(())
         }
 
-        fn publish(&mut self, model: RawMessage<E>) -> Result<(), Error> {
+        fn publish(&mut self, model: RawMessage) {
             self.publish.push(model);
-            Ok(())
         }
 
         fn subscribe_environment_model(
             &mut self,
-            identifier: <Self as Algorithm<A, E>>::Identifier,
-            listener: EnvironmentListener<E>,
-        ) -> Result<(), Error> {
+            identifier: SocketAddr,
+            listener: EnvironmentListener,
+        ) {
             self.subscribe_environment_model
                 .push((identifier, listener));
-            Ok(())
         }
 
-        fn unsubscribe_environment_model(
-            &mut self,
-            identifier: <Self as Algorithm<A, E>>::Identifier,
-        ) -> Result<(), Error> {
+        fn unsubscribe_environment_model(&mut self, identifier: SocketAddr) {
             self.unsubscribe_environment_model.push(identifier);
-            Ok(())
         }
 
-        fn activate_environment_model_subscription(
-            &mut self,
-            identifier: <Self as Algorithm<A, E>>::Identifier,
-        ) -> Result<(), Error> {
+        fn activate_environment_model_subscription(&mut self, identifier: SocketAddr) {
             self.activate_environment_model_subscription
                 .push(identifier);
-            Ok(())
         }
 
-        fn deactivate_environment_model_subscription(
-            &mut self,
-            identifier: <Self as Algorithm<A, E>>::Identifier,
-        ) -> Result<(), Error> {
+        fn deactivate_environment_model_subscription(&mut self, identifier: SocketAddr) {
             self.deactivate_environment_model_subscription
                 .push(identifier);
-            Ok(())
         }
 
-        fn subscribe_listener_count(
-            &mut self,
-            identifier: <Self as Algorithm<A, E>>::Identifier,
-            listener: CountListener,
-        ) -> Result<(), Error> {
+        fn subscribe_listener_count(&mut self, identifier: SocketAddr, listener: CountListener) {
             self.subscribe_listener_count.push((identifier, listener));
-            Ok(())
         }
 
-        fn unsubscribe_listener_count(
-            &mut self,
-            identifier: <Self as Algorithm<A, E>>::Identifier,
-        ) -> Result<(), Error> {
+        fn unsubscribe_listener_count(&mut self, identifier: SocketAddr) {
             self.unsubscribe_listener_count.push(identifier);
-            Ok(())
         }
     }
 
     fn test_client() -> (
-        Receiver<Command<M, M>>,
-        Client<M, M, MockAlgorithm<M, M>, MockAdapter<M>>,
+        Receiver<Command<M>>,
+        Client<M, MockAlgorithm<M>, MockAdapter>,
     ) {
         let _ = ::init_log4rs(Some(::log::LevelFilter::Trace));
         let address = "0.0.0.0:2048".parse::<SocketAddr>().unwrap();
@@ -525,8 +505,8 @@ mod test {
         variant: Variant,
         cleared: bool,
     ) -> (
-        ::std::sync::mpsc::Receiver<Command<M, M>>,
-        Client<M, M, MockAlgorithm<M, M>, MockAdapter<M>>,
+        ::std::sync::mpsc::Receiver<Command<M>>,
+        Client<M, MockAlgorithm<M>, MockAdapter>,
     ) {
         let (receiver, mut client) = test_client();
         assert!(
@@ -548,9 +528,9 @@ mod test {
         (rx, client)
     }
 
-    fn apply_all_commands<A: Sync + Send + Debug + 'static, E: Sync + Send + Debug + 'static>(
-        receiver: &mut ::std::sync::mpsc::Receiver<Command<A, E>>,
-        client: &mut Client<A, E, MockAlgorithm<A, E>, MockAdapter<E>>,
+    fn apply_all_commands<A: Sync + Send + Debug + 'static>(
+        receiver: &mut ::std::sync::mpsc::Receiver<Command<A>>,
+        client: &mut Client<A, MockAlgorithm<A>, MockAdapter>,
     ) {
         // TODO bad!
         ::std::thread::sleep(::std::time::Duration::from_millis(1_000));

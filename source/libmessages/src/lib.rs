@@ -1,13 +1,4 @@
-#[macro_use]
-extern crate log;
-
-#[cfg(test)]
-extern crate log4rs;
 extern crate bytes;
-
-use std::sync::Arc;
-
-
 
 #[derive(Debug)]
 pub enum RawMessageData {
@@ -27,10 +18,7 @@ impl RawMessage {
         if data.len() > ::std::u32::MAX as usize {
             Err(())
         } else {
-            Ok(RawMessage {
-                identifier,
-                data,
-            })
+            Ok(RawMessage { identifier, data })
         }
     }
 
@@ -66,7 +54,7 @@ impl RawMessageData {
 
 impl Into<RawMessageData> for Vec<u8> {
     fn into(self) -> RawMessageData {
-       RawMessageData::Vec(self)
+        RawMessageData::Vec(self)
     }
 }
 

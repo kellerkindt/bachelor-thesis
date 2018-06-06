@@ -3,5 +3,14 @@ name = "sample_algorithm"
 version = "0.1.0"
 authors = ["Michael Watzko <michael@watzko.de>"]
 
-[dependencies.libshim]
-path = "../libshim/"
+[dependencies]
+log = "0.4.1"
+
+[dependencies.libalgorithm]
+path = "../libalgorithm/"
+
+[dependencies.libmessages]
+path = "../libmessages/"
+
+[dependencies.libasn]
+path = "../libasn/"

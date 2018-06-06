@@ -21,7 +21,7 @@ path = "../libmessages/"
 path = "../libalgorithm/"
 
 # Impelmetnation dependent
-[dependencies.SampleAlgorithm]
+[dependencies.sample_algorithm]
 path = "../SampleAlgorithm/"
 
 [dependencies.libasn]

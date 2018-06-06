@@ -128,6 +128,8 @@ impl<S: Send + Debug, I: Send + Debug + PartialEq + 'static> ListenerManager<S, 
         trace!("Adding count listener with id={:?}", identifier);
         if sink(0, self.model_listeners.len()).is_ok() {
             self.count_listeners.push((identifier, sink));
+        } else {
+            error!("Initialization of count listener failed");
         }
         trace!(
             "Now subscribed count listeners: {}",

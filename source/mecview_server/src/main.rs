@@ -11,7 +11,7 @@ extern crate byteorder;
 extern crate bytes;
 
 // project crates
-extern crate SampleAlgorithm;
+extern crate sample_algorithm;
 extern crate libalgorithm;
 extern crate libasn;
 extern crate libmessages;

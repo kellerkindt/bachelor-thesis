@@ -130,9 +130,10 @@ impl<
         self.algorithm.subscribe_listener_count(
             self.address,
             Box::new(move |before, after| {
+                trace!("Count changed, before: {}, after: {}", before, after);
                 let command = if before == 0 && after > 0 {
                     Command::RemoteSubscribe
-                } else if before > 0 && after == 0 {
+                } else if after == 0 {
                     Command::RemoteUnsubscribe
                 } else {
                     return Ok(());
@@ -293,8 +294,7 @@ impl<S: Debug + Send + Sized + 'static> Command<S> {
                     Ok(())
                 }
                 Command::UpdateEnvironmentModel(model) => {
-                    client.update_environment_model(model);
-                    Ok(())
+                    client.update_environment_model(model)
                 }
                 _ => Err(Error::from(ErrorKind::InvalidInput)),
             },

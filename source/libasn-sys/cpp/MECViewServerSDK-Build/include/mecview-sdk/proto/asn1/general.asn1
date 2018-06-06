@@ -1,0 +1,50 @@
+MECViewGeneralModule DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+Header ::= SEQUENCE {
+    timestamp    INTEGER (0..1209600000)
+}
+ 
+ReferencePoint ::= SEQUENCE {
+    latitude    INTEGER (-900000000..900000000),
+    longitude   INTEGER (-1800000000..1800000000),
+    altitude    INTEGER (-45000..900000)
+}
+
+PositionOffset ::= SEQUENCE {
+    position-north          INTEGER (-15000..15000),
+    position-east           INTEGER (-15000..15000),
+    std-dev-position-north  INTEGER (-15000..15000) OPTIONAL,
+    std-dev-position-east   INTEGER (-15000..15000) OPTIONAL
+}
+
+MovingVector ::= SEQUENCE {
+    velocity-north          INTEGER (-600..600),
+    velocity-east           INTEGER (-600..600),
+    std-dev-velocity-north  INTEGER (-600..600) OPTIONAL,
+    std-dev-velocity-east   INTEGER (-600..600) OPTIONAL
+}
+
+ObjectSize ::= SEQUENCE {
+    length          INTEGER (0..2500),
+    width           INTEGER (0..400)  OPTIONAL,
+    height          INTEGER (0..400)  OPTIONAL,
+    std-dev-length  INTEGER (0..2500) OPTIONAL,
+    std-dev-width   INTEGER (0..400)  OPTIONAL,
+    std-dev-height  INTEGER (0..400)  OPTIONAL
+}
+
+ObjectType ::= ENUMERATED {
+    not-classified,
+    pedestrian,
+    car,
+    van-or-transporter,
+    truck,
+    bus,
+    motorbike,
+    bicycle,
+    optional-1,
+    optional-2,
+    optinal-3
+}
+END

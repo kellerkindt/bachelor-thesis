@@ -169,6 +169,7 @@ pub enum Command<U: Send + Debug, I: Send + Debug + Sized + 'static> {
 
 impl<S: Send + Debug, I: Send + Debug + PartialEq + 'static> Command<S, I> {
     pub fn apply(self, algorithm: &mut Algorithm<S, I>) {
+        trace!("Processing algorithm command");
         match self {
             Command::Update(update) => algorithm.update(update),
             Command::Publish(model) => algorithm.publish(model),

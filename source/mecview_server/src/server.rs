@@ -15,7 +15,6 @@ use adapter::asn::AsnAdapter;
 
 use async::channel;
 use async::AsyncRead;
-use async::CommandProcessor;
 use async::Future;
 use async::Receiver;
 use async::Runtime;
@@ -122,7 +121,10 @@ impl Server {
         self.runtime.spawn(
             rx.for_each(
                 move |command: libalgorithm::Command<raw::SensorFrame, SocketAddr>| {
-                    command.apply(&mut algorithm)
+                    trace!("Applying algorithm command...");
+                    command.apply(&mut algorithm);
+                    trace!("Applying algorithm command... done");
+                    Ok(())
                 },
             ).map_err(|_e| ()),
         );
@@ -146,7 +148,12 @@ impl Server {
         let (tx, rx) = channel(CHANNEL_BUFFER_SIZE_CLIENT_ALGORITHM);
         let mut alg = self.spawn_or_get_algorithm()?.clone().wait();
         self.runtime
-            .spawn(rx.for_each(move |v| alg.send(v).map_err(|_| ())));
+            .spawn(rx.for_each(move |v| {
+                trace!("Forwarding command from client to algorithm...");
+                let result = alg.send(v).map_err(|_| ());
+                trace!("Forwarding command from client to algorithm... done");
+                result
+            }));
         Ok(tx)
     }
 
@@ -170,11 +177,18 @@ impl Server {
         }
 
         let (encoder, decoder) = client.framed(RawMessageCodec::default()).split();
+        let mut algorithm = self.new_client_to_algorithm_buffered_channel()?.wait();
         let mut client = Client::new(
             client_tx,
             address,
             AsnAdapter::new(encoder, self.init_message.clone()),
-            self.new_client_to_algorithm_buffered_channel()?,
+            move |command| {
+                trace!("Forwarding algorithm command...");
+                if let Err(e) = algorithm.send(command) {
+                    error!("Failed to send command to algorithm: {:?}", e);
+                }
+                trace!("Forwarding algorithm command... done");
+            },
         );
 
         self.runtime.spawn(
@@ -194,11 +208,10 @@ impl Server {
                     Err(_) => Err(::std::io::Error::from(::std::io::ErrorKind::UnexpectedEof))
 
                 }))
-                .for_each(move |command| client.process_command(command))
-                .then(|r| match r {
-                    Ok(_) => Ok(()),
-                    Err(_) => Err(())
-                }),
+                .for_each(move |command| {
+                    command.apply(&mut client)
+                })
+                .map_err(|_e| ()),
         );
 
         Ok(())
@@ -225,20 +238,7 @@ impl Server {
 
     fn spawn_command_processor(mut self, receiver: Receiver<Command>) {
         let executor = self.runtime.executor().clone();
-        executor.spawn(
-            receiver.for_each(move |command| match self.process_command(command) {
-                Err(_) => Err(()),
-                Ok(_) => Ok(()),
-            }),
-        );
-    }
-}
-
-impl CommandProcessor<Command> for Server {
-    fn process_command(&mut self, command: Command) -> Result<(), Error> {
-        match command {
-            Command::AcceptStream(stream) => self.handle_new_client(stream),
-        }
+        executor.spawn(receiver.for_each(move |command| command.apply(&mut self).map_err(|_e| ())));
     }
 }
 
@@ -246,19 +246,19 @@ pub enum Command {
     AcceptStream(TcpStream),
 }
 
-pub struct RawMessageCodec<T> {
-    _t: ::std::marker::PhantomData<T>,
-}
-
-impl<T> Default for RawMessageCodec<T> {
-    fn default() -> RawMessageCodec<T> {
-        RawMessageCodec {
-            _t: ::std::marker::PhantomData,
+impl Command {
+    fn apply(self, server: &mut Server) -> Result<(), Error> {
+        match self {
+            Command::AcceptStream(stream) => server.handle_new_client(stream),
         }
     }
 }
 
-impl<T> Encoder for RawMessageCodec<T> {
+#[derive(Default)]
+pub struct RawMessageCodec();
+
+
+impl Encoder for RawMessageCodec {
     type Item = Arc<RawMessage>;
     type Error = Error;
 
@@ -288,7 +288,7 @@ impl<T> Encoder for RawMessageCodec<T> {
     }
 }
 
-impl<T> Decoder for RawMessageCodec<T> {
+impl Decoder for RawMessageCodec {
     type Item = Arc<RawMessage>;
     type Error = Error;
 

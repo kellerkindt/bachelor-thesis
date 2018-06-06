@@ -6,7 +6,6 @@ use std::fmt::Debug;
 
 use std::sync::Arc;
 
-use async::CommandProcessor;
 use async::Sender;
 
 use adapter::Adapter;
@@ -229,65 +228,6 @@ impl<
     }
 }
 
-impl<
-        S: Debug + Send + Sized + 'static,
-        A: Algorithm<S, SocketAddr> + Sized + 'static,
-        D: Adapter + Send + 'static,
-    > CommandProcessor<Command<S>> for Client<S, A, D>
-{
-    fn process_command(&mut self, command: Command<S>) -> Result<(), Error> {
-        trace!(
-            "Client/{}/{:?} is going to process command: {:?}",
-            self.address,
-            self.variant,
-            command
-        );
-        let result = match self.variant {
-            Variant::Unknown => {
-                if let Command::UpdateVariant(variant) = command {
-                    self.set_variant(variant);
-                    match variant {
-                        Variant::Sensor => self.init_as_sensor(),
-                        Variant::Vehicle => self.init_as_vehicle(),
-                        _ => Err(Error::from(ErrorKind::InvalidInput)),
-                    }
-                } else {
-                    Err(Error::from(ErrorKind::InvalidInput))
-                }
-            }
-            Variant::Sensor => {
-                match command {
-                    Command::SensorIsIdle => Ok(()), // great... I guess
-                    Command::UpdateAlgorithm(update) => {
-                        self.update_algorithm(update);
-                        Ok(())
-                    }
-                    Command::RemoteSubscribe => self.remote_subscribe(),
-                    Command::RemoteUnsubscribe => self.remote_unsubscribe(),
-                    _ => Err(Error::from(ErrorKind::InvalidInput)),
-                }
-            }
-            Variant::Vehicle => match command {
-                Command::Subscribe => {
-                    self.activate_algorithm_model_subscription();
-                    Ok(())
-                }
-                Command::Unsubscribe => {
-                    self.deactivate_algorithm_model_subscription();
-                    Ok(())
-                }
-                Command::UpdateEnvironmentModel(model) => {
-                    self.update_environment_model(model);
-                    Ok(())
-                }
-                _ => Err(Error::from(ErrorKind::InvalidInput)),
-            },
-        };
-        trace!("Client/{} result: {:?}", self.address, result);
-        result
-    }
-}
-
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum Variant {
     Unknown,
@@ -296,15 +236,72 @@ pub enum Variant {
 }
 
 #[derive(Debug, Clone)]
-pub enum Command<A> {
+pub enum Command<S> {
     UpdateVariant(Variant),
     SensorIsIdle,
     Subscribe,
     Unsubscribe,
-    UpdateAlgorithm(Box<A>),
+    UpdateAlgorithm(Box<S>),
     UpdateEnvironmentModel(Arc<RawMessage>),
     RemoteSubscribe,
     RemoteUnsubscribe,
+}
+
+impl<S: Debug + Send + Sized + 'static> Command<S> {
+    pub fn apply<A: Algorithm<S, SocketAddr> + Sized + 'static, D: Adapter + Send + 'static>(
+        self,
+        client: &mut Client<S, A, D>,
+    ) -> Result<(), Error> {
+        trace!(
+            "Client/{}/{:?} is going to process command: {:?}",
+            client.address,
+            client.variant,
+            self
+        );
+        let result = match client.variant {
+            Variant::Unknown => {
+                if let Command::UpdateVariant(variant) = self {
+                    client.set_variant(variant);
+                    match variant {
+                        Variant::Sensor => client.init_as_sensor(),
+                        Variant::Vehicle => client.init_as_vehicle(),
+                        _ => Err(Error::from(ErrorKind::InvalidInput)),
+                    }
+                } else {
+                    Err(Error::from(ErrorKind::InvalidInput))
+                }
+            }
+            Variant::Sensor => {
+                match self {
+                    Command::SensorIsIdle => Ok(()), // great... I guess
+                    Command::UpdateAlgorithm(update) => {
+                        client.update_algorithm(update);
+                        Ok(())
+                    }
+                    Command::RemoteSubscribe => client.remote_subscribe(),
+                    Command::RemoteUnsubscribe => client.remote_unsubscribe(),
+                    _ => Err(Error::from(ErrorKind::InvalidInput)),
+                }
+            }
+            Variant::Vehicle => match self {
+                Command::Subscribe => {
+                    client.activate_algorithm_model_subscription();
+                    Ok(())
+                }
+                Command::Unsubscribe => {
+                    client.deactivate_algorithm_model_subscription();
+                    Ok(())
+                }
+                Command::UpdateEnvironmentModel(model) => {
+                    client.update_environment_model(model);
+                    Ok(())
+                }
+                _ => Err(Error::from(ErrorKind::InvalidInput)),
+            },
+        };
+        trace!("Client/{} result: {:?}", client.address, result);
+        result
+    }
 }
 
 #[cfg(test)]

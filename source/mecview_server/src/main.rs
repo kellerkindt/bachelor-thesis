@@ -19,7 +19,6 @@ extern crate libshim;
 
 mod adapter;
 mod client;
-mod command_processor;
 mod server;
 
 mod async {
@@ -38,8 +37,6 @@ mod async {
 
     pub use tokio::runtime::Runtime;
     pub use tokio::spawn;
-
-    pub use command_processor::CommandProcessor;
 }
 
 mod io {
@@ -207,6 +204,7 @@ pub(crate) fn init_log4rs(level: Option<LevelFilter>) -> Result<Handle, SetLogge
         .appender(Appender::builder().build("stdout", Box::new(stdout)))
         .logger(Logger::builder().build("libmessages-sys", level.unwrap_or(LevelFilter::Info)))
         .logger(Logger::builder().build("libmessages", level.unwrap_or(LevelFilter::Info)))
+        .logger(Logger::builder().build("libalgorithm", level.unwrap_or(LevelFilter::Trace)))
         .logger(Logger::builder().build("mecview_server", level.unwrap_or(LevelFilter::Trace)))
         .build(
             Root::builder()

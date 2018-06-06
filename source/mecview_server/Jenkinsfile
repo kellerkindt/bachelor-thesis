@@ -109,7 +109,7 @@ pipeline {
                 }
                 stage('Documentation') {
                     steps {
-                        sh "cd $CRATE_SERVER; $CARGO doc"
+                        sh "cd $CRATE_SERVER; $CARGO doc -p libalgorithm -p libasn -p libasn-sys -p libmessages -p libshim -p libshim-sys -p mecview_server -p sample_algorithm"
                         publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$CRATE_SERVER/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'Documentation', reportTitles: ''])
                     }
                 }

@@ -9,6 +9,7 @@ pipeline {
     environment {
         CARGO = '$HOME/.cargo/bin/cargo'
         RUSTUP = '$HOME/.cargo/bin/rustup'
+        WORKSPACE = 'source'
         CRATE_SERVER = 'source/mecview_server'
         CRATE_LIBMSG = 'source/libmessages'
         CRATE_LIBMSGSYS = 'source/libmessages-sys'
@@ -22,7 +23,7 @@ pipeline {
                 // sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
                 // sh "$RUSTUP update beta"
                 // sh "$RUSTUP update nightly"
-                // sh "cd $CRATE_SERVER; $CARGO clean"
+                // sh "cd $WORKSPACE; $CARGO clean"
                 sh "$CARGO --version"
                 sh "$RUSTUP run stable rustc --version"
             }
@@ -32,7 +33,7 @@ pipeline {
                 stage('Clippy') {
                     steps {
                         ansiColor('xterm') {
-                            // sh "cd $CRATE_SERVER; $CARGO +nightly clippy --all"
+                            // sh "cd $WORKSPACE; $CARGO +nightly clippy --all"
                         }
                     }
                 }
@@ -43,7 +44,7 @@ pipeline {
                             // required.
                             sh "$RUSTUP component add rustfmt-preview"
                             sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
-                            sh "cd $CRATE_SERVER; $CARGO +nightly fmt --all -- --check"
+                            sh "cd $WORKSPACE; $CARGO +nightly fmt --all -- --check"
                         }
                     }
                 }
@@ -52,7 +53,7 @@ pipeline {
         stage('Build-Debug') {
             steps {
                 ansiColor('xterm') {
-                    sh "cd $CRATE_SERVER; $CARGO build"
+                    sh "cd $WORKSPACE; $CARGO build"
                 }
             }
         }
@@ -61,17 +62,17 @@ pipeline {
                 stage('Test-Debug') {
                     steps {
                         ansiColor('xterm') {
-                            sh "cd $CRATE_SERVER; $CARGO test -p libalgorithm -p libasn -p libasn-sys -p libmessages -p libshim -p libshim-sys -p mecview_server -p sample_algorithm"
-                            sh "cd $CRATE_SERVER; mv target/debug/mecview_server mecview_server_debug"
-                            archiveArtifacts "$CRATE_SERVER/mecview_server_debug"
-                                            fingerprint "$CRATE_SERVER/mecview_server_debug"
+                            sh "cd $WORKSPACE; $CARGO test -p libalgorithm -p libasn -p libasn-sys -p libmessages -p libshim -p libshim-sys -p mecview_server -p sample_algorithm"
+                            sh "cd $WORKSPACE; mv target/debug/mecview_server mecview_server_debug"
+                            archiveArtifacts "$WORKSPACE/mecview_server_debug"
+                                            fingerprint "$WORKSPACE/mecview_server_debug"
                         }
                     }
                 }
                 stage('Build-Release') {
                     steps {
                         ansiColor('xterm') {
-                            sh "cd $CRATE_SERVER; $CARGO build --release"
+                            sh "cd $WORKSPACE; $CARGO build --release"
                         }
                     }
                 }
@@ -80,10 +81,10 @@ pipeline {
         stage('Test-Release') {
             steps {
                 ansiColor('xterm') {
-                    sh "cd $CRATE_SERVER; $CARGO test --release -p libalgorithm -p libasn -p libasn-sys -p libmessages -p libshim -p libshim-sys -p mecview_server -p sample_algorithm"
-                    sh "cd $CRATE_SERVER; mv target/release/mecview_server mecview_server"
-                    archiveArtifacts "$CRATE_SERVER/mecview_server"
-                                fingerprint "$CRATE_SERVER/mecview_server"
+                    sh "cd $WORKSPACE; $CARGO test --release -p libalgorithm -p libasn -p libasn-sys -p libmessages -p libshim -p libshim-sys -p mecview_server -p sample_algorithm"
+                    sh "cd $WORKSPACE; mv target/release/mecview_server mecview_server"
+                    archiveArtifacts "$WORKSPACE/mecview_server"
+                                fingerprint "$WORKSPACE/mecview_server"
                 }
             }
         }
@@ -92,7 +93,7 @@ pipeline {
                 stage('Coverage') {
                     steps {
                         // sh "set +e; $CARGO tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
-                        sh "cd $CRATE_SERVER; $CARGO tarpaulin --all --skip-clean --out Xml"
+                        sh "cd $WORKSPACE; $CARGO tarpaulin --all --skip-clean --out Xml"
                         sh "cd $CRATE_LIBMSG; $CARGO tarpaulin --all --skip-clean --out Xml"
                         step([$class: 'CoberturaPublisher',
                               autoUpdateHealth    : false,
@@ -109,8 +110,8 @@ pipeline {
                 }
                 stage('Documentation') {
                     steps {
-                        sh "cd $CRATE_SERVER; $CARGO doc -p libalgorithm -p libasn -p libasn-sys -p libmessages -p libshim -p libshim-sys -p mecview_server -p sample_algorithm"
-                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$CRATE_SERVER/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'Documentation', reportTitles: ''])
+                        sh "cd $WORKSPACE; $CARGO doc -p libalgorithm -p libasn -p libasn-sys -p libmessages -p libshim -p libshim-sys -p mecview_server -p sample_algorithm"
+                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$WORKSPACE/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'Documentation', reportTitles: ''])
                     }
                 }
             }

@@ -22,7 +22,7 @@ path = "../libalgorithm/"
 
 # Impelmetnation dependent
 [dependencies.sample_algorithm]
-path = "../SampleAlgorithm/"
+path = "../sample_algorithm/"
 
 [dependencies.libasn]
 path = "../libasn/"

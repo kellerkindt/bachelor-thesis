@@ -197,11 +197,8 @@ impl<S: Send + Debug, I: Send + Debug + PartialEq + 'static> Command<S, I> {
     }
 }
 
-impl<
-        S: Send + Debug,
-        I: Send + Debug + PartialEq + 'static,
-        F: FnMut(Command<S, I>),
-    > Algorithm<S, I> for F
+impl<S: Send + Debug, I: Send + Debug + PartialEq + 'static, F: FnMut(Command<S, I>)>
+    Algorithm<S, I> for F
 {
     fn update(&mut self, update: Box<S>) {
         self(Command::Update(update));

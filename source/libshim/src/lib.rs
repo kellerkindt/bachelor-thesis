@@ -12,6 +12,8 @@ use std::fmt::Debug;
 use std::sync::Arc;
 use std::sync::Mutex;
 
+use bindings::AlgorithmShim;
+use bindings::Publisher;
 use libalgorithm::Algorithm;
 use libalgorithm::CountListener;
 use libalgorithm::EnvironmentListener;
@@ -21,21 +23,25 @@ use libasn::raw::InitMessage;
 use libasn::raw::SensorFrame;
 use libasn::AsnMessage;
 use libmessages::RawMessage;
-use bindings::AlgorithmShim;
-use bindings::Publisher;
 
 pub struct ExternalAlgorithm<I: Send + Debug + PartialEq + 'static> {
     mgr: Arc<Mutex<ListenerManager<SensorFrame, I>>>,
-    shim: Box<AlgorithmShim<InitMessage, EnvironmentFrame, SensorFrame, EnvironmentFramePublisher<I>, InitFramePublisher<I>>>,
+    shim: Box<
+        AlgorithmShim<
+            InitMessage,
+            EnvironmentFrame,
+            SensorFrame,
+            EnvironmentFramePublisher<I>,
+            InitFramePublisher<I>,
+        >,
+    >,
 }
 
 impl<I: Send + Debug + PartialEq + 'static> ExternalAlgorithm<I> {
     pub fn new(config_file: &str) -> Result<Self, ()> {
         let mgr: Arc<Mutex<ListenerManager<SensorFrame, I>>> =
             Arc::new(Mutex::new(ListenerManager::default()));
-        let shim: Box<
-            AlgorithmShim<InitMessage, EnvironmentFrame, SensorFrame, _, _>,
-        > = unsafe {
+        let shim: Box<AlgorithmShim<InitMessage, EnvironmentFrame, SensorFrame, _, _>> = unsafe {
             bindings::AlgorithmShim::new(
                 config_file,
                 EnvironmentFramePublisher(mgr.clone()),
@@ -46,10 +52,7 @@ impl<I: Send + Debug + PartialEq + 'static> ExternalAlgorithm<I> {
     }
 }
 
-
-impl<I: Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, I>
-    for ExternalAlgorithm<I>
-{
+impl<I: Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, I> for ExternalAlgorithm<I> {
     fn update(&mut self, update: Box<SensorFrame>) {
         self.shim.send_sensor_frame(update);
     }
@@ -61,11 +64,7 @@ impl<I: Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, I>
         };
     }
 
-    fn subscribe_environment_model(
-        &mut self,
-        identifier: I,
-        listener: EnvironmentListener,
-    ) {
+    fn subscribe_environment_model(&mut self, identifier: I, listener: EnvironmentListener) {
         match self.mgr.lock() {
             Err(e) => error!("Failed to lock ListenerManager: {:?}", e),
             Ok(ref mut mgr) => mgr.add_environment_listener(identifier, listener),
@@ -108,23 +107,33 @@ impl<I: Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, I>
     }
 }
 
+struct EnvironmentFramePublisher<I: Send + Debug + PartialEq + 'static>(
+    Arc<Mutex<ListenerManager<SensorFrame, I>>>,
+);
 
-
-struct EnvironmentFramePublisher<I: Send + Debug + PartialEq + 'static>(Arc<Mutex<ListenerManager<SensorFrame, I>>>);
-
-impl<I: Send + Debug + PartialEq + 'static> Publisher<EnvironmentFrame> for EnvironmentFramePublisher<I> {
+impl<I: Send + Debug + PartialEq + 'static> Publisher<EnvironmentFrame>
+    for EnvironmentFramePublisher<I>
+{
     fn publish(&mut self, frame: &EnvironmentFrame) {
         match frame.try_encode_uper() {
-            Err(e) => error!("Failed to encode EnvironmentFrame to uper RawMessage {:?}", e),
+            Err(e) => error!(
+                "Failed to encode EnvironmentFrame to uper RawMessage {:?}",
+                e
+            ),
             Ok(msg) => match self.0.lock() {
-                Err(e) => error!("Failed to lock ListenerManager for publishing EnvironmentFrame: {:?}", e),
+                Err(e) => error!(
+                    "Failed to lock ListenerManager for publishing EnvironmentFrame: {:?}",
+                    e
+                ),
                 Ok(mut mgr) => mgr.publish_environment_model(Arc::new(msg)),
             },
         };
     }
 }
 
-struct InitFramePublisher<I: Send + Debug + PartialEq + 'static>(Arc<Mutex<ListenerManager<SensorFrame, I>>>);
+struct InitFramePublisher<I: Send + Debug + PartialEq + 'static>(
+    Arc<Mutex<ListenerManager<SensorFrame, I>>>,
+);
 
 impl<I: Send + Debug + PartialEq + 'static> Publisher<InitMessage> for InitFramePublisher<I> {
     fn publish(&mut self, _: &InitMessage) {

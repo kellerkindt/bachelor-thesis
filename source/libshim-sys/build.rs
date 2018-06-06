@@ -17,8 +17,6 @@ fn main() {
     println!("cargo:rustc-flags=-l dylib=stdc++");
 
     if !Path::new(LIBRARY_FILE).exists() || !Path::new(BINDINGS_FILE).exists() {
-
-
         let mut headers = find_headers("cpp/mecview-sdk/algorithm");
         headers.append(&mut find_headers("cpp/mecview-sdk/extension"));
         headers.append(&mut find_headers("cpp/shim"));
@@ -27,7 +25,6 @@ fn main() {
         let main_header = "cpp/wrapper/wrapper.cpp";
 
         generate_main_header(&headers, main_header);
-
 
         let _headers = compile_sdk(&["cpp/impl", "cpp/wrapper/"], LIBRARY_FILE);
 

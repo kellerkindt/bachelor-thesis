@@ -1,7 +1,0 @@
-[package]
-name = "sample_algorithm"
-version = "0.1.0"
-authors = ["Michael Watzko <michael@watzko.de>"]
-
-[dependencies.libshim]
-path = "../libshim/"

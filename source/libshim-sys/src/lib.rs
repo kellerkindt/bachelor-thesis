@@ -20,13 +20,23 @@ pub struct AlgorithmShim<
     _i: ::std::marker::PhantomData<I>,
 }
 
-unsafe impl<I: Send, E: Send, S: Send, FE: Publisher<E> + Send + 'static, FI: Publisher<I> + Send + 'static>
-    Send for AlgorithmShim<I, E, S, FE, FI>
+unsafe impl<
+        I: Send,
+        E: Send,
+        S: Send,
+        FE: Publisher<E> + Send + 'static,
+        FI: Publisher<I> + Send + 'static,
+    > Send for AlgorithmShim<I, E, S, FE, FI>
 {
 }
 
-impl<I: Send, E: Send, S: Send, FE: Publisher<E> + Send + 'static, FI: Publisher<I> + Send + 'static>
-    AlgorithmShim<I, E, S, FE, FI>
+impl<
+        I: Send,
+        E: Send,
+        S: Send,
+        FE: Publisher<E> + Send + 'static,
+        FI: Publisher<I> + Send + 'static,
+    > AlgorithmShim<I, E, S, FE, FI>
 {
     pub unsafe fn new(
         config_file: &str,
@@ -97,8 +107,13 @@ impl<I: Send, E: Send, S: Send, FE: Publisher<E> + Send + 'static, FI: Publisher
     }
 }
 
-impl<I: Send, E: Send, S: Send, FE: Publisher<E> + Send + 'static, FI: Publisher<I> + Send + 'static> Drop
-    for AlgorithmShim<I, E, S, FE, FI>
+impl<
+        I: Send,
+        E: Send,
+        S: Send,
+        FE: Publisher<E> + Send + 'static,
+        FI: Publisher<I> + Send + 'static,
+    > Drop for AlgorithmShim<I, E, S, FE, FI>
 {
     fn drop(&mut self) {
         if !self.shim.is_null() {

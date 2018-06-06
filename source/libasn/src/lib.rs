@@ -1,3 +1,7 @@
+// rustfmt-struct_field_align_threshold: 20
+// rustfmt-normalize_comments: true
+// rustfmt-wrap_comments: true
+
 #[macro_use]
 extern crate log;
 #[cfg(test)]
@@ -179,7 +183,7 @@ impl Message {
 
     pub fn try_encode_uper_to_new_buffer(&self) -> Result<Vec<u8>, ()> {
         match self {
-            Message::ClientRegistration(v)        => v.try_encode_uper_to_new_buffer(),
+            Message::ClientRegistration(v)  => v.try_encode_uper_to_new_buffer(),
             Message::UpdateSubscription(v)  => v.try_encode_uper_to_new_buffer(),
             Message::SensorFrame(v)         => v.try_encode_uper_to_new_buffer(),
             Message::EnvironmentFrame(v)    => v.try_encode_uper_to_new_buffer(),
@@ -192,7 +196,7 @@ impl Message {
 
     pub fn try_encode_xer_to_new_string(&self) -> Result<String, ()> {
         match self {
-            Message::ClientRegistration(v)        => v.try_encode_xer_to_new_string(),
+            Message::ClientRegistration(v)  => v.try_encode_xer_to_new_string(),
             Message::UpdateSubscription(v)  => v.try_encode_xer_to_new_string(),
             Message::SensorFrame(v)         => v.try_encode_xer_to_new_string(),
             Message::EnvironmentFrame(v)    => v.try_encode_xer_to_new_string(),

@@ -345,6 +345,7 @@ mod tests {
     use super::*;
     use std::mem;
     use std::ptr;
+    use std::os;
 
     const XML_INIT_MESSAGE:         &'static str = include_str!("test_init_message.xml");
     const XML_UPDATE_STATUS:        &'static str = include_str!("test_update_status.xml");

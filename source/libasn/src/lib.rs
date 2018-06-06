@@ -1,7 +1,3 @@
-// rustfmt-struct_field_align_threshold: 20
-// rustfmt-normalize_comments: true
-// rustfmt-wrap_comments: true
-
 #[macro_use]
 extern crate log;
 #[cfg(test)]

@@ -23,13 +23,21 @@ use libalgorithm::CountListener;
 use libalgorithm::EnvironmentListener;
 use libalgorithm::ListenerManager;
 
-#[derive(Default)]
-pub struct SampleAlgorithm<I: Default + Send + Debug + PartialEq + 'static> {
+pub struct SampleAlgorithm<I: Send + Debug + PartialEq + 'static> {
     manager: ListenerManager<SensorFrame, I>,
     environment_frame: Option<Box<EnvironmentFrame>>,
 }
 
-impl<I: Default + Send + Debug + PartialEq + 'static> SampleAlgorithm<I> {
+impl<I: Send + Debug + PartialEq + 'static> Default for SampleAlgorithm<I> {
+    fn default() -> Self {
+        SampleAlgorithm {
+            manager: ListenerManager::default(),
+            environment_frame: Default::default(),
+        }
+    }
+}
+
+impl<I: Send + Debug + PartialEq + 'static> SampleAlgorithm<I> {
     fn environment_model(&mut self, frame: &SensorFrame) -> Arc<RawMessage> {
         trace!("Going to create new RawMessage");
         let encoded = if let Some(ref mut env) = self.environment_frame {
@@ -173,7 +181,7 @@ impl<I: Default + Send + Debug + PartialEq + 'static> SampleAlgorithm<I> {
     }
 }
 
-impl<I: Default + Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, I>
+impl<I: Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, I>
     for SampleAlgorithm<I>
 {
     fn update(&mut self, update: Box<SensorFrame>) {

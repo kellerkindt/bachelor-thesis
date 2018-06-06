@@ -32,6 +32,7 @@ use libasn::raw;
 use libasn::AsnMessage;
 use libmessages::RawMessage;
 use libshim::ExternalAlgorithm;
+use sample_algorithm::SampleAlgorithm;
 
 use byteorder::ByteOrder;
 use byteorder::NetworkEndian;
@@ -114,8 +115,10 @@ impl Server {
     fn spawn_algorithm(&mut self) -> Result<(), Error> {
         let (tx, rx) = channel(CHANNEL_BUFFER_SIZE_ALGORITHM);
 
-        let mut algorithm = ExternalAlgorithm::new(&self.algorithm_config)
+        let mut algorithm: ExternalAlgorithm<SocketAddr> = ExternalAlgorithm::new(&self.algorithm_config)
             .map_err(|_e| Error::from(ErrorKind::Other))?;
+
+        let mut algorithm: SampleAlgorithm<SocketAddr> = SampleAlgorithm::default();
 
         self.runtime.spawn(
             rx.for_each(

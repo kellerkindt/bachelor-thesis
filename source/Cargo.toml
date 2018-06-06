@@ -1,0 +1,11 @@
+[workspace]
+members = [
+    "libalgorithm",
+    "libasn",
+    "libasn-sys",
+    "libmessages",
+    "libshim",
+    "libshim-sys",
+    "mecview_server",
+    "sample_algorithm",
+]

@@ -43,7 +43,7 @@ pipeline {
                             // The build will fail if rustfmt thinks any changes are
                             // required.
                             sh "$RUSTUP component add rustfmt-preview"
-                            sh "$RUSTUP component add rustfmt-preview --toolchain nightly
+                            sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
                             // exclude libasn
                             sh "cd $WORKSPACE; $CARGO +nightly fmt --package libalgorithm --package libasn-sys --package libmessages --package libshim --package libshim-sys --package mecview_server --package sample_algorithm -- --check"
                         }

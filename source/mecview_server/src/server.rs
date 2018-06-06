@@ -357,7 +357,7 @@ mod tests {
 
     #[test]
     fn test_decoder() {
-        let mut codec: RawMessageCodec<()> = RawMessageCodec::default();
+        let mut codec: RawMessageCodec = RawMessageCodec::default();
         let mut bytes = BytesMut::new();
         bytes.reserve(2);
         bytes.put_slice(&[0x00, 0x00]);

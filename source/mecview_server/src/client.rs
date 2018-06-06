@@ -507,8 +507,8 @@ mod test {
     ) {
         let (receiver, mut client) = test_client();
         assert!(
-            client
-                .process_command(Command::UpdateVariant(variant))
+            Command::UpdateVariant(variant)
+                .apply(&mut client)
                 .is_ok()
         );
         if cleared {
@@ -533,7 +533,7 @@ mod test {
         ::std::thread::sleep(::std::time::Duration::from_millis(1_000));
         for _ in 0..5 {
             while let Ok(command) = receiver.try_recv() {
-                client.process_command(command).unwrap();
+                command.apply(client).unwrap();
             }
         }
     }
@@ -548,13 +548,13 @@ mod test {
         let (_, mut client) = test_client();
         client.variant = Variant::Vehicle;
         assert!(
-            client
-                .process_command(Command::UpdateVariant(Variant::Vehicle))
+            Command::UpdateVariant(Variant::Vehicle)
+                .apply(&mut client)
                 .is_err()
         );
         assert!(
-            client
-                .process_command(Command::UpdateVariant(Variant::Sensor))
+            Command::UpdateVariant(Variant::Sensor)
+                .apply(&mut client)
                 .is_err()
         );
     }
@@ -563,8 +563,8 @@ mod test {
     fn test_sensor_being_registered_at_algorithm() {
         let (_, mut client) = test_client();
         assert!(
-            client
-                .process_command(Command::UpdateVariant(Variant::Sensor))
+            Command::UpdateVariant(Variant::Sensor)
+                .apply(&mut client)
                 .is_ok()
         );
         client.algorithm.assert(0, 0, 0, 0, 0, 0, 1, 0);
@@ -577,19 +577,19 @@ mod test {
     #[test]
     fn test_sensor_remote_subscribing_unsubscribe() {
         let (_, mut client) = variant_client(Variant::Sensor, true);
-        assert!(client.process_command(Command::RemoteSubscribe).is_ok());
+        assert!(Command::RemoteSubscribe.apply(&mut client).is_ok());
         client.algorithm.assert(0, 0, 0, 0, 0, 0, 0, 0);
         client.adapter.assert(0, 0, 1, 0);
         client.adapter.clear();
-        assert!(client.process_command(Command::RemoteUnsubscribe).is_ok());
+        assert!(Command::RemoteUnsubscribe.apply(&mut client).is_ok());
         client.adapter.assert(0, 1, 0, 0);
     }
 
     #[test]
     fn test_sensor_subscribe_unsubscribe_forbidden() {
         let (_, mut client) = variant_client(Variant::Sensor, true);
-        assert!(client.process_command(Command::Subscribe).is_err());
-        assert!(client.process_command(Command::Unsubscribe).is_err());
+        assert!(Command::Subscribe.apply(&mut client).is_err());
+        assert!(Command::Unsubscribe.apply(&mut client).is_err());
         client.algorithm.assert(0, 0, 0, 0, 0, 0, 0, 0);
         client.adapter.assert(0, 0, 0, 0);
     }
@@ -614,8 +614,8 @@ mod test {
     fn test_sensor_update_algorithm() {
         let (_, mut client) = variant_client(Variant::Sensor, true);
         assert!(
-            client
-                .process_command(Command::UpdateAlgorithm(Box::new(M())))
+            Command::UpdateAlgorithm(Box::new(M()))
+                .apply(&mut client)
                 .is_ok()
         );
         client.adapter.assert(0, 0, 0, 0);
@@ -626,10 +626,8 @@ mod test {
     fn test_vehicle_update_environment_model() {
         let (_, mut client) = variant_client(Variant::Vehicle, true);
         assert!(
-            client
-                .process_command(Command::UpdateEnvironmentModel(Arc::new(
-                    RawMessage::new(0, Vec::new()).unwrap()
-                )))
+            Command::UpdateEnvironmentModel(Arc::new(RawMessage::new(0, Vec::new()).unwrap()))
+                .apply(&mut client)
                 .is_ok()
         );
         client.adapter.assert(0, 0, 0, 1);
@@ -639,10 +637,10 @@ mod test {
     #[test]
     fn test_vehicle_activate_deactivate_algorithm_model_subscription() {
         let (_, mut client) = variant_client(Variant::Vehicle, true);
-        assert!(client.process_command(Command::Subscribe).is_ok());
+        assert!(Command::Subscribe.apply(&mut client).is_ok());
         client.adapter.assert(0, 0, 0, 0);
         client.algorithm.assert(0, 0, 0, 0, 1, 0, 0, 0);
-        assert!(client.process_command(Command::Unsubscribe).is_ok());
+        assert!(Command::Unsubscribe.apply(&mut client).is_ok());
         client.adapter.assert(0, 0, 0, 0);
         client.algorithm.assert(0, 0, 0, 0, 1, 1, 0, 0);
     }
@@ -659,9 +657,10 @@ mod test {
 
     fn test_update_variant_for_client_type(variant: Variant) {
         let (_, mut client) = test_client();
+        ;
         assert!(
-            client
-                .process_command(Command::UpdateVariant(variant))
+            Command::UpdateVariant(variant)
+                .apply(&mut client)
                 .is_ok()
         );
         assert_eq!(variant, client.variant);

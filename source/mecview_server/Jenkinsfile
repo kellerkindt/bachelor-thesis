@@ -61,7 +61,7 @@ pipeline {
                 stage('Test-Debug') {
                     steps {
                         ansiColor('xterm') {
-                            sh "cd $CRATE_SERVER; $CARGO test  -p libmessages -p libmessages-sys -p mecview_server"
+                            sh "cd $CRATE_SERVER; $CARGO test -p libalgorithm -p libasn -p libasn-sys -p libmessages -p libshim -p libshim-sys -p mecview_server -p sample_algorithm"
                             sh "cd $CRATE_SERVER; mv target/debug/mecview_server mecview_server_debug"
                             archiveArtifacts "$CRATE_SERVER/mecview_server_debug"
                                             fingerprint "$CRATE_SERVER/mecview_server_debug"
@@ -80,7 +80,7 @@ pipeline {
         stage('Test-Release') {
             steps {
                 ansiColor('xterm') {
-                    sh "cd $CRATE_SERVER; $CARGO test  -p libmessages -p libmessages-sys -p mecview_server --release"
+                    sh "cd $CRATE_SERVER; $CARGO test --release -p libalgorithm -p libasn -p libasn-sys -p libmessages -p libshim -p libshim-sys -p mecview_server -p sample_algorithm"
                     sh "cd $CRATE_SERVER; mv target/release/mecview_server mecview_server"
                     archiveArtifacts "$CRATE_SERVER/mecview_server"
                                 fingerprint "$CRATE_SERVER/mecview_server"

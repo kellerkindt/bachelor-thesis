@@ -65,7 +65,7 @@ pipeline {
                         ansiColor('xterm') {
                             // libshim-sys produces c++ compile errors in test mode o.O
                             sh "cd $WORKSPACE; $CARGO test -p libalgorithm -p libasn libmessages -p libshim -p mecview_server -p sample_algorithm"
-                            sh "cd $WORKSPACE; mv target/debug/mecview_server $WORKSPACE/mecview_server_debug"
+                            sh "cd $WORKSPACE; mv target/debug/mecview_server mecview_server_debug"
                             archiveArtifacts "$WORKSPACE/mecview_server_debug"
                             fingerprint "$WORKSPACE/mecview_server_debug"
                         }
@@ -84,7 +84,7 @@ pipeline {
             steps {
                 ansiColor('xterm') {
                     sh "cd $WORKSPACE; $CARGO test --release -p libalgorithm -p libasn -p libmessages -p libshim -p mecview_server -p sample_algorithm"
-                    sh "cd $WORKSPACE; mv target/release/mecview_server $WORKSPACE/mecview_server"
+                    sh "cd $WORKSPACE; mv target/release/mecview_server mecview_server"
                     archiveArtifacts "$WORKSPACE/mecview_server"
                     fingerprint "$WORKSPACE/mecview_server"
                 }

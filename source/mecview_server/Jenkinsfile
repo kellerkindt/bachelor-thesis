@@ -67,6 +67,7 @@ pipeline {
                             sh "ls -lah $WORKSPACE"
                             archiveArtifacts "$WORKSPACE/mecview_server_debug"
                             fingerprint "$WORKSPACE/mecview_server_debug"
+                            sh "ls -lah $WORKSPACE"
                             // libshim-sys produces c++ compile errors in test mode o.O
                             sh "cd $WORKSPACE; $CARGO test -p libalgorithm -p libasn libmessages -p libshim -p mecview_server -p sample_algorithm"
                         }
@@ -89,6 +90,7 @@ pipeline {
                     sh "ls -lah $WORKSPACE"
                     archiveArtifacts "$WORKSPACE/mecview_server"
                     fingerprint "$WORKSPACE/mecview_server"
+                    sh "ls -lah $WORKSPACE"
                     // libshim-sys produces c++ compile errors in test mode o.O
                     sh "cd $WORKSPACE; $CARGO test --release -p libalgorithm -p libasn -p libmessages -p libshim -p mecview_server -p sample_algorithm"
                 }

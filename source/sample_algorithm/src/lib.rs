@@ -181,9 +181,7 @@ impl<I: Send + Debug + PartialEq + 'static> SampleAlgorithm<I> {
     }
 }
 
-impl<I: Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, I>
-    for SampleAlgorithm<I>
-{
+impl<I: Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, I> for SampleAlgorithm<I> {
     fn update(&mut self, update: Box<SensorFrame>) {
         let model = self.environment_model(&update);
         self.manager.publish_environment_model(model);

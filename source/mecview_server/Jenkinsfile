@@ -74,6 +74,7 @@ pipeline {
                 stage('Build-Release') {
                     steps {
                         ansiColor('xterm') {
+                            sh "sleep 2"
                             sh "cd $WORKSPACE; $CARGO build --release"
                         }
                     }

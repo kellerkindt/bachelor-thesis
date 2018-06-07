@@ -95,8 +95,8 @@ pipeline {
                 stage('Coverage') {
                     steps {
                         // sh "set +e; $CARGO tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
-                        sh "cd $WORKSPACE; $CARGO tarpaulin --all --skip-clean --out Xml"
-                        sh "cd $CRATE_LIBMSG; $CARGO tarpaulin --all --skip-clean --out Xml"
+                        sh "cd $WORKSPACE; $CARGO tarpaulin -p libalgorithm -p libasn -p libmessages -p libshim -p mecview_server -p sample_algorithm --skip-clean --out Xml"
+                        //sh "cd $CRATE_LIBMSG; $CARGO tarpaulin --all --skip-clean --out Xml"
                         step([$class: 'CoberturaPublisher',
                               autoUpdateHealth    : false,
                               autoUpdateStability : false,

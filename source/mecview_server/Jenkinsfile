@@ -63,10 +63,10 @@ pipeline {
                 stage('Test-Debug') {
                     steps {
                         ansiColor('xterm') {
-                            sh "cd $WORKSPACE; mv target/debug/mecview_server mecview_server_debug"
+                            sh "cd $WORKSPACE; mv target/debug/mecview_server{,mecview_server_debug}"
                             sh "ls -lah $WORKSPACE"
-                            archiveArtifacts "*/mecview_server_debug"
-                            fingerprint "$WORKSPACE/mecview_server_debug"
+                            archiveArtifacts "$WORKSPACE/target/debug/mecview_server_debug"
+                            fingerprint "$WORKSPACE/target/debug/mecview_server_debug"
                             sh "ls -lah $WORKSPACE"
                             // libshim-sys produces c++ compile errors in test mode o.O
                             sh "cd $WORKSPACE; $CARGO test -p libalgorithm -p libasn libmessages -p libshim -p mecview_server -p sample_algorithm"
@@ -86,10 +86,10 @@ pipeline {
         stage('Test-Release') {
             steps {
                 ansiColor('xterm') {
-                    sh "cd $WORKSPACE; mv target/release/mecview_server mecview_server"
+                    // sh "cd $WORKSPACE; mv target/release/mecview_server mecview_server"
                     sh "ls -lah $WORKSPACE"
-                    archiveArtifacts "*/mecview_server"
-                    fingerprint "$WORKSPACE/mecview_server"
+                    archiveArtifacts "$WORKSPACE/target/release/mecview_server"
+                    fingerprint "$WORKSPACE/target/release/mecview_server"
                     sh "ls -lah $WORKSPACE"
                     // libshim-sys produces c++ compile errors in test mode o.O
                     sh "cd $WORKSPACE; $CARGO test --release -p libalgorithm -p libasn -p libmessages -p libshim -p mecview_server -p sample_algorithm"

@@ -64,6 +64,7 @@ pipeline {
                     steps {
                         ansiColor('xterm') {
                             sh "cd $WORKSPACE; mv target/debug/mecview_server mecview_server_debug"
+                            sh "ls -lah $WORKSPACE"
                             archiveArtifacts "$WORKSPACE/mecview_server_debug"
                             fingerprint "$WORKSPACE/mecview_server_debug"
                             // libshim-sys produces c++ compile errors in test mode o.O
@@ -85,6 +86,7 @@ pipeline {
             steps {
                 ansiColor('xterm') {
                     sh "cd $WORKSPACE; mv target/release/mecview_server mecview_server"
+                    sh "ls -lah $WORKSPACE"
                     archiveArtifacts "$WORKSPACE/mecview_server"
                     fingerprint "$WORKSPACE/mecview_server"
                     // libshim-sys produces c++ compile errors in test mode o.O

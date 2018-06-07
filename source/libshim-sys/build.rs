@@ -14,7 +14,8 @@ const BINDINGS_FILE: &'static str = "src/bindings.rs";
 
 fn main() {
     println!("cargo:rustc-link-search=native={}", ".");
-    println!("cargo:rustc-flags=-l dylib=stdc++");
+    // warning: redundant linker flag specified for library `stdc++`
+    // println!("cargo:rustc-flags=-l dylib=stdc++");
 
     if !Path::new(LIBRARY_FILE).exists() || !Path::new(BINDINGS_FILE).exists() {
         let mut headers = find_headers("cpp/mecview-sdk/algorithm");

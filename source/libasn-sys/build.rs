@@ -6,12 +6,13 @@ use std::fs;
 use std::io::Write;
 use std::path::Path;
 
-const LIBRARY_FILE: &'static str = "libmessage.a";
+const LIBRARY_FILE: &'static str = "libasn.a";
 const BINDINGS_FILE: &'static str = "src/bindings.rs";
 
 fn main() {
     println!("cargo:rustc-link-search=native={}", ".");
-    println!("cargo:rustc-flags=-l dylib=stdc++");
+    // warning: redundant linker flag specified for library `stdc++`
+    // println!("cargo:rustc-flags=-l dylib=stdc++");
 
     if !Path::new(LIBRARY_FILE).exists() || !Path::new(BINDINGS_FILE).exists() {
         let headers = compile_sdk("cpp/MECViewServerSDK-Build/proto/", LIBRARY_FILE);

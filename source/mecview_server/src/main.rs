@@ -72,7 +72,7 @@ struct ServerConfig {
     port: u16,
     log: Option<LevelFilter>,
     init_message: Option<String>,
-    algorithm_config: String,
+    algorithm_type: server::AlgorthmType,
 }
 
 fn main() {
@@ -86,7 +86,7 @@ fn main() {
         address,
     );
 
-    let mut server = server::Server::new(address, config.algorithm_config).unwrap();
+    let mut server = server::Server::new(address, config.algorithm_type).unwrap();
 
     if let Some(path) = config.init_message {
         info!("Loading InitMessage from {}", path);
@@ -131,9 +131,18 @@ fn parse_config() -> ServerConfig {
             })
             .or(None),
         init_message: matches.value_of("init_message").map(|s| String::from(s)),
-        algorithm_config: matches
-            .value_of("algorithm_config")
-            .map(|s| String::from(s))
+        algorithm_type: matches
+            .value_of("algorithm_type")
+            .map(|s| match s {
+                "sample" => server::AlgorthmType::Sample,
+                "external" => server::AlgorthmType::External(
+                    matches
+                        .value_of("algorithm_config")
+                        .map(|s| String::from(s))
+                        .unwrap(),
+                ),
+                s => panic!("Unknown argument for algorithm type: {}", s),
+            })
             .unwrap(),
     }
 }
@@ -194,6 +203,16 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
                 .help("The path to the algorithm configuration file")
                 .takes_value(true)
                 .default_value("/etc/mecview/algorithm.json"),
+        )
+        .arg(
+            Arg::with_name("algorithm_type")
+                .short("u")
+                .long("use")
+                .value_name("ALGORITHM")
+                .help("The algorithm to use")
+                .takes_value(true)
+                .default_value("sample")
+                .possible_values(&["sample", "external"]),
         )
 }
 

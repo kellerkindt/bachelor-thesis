@@ -55,18 +55,18 @@ pub struct Server {
     algorithm: Option<Alg>,
     init_message: Option<Arc<RawMessage>>,
     clients: Vec<Clt>,
-    algorithm_config: String,
+    algorithm_type: AlgorthmType,
 }
 
 impl Server {
-    pub fn new(address: SocketAddr, algorithm_config: String) -> Result<Server, Error> {
+    pub fn new(address: SocketAddr, algorithm_type: AlgorthmType) -> Result<Server, Error> {
         Ok(Server {
             address,
             runtime: Runtime::new()?,
             algorithm: None,
             init_message: None,
             clients: Vec::with_capacity(128),
-            algorithm_config,
+            algorithm_type,
         })
     }
 
@@ -115,13 +115,29 @@ impl Server {
     fn spawn_algorithm(&mut self) -> Result<(), Error> {
         let (tx, rx) = channel(CHANNEL_BUFFER_SIZE_ALGORITHM);
 
-        let mut algorithm: ExternalAlgorithm<SocketAddr> =
-            ExternalAlgorithm::new(&self.algorithm_config)
-                .map_err(|_e| Error::from(ErrorKind::Other))?;
+        match self.algorithm_type {
+            AlgorthmType::Sample => {
+                Self::spawn_concrete_algorithm(&mut self.runtime, rx, SampleAlgorithm::default())
+            }
+            AlgorthmType::External(ref config) => Self::spawn_concrete_algorithm(
+                &mut self.runtime,
+                rx,
+                ExternalAlgorithm::new(&config).map_err(|_e| Error::from(ErrorKind::Other))?,
+            ),
+        };
 
-        let mut algorithm: SampleAlgorithm<SocketAddr> = SampleAlgorithm::default();
+        self.algorithm = Some(tx);
+        Ok(())
+    }
 
-        self.runtime.spawn(
+    fn spawn_concrete_algorithm<
+        A: libalgorithm::Algorithm<raw::SensorFrame, SocketAddr> + Send + 'static,
+    >(
+        runtime: &mut Runtime,
+        rx: Receiver<libalgorithm::Command<raw::SensorFrame, SocketAddr>>,
+        mut algorithm: A,
+    ) {
+        runtime.spawn(
             rx.for_each(
                 move |command: libalgorithm::Command<raw::SensorFrame, SocketAddr>| {
                     trace!("Applying algorithm command...");
@@ -131,8 +147,6 @@ impl Server {
                 },
             ).map_err(|_e| ()),
         );
-        self.algorithm = Some(tx);
-        Ok(())
     }
 
     fn spawn_or_get_algorithm(&mut self) -> Result<&mut Alg, Error> {
@@ -242,6 +256,11 @@ impl Server {
         let executor = self.runtime.executor().clone();
         executor.spawn(receiver.for_each(move |command| command.apply(&mut self).map_err(|_e| ())));
     }
+}
+
+pub enum AlgorthmType {
+    Sample,
+    External(String),
 }
 
 pub enum Command {

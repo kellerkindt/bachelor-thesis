@@ -63,7 +63,7 @@ pipeline {
                 stage('Test-Debug') {
                     steps {
                         ansiColor('xterm') {
-                            sh "cd $WORKSPACE; mv target/debug/mecview_server{,mecview_server_debug}"
+                            sh "cd $WORKSPACE; mv target/debug/mecview_server{,_debug}"
                             sh "ls -lah $WORKSPACE"
                             archiveArtifacts "$WORKSPACE/target/debug/mecview_server_debug"
                             fingerprint "$WORKSPACE/target/debug/mecview_server_debug"

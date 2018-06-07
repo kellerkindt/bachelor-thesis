@@ -115,8 +115,9 @@ impl Server {
     fn spawn_algorithm(&mut self) -> Result<(), Error> {
         let (tx, rx) = channel(CHANNEL_BUFFER_SIZE_ALGORITHM);
 
-        let mut algorithm: ExternalAlgorithm<SocketAddr> = ExternalAlgorithm::new(&self.algorithm_config)
-            .map_err(|_e| Error::from(ErrorKind::Other))?;
+        let mut algorithm: ExternalAlgorithm<SocketAddr> =
+            ExternalAlgorithm::new(&self.algorithm_config)
+                .map_err(|_e| Error::from(ErrorKind::Other))?;
 
         let mut algorithm: SampleAlgorithm<SocketAddr> = SampleAlgorithm::default();
 

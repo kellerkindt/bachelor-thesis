@@ -80,6 +80,28 @@ Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingeri
 
 \section{ExternalAlgorithm}
 
+Für die Anforderung \reqNumberForLabel{req:possible:external_algorith} (siehe \autoref{possible:external_algorith}) wird der Architekturentwurf erweitert.
+\todo{\autoref{draft:architecture} relative simple, daher wenige module (YAGNI?), jetzt komplexer -> DIP}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=3.3\textwidth]{dia/architecture_v2}
+	\caption{Architekturentwurf}
+	\label{draft:architecture_v2}
+\end{figure}
+
+Die \textit{Alogirhtm}-Schnittstelle und die \textit{RawMessage}-Hilfsklasse wird in jeweils eine eigene Crate verschoben. \todo{DIP}
+Die \textit{asn::Message} wird in \textit{AsnMessage} umbenannt und zusammen mit der \textit{AsnAdapter}-Klasse in die neue Crate \textit{libasn} verschoben.
+Auch der \textit{SampleAlgorithm} wird in eine extra Crate verschoben.
+Dies erlaubt das Hinzufügen von zwei weiteren Crates zum einbinden des externen C++ Algorithmus: \textit{libalgorithm-sys} für die direkten Bindings (analog zu \textit{libasn-sys}) und \textit{libshim} für die Implementation der \textit{Algorithm} Schnittstelle.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.9\textwidth]{dia/architecture_v2_packages}
+	\caption{Architekturentwurf}
+	\label{draft:architecture_v2_packages}
+\end{figure}
+
 \todo{updated architecture}
 
 \todo{updated usecases}
@@ -148,6 +170,8 @@ Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingeri
 	
 	\todo{jenkins clippy nightly often broken}
 	
+	\todo{RawMessage<T> machts leben schwer}
+	
 	
 	\subsection{--help}
 
@@ -155,3 +179,5 @@ Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingeri
 
 
 \section{Valgrind: Race Conditions all over the place}
+
+\section{Mock TDD}

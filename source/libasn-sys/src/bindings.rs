@@ -159,6 +159,747 @@ impl<T> ::std::cmp::PartialEq for __BindgenUnionField<T> {
     }
 }
 impl<T> ::std::cmp::Eq for __BindgenUnionField<T> {}
+pub const _STDIO_H: u32 = 1;
+pub const _FEATURES_H: u32 = 1;
+pub const _DEFAULT_SOURCE: u32 = 1;
+pub const __USE_ISOC11: u32 = 1;
+pub const __USE_ISOC99: u32 = 1;
+pub const __USE_ISOC95: u32 = 1;
+pub const __USE_POSIX_IMPLICITLY: u32 = 1;
+pub const _POSIX_SOURCE: u32 = 1;
+pub const _POSIX_C_SOURCE: u32 = 200809;
+pub const __USE_POSIX: u32 = 1;
+pub const __USE_POSIX2: u32 = 1;
+pub const __USE_POSIX199309: u32 = 1;
+pub const __USE_POSIX199506: u32 = 1;
+pub const __USE_XOPEN2K: u32 = 1;
+pub const __USE_XOPEN2K8: u32 = 1;
+pub const _ATFILE_SOURCE: u32 = 1;
+pub const __USE_MISC: u32 = 1;
+pub const __USE_ATFILE: u32 = 1;
+pub const __USE_FORTIFY_LEVEL: u32 = 0;
+pub const _STDC_PREDEF_H: u32 = 1;
+pub const __STDC_IEC_559__: u32 = 1;
+pub const __STDC_IEC_559_COMPLEX__: u32 = 1;
+pub const __STDC_ISO_10646__: u32 = 201505;
+pub const __STDC_NO_THREADS__: u32 = 1;
+pub const __GNU_LIBRARY__: u32 = 6;
+pub const __GLIBC__: u32 = 2;
+pub const __GLIBC_MINOR__: u32 = 23;
+pub const _SYS_CDEFS_H: u32 = 1;
+pub const __WORDSIZE: u32 = 64;
+pub const __WORDSIZE_TIME64_COMPAT32: u32 = 1;
+pub const __SYSCALL_WORDSIZE: u32 = 64;
+pub const _BITS_TYPES_H: u32 = 1;
+pub const _BITS_TYPESIZES_H: u32 = 1;
+pub const __OFF_T_MATCHES_OFF64_T: u32 = 1;
+pub const __INO_T_MATCHES_INO64_T: u32 = 1;
+pub const __FD_SETSIZE: u32 = 1024;
+pub const __FILE_defined: u32 = 1;
+pub const ____FILE_defined: u32 = 1;
+pub const _G_config_h: u32 = 1;
+pub const ____mbstate_t_defined: u32 = 1;
+pub const _G_HAVE_MMAP: u32 = 1;
+pub const _G_HAVE_MREMAP: u32 = 1;
+pub const _G_IO_IO_FILE_VERSION: u32 = 131073;
+pub const _G_BUFSIZ: u32 = 8192;
+pub const _IO_BUFSIZ: u32 = 8192;
+pub const __GNUC_VA_LIST: u32 = 1;
+pub const _IO_UNIFIED_JUMPTABLES: u32 = 1;
+pub const EOF: i32 = -1;
+pub const _IOS_INPUT: u32 = 1;
+pub const _IOS_OUTPUT: u32 = 2;
+pub const _IOS_ATEND: u32 = 4;
+pub const _IOS_APPEND: u32 = 8;
+pub const _IOS_TRUNC: u32 = 16;
+pub const _IOS_NOCREATE: u32 = 32;
+pub const _IOS_NOREPLACE: u32 = 64;
+pub const _IOS_BIN: u32 = 128;
+pub const _IO_MAGIC: u32 = 4222418944;
+pub const _OLD_STDIO_MAGIC: u32 = 4206624768;
+pub const _IO_MAGIC_MASK: u32 = 4294901760;
+pub const _IO_USER_BUF: u32 = 1;
+pub const _IO_UNBUFFERED: u32 = 2;
+pub const _IO_NO_READS: u32 = 4;
+pub const _IO_NO_WRITES: u32 = 8;
+pub const _IO_EOF_SEEN: u32 = 16;
+pub const _IO_ERR_SEEN: u32 = 32;
+pub const _IO_DELETE_DONT_CLOSE: u32 = 64;
+pub const _IO_LINKED: u32 = 128;
+pub const _IO_IN_BACKUP: u32 = 256;
+pub const _IO_LINE_BUF: u32 = 512;
+pub const _IO_TIED_PUT_GET: u32 = 1024;
+pub const _IO_CURRENTLY_PUTTING: u32 = 2048;
+pub const _IO_IS_APPENDING: u32 = 4096;
+pub const _IO_IS_FILEBUF: u32 = 8192;
+pub const _IO_BAD_SEEN: u32 = 16384;
+pub const _IO_USER_LOCK: u32 = 32768;
+pub const _IO_FLAGS2_MMAP: u32 = 1;
+pub const _IO_FLAGS2_NOTCANCEL: u32 = 2;
+pub const _IO_FLAGS2_USER_WBUF: u32 = 8;
+pub const _IO_SKIPWS: u32 = 1;
+pub const _IO_LEFT: u32 = 2;
+pub const _IO_RIGHT: u32 = 4;
+pub const _IO_INTERNAL: u32 = 8;
+pub const _IO_DEC: u32 = 16;
+pub const _IO_OCT: u32 = 32;
+pub const _IO_HEX: u32 = 64;
+pub const _IO_SHOWBASE: u32 = 128;
+pub const _IO_SHOWPOINT: u32 = 256;
+pub const _IO_UPPERCASE: u32 = 512;
+pub const _IO_SHOWPOS: u32 = 1024;
+pub const _IO_SCIENTIFIC: u32 = 2048;
+pub const _IO_FIXED: u32 = 4096;
+pub const _IO_UNITBUF: u32 = 8192;
+pub const _IO_STDIO: u32 = 16384;
+pub const _IO_DONT_CLOSE: u32 = 32768;
+pub const _IO_BOOLALPHA: u32 = 65536;
+pub const _IOFBF: u32 = 0;
+pub const _IOLBF: u32 = 1;
+pub const _IONBF: u32 = 2;
+pub const BUFSIZ: u32 = 8192;
+pub const SEEK_SET: u32 = 0;
+pub const SEEK_CUR: u32 = 1;
+pub const SEEK_END: u32 = 2;
+pub const P_tmpdir: &'static [u8; 5usize] = b"/tmp\0";
+pub const L_tmpnam: u32 = 20;
+pub const TMP_MAX: u32 = 238328;
+pub const FILENAME_MAX: u32 = 4096;
+pub const L_ctermid: u32 = 9;
+pub const FOPEN_MAX: u32 = 16;
+pub const _STDLIB_H: u32 = 1;
+pub const WNOHANG: u32 = 1;
+pub const WUNTRACED: u32 = 2;
+pub const WSTOPPED: u32 = 2;
+pub const WEXITED: u32 = 4;
+pub const WCONTINUED: u32 = 8;
+pub const WNOWAIT: u32 = 16777216;
+pub const __WNOTHREAD: u32 = 536870912;
+pub const __WALL: u32 = 1073741824;
+pub const __WCLONE: u32 = 2147483648;
+pub const __ENUM_IDTYPE_T: u32 = 1;
+pub const __W_CONTINUED: u32 = 65535;
+pub const __WCOREFLAG: u32 = 128;
+pub const _ENDIAN_H: u32 = 1;
+pub const __LITTLE_ENDIAN: u32 = 1234;
+pub const __BIG_ENDIAN: u32 = 4321;
+pub const __PDP_ENDIAN: u32 = 3412;
+pub const __BYTE_ORDER: u32 = 1234;
+pub const __FLOAT_WORD_ORDER: u32 = 1234;
+pub const LITTLE_ENDIAN: u32 = 1234;
+pub const BIG_ENDIAN: u32 = 4321;
+pub const PDP_ENDIAN: u32 = 3412;
+pub const BYTE_ORDER: u32 = 1234;
+pub const _BITS_BYTESWAP_H: u32 = 1;
+pub const __ldiv_t_defined: u32 = 1;
+pub const __lldiv_t_defined: u32 = 1;
+pub const RAND_MAX: u32 = 2147483647;
+pub const EXIT_FAILURE: u32 = 1;
+pub const EXIT_SUCCESS: u32 = 0;
+pub const _SYS_TYPES_H: u32 = 1;
+pub const __clock_t_defined: u32 = 1;
+pub const __time_t_defined: u32 = 1;
+pub const __clockid_t_defined: u32 = 1;
+pub const __timer_t_defined: u32 = 1;
+pub const __BIT_TYPES_DEFINED__: u32 = 1;
+pub const _SYS_SELECT_H: u32 = 1;
+pub const __FD_ZERO_STOS: &'static [u8; 6usize] = b"stosq\0";
+pub const _SIGSET_H_types: u32 = 1;
+pub const __timespec_defined: u32 = 1;
+pub const _STRUCT_TIMEVAL: u32 = 1;
+pub const FD_SETSIZE: u32 = 1024;
+pub const _SYS_SYSMACROS_H: u32 = 1;
+pub const _BITS_PTHREADTYPES_H: u32 = 1;
+pub const __SIZEOF_PTHREAD_ATTR_T: u32 = 56;
+pub const __SIZEOF_PTHREAD_MUTEX_T: u32 = 40;
+pub const __SIZEOF_PTHREAD_MUTEXATTR_T: u32 = 4;
+pub const __SIZEOF_PTHREAD_COND_T: u32 = 48;
+pub const __SIZEOF_PTHREAD_CONDATTR_T: u32 = 4;
+pub const __SIZEOF_PTHREAD_RWLOCK_T: u32 = 56;
+pub const __SIZEOF_PTHREAD_RWLOCKATTR_T: u32 = 8;
+pub const __SIZEOF_PTHREAD_BARRIER_T: u32 = 32;
+pub const __SIZEOF_PTHREAD_BARRIERATTR_T: u32 = 4;
+pub const __have_pthread_attr_t: u32 = 1;
+pub const __PTHREAD_MUTEX_HAVE_PREV: u32 = 1;
+pub const __PTHREAD_RWLOCK_INT_FLAGS_SHARED: u32 = 1;
+pub const _ALLOCA_H: u32 = 1;
+pub const _STRING_H: u32 = 1;
+pub const _XLOCALE_H: u32 = 1;
+pub const _LIBC_LIMITS_H_: u32 = 1;
+pub const MB_LEN_MAX: u32 = 16;
+pub const _BITS_POSIX1_LIM_H: u32 = 1;
+pub const _POSIX_AIO_LISTIO_MAX: u32 = 2;
+pub const _POSIX_AIO_MAX: u32 = 1;
+pub const _POSIX_ARG_MAX: u32 = 4096;
+pub const _POSIX_CHILD_MAX: u32 = 25;
+pub const _POSIX_DELAYTIMER_MAX: u32 = 32;
+pub const _POSIX_HOST_NAME_MAX: u32 = 255;
+pub const _POSIX_LINK_MAX: u32 = 8;
+pub const _POSIX_LOGIN_NAME_MAX: u32 = 9;
+pub const _POSIX_MAX_CANON: u32 = 255;
+pub const _POSIX_MAX_INPUT: u32 = 255;
+pub const _POSIX_MQ_OPEN_MAX: u32 = 8;
+pub const _POSIX_MQ_PRIO_MAX: u32 = 32;
+pub const _POSIX_NAME_MAX: u32 = 14;
+pub const _POSIX_NGROUPS_MAX: u32 = 8;
+pub const _POSIX_OPEN_MAX: u32 = 20;
+pub const _POSIX_PATH_MAX: u32 = 256;
+pub const _POSIX_PIPE_BUF: u32 = 512;
+pub const _POSIX_RE_DUP_MAX: u32 = 255;
+pub const _POSIX_RTSIG_MAX: u32 = 8;
+pub const _POSIX_SEM_NSEMS_MAX: u32 = 256;
+pub const _POSIX_SEM_VALUE_MAX: u32 = 32767;
+pub const _POSIX_SIGQUEUE_MAX: u32 = 32;
+pub const _POSIX_SSIZE_MAX: u32 = 32767;
+pub const _POSIX_STREAM_MAX: u32 = 8;
+pub const _POSIX_SYMLINK_MAX: u32 = 255;
+pub const _POSIX_SYMLOOP_MAX: u32 = 8;
+pub const _POSIX_TIMER_MAX: u32 = 32;
+pub const _POSIX_TTY_NAME_MAX: u32 = 9;
+pub const _POSIX_TZNAME_MAX: u32 = 6;
+pub const _POSIX_CLOCKRES_MIN: u32 = 20000000;
+pub const NR_OPEN: u32 = 1024;
+pub const NGROUPS_MAX: u32 = 65536;
+pub const ARG_MAX: u32 = 131072;
+pub const LINK_MAX: u32 = 127;
+pub const MAX_CANON: u32 = 255;
+pub const MAX_INPUT: u32 = 255;
+pub const NAME_MAX: u32 = 255;
+pub const PATH_MAX: u32 = 4096;
+pub const PIPE_BUF: u32 = 4096;
+pub const XATTR_NAME_MAX: u32 = 255;
+pub const XATTR_SIZE_MAX: u32 = 65536;
+pub const XATTR_LIST_MAX: u32 = 65536;
+pub const RTSIG_MAX: u32 = 32;
+pub const _POSIX_THREAD_KEYS_MAX: u32 = 128;
+pub const PTHREAD_KEYS_MAX: u32 = 1024;
+pub const _POSIX_THREAD_DESTRUCTOR_ITERATIONS: u32 = 4;
+pub const PTHREAD_DESTRUCTOR_ITERATIONS: u32 = 4;
+pub const _POSIX_THREAD_THREADS_MAX: u32 = 64;
+pub const AIO_PRIO_DELTA_MAX: u32 = 20;
+pub const PTHREAD_STACK_MIN: u32 = 16384;
+pub const DELAYTIMER_MAX: u32 = 2147483647;
+pub const TTY_NAME_MAX: u32 = 32;
+pub const LOGIN_NAME_MAX: u32 = 256;
+pub const HOST_NAME_MAX: u32 = 64;
+pub const MQ_PRIO_MAX: u32 = 32768;
+pub const SEM_VALUE_MAX: u32 = 2147483647;
+pub const _BITS_POSIX2_LIM_H: u32 = 1;
+pub const _POSIX2_BC_BASE_MAX: u32 = 99;
+pub const _POSIX2_BC_DIM_MAX: u32 = 2048;
+pub const _POSIX2_BC_SCALE_MAX: u32 = 99;
+pub const _POSIX2_BC_STRING_MAX: u32 = 1000;
+pub const _POSIX2_COLL_WEIGHTS_MAX: u32 = 2;
+pub const _POSIX2_EXPR_NEST_MAX: u32 = 32;
+pub const _POSIX2_LINE_MAX: u32 = 2048;
+pub const _POSIX2_RE_DUP_MAX: u32 = 255;
+pub const _POSIX2_CHARCLASS_NAME_MAX: u32 = 14;
+pub const BC_BASE_MAX: u32 = 99;
+pub const BC_DIM_MAX: u32 = 2048;
+pub const BC_SCALE_MAX: u32 = 99;
+pub const BC_STRING_MAX: u32 = 1000;
+pub const COLL_WEIGHTS_MAX: u32 = 255;
+pub const EXPR_NEST_MAX: u32 = 32;
+pub const LINE_MAX: u32 = 2048;
+pub const CHARCLASS_NAME_MAX: u32 = 2048;
+pub const RE_DUP_MAX: u32 = 32767;
+pub const _INTTYPES_H: u32 = 1;
+pub const _STDINT_H: u32 = 1;
+pub const _BITS_WCHAR_H: u32 = 1;
+pub const INT8_MIN: i32 = -128;
+pub const INT16_MIN: i32 = -32768;
+pub const INT32_MIN: i32 = -2147483648;
+pub const INT8_MAX: u32 = 127;
+pub const INT16_MAX: u32 = 32767;
+pub const INT32_MAX: u32 = 2147483647;
+pub const UINT8_MAX: u32 = 255;
+pub const UINT16_MAX: u32 = 65535;
+pub const UINT32_MAX: u32 = 4294967295;
+pub const INT_LEAST8_MIN: i32 = -128;
+pub const INT_LEAST16_MIN: i32 = -32768;
+pub const INT_LEAST32_MIN: i32 = -2147483648;
+pub const INT_LEAST8_MAX: u32 = 127;
+pub const INT_LEAST16_MAX: u32 = 32767;
+pub const INT_LEAST32_MAX: u32 = 2147483647;
+pub const UINT_LEAST8_MAX: u32 = 255;
+pub const UINT_LEAST16_MAX: u32 = 65535;
+pub const UINT_LEAST32_MAX: u32 = 4294967295;
+pub const INT_FAST8_MIN: i32 = -128;
+pub const INT_FAST16_MIN: i64 = -9223372036854775808;
+pub const INT_FAST32_MIN: i64 = -9223372036854775808;
+pub const INT_FAST8_MAX: u32 = 127;
+pub const INT_FAST16_MAX: u64 = 9223372036854775807;
+pub const INT_FAST32_MAX: u64 = 9223372036854775807;
+pub const UINT_FAST8_MAX: u32 = 255;
+pub const UINT_FAST16_MAX: i32 = -1;
+pub const UINT_FAST32_MAX: i32 = -1;
+pub const INTPTR_MIN: i64 = -9223372036854775808;
+pub const INTPTR_MAX: u64 = 9223372036854775807;
+pub const UINTPTR_MAX: i32 = -1;
+pub const PTRDIFF_MIN: i64 = -9223372036854775808;
+pub const PTRDIFF_MAX: u64 = 9223372036854775807;
+pub const SIG_ATOMIC_MIN: i32 = -2147483648;
+pub const SIG_ATOMIC_MAX: u32 = 2147483647;
+pub const SIZE_MAX: i32 = -1;
+pub const WINT_MIN: u32 = 0;
+pub const WINT_MAX: u32 = 4294967295;
+pub const ____gwchar_t_defined: u32 = 1;
+pub const __PRI64_PREFIX: &'static [u8; 2usize] = b"l\0";
+pub const __PRIPTR_PREFIX: &'static [u8; 2usize] = b"l\0";
+pub const PRId8: &'static [u8; 2usize] = b"d\0";
+pub const PRId16: &'static [u8; 2usize] = b"d\0";
+pub const PRId32: &'static [u8; 2usize] = b"d\0";
+pub const PRId64: &'static [u8; 3usize] = b"ld\0";
+pub const PRIdLEAST8: &'static [u8; 2usize] = b"d\0";
+pub const PRIdLEAST16: &'static [u8; 2usize] = b"d\0";
+pub const PRIdLEAST32: &'static [u8; 2usize] = b"d\0";
+pub const PRIdLEAST64: &'static [u8; 3usize] = b"ld\0";
+pub const PRIdFAST8: &'static [u8; 2usize] = b"d\0";
+pub const PRIdFAST16: &'static [u8; 3usize] = b"ld\0";
+pub const PRIdFAST32: &'static [u8; 3usize] = b"ld\0";
+pub const PRIdFAST64: &'static [u8; 3usize] = b"ld\0";
+pub const PRIi8: &'static [u8; 2usize] = b"i\0";
+pub const PRIi16: &'static [u8; 2usize] = b"i\0";
+pub const PRIi32: &'static [u8; 2usize] = b"i\0";
+pub const PRIi64: &'static [u8; 3usize] = b"li\0";
+pub const PRIiLEAST8: &'static [u8; 2usize] = b"i\0";
+pub const PRIiLEAST16: &'static [u8; 2usize] = b"i\0";
+pub const PRIiLEAST32: &'static [u8; 2usize] = b"i\0";
+pub const PRIiLEAST64: &'static [u8; 3usize] = b"li\0";
+pub const PRIiFAST8: &'static [u8; 2usize] = b"i\0";
+pub const PRIiFAST16: &'static [u8; 3usize] = b"li\0";
+pub const PRIiFAST32: &'static [u8; 3usize] = b"li\0";
+pub const PRIiFAST64: &'static [u8; 3usize] = b"li\0";
+pub const PRIo8: &'static [u8; 2usize] = b"o\0";
+pub const PRIo16: &'static [u8; 2usize] = b"o\0";
+pub const PRIo32: &'static [u8; 2usize] = b"o\0";
+pub const PRIo64: &'static [u8; 3usize] = b"lo\0";
+pub const PRIoLEAST8: &'static [u8; 2usize] = b"o\0";
+pub const PRIoLEAST16: &'static [u8; 2usize] = b"o\0";
+pub const PRIoLEAST32: &'static [u8; 2usize] = b"o\0";
+pub const PRIoLEAST64: &'static [u8; 3usize] = b"lo\0";
+pub const PRIoFAST8: &'static [u8; 2usize] = b"o\0";
+pub const PRIoFAST16: &'static [u8; 3usize] = b"lo\0";
+pub const PRIoFAST32: &'static [u8; 3usize] = b"lo\0";
+pub const PRIoFAST64: &'static [u8; 3usize] = b"lo\0";
+pub const PRIu8: &'static [u8; 2usize] = b"u\0";
+pub const PRIu16: &'static [u8; 2usize] = b"u\0";
+pub const PRIu32: &'static [u8; 2usize] = b"u\0";
+pub const PRIu64: &'static [u8; 3usize] = b"lu\0";
+pub const PRIuLEAST8: &'static [u8; 2usize] = b"u\0";
+pub const PRIuLEAST16: &'static [u8; 2usize] = b"u\0";
+pub const PRIuLEAST32: &'static [u8; 2usize] = b"u\0";
+pub const PRIuLEAST64: &'static [u8; 3usize] = b"lu\0";
+pub const PRIuFAST8: &'static [u8; 2usize] = b"u\0";
+pub const PRIuFAST16: &'static [u8; 3usize] = b"lu\0";
+pub const PRIuFAST32: &'static [u8; 3usize] = b"lu\0";
+pub const PRIuFAST64: &'static [u8; 3usize] = b"lu\0";
+pub const PRIx8: &'static [u8; 2usize] = b"x\0";
+pub const PRIx16: &'static [u8; 2usize] = b"x\0";
+pub const PRIx32: &'static [u8; 2usize] = b"x\0";
+pub const PRIx64: &'static [u8; 3usize] = b"lx\0";
+pub const PRIxLEAST8: &'static [u8; 2usize] = b"x\0";
+pub const PRIxLEAST16: &'static [u8; 2usize] = b"x\0";
+pub const PRIxLEAST32: &'static [u8; 2usize] = b"x\0";
+pub const PRIxLEAST64: &'static [u8; 3usize] = b"lx\0";
+pub const PRIxFAST8: &'static [u8; 2usize] = b"x\0";
+pub const PRIxFAST16: &'static [u8; 3usize] = b"lx\0";
+pub const PRIxFAST32: &'static [u8; 3usize] = b"lx\0";
+pub const PRIxFAST64: &'static [u8; 3usize] = b"lx\0";
+pub const PRIX8: &'static [u8; 2usize] = b"X\0";
+pub const PRIX16: &'static [u8; 2usize] = b"X\0";
+pub const PRIX32: &'static [u8; 2usize] = b"X\0";
+pub const PRIX64: &'static [u8; 3usize] = b"lX\0";
+pub const PRIXLEAST8: &'static [u8; 2usize] = b"X\0";
+pub const PRIXLEAST16: &'static [u8; 2usize] = b"X\0";
+pub const PRIXLEAST32: &'static [u8; 2usize] = b"X\0";
+pub const PRIXLEAST64: &'static [u8; 3usize] = b"lX\0";
+pub const PRIXFAST8: &'static [u8; 2usize] = b"X\0";
+pub const PRIXFAST16: &'static [u8; 3usize] = b"lX\0";
+pub const PRIXFAST32: &'static [u8; 3usize] = b"lX\0";
+pub const PRIXFAST64: &'static [u8; 3usize] = b"lX\0";
+pub const PRIdMAX: &'static [u8; 3usize] = b"ld\0";
+pub const PRIiMAX: &'static [u8; 3usize] = b"li\0";
+pub const PRIoMAX: &'static [u8; 3usize] = b"lo\0";
+pub const PRIuMAX: &'static [u8; 3usize] = b"lu\0";
+pub const PRIxMAX: &'static [u8; 3usize] = b"lx\0";
+pub const PRIXMAX: &'static [u8; 3usize] = b"lX\0";
+pub const PRIdPTR: &'static [u8; 3usize] = b"ld\0";
+pub const PRIiPTR: &'static [u8; 3usize] = b"li\0";
+pub const PRIoPTR: &'static [u8; 3usize] = b"lo\0";
+pub const PRIuPTR: &'static [u8; 3usize] = b"lu\0";
+pub const PRIxPTR: &'static [u8; 3usize] = b"lx\0";
+pub const PRIXPTR: &'static [u8; 3usize] = b"lX\0";
+pub const SCNd8: &'static [u8; 4usize] = b"hhd\0";
+pub const SCNd16: &'static [u8; 3usize] = b"hd\0";
+pub const SCNd32: &'static [u8; 2usize] = b"d\0";
+pub const SCNd64: &'static [u8; 3usize] = b"ld\0";
+pub const SCNdLEAST8: &'static [u8; 4usize] = b"hhd\0";
+pub const SCNdLEAST16: &'static [u8; 3usize] = b"hd\0";
+pub const SCNdLEAST32: &'static [u8; 2usize] = b"d\0";
+pub const SCNdLEAST64: &'static [u8; 3usize] = b"ld\0";
+pub const SCNdFAST8: &'static [u8; 4usize] = b"hhd\0";
+pub const SCNdFAST16: &'static [u8; 3usize] = b"ld\0";
+pub const SCNdFAST32: &'static [u8; 3usize] = b"ld\0";
+pub const SCNdFAST64: &'static [u8; 3usize] = b"ld\0";
+pub const SCNi8: &'static [u8; 4usize] = b"hhi\0";
+pub const SCNi16: &'static [u8; 3usize] = b"hi\0";
+pub const SCNi32: &'static [u8; 2usize] = b"i\0";
+pub const SCNi64: &'static [u8; 3usize] = b"li\0";
+pub const SCNiLEAST8: &'static [u8; 4usize] = b"hhi\0";
+pub const SCNiLEAST16: &'static [u8; 3usize] = b"hi\0";
+pub const SCNiLEAST32: &'static [u8; 2usize] = b"i\0";
+pub const SCNiLEAST64: &'static [u8; 3usize] = b"li\0";
+pub const SCNiFAST8: &'static [u8; 4usize] = b"hhi\0";
+pub const SCNiFAST16: &'static [u8; 3usize] = b"li\0";
+pub const SCNiFAST32: &'static [u8; 3usize] = b"li\0";
+pub const SCNiFAST64: &'static [u8; 3usize] = b"li\0";
+pub const SCNu8: &'static [u8; 4usize] = b"hhu\0";
+pub const SCNu16: &'static [u8; 3usize] = b"hu\0";
+pub const SCNu32: &'static [u8; 2usize] = b"u\0";
+pub const SCNu64: &'static [u8; 3usize] = b"lu\0";
+pub const SCNuLEAST8: &'static [u8; 4usize] = b"hhu\0";
+pub const SCNuLEAST16: &'static [u8; 3usize] = b"hu\0";
+pub const SCNuLEAST32: &'static [u8; 2usize] = b"u\0";
+pub const SCNuLEAST64: &'static [u8; 3usize] = b"lu\0";
+pub const SCNuFAST8: &'static [u8; 4usize] = b"hhu\0";
+pub const SCNuFAST16: &'static [u8; 3usize] = b"lu\0";
+pub const SCNuFAST32: &'static [u8; 3usize] = b"lu\0";
+pub const SCNuFAST64: &'static [u8; 3usize] = b"lu\0";
+pub const SCNo8: &'static [u8; 4usize] = b"hho\0";
+pub const SCNo16: &'static [u8; 3usize] = b"ho\0";
+pub const SCNo32: &'static [u8; 2usize] = b"o\0";
+pub const SCNo64: &'static [u8; 3usize] = b"lo\0";
+pub const SCNoLEAST8: &'static [u8; 4usize] = b"hho\0";
+pub const SCNoLEAST16: &'static [u8; 3usize] = b"ho\0";
+pub const SCNoLEAST32: &'static [u8; 2usize] = b"o\0";
+pub const SCNoLEAST64: &'static [u8; 3usize] = b"lo\0";
+pub const SCNoFAST8: &'static [u8; 4usize] = b"hho\0";
+pub const SCNoFAST16: &'static [u8; 3usize] = b"lo\0";
+pub const SCNoFAST32: &'static [u8; 3usize] = b"lo\0";
+pub const SCNoFAST64: &'static [u8; 3usize] = b"lo\0";
+pub const SCNx8: &'static [u8; 4usize] = b"hhx\0";
+pub const SCNx16: &'static [u8; 3usize] = b"hx\0";
+pub const SCNx32: &'static [u8; 2usize] = b"x\0";
+pub const SCNx64: &'static [u8; 3usize] = b"lx\0";
+pub const SCNxLEAST8: &'static [u8; 4usize] = b"hhx\0";
+pub const SCNxLEAST16: &'static [u8; 3usize] = b"hx\0";
+pub const SCNxLEAST32: &'static [u8; 2usize] = b"x\0";
+pub const SCNxLEAST64: &'static [u8; 3usize] = b"lx\0";
+pub const SCNxFAST8: &'static [u8; 4usize] = b"hhx\0";
+pub const SCNxFAST16: &'static [u8; 3usize] = b"lx\0";
+pub const SCNxFAST32: &'static [u8; 3usize] = b"lx\0";
+pub const SCNxFAST64: &'static [u8; 3usize] = b"lx\0";
+pub const SCNdMAX: &'static [u8; 3usize] = b"ld\0";
+pub const SCNiMAX: &'static [u8; 3usize] = b"li\0";
+pub const SCNoMAX: &'static [u8; 3usize] = b"lo\0";
+pub const SCNuMAX: &'static [u8; 3usize] = b"lu\0";
+pub const SCNxMAX: &'static [u8; 3usize] = b"lx\0";
+pub const SCNdPTR: &'static [u8; 3usize] = b"ld\0";
+pub const SCNiPTR: &'static [u8; 3usize] = b"li\0";
+pub const SCNoPTR: &'static [u8; 3usize] = b"lo\0";
+pub const SCNuPTR: &'static [u8; 3usize] = b"lu\0";
+pub const SCNxPTR: &'static [u8; 3usize] = b"lx\0";
+pub const _NETINET_IN_H: u32 = 1;
+pub const _SYS_SOCKET_H: u32 = 1;
+pub const _SYS_UIO_H: u32 = 1;
+pub const _BITS_UIO_H: u32 = 1;
+pub const UIO_MAXIOV: u32 = 1024;
+pub const PF_UNSPEC: u32 = 0;
+pub const PF_LOCAL: u32 = 1;
+pub const PF_UNIX: u32 = 1;
+pub const PF_FILE: u32 = 1;
+pub const PF_INET: u32 = 2;
+pub const PF_AX25: u32 = 3;
+pub const PF_IPX: u32 = 4;
+pub const PF_APPLETALK: u32 = 5;
+pub const PF_NETROM: u32 = 6;
+pub const PF_BRIDGE: u32 = 7;
+pub const PF_ATMPVC: u32 = 8;
+pub const PF_X25: u32 = 9;
+pub const PF_INET6: u32 = 10;
+pub const PF_ROSE: u32 = 11;
+pub const PF_DECnet: u32 = 12;
+pub const PF_NETBEUI: u32 = 13;
+pub const PF_SECURITY: u32 = 14;
+pub const PF_KEY: u32 = 15;
+pub const PF_NETLINK: u32 = 16;
+pub const PF_ROUTE: u32 = 16;
+pub const PF_PACKET: u32 = 17;
+pub const PF_ASH: u32 = 18;
+pub const PF_ECONET: u32 = 19;
+pub const PF_ATMSVC: u32 = 20;
+pub const PF_RDS: u32 = 21;
+pub const PF_SNA: u32 = 22;
+pub const PF_IRDA: u32 = 23;
+pub const PF_PPPOX: u32 = 24;
+pub const PF_WANPIPE: u32 = 25;
+pub const PF_LLC: u32 = 26;
+pub const PF_IB: u32 = 27;
+pub const PF_MPLS: u32 = 28;
+pub const PF_CAN: u32 = 29;
+pub const PF_TIPC: u32 = 30;
+pub const PF_BLUETOOTH: u32 = 31;
+pub const PF_IUCV: u32 = 32;
+pub const PF_RXRPC: u32 = 33;
+pub const PF_ISDN: u32 = 34;
+pub const PF_PHONET: u32 = 35;
+pub const PF_IEEE802154: u32 = 36;
+pub const PF_CAIF: u32 = 37;
+pub const PF_ALG: u32 = 38;
+pub const PF_NFC: u32 = 39;
+pub const PF_VSOCK: u32 = 40;
+pub const PF_MAX: u32 = 41;
+pub const AF_UNSPEC: u32 = 0;
+pub const AF_LOCAL: u32 = 1;
+pub const AF_UNIX: u32 = 1;
+pub const AF_FILE: u32 = 1;
+pub const AF_INET: u32 = 2;
+pub const AF_AX25: u32 = 3;
+pub const AF_IPX: u32 = 4;
+pub const AF_APPLETALK: u32 = 5;
+pub const AF_NETROM: u32 = 6;
+pub const AF_BRIDGE: u32 = 7;
+pub const AF_ATMPVC: u32 = 8;
+pub const AF_X25: u32 = 9;
+pub const AF_INET6: u32 = 10;
+pub const AF_ROSE: u32 = 11;
+pub const AF_DECnet: u32 = 12;
+pub const AF_NETBEUI: u32 = 13;
+pub const AF_SECURITY: u32 = 14;
+pub const AF_KEY: u32 = 15;
+pub const AF_NETLINK: u32 = 16;
+pub const AF_ROUTE: u32 = 16;
+pub const AF_PACKET: u32 = 17;
+pub const AF_ASH: u32 = 18;
+pub const AF_ECONET: u32 = 19;
+pub const AF_ATMSVC: u32 = 20;
+pub const AF_RDS: u32 = 21;
+pub const AF_SNA: u32 = 22;
+pub const AF_IRDA: u32 = 23;
+pub const AF_PPPOX: u32 = 24;
+pub const AF_WANPIPE: u32 = 25;
+pub const AF_LLC: u32 = 26;
+pub const AF_IB: u32 = 27;
+pub const AF_MPLS: u32 = 28;
+pub const AF_CAN: u32 = 29;
+pub const AF_TIPC: u32 = 30;
+pub const AF_BLUETOOTH: u32 = 31;
+pub const AF_IUCV: u32 = 32;
+pub const AF_RXRPC: u32 = 33;
+pub const AF_ISDN: u32 = 34;
+pub const AF_PHONET: u32 = 35;
+pub const AF_IEEE802154: u32 = 36;
+pub const AF_CAIF: u32 = 37;
+pub const AF_ALG: u32 = 38;
+pub const AF_NFC: u32 = 39;
+pub const AF_VSOCK: u32 = 40;
+pub const AF_MAX: u32 = 41;
+pub const SOL_RAW: u32 = 255;
+pub const SOL_DECNET: u32 = 261;
+pub const SOL_X25: u32 = 262;
+pub const SOL_PACKET: u32 = 263;
+pub const SOL_ATM: u32 = 264;
+pub const SOL_AAL: u32 = 265;
+pub const SOL_IRDA: u32 = 266;
+pub const SOMAXCONN: u32 = 128;
+pub const _BITS_SOCKADDR_H: u32 = 1;
+pub const _SS_SIZE: u32 = 128;
+pub const FIOSETOWN: u32 = 35073;
+pub const SIOCSPGRP: u32 = 35074;
+pub const FIOGETOWN: u32 = 35075;
+pub const SIOCGPGRP: u32 = 35076;
+pub const SIOCATMARK: u32 = 35077;
+pub const SIOCGSTAMP: u32 = 35078;
+pub const SIOCGSTAMPNS: u32 = 35079;
+pub const SOL_SOCKET: u32 = 1;
+pub const SO_DEBUG: u32 = 1;
+pub const SO_REUSEADDR: u32 = 2;
+pub const SO_TYPE: u32 = 3;
+pub const SO_ERROR: u32 = 4;
+pub const SO_DONTROUTE: u32 = 5;
+pub const SO_BROADCAST: u32 = 6;
+pub const SO_SNDBUF: u32 = 7;
+pub const SO_RCVBUF: u32 = 8;
+pub const SO_SNDBUFFORCE: u32 = 32;
+pub const SO_RCVBUFFORCE: u32 = 33;
+pub const SO_KEEPALIVE: u32 = 9;
+pub const SO_OOBINLINE: u32 = 10;
+pub const SO_NO_CHECK: u32 = 11;
+pub const SO_PRIORITY: u32 = 12;
+pub const SO_LINGER: u32 = 13;
+pub const SO_BSDCOMPAT: u32 = 14;
+pub const SO_REUSEPORT: u32 = 15;
+pub const SO_PASSCRED: u32 = 16;
+pub const SO_PEERCRED: u32 = 17;
+pub const SO_RCVLOWAT: u32 = 18;
+pub const SO_SNDLOWAT: u32 = 19;
+pub const SO_RCVTIMEO: u32 = 20;
+pub const SO_SNDTIMEO: u32 = 21;
+pub const SO_SECURITY_AUTHENTICATION: u32 = 22;
+pub const SO_SECURITY_ENCRYPTION_TRANSPORT: u32 = 23;
+pub const SO_SECURITY_ENCRYPTION_NETWORK: u32 = 24;
+pub const SO_BINDTODEVICE: u32 = 25;
+pub const SO_ATTACH_FILTER: u32 = 26;
+pub const SO_DETACH_FILTER: u32 = 27;
+pub const SO_GET_FILTER: u32 = 26;
+pub const SO_PEERNAME: u32 = 28;
+pub const SO_TIMESTAMP: u32 = 29;
+pub const SCM_TIMESTAMP: u32 = 29;
+pub const SO_ACCEPTCONN: u32 = 30;
+pub const SO_PEERSEC: u32 = 31;
+pub const SO_PASSSEC: u32 = 34;
+pub const SO_TIMESTAMPNS: u32 = 35;
+pub const SCM_TIMESTAMPNS: u32 = 35;
+pub const SO_MARK: u32 = 36;
+pub const SO_TIMESTAMPING: u32 = 37;
+pub const SCM_TIMESTAMPING: u32 = 37;
+pub const SO_PROTOCOL: u32 = 38;
+pub const SO_DOMAIN: u32 = 39;
+pub const SO_RXQ_OVFL: u32 = 40;
+pub const SO_WIFI_STATUS: u32 = 41;
+pub const SCM_WIFI_STATUS: u32 = 41;
+pub const SO_PEEK_OFF: u32 = 42;
+pub const SO_NOFCS: u32 = 43;
+pub const SO_LOCK_FILTER: u32 = 44;
+pub const SO_SELECT_ERR_QUEUE: u32 = 45;
+pub const SO_BUSY_POLL: u32 = 46;
+pub const SO_MAX_PACING_RATE: u32 = 47;
+pub const SO_BPF_EXTENSIONS: u32 = 48;
+pub const SO_INCOMING_CPU: u32 = 49;
+pub const SO_ATTACH_BPF: u32 = 50;
+pub const SO_DETACH_BPF: u32 = 27;
+pub const IP_OPTIONS: u32 = 4;
+pub const IP_HDRINCL: u32 = 3;
+pub const IP_TOS: u32 = 1;
+pub const IP_TTL: u32 = 2;
+pub const IP_RECVOPTS: u32 = 6;
+pub const IP_RETOPTS: u32 = 7;
+pub const IP_MULTICAST_IF: u32 = 32;
+pub const IP_MULTICAST_TTL: u32 = 33;
+pub const IP_MULTICAST_LOOP: u32 = 34;
+pub const IP_ADD_MEMBERSHIP: u32 = 35;
+pub const IP_DROP_MEMBERSHIP: u32 = 36;
+pub const IP_UNBLOCK_SOURCE: u32 = 37;
+pub const IP_BLOCK_SOURCE: u32 = 38;
+pub const IP_ADD_SOURCE_MEMBERSHIP: u32 = 39;
+pub const IP_DROP_SOURCE_MEMBERSHIP: u32 = 40;
+pub const IP_MSFILTER: u32 = 41;
+pub const MCAST_JOIN_GROUP: u32 = 42;
+pub const MCAST_BLOCK_SOURCE: u32 = 43;
+pub const MCAST_UNBLOCK_SOURCE: u32 = 44;
+pub const MCAST_LEAVE_GROUP: u32 = 45;
+pub const MCAST_JOIN_SOURCE_GROUP: u32 = 46;
+pub const MCAST_LEAVE_SOURCE_GROUP: u32 = 47;
+pub const MCAST_MSFILTER: u32 = 48;
+pub const IP_MULTICAST_ALL: u32 = 49;
+pub const IP_UNICAST_IF: u32 = 50;
+pub const MCAST_EXCLUDE: u32 = 0;
+pub const MCAST_INCLUDE: u32 = 1;
+pub const IP_ROUTER_ALERT: u32 = 5;
+pub const IP_PKTINFO: u32 = 8;
+pub const IP_PKTOPTIONS: u32 = 9;
+pub const IP_PMTUDISC: u32 = 10;
+pub const IP_MTU_DISCOVER: u32 = 10;
+pub const IP_RECVERR: u32 = 11;
+pub const IP_RECVTTL: u32 = 12;
+pub const IP_RECVTOS: u32 = 13;
+pub const IP_MTU: u32 = 14;
+pub const IP_FREEBIND: u32 = 15;
+pub const IP_IPSEC_POLICY: u32 = 16;
+pub const IP_XFRM_POLICY: u32 = 17;
+pub const IP_PASSSEC: u32 = 18;
+pub const IP_TRANSPARENT: u32 = 19;
+pub const IP_ORIGDSTADDR: u32 = 20;
+pub const IP_RECVORIGDSTADDR: u32 = 20;
+pub const IP_MINTTL: u32 = 21;
+pub const IP_NODEFRAG: u32 = 22;
+pub const IP_CHECKSUM: u32 = 23;
+pub const IP_BIND_ADDRESS_NO_PORT: u32 = 24;
+pub const IP_PMTUDISC_DONT: u32 = 0;
+pub const IP_PMTUDISC_WANT: u32 = 1;
+pub const IP_PMTUDISC_DO: u32 = 2;
+pub const IP_PMTUDISC_PROBE: u32 = 3;
+pub const IP_PMTUDISC_INTERFACE: u32 = 4;
+pub const IP_PMTUDISC_OMIT: u32 = 5;
+pub const SOL_IP: u32 = 0;
+pub const IP_DEFAULT_MULTICAST_TTL: u32 = 1;
+pub const IP_DEFAULT_MULTICAST_LOOP: u32 = 1;
+pub const IP_MAX_MEMBERSHIPS: u32 = 20;
+pub const IPV6_ADDRFORM: u32 = 1;
+pub const IPV6_2292PKTINFO: u32 = 2;
+pub const IPV6_2292HOPOPTS: u32 = 3;
+pub const IPV6_2292DSTOPTS: u32 = 4;
+pub const IPV6_2292RTHDR: u32 = 5;
+pub const IPV6_2292PKTOPTIONS: u32 = 6;
+pub const IPV6_CHECKSUM: u32 = 7;
+pub const IPV6_2292HOPLIMIT: u32 = 8;
+pub const IPV6_NEXTHOP: u32 = 9;
+pub const IPV6_AUTHHDR: u32 = 10;
+pub const IPV6_UNICAST_HOPS: u32 = 16;
+pub const IPV6_MULTICAST_IF: u32 = 17;
+pub const IPV6_MULTICAST_HOPS: u32 = 18;
+pub const IPV6_MULTICAST_LOOP: u32 = 19;
+pub const IPV6_JOIN_GROUP: u32 = 20;
+pub const IPV6_LEAVE_GROUP: u32 = 21;
+pub const IPV6_ROUTER_ALERT: u32 = 22;
+pub const IPV6_MTU_DISCOVER: u32 = 23;
+pub const IPV6_MTU: u32 = 24;
+pub const IPV6_RECVERR: u32 = 25;
+pub const IPV6_V6ONLY: u32 = 26;
+pub const IPV6_JOIN_ANYCAST: u32 = 27;
+pub const IPV6_LEAVE_ANYCAST: u32 = 28;
+pub const IPV6_IPSEC_POLICY: u32 = 34;
+pub const IPV6_XFRM_POLICY: u32 = 35;
+pub const IPV6_RECVPKTINFO: u32 = 49;
+pub const IPV6_PKTINFO: u32 = 50;
+pub const IPV6_RECVHOPLIMIT: u32 = 51;
+pub const IPV6_HOPLIMIT: u32 = 52;
+pub const IPV6_RECVHOPOPTS: u32 = 53;
+pub const IPV6_HOPOPTS: u32 = 54;
+pub const IPV6_RTHDRDSTOPTS: u32 = 55;
+pub const IPV6_RECVRTHDR: u32 = 56;
+pub const IPV6_RTHDR: u32 = 57;
+pub const IPV6_RECVDSTOPTS: u32 = 58;
+pub const IPV6_DSTOPTS: u32 = 59;
+pub const IPV6_RECVPATHMTU: u32 = 60;
+pub const IPV6_PATHMTU: u32 = 61;
+pub const IPV6_DONTFRAG: u32 = 62;
+pub const IPV6_RECVTCLASS: u32 = 66;
+pub const IPV6_TCLASS: u32 = 67;
+pub const IPV6_ADD_MEMBERSHIP: u32 = 20;
+pub const IPV6_DROP_MEMBERSHIP: u32 = 21;
+pub const IPV6_RXHOPOPTS: u32 = 54;
+pub const IPV6_RXDSTOPTS: u32 = 59;
+pub const IPV6_PMTUDISC_DONT: u32 = 0;
+pub const IPV6_PMTUDISC_WANT: u32 = 1;
+pub const IPV6_PMTUDISC_DO: u32 = 2;
+pub const IPV6_PMTUDISC_PROBE: u32 = 3;
+pub const IPV6_PMTUDISC_INTERFACE: u32 = 4;
+pub const IPV6_PMTUDISC_OMIT: u32 = 5;
+pub const SOL_IPV6: u32 = 41;
+pub const SOL_ICMPV6: u32 = 58;
+pub const IPV6_RTHDR_LOOSE: u32 = 0;
+pub const IPV6_RTHDR_STRICT: u32 = 1;
+pub const IPV6_RTHDR_TYPE_0: u32 = 0;
+pub const IN_CLASSA_NET: u32 = 4278190080;
+pub const IN_CLASSA_NSHIFT: u32 = 24;
+pub const IN_CLASSA_HOST: u32 = 16777215;
+pub const IN_CLASSA_MAX: u32 = 128;
+pub const IN_CLASSB_NET: u32 = 4294901760;
+pub const IN_CLASSB_NSHIFT: u32 = 16;
+pub const IN_CLASSB_HOST: u32 = 65535;
+pub const IN_CLASSB_MAX: u32 = 65536;
+pub const IN_CLASSC_NET: u32 = 4294967040;
+pub const IN_CLASSC_NSHIFT: u32 = 8;
+pub const IN_CLASSC_HOST: u32 = 255;
+pub const IN_LOOPBACKNET: u32 = 127;
+pub const INET_ADDRSTRLEN: u32 = 16;
+pub const INET6_ADDRSTRLEN: u32 = 46;
+pub const _ASSERT_H: u32 = 1;
+pub const ASN1C_ENVIRONMENT_VERSION: u32 = 923;
+pub const asn_debug_indent: u32 = 0;
+pub const ASN__DEFAULT_STACK_MAX: u32 = 30000;
 pub type __u_char = ::std::os::raw::c_uchar;
 pub type __u_short = ::std::os::raw::c_ushort;
 pub type __u_int = ::std::os::raw::c_uint;
@@ -831,6 +1572,15 @@ fn bindgen_test_layout__IO_FILE() {
 pub struct _IO_FILE_plus {
     _unused: [u8; 0],
 }
+extern "C" {
+    pub static mut _IO_2_1_stdin_: _IO_FILE_plus;
+}
+extern "C" {
+    pub static mut _IO_2_1_stdout_: _IO_FILE_plus;
+}
+extern "C" {
+    pub static mut _IO_2_1_stderr_: _IO_FILE_plus;
+}
 pub type __io_read_fn = ::std::option::Option<
     unsafe extern "C" fn(
         __cookie: *mut ::std::os::raw::c_void,
@@ -855,8 +1605,479 @@ pub type __io_seek_fn = ::std::option::Option<
 pub type __io_close_fn = ::std::option::Option<
     unsafe extern "C" fn(__cookie: *mut ::std::os::raw::c_void) -> ::std::os::raw::c_int,
 >;
+extern "C" {
+    pub fn __underflow(arg1: *mut _IO_FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn __uflow(arg1: *mut _IO_FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn __overflow(arg1: *mut _IO_FILE, arg2: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn _IO_getc(__fp: *mut _IO_FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn _IO_putc(__c: ::std::os::raw::c_int, __fp: *mut _IO_FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn _IO_feof(__fp: *mut _IO_FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn _IO_ferror(__fp: *mut _IO_FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn _IO_peekc_locked(__fp: *mut _IO_FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn _IO_flockfile(arg1: *mut _IO_FILE);
+}
+extern "C" {
+    pub fn _IO_funlockfile(arg1: *mut _IO_FILE);
+}
+extern "C" {
+    pub fn _IO_ftrylockfile(arg1: *mut _IO_FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn _IO_vfscanf(
+        arg1: *mut _IO_FILE,
+        arg2: *const ::std::os::raw::c_char,
+        arg3: *mut __va_list_tag,
+        arg4: *mut ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn _IO_vfprintf(
+        arg1: *mut _IO_FILE,
+        arg2: *const ::std::os::raw::c_char,
+        arg3: *mut __va_list_tag,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn _IO_padn(arg1: *mut _IO_FILE, arg2: ::std::os::raw::c_int, arg3: __ssize_t)
+        -> __ssize_t;
+}
+extern "C" {
+    pub fn _IO_sgetn(arg1: *mut _IO_FILE, arg2: *mut ::std::os::raw::c_void, arg3: usize) -> usize;
+}
+extern "C" {
+    pub fn _IO_seekoff(
+        arg1: *mut _IO_FILE,
+        arg2: __off64_t,
+        arg3: ::std::os::raw::c_int,
+        arg4: ::std::os::raw::c_int,
+    ) -> __off64_t;
+}
+extern "C" {
+    pub fn _IO_seekpos(
+        arg1: *mut _IO_FILE,
+        arg2: __off64_t,
+        arg3: ::std::os::raw::c_int,
+    ) -> __off64_t;
+}
+extern "C" {
+    pub fn _IO_free_backup_area(arg1: *mut _IO_FILE);
+}
 pub type off_t = __off_t;
 pub type fpos_t = _G_fpos_t;
+extern "C" {
+    pub static mut stdin: *mut _IO_FILE;
+}
+extern "C" {
+    pub static mut stdout: *mut _IO_FILE;
+}
+extern "C" {
+    pub static mut stderr: *mut _IO_FILE;
+}
+extern "C" {
+    pub fn remove(__filename: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn rename(
+        __old: *const ::std::os::raw::c_char,
+        __new: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn renameat(
+        __oldfd: ::std::os::raw::c_int,
+        __old: *const ::std::os::raw::c_char,
+        __newfd: ::std::os::raw::c_int,
+        __new: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn tmpfile() -> *mut FILE;
+}
+extern "C" {
+    pub fn tmpnam(__s: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn tmpnam_r(__s: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn tempnam(
+        __dir: *const ::std::os::raw::c_char,
+        __pfx: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn fclose(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fflush(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fflush_unlocked(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fopen(
+        __filename: *const ::std::os::raw::c_char,
+        __modes: *const ::std::os::raw::c_char,
+    ) -> *mut FILE;
+}
+extern "C" {
+    pub fn freopen(
+        __filename: *const ::std::os::raw::c_char,
+        __modes: *const ::std::os::raw::c_char,
+        __stream: *mut FILE,
+    ) -> *mut FILE;
+}
+extern "C" {
+    pub fn fdopen(__fd: ::std::os::raw::c_int, __modes: *const ::std::os::raw::c_char)
+        -> *mut FILE;
+}
+extern "C" {
+    pub fn fmemopen(
+        __s: *mut ::std::os::raw::c_void,
+        __len: usize,
+        __modes: *const ::std::os::raw::c_char,
+    ) -> *mut FILE;
+}
+extern "C" {
+    pub fn open_memstream(
+        __bufloc: *mut *mut ::std::os::raw::c_char,
+        __sizeloc: *mut usize,
+    ) -> *mut FILE;
+}
+extern "C" {
+    pub fn setbuf(__stream: *mut FILE, __buf: *mut ::std::os::raw::c_char);
+}
+extern "C" {
+    pub fn setvbuf(
+        __stream: *mut FILE,
+        __buf: *mut ::std::os::raw::c_char,
+        __modes: ::std::os::raw::c_int,
+        __n: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn setbuffer(__stream: *mut FILE, __buf: *mut ::std::os::raw::c_char, __size: usize);
+}
+extern "C" {
+    pub fn setlinebuf(__stream: *mut FILE);
+}
+extern "C" {
+    pub fn fprintf(
+        __stream: *mut FILE,
+        __format: *const ::std::os::raw::c_char,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn printf(__format: *const ::std::os::raw::c_char, ...) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn sprintf(
+        __s: *mut ::std::os::raw::c_char,
+        __format: *const ::std::os::raw::c_char,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn vfprintf(
+        __s: *mut FILE,
+        __format: *const ::std::os::raw::c_char,
+        __arg: *mut __va_list_tag,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn vprintf(
+        __format: *const ::std::os::raw::c_char,
+        __arg: *mut __va_list_tag,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn vsprintf(
+        __s: *mut ::std::os::raw::c_char,
+        __format: *const ::std::os::raw::c_char,
+        __arg: *mut __va_list_tag,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn snprintf(
+        __s: *mut ::std::os::raw::c_char,
+        __maxlen: usize,
+        __format: *const ::std::os::raw::c_char,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn vsnprintf(
+        __s: *mut ::std::os::raw::c_char,
+        __maxlen: usize,
+        __format: *const ::std::os::raw::c_char,
+        __arg: *mut __va_list_tag,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn vdprintf(
+        __fd: ::std::os::raw::c_int,
+        __fmt: *const ::std::os::raw::c_char,
+        __arg: *mut __va_list_tag,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn dprintf(
+        __fd: ::std::os::raw::c_int,
+        __fmt: *const ::std::os::raw::c_char,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fscanf(
+        __stream: *mut FILE,
+        __format: *const ::std::os::raw::c_char,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn scanf(__format: *const ::std::os::raw::c_char, ...) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn sscanf(
+        __s: *const ::std::os::raw::c_char,
+        __format: *const ::std::os::raw::c_char,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn vfscanf(
+        __s: *mut FILE,
+        __format: *const ::std::os::raw::c_char,
+        __arg: *mut __va_list_tag,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn vscanf(
+        __format: *const ::std::os::raw::c_char,
+        __arg: *mut __va_list_tag,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn vsscanf(
+        __s: *const ::std::os::raw::c_char,
+        __format: *const ::std::os::raw::c_char,
+        __arg: *mut __va_list_tag,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fgetc(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn getc(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn getchar() -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn getc_unlocked(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn getchar_unlocked() -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fgetc_unlocked(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fputc(__c: ::std::os::raw::c_int, __stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn putc(__c: ::std::os::raw::c_int, __stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn putchar(__c: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fputc_unlocked(__c: ::std::os::raw::c_int, __stream: *mut FILE)
+        -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn putc_unlocked(__c: ::std::os::raw::c_int, __stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn putchar_unlocked(__c: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn getw(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn putw(__w: ::std::os::raw::c_int, __stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fgets(
+        __s: *mut ::std::os::raw::c_char,
+        __n: ::std::os::raw::c_int,
+        __stream: *mut FILE,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn __getdelim(
+        __lineptr: *mut *mut ::std::os::raw::c_char,
+        __n: *mut usize,
+        __delimiter: ::std::os::raw::c_int,
+        __stream: *mut FILE,
+    ) -> __ssize_t;
+}
+extern "C" {
+    pub fn getdelim(
+        __lineptr: *mut *mut ::std::os::raw::c_char,
+        __n: *mut usize,
+        __delimiter: ::std::os::raw::c_int,
+        __stream: *mut FILE,
+    ) -> __ssize_t;
+}
+extern "C" {
+    pub fn getline(
+        __lineptr: *mut *mut ::std::os::raw::c_char,
+        __n: *mut usize,
+        __stream: *mut FILE,
+    ) -> __ssize_t;
+}
+extern "C" {
+    pub fn fputs(__s: *const ::std::os::raw::c_char, __stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn puts(__s: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn ungetc(__c: ::std::os::raw::c_int, __stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fread(
+        __ptr: *mut ::std::os::raw::c_void,
+        __size: usize,
+        __n: usize,
+        __stream: *mut FILE,
+    ) -> usize;
+}
+extern "C" {
+    pub fn fwrite(
+        __ptr: *const ::std::os::raw::c_void,
+        __size: usize,
+        __n: usize,
+        __s: *mut FILE,
+    ) -> usize;
+}
+extern "C" {
+    pub fn fread_unlocked(
+        __ptr: *mut ::std::os::raw::c_void,
+        __size: usize,
+        __n: usize,
+        __stream: *mut FILE,
+    ) -> usize;
+}
+extern "C" {
+    pub fn fwrite_unlocked(
+        __ptr: *const ::std::os::raw::c_void,
+        __size: usize,
+        __n: usize,
+        __stream: *mut FILE,
+    ) -> usize;
+}
+extern "C" {
+    pub fn fseek(
+        __stream: *mut FILE,
+        __off: ::std::os::raw::c_long,
+        __whence: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn ftell(__stream: *mut FILE) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn rewind(__stream: *mut FILE);
+}
+extern "C" {
+    pub fn fseeko(
+        __stream: *mut FILE,
+        __off: __off_t,
+        __whence: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn ftello(__stream: *mut FILE) -> __off_t;
+}
+extern "C" {
+    pub fn fgetpos(__stream: *mut FILE, __pos: *mut fpos_t) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fsetpos(__stream: *mut FILE, __pos: *const fpos_t) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn clearerr(__stream: *mut FILE);
+}
+extern "C" {
+    pub fn feof(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn ferror(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn clearerr_unlocked(__stream: *mut FILE);
+}
+extern "C" {
+    pub fn feof_unlocked(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn ferror_unlocked(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn perror(__s: *const ::std::os::raw::c_char);
+}
+extern "C" {
+    pub static mut sys_nerr: ::std::os::raw::c_int;
+}
+extern "C" {
+    pub static mut sys_errlist: [*const ::std::os::raw::c_char; 0usize];
+}
+extern "C" {
+    pub fn fileno(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fileno_unlocked(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn popen(
+        __command: *const ::std::os::raw::c_char,
+        __modes: *const ::std::os::raw::c_char,
+    ) -> *mut FILE;
+}
+extern "C" {
+    pub fn pclose(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn ctermid(__s: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn flockfile(__stream: *mut FILE);
+}
+extern "C" {
+    pub fn ftrylockfile(__stream: *mut FILE) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn funlockfile(__stream: *mut FILE);
+}
 pub type wchar_t = ::std::os::raw::c_int;
 pub const idtype_t_P_ALL: idtype_t = 0;
 pub const idtype_t_P_PID: idtype_t = 1;
@@ -1214,6 +2435,87 @@ fn bindgen_test_layout_lldiv_t() {
         )
     );
 }
+extern "C" {
+    pub fn __ctype_get_mb_cur_max() -> usize;
+}
+extern "C" {
+    pub fn atof(__nptr: *const ::std::os::raw::c_char) -> f64;
+}
+extern "C" {
+    pub fn atoi(__nptr: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn atol(__nptr: *const ::std::os::raw::c_char) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn atoll(__nptr: *const ::std::os::raw::c_char) -> ::std::os::raw::c_longlong;
+}
+extern "C" {
+    pub fn strtod(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+    ) -> f64;
+}
+extern "C" {
+    pub fn strtof(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+    ) -> f32;
+}
+extern "C" {
+    pub fn strtold(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+    ) -> f64;
+}
+extern "C" {
+    pub fn strtol(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn strtoul(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn strtoq(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_longlong;
+}
+extern "C" {
+    pub fn strtouq(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_ulonglong;
+}
+extern "C" {
+    pub fn strtoll(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_longlong;
+}
+extern "C" {
+    pub fn strtoull(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_ulonglong;
+}
+extern "C" {
+    pub fn l64a(__n: ::std::os::raw::c_long) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn a64l(__s: *const ::std::os::raw::c_char) -> ::std::os::raw::c_long;
+}
 pub type u_char = __u_char;
 pub type u_short = __u_short;
 pub type u_int = __u_int;
@@ -1384,6 +2686,37 @@ fn bindgen_test_layout_fd_set() {
     );
 }
 pub type fd_mask = __fd_mask;
+extern "C" {
+    pub fn select(
+        __nfds: ::std::os::raw::c_int,
+        __readfds: *mut fd_set,
+        __writefds: *mut fd_set,
+        __exceptfds: *mut fd_set,
+        __timeout: *mut timeval,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn pselect(
+        __nfds: ::std::os::raw::c_int,
+        __readfds: *mut fd_set,
+        __writefds: *mut fd_set,
+        __exceptfds: *mut fd_set,
+        __timeout: *const timespec,
+        __sigmask: *const __sigset_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn gnu_dev_major(__dev: ::std::os::raw::c_ulonglong) -> ::std::os::raw::c_uint;
+}
+extern "C" {
+    pub fn gnu_dev_minor(__dev: ::std::os::raw::c_ulonglong) -> ::std::os::raw::c_uint;
+}
+extern "C" {
+    pub fn gnu_dev_makedev(
+        __major: ::std::os::raw::c_uint,
+        __minor: ::std::os::raw::c_uint,
+    ) -> ::std::os::raw::c_ulonglong;
+}
 pub type blksize_t = __blksize_t;
 pub type blkcnt_t = __blkcnt_t;
 pub type fsblkcnt_t = __fsblkcnt_t;
@@ -2297,6 +3630,22 @@ impl ::std::fmt::Debug for pthread_barrierattr_t {
         write!(f, "pthread_barrierattr_t {{ union }}")
     }
 }
+extern "C" {
+    pub fn random() -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn srandom(__seed: ::std::os::raw::c_uint);
+}
+extern "C" {
+    pub fn initstate(
+        __seed: ::std::os::raw::c_uint,
+        __statebuf: *mut ::std::os::raw::c_char,
+        __statelen: usize,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn setstate(__statebuf: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct random_data {
@@ -2391,6 +3740,65 @@ fn bindgen_test_layout_random_data() {
         )
     );
 }
+extern "C" {
+    pub fn random_r(__buf: *mut random_data, __result: *mut i32) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn srandom_r(
+        __seed: ::std::os::raw::c_uint,
+        __buf: *mut random_data,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn initstate_r(
+        __seed: ::std::os::raw::c_uint,
+        __statebuf: *mut ::std::os::raw::c_char,
+        __statelen: usize,
+        __buf: *mut random_data,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn setstate_r(
+        __statebuf: *mut ::std::os::raw::c_char,
+        __buf: *mut random_data,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn rand() -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn srand(__seed: ::std::os::raw::c_uint);
+}
+extern "C" {
+    pub fn rand_r(__seed: *mut ::std::os::raw::c_uint) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn drand48() -> f64;
+}
+extern "C" {
+    pub fn erand48(__xsubi: *mut ::std::os::raw::c_ushort) -> f64;
+}
+extern "C" {
+    pub fn lrand48() -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn nrand48(__xsubi: *mut ::std::os::raw::c_ushort) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn mrand48() -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn jrand48(__xsubi: *mut ::std::os::raw::c_ushort) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn srand48(__seedval: ::std::os::raw::c_long);
+}
+extern "C" {
+    pub fn seed48(__seed16v: *mut ::std::os::raw::c_ushort) -> *mut ::std::os::raw::c_ushort;
+}
+extern "C" {
+    pub fn lcong48(__param: *mut ::std::os::raw::c_ushort);
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct drand48_data {
@@ -2463,10 +3871,424 @@ fn bindgen_test_layout_drand48_data() {
         )
     );
 }
+extern "C" {
+    pub fn drand48_r(__buffer: *mut drand48_data, __result: *mut f64) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn erand48_r(
+        __xsubi: *mut ::std::os::raw::c_ushort,
+        __buffer: *mut drand48_data,
+        __result: *mut f64,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn lrand48_r(
+        __buffer: *mut drand48_data,
+        __result: *mut ::std::os::raw::c_long,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn nrand48_r(
+        __xsubi: *mut ::std::os::raw::c_ushort,
+        __buffer: *mut drand48_data,
+        __result: *mut ::std::os::raw::c_long,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn mrand48_r(
+        __buffer: *mut drand48_data,
+        __result: *mut ::std::os::raw::c_long,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn jrand48_r(
+        __xsubi: *mut ::std::os::raw::c_ushort,
+        __buffer: *mut drand48_data,
+        __result: *mut ::std::os::raw::c_long,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn srand48_r(
+        __seedval: ::std::os::raw::c_long,
+        __buffer: *mut drand48_data,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn seed48_r(
+        __seed16v: *mut ::std::os::raw::c_ushort,
+        __buffer: *mut drand48_data,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn lcong48_r(
+        __param: *mut ::std::os::raw::c_ushort,
+        __buffer: *mut drand48_data,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn malloc(__size: usize) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn calloc(__nmemb: usize, __size: usize) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn realloc(
+        __ptr: *mut ::std::os::raw::c_void,
+        __size: usize,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn free(__ptr: *mut ::std::os::raw::c_void);
+}
+extern "C" {
+    pub fn cfree(__ptr: *mut ::std::os::raw::c_void);
+}
+extern "C" {
+    pub fn alloca(__size: usize) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn valloc(__size: usize) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn posix_memalign(
+        __memptr: *mut *mut ::std::os::raw::c_void,
+        __alignment: usize,
+        __size: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn aligned_alloc(__alignment: usize, __size: usize) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn abort();
+}
+extern "C" {
+    pub fn atexit(__func: ::std::option::Option<unsafe extern "C" fn()>) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn at_quick_exit(
+        __func: ::std::option::Option<unsafe extern "C" fn()>,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn on_exit(
+        __func: ::std::option::Option<
+            unsafe extern "C" fn(
+                __status: ::std::os::raw::c_int,
+                __arg: *mut ::std::os::raw::c_void,
+            ),
+        >,
+        __arg: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn exit(__status: ::std::os::raw::c_int);
+}
+extern "C" {
+    pub fn quick_exit(__status: ::std::os::raw::c_int);
+}
+extern "C" {
+    pub fn _Exit(__status: ::std::os::raw::c_int);
+}
+extern "C" {
+    pub fn getenv(__name: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn putenv(__string: *mut ::std::os::raw::c_char) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn setenv(
+        __name: *const ::std::os::raw::c_char,
+        __value: *const ::std::os::raw::c_char,
+        __replace: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn unsetenv(__name: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn clearenv() -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn mktemp(__template: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn mkstemp(__template: *mut ::std::os::raw::c_char) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn mkstemps(
+        __template: *mut ::std::os::raw::c_char,
+        __suffixlen: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn mkdtemp(__template: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn system(__command: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn realpath(
+        __name: *const ::std::os::raw::c_char,
+        __resolved: *mut ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
 pub type __compar_fn_t = ::std::option::Option<
     unsafe extern "C" fn(arg1: *const ::std::os::raw::c_void, arg2: *const ::std::os::raw::c_void)
         -> ::std::os::raw::c_int,
 >;
+extern "C" {
+    pub fn bsearch(
+        __key: *const ::std::os::raw::c_void,
+        __base: *const ::std::os::raw::c_void,
+        __nmemb: usize,
+        __size: usize,
+        __compar: __compar_fn_t,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn qsort(
+        __base: *mut ::std::os::raw::c_void,
+        __nmemb: usize,
+        __size: usize,
+        __compar: __compar_fn_t,
+    );
+}
+extern "C" {
+    pub fn abs(__x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn labs(__x: ::std::os::raw::c_long) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn llabs(__x: ::std::os::raw::c_longlong) -> ::std::os::raw::c_longlong;
+}
+extern "C" {
+    pub fn div(__numer: ::std::os::raw::c_int, __denom: ::std::os::raw::c_int) -> div_t;
+}
+extern "C" {
+    pub fn ldiv(__numer: ::std::os::raw::c_long, __denom: ::std::os::raw::c_long) -> ldiv_t;
+}
+extern "C" {
+    pub fn lldiv(
+        __numer: ::std::os::raw::c_longlong,
+        __denom: ::std::os::raw::c_longlong,
+    ) -> lldiv_t;
+}
+extern "C" {
+    pub fn ecvt(
+        __value: f64,
+        __ndigit: ::std::os::raw::c_int,
+        __decpt: *mut ::std::os::raw::c_int,
+        __sign: *mut ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn fcvt(
+        __value: f64,
+        __ndigit: ::std::os::raw::c_int,
+        __decpt: *mut ::std::os::raw::c_int,
+        __sign: *mut ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn gcvt(
+        __value: f64,
+        __ndigit: ::std::os::raw::c_int,
+        __buf: *mut ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn qecvt(
+        __value: f64,
+        __ndigit: ::std::os::raw::c_int,
+        __decpt: *mut ::std::os::raw::c_int,
+        __sign: *mut ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn qfcvt(
+        __value: f64,
+        __ndigit: ::std::os::raw::c_int,
+        __decpt: *mut ::std::os::raw::c_int,
+        __sign: *mut ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn qgcvt(
+        __value: f64,
+        __ndigit: ::std::os::raw::c_int,
+        __buf: *mut ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn ecvt_r(
+        __value: f64,
+        __ndigit: ::std::os::raw::c_int,
+        __decpt: *mut ::std::os::raw::c_int,
+        __sign: *mut ::std::os::raw::c_int,
+        __buf: *mut ::std::os::raw::c_char,
+        __len: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn fcvt_r(
+        __value: f64,
+        __ndigit: ::std::os::raw::c_int,
+        __decpt: *mut ::std::os::raw::c_int,
+        __sign: *mut ::std::os::raw::c_int,
+        __buf: *mut ::std::os::raw::c_char,
+        __len: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn qecvt_r(
+        __value: f64,
+        __ndigit: ::std::os::raw::c_int,
+        __decpt: *mut ::std::os::raw::c_int,
+        __sign: *mut ::std::os::raw::c_int,
+        __buf: *mut ::std::os::raw::c_char,
+        __len: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn qfcvt_r(
+        __value: f64,
+        __ndigit: ::std::os::raw::c_int,
+        __decpt: *mut ::std::os::raw::c_int,
+        __sign: *mut ::std::os::raw::c_int,
+        __buf: *mut ::std::os::raw::c_char,
+        __len: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn mblen(__s: *const ::std::os::raw::c_char, __n: usize) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn mbtowc(
+        __pwc: *mut wchar_t,
+        __s: *const ::std::os::raw::c_char,
+        __n: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn wctomb(__s: *mut ::std::os::raw::c_char, __wchar: wchar_t) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn mbstowcs(__pwcs: *mut wchar_t, __s: *const ::std::os::raw::c_char, __n: usize) -> usize;
+}
+extern "C" {
+    pub fn wcstombs(__s: *mut ::std::os::raw::c_char, __pwcs: *const wchar_t, __n: usize) -> usize;
+}
+extern "C" {
+    pub fn rpmatch(__response: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn getsubopt(
+        __optionp: *mut *mut ::std::os::raw::c_char,
+        __tokens: *const *mut ::std::os::raw::c_char,
+        __valuep: *mut *mut ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn getloadavg(__loadavg: *mut f64, __nelem: ::std::os::raw::c_int)
+        -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn memcpy(
+        __dest: *mut ::std::os::raw::c_void,
+        __src: *const ::std::os::raw::c_void,
+        __n: usize,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn memmove(
+        __dest: *mut ::std::os::raw::c_void,
+        __src: *const ::std::os::raw::c_void,
+        __n: usize,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn memccpy(
+        __dest: *mut ::std::os::raw::c_void,
+        __src: *const ::std::os::raw::c_void,
+        __c: ::std::os::raw::c_int,
+        __n: usize,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn memset(
+        __s: *mut ::std::os::raw::c_void,
+        __c: ::std::os::raw::c_int,
+        __n: usize,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn memcmp(
+        __s1: *const ::std::os::raw::c_void,
+        __s2: *const ::std::os::raw::c_void,
+        __n: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn memchr(
+        __s: *const ::std::os::raw::c_void,
+        __c: ::std::os::raw::c_int,
+        __n: usize,
+    ) -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn strcpy(
+        __dest: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strncpy(
+        __dest: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+        __n: usize,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strcat(
+        __dest: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strncat(
+        __dest: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+        __n: usize,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strcmp(
+        __s1: *const ::std::os::raw::c_char,
+        __s2: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn strncmp(
+        __s1: *const ::std::os::raw::c_char,
+        __s2: *const ::std::os::raw::c_char,
+        __n: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn strcoll(
+        __s1: *const ::std::os::raw::c_char,
+        __s2: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn strxfrm(
+        __dest: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+        __n: usize,
+    ) -> ::std::os::raw::c_ulong;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct __locale_struct {
@@ -2541,6 +4363,191 @@ fn bindgen_test_layout___locale_struct() {
 }
 pub type __locale_t = *mut __locale_struct;
 pub type locale_t = __locale_t;
+extern "C" {
+    pub fn strcoll_l(
+        __s1: *const ::std::os::raw::c_char,
+        __s2: *const ::std::os::raw::c_char,
+        __l: __locale_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn strxfrm_l(
+        __dest: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+        __n: usize,
+        __l: __locale_t,
+    ) -> usize;
+}
+extern "C" {
+    pub fn strdup(__s: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strndup(
+        __string: *const ::std::os::raw::c_char,
+        __n: usize,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strchr(
+        __s: *const ::std::os::raw::c_char,
+        __c: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strrchr(
+        __s: *const ::std::os::raw::c_char,
+        __c: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strcspn(
+        __s: *const ::std::os::raw::c_char,
+        __reject: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn strspn(
+        __s: *const ::std::os::raw::c_char,
+        __accept: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn strpbrk(
+        __s: *const ::std::os::raw::c_char,
+        __accept: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strstr(
+        __haystack: *const ::std::os::raw::c_char,
+        __needle: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strtok(
+        __s: *mut ::std::os::raw::c_char,
+        __delim: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn __strtok_r(
+        __s: *mut ::std::os::raw::c_char,
+        __delim: *const ::std::os::raw::c_char,
+        __save_ptr: *mut *mut ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strtok_r(
+        __s: *mut ::std::os::raw::c_char,
+        __delim: *const ::std::os::raw::c_char,
+        __save_ptr: *mut *mut ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strlen(__s: *const ::std::os::raw::c_char) -> ::std::os::raw::c_ulong;
+}
+extern "C" {
+    pub fn strnlen(__string: *const ::std::os::raw::c_char, __maxlen: usize) -> usize;
+}
+extern "C" {
+    pub fn strerror(__errnum: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strerror_r(
+        __errnum: ::std::os::raw::c_int,
+        __buf: *mut ::std::os::raw::c_char,
+        __buflen: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn strerror_l(
+        __errnum: ::std::os::raw::c_int,
+        __l: __locale_t,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn __bzero(__s: *mut ::std::os::raw::c_void, __n: usize);
+}
+extern "C" {
+    pub fn bcopy(
+        __src: *const ::std::os::raw::c_void,
+        __dest: *mut ::std::os::raw::c_void,
+        __n: usize,
+    );
+}
+extern "C" {
+    pub fn bzero(__s: *mut ::std::os::raw::c_void, __n: usize);
+}
+extern "C" {
+    pub fn bcmp(
+        __s1: *const ::std::os::raw::c_void,
+        __s2: *const ::std::os::raw::c_void,
+        __n: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn index(
+        __s: *const ::std::os::raw::c_char,
+        __c: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn rindex(
+        __s: *const ::std::os::raw::c_char,
+        __c: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn ffs(__i: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn strcasecmp(
+        __s1: *const ::std::os::raw::c_char,
+        __s2: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn strncasecmp(
+        __s1: *const ::std::os::raw::c_char,
+        __s2: *const ::std::os::raw::c_char,
+        __n: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn strsep(
+        __stringp: *mut *mut ::std::os::raw::c_char,
+        __delim: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn strsignal(__sig: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn __stpcpy(
+        __dest: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn stpcpy(
+        __dest: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn __stpncpy(
+        __dest: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+        __n: usize,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn stpncpy(
+        __dest: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+        __n: usize,
+    ) -> *mut ::std::os::raw::c_char;
+}
 pub type int_least8_t = ::std::os::raw::c_schar;
 pub type int_least16_t = ::std::os::raw::c_short;
 pub type int_least32_t = ::std::os::raw::c_int;
@@ -2599,6 +4606,40 @@ fn bindgen_test_layout_imaxdiv_t() {
         )
     );
 }
+extern "C" {
+    pub fn imaxabs(__n: intmax_t) -> intmax_t;
+}
+extern "C" {
+    pub fn imaxdiv(__numer: intmax_t, __denom: intmax_t) -> imaxdiv_t;
+}
+extern "C" {
+    pub fn strtoimax(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> intmax_t;
+}
+extern "C" {
+    pub fn strtoumax(
+        __nptr: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> uintmax_t;
+}
+extern "C" {
+    pub fn wcstoimax(
+        __nptr: *const __gwchar_t,
+        __endptr: *mut *mut __gwchar_t,
+        __base: ::std::os::raw::c_int,
+    ) -> intmax_t;
+}
+extern "C" {
+    pub fn wcstoumax(
+        __nptr: *const __gwchar_t,
+        __endptr: *mut *mut __gwchar_t,
+        __base: ::std::os::raw::c_int,
+    ) -> uintmax_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct iovec {
@@ -2637,6 +4678,36 @@ fn bindgen_test_layout_iovec() {
             stringify!(iov_len)
         )
     );
+}
+extern "C" {
+    pub fn readv(
+        __fd: ::std::os::raw::c_int,
+        __iovec: *const iovec,
+        __count: ::std::os::raw::c_int,
+    ) -> isize;
+}
+extern "C" {
+    pub fn writev(
+        __fd: ::std::os::raw::c_int,
+        __iovec: *const iovec,
+        __count: ::std::os::raw::c_int,
+    ) -> isize;
+}
+extern "C" {
+    pub fn preadv(
+        __fd: ::std::os::raw::c_int,
+        __iovec: *const iovec,
+        __count: ::std::os::raw::c_int,
+        __offset: __off_t,
+    ) -> isize;
+}
+extern "C" {
+    pub fn pwritev(
+        __fd: ::std::os::raw::c_int,
+        __iovec: *const iovec,
+        __count: ::std::os::raw::c_int,
+        __offset: __off_t,
+    ) -> isize;
 }
 pub type socklen_t = __socklen_t;
 pub const __socket_type_SOCK_STREAM: __socket_type = 1;
@@ -2888,6 +4959,9 @@ fn bindgen_test_layout_cmsghdr() {
         concat!("Alignment of ", stringify!(cmsghdr))
     );
 }
+extern "C" {
+    pub fn __cmsg_nxthdr(__mhdr: *mut msghdr, __cmsg: *mut cmsghdr) -> *mut cmsghdr;
+}
 pub const SCM_RIGHTS: _bindgen_ty_2 = 1;
 pub type _bindgen_ty_2 = u32;
 #[repr(C)]
@@ -2972,6 +5046,143 @@ pub const SHUT_RD: _bindgen_ty_3 = 0;
 pub const SHUT_WR: _bindgen_ty_3 = 1;
 pub const SHUT_RDWR: _bindgen_ty_3 = 2;
 pub type _bindgen_ty_3 = u32;
+extern "C" {
+    pub fn socket(
+        __domain: ::std::os::raw::c_int,
+        __type: ::std::os::raw::c_int,
+        __protocol: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn socketpair(
+        __domain: ::std::os::raw::c_int,
+        __type: ::std::os::raw::c_int,
+        __protocol: ::std::os::raw::c_int,
+        __fds: *mut ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn bind(
+        __fd: ::std::os::raw::c_int,
+        __addr: *const sockaddr,
+        __len: socklen_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn getsockname(
+        __fd: ::std::os::raw::c_int,
+        __addr: *mut sockaddr,
+        __len: *mut socklen_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn connect(
+        __fd: ::std::os::raw::c_int,
+        __addr: *const sockaddr,
+        __len: socklen_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn getpeername(
+        __fd: ::std::os::raw::c_int,
+        __addr: *mut sockaddr,
+        __len: *mut socklen_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn send(
+        __fd: ::std::os::raw::c_int,
+        __buf: *const ::std::os::raw::c_void,
+        __n: usize,
+        __flags: ::std::os::raw::c_int,
+    ) -> isize;
+}
+extern "C" {
+    pub fn recv(
+        __fd: ::std::os::raw::c_int,
+        __buf: *mut ::std::os::raw::c_void,
+        __n: usize,
+        __flags: ::std::os::raw::c_int,
+    ) -> isize;
+}
+extern "C" {
+    pub fn sendto(
+        __fd: ::std::os::raw::c_int,
+        __buf: *const ::std::os::raw::c_void,
+        __n: usize,
+        __flags: ::std::os::raw::c_int,
+        __addr: *const sockaddr,
+        __addr_len: socklen_t,
+    ) -> isize;
+}
+extern "C" {
+    pub fn recvfrom(
+        __fd: ::std::os::raw::c_int,
+        __buf: *mut ::std::os::raw::c_void,
+        __n: usize,
+        __flags: ::std::os::raw::c_int,
+        __addr: *mut sockaddr,
+        __addr_len: *mut socklen_t,
+    ) -> isize;
+}
+extern "C" {
+    pub fn sendmsg(
+        __fd: ::std::os::raw::c_int,
+        __message: *const msghdr,
+        __flags: ::std::os::raw::c_int,
+    ) -> isize;
+}
+extern "C" {
+    pub fn recvmsg(
+        __fd: ::std::os::raw::c_int,
+        __message: *mut msghdr,
+        __flags: ::std::os::raw::c_int,
+    ) -> isize;
+}
+extern "C" {
+    pub fn getsockopt(
+        __fd: ::std::os::raw::c_int,
+        __level: ::std::os::raw::c_int,
+        __optname: ::std::os::raw::c_int,
+        __optval: *mut ::std::os::raw::c_void,
+        __optlen: *mut socklen_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn setsockopt(
+        __fd: ::std::os::raw::c_int,
+        __level: ::std::os::raw::c_int,
+        __optname: ::std::os::raw::c_int,
+        __optval: *const ::std::os::raw::c_void,
+        __optlen: socklen_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn listen(__fd: ::std::os::raw::c_int, __n: ::std::os::raw::c_int)
+        -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn accept(
+        __fd: ::std::os::raw::c_int,
+        __addr: *mut sockaddr,
+        __addr_len: *mut socklen_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn shutdown(
+        __fd: ::std::os::raw::c_int,
+        __how: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn sockatmark(__fd: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn isfdtype(
+        __fd: ::std::os::raw::c_int,
+        __fdtype: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
 pub type in_addr_t = u32;
 #[repr(C)]
 #[derive(Debug)]
@@ -3308,6 +5519,12 @@ impl ::std::fmt::Debug for in6_addr {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         write!(f, "in6_addr {{ __in6_u: {:?} }}", self.__in6_u)
     }
+}
+extern "C" {
+    pub static mut in6addr_any: in6_addr;
+}
+extern "C" {
+    pub static mut in6addr_loopback: in6_addr;
 }
 #[repr(C)]
 #[derive(Debug)]
@@ -3835,6 +6052,30 @@ impl ::std::fmt::Debug for group_filter {
         write ! ( f , "group_filter {{ gf_interface: {:?}, gf_group: {:?}, gf_fmode: {:?}, gf_numsrc: {:?}, gf_slist: {:?} }}" , self . gf_interface , self . gf_group , self . gf_fmode , self . gf_numsrc , self . gf_slist )
     }
 }
+extern "C" {
+    pub fn ntohl(__netlong: u32) -> u32;
+}
+extern "C" {
+    pub fn ntohs(__netshort: u16) -> u16;
+}
+extern "C" {
+    pub fn htonl(__hostlong: u32) -> u32;
+}
+extern "C" {
+    pub fn htons(__hostshort: u16) -> u16;
+}
+extern "C" {
+    pub fn bindresvport(
+        __sockfd: ::std::os::raw::c_int,
+        __sock_in: *mut sockaddr_in,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn bindresvport6(
+        __sockfd: ::std::os::raw::c_int,
+        __sock_in: *mut sockaddr_in6,
+    ) -> ::std::os::raw::c_int;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct asn_codec_ctx_s {
@@ -3976,12 +6217,62 @@ pub type asn_app_constraint_failed_f = ::std::option::Option<
     ),
 >;
 pub type ber_tlv_len_t = isize;
+extern "C" {
+    pub fn ber_fetch_length(
+        _is_constructed: ::std::os::raw::c_int,
+        bufptr: *const ::std::os::raw::c_void,
+        size: usize,
+        len_r: *mut ber_tlv_len_t,
+    ) -> isize;
+}
+extern "C" {
+    pub fn ber_skip_length(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        _is_constructed: ::std::os::raw::c_int,
+        bufptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> isize;
+}
+extern "C" {
+    pub fn der_tlv_length_serialize(
+        len: ber_tlv_len_t,
+        bufptr: *mut ::std::os::raw::c_void,
+        size: usize,
+    ) -> usize;
+}
 pub const asn_tag_class_ASN_TAG_CLASS_UNIVERSAL: asn_tag_class = 0;
 pub const asn_tag_class_ASN_TAG_CLASS_APPLICATION: asn_tag_class = 1;
 pub const asn_tag_class_ASN_TAG_CLASS_CONTEXT: asn_tag_class = 2;
 pub const asn_tag_class_ASN_TAG_CLASS_PRIVATE: asn_tag_class = 3;
 pub type asn_tag_class = u32;
 pub type ber_tlv_tag_t = ::std::os::raw::c_uint;
+extern "C" {
+    pub fn ber_tlv_tag_snprint(
+        tag: ber_tlv_tag_t,
+        buf: *mut ::std::os::raw::c_char,
+        buflen: usize,
+    ) -> isize;
+}
+extern "C" {
+    pub fn ber_tlv_tag_fwrite(tag: ber_tlv_tag_t, arg1: *mut FILE) -> isize;
+}
+extern "C" {
+    pub fn ber_tlv_tag_string(tag: ber_tlv_tag_t) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn ber_fetch_tag(
+        bufptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_r: *mut ber_tlv_tag_t,
+    ) -> isize;
+}
+extern "C" {
+    pub fn ber_tlv_tag_serialize(
+        tag: ber_tlv_tag_t,
+        bufptr: *mut ::std::os::raw::c_void,
+        size: usize,
+    ) -> usize;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct asn_struct_ctx_s {
@@ -4001,6 +6292,15 @@ fn bindgen_test_layout_asn_struct_ctx_s() {
     );
 }
 pub type asn_struct_ctx_t = [u64; 3usize];
+extern "C" {
+    pub fn ber_decode(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buffer: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
 pub type ber_type_decoder_f = ::std::option::Option<
     unsafe extern "C" fn(
         opt_codec_ctx: *mut asn_codec_ctx_s,
@@ -4011,6 +6311,36 @@ pub type ber_type_decoder_f = ::std::option::Option<
         tag_mode: ::std::os::raw::c_int,
     ) -> asn_dec_rval_t,
 >;
+extern "C" {
+    /// INTERNALLY USEFUL FUNCTIONS *
+    pub fn ber_check_tags(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        opt_ctx: *mut asn_struct_ctx_t,
+        ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+        last_tag_form: ::std::os::raw::c_int,
+        last_length: *mut ber_tlv_len_t,
+        opt_tlv_form: *mut ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn der_encode(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn der_encode_to_buffer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        buffer: *mut ::std::os::raw::c_void,
+        buffer_size: usize,
+    ) -> asn_enc_rval_t;
+}
 pub type der_type_encoder_f = ::std::option::Option<
     unsafe extern "C" fn(
         type_descriptor: *mut asn_TYPE_descriptor_s,
@@ -4021,6 +6351,27 @@ pub type der_type_encoder_f = ::std::option::Option<
         app_key: *mut ::std::os::raw::c_void,
     ) -> asn_enc_rval_t,
 >;
+extern "C" {
+    /// INTERNALLY USEFUL FUNCTIONS *
+    pub fn der_write_tags(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_length: usize,
+        tag_mode: ::std::os::raw::c_int,
+        last_tag_form: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> isize;
+}
+extern "C" {
+    pub fn xer_decode(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buffer: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
 pub type xer_type_decoder_f = ::std::option::Option<
     unsafe extern "C" fn(
         opt_codec_ctx: *mut asn_codec_ctx_t,
@@ -4031,12 +6382,46 @@ pub type xer_type_decoder_f = ::std::option::Option<
         size: usize,
     ) -> asn_dec_rval_t,
 >;
+extern "C" {
+    /// INTERNALLY USEFUL FUNCTIONS *
+    pub fn xer_decode_general(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        ctx: *mut asn_struct_ctx_t,
+        struct_key: *mut ::std::os::raw::c_void,
+        xml_tag: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        opt_unexpected_tag_decoder: ::std::option::Option<
+            unsafe extern "C" fn(
+                struct_key: *mut ::std::os::raw::c_void,
+                chunk_buf: *const ::std::os::raw::c_void,
+                chunk_size: usize,
+            ) -> ::std::os::raw::c_int,
+        >,
+        body_receiver: ::std::option::Option<
+            unsafe extern "C" fn(
+                struct_key: *mut ::std::os::raw::c_void,
+                chunk_buf: *const ::std::os::raw::c_void,
+                chunk_size: usize,
+                have_more: ::std::os::raw::c_int,
+            ) -> isize,
+        >,
+    ) -> asn_dec_rval_t;
+}
 pub const pxer_chunk_type_PXER_WMORE: pxer_chunk_type = 0;
 pub const pxer_chunk_type_PXER_TAG: pxer_chunk_type = 1;
 pub const pxer_chunk_type_PXER_TEXT: pxer_chunk_type = 2;
 pub const pxer_chunk_type_PXER_COMMENT: pxer_chunk_type = 3;
 pub type pxer_chunk_type = u32;
 pub use self::pxer_chunk_type as pxer_chunk_type_e;
+extern "C" {
+    pub fn xer_next_token(
+        stateContext: *mut ::std::os::raw::c_int,
+        buffer: *const ::std::os::raw::c_void,
+        size: usize,
+        _ch_type: *mut pxer_chunk_type_e,
+    ) -> isize;
+}
 pub const xer_check_tag_XCT_BROKEN: xer_check_tag = 0;
 pub const xer_check_tag_XCT_OPENING: xer_check_tag = 1;
 pub const xer_check_tag_XCT_CLOSING: xer_check_tag = 2;
@@ -4047,9 +6432,44 @@ pub const xer_check_tag_XCT_UNKNOWN_CL: xer_check_tag = 6;
 pub const xer_check_tag_XCT_UNKNOWN_BO: xer_check_tag = 7;
 pub type xer_check_tag = u32;
 pub use self::xer_check_tag as xer_check_tag_e;
+extern "C" {
+    pub fn xer_check_tag(
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: ::std::os::raw::c_int,
+        need_tag: *const ::std::os::raw::c_char,
+    ) -> xer_check_tag_e;
+}
+extern "C" {
+    pub fn xer_whitespace_span(
+        chunk_buf: *const ::std::os::raw::c_void,
+        chunk_size: usize,
+    ) -> usize;
+}
+extern "C" {
+    pub fn xer_skip_unknown(
+        tcv: xer_check_tag_e,
+        depth: *mut ber_tlv_len_t,
+    ) -> ::std::os::raw::c_int;
+}
 pub const xer_encoder_flags_e_XER_F_BASIC: xer_encoder_flags_e = 1;
 pub const xer_encoder_flags_e_XER_F_CANONICAL: xer_encoder_flags_e = 2;
 pub type xer_encoder_flags_e = u32;
+extern "C" {
+    pub fn xer_encode(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn xer_fprint(
+        stream: *mut FILE,
+        td: *mut asn_TYPE_descriptor_s,
+        sptr: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
 pub type xer_type_encoder_f = ::std::option::Option<
     unsafe extern "C" fn(
         type_descriptor: *mut asn_TYPE_descriptor_s,
@@ -4304,6 +6724,44 @@ fn bindgen_test_layout_asn_per_data_s() {
     );
 }
 pub type asn_per_data_t = asn_per_data_s;
+extern "C" {
+    pub fn per_get_few_bits(per_data: *mut asn_per_data_t, get_nbits: ::std::os::raw::c_int)
+        -> i32;
+}
+extern "C" {
+    pub fn per_get_undo(per_data: *mut asn_per_data_t, get_nbits: ::std::os::raw::c_int);
+}
+extern "C" {
+    pub fn per_get_many_bits(
+        pd: *mut asn_per_data_t,
+        dst: *mut u8,
+        right_align: ::std::os::raw::c_int,
+        get_nbits: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn uper_get_length(
+        pd: *mut asn_per_data_t,
+        effective_bound_bits: ::std::os::raw::c_int,
+        repeat: *mut ::std::os::raw::c_int,
+    ) -> isize;
+}
+extern "C" {
+    pub fn uper_get_nslength(pd: *mut asn_per_data_t) -> isize;
+}
+extern "C" {
+    pub fn uper_get_nsnnwn(pd: *mut asn_per_data_t) -> isize;
+}
+extern "C" {
+    pub fn uper_get_constrained_whole_number(
+        pd: *mut asn_per_data_t,
+        v: *mut ::std::os::raw::c_ulong,
+        nbits: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn per_data_string(pd: *mut asn_per_data_t) -> *mut ::std::os::raw::c_char;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct asn_per_outp_s {
@@ -4405,6 +6863,66 @@ fn bindgen_test_layout_asn_per_outp_s() {
     );
 }
 pub type asn_per_outp_t = asn_per_outp_s;
+extern "C" {
+    pub fn per_put_few_bits(
+        per_data: *mut asn_per_outp_t,
+        bits: u32,
+        obits: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn per_put_many_bits(
+        po: *mut asn_per_outp_t,
+        src: *const u8,
+        put_nbits: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn uper_put_constrained_whole_number_s(
+        po: *mut asn_per_outp_t,
+        v: ::std::os::raw::c_long,
+        nbits: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn uper_put_constrained_whole_number_u(
+        po: *mut asn_per_outp_t,
+        v: ::std::os::raw::c_ulong,
+        nbits: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn uper_put_length(po: *mut asn_per_outp_t, whole_length: usize) -> isize;
+}
+extern "C" {
+    pub fn uper_put_nslength(po: *mut asn_per_outp_t, length: usize) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn uper_put_nsnnwn(
+        po: *mut asn_per_outp_t,
+        n: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn uper_decode_complete(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buffer: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn uper_decode(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buffer: *const ::std::os::raw::c_void,
+        size: usize,
+        skip_bits: ::std::os::raw::c_int,
+        unused_bits: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
 pub type per_type_decoder_f = ::std::option::Option<
     unsafe extern "C" fn(
         opt_codec_ctx: *mut asn_codec_ctx_t,
@@ -4414,6 +6932,30 @@ pub type per_type_decoder_f = ::std::option::Option<
         per_data: *mut asn_per_data_t,
     ) -> asn_dec_rval_t,
 >;
+extern "C" {
+    pub fn uper_encode(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn uper_encode_to_buffer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        buffer: *mut ::std::os::raw::c_void,
+        buffer_size: usize,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn uper_encode_to_new_buffer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        buffer_r: *mut *mut ::std::os::raw::c_void,
+    ) -> isize;
+}
 pub type per_type_encoder_f = ::std::option::Option<
     unsafe extern "C" fn(
         type_descriptor: *mut asn_TYPE_descriptor_s,
@@ -4422,6 +6964,14 @@ pub type per_type_encoder_f = ::std::option::Option<
         per_output: *mut asn_per_outp_t,
     ) -> asn_enc_rval_t,
 >;
+extern "C" {
+    pub fn asn_check_constraints(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        errbuf: *mut ::std::os::raw::c_char,
+        errlen: *mut usize,
+    ) -> ::std::os::raw::c_int;
+}
 pub type asn_constr_check_f = ::std::option::Option<
     unsafe extern "C" fn(
         type_descriptor: *mut asn_TYPE_descriptor_s,
@@ -4430,6 +6980,23 @@ pub type asn_constr_check_f = ::std::option::Option<
         optional_app_key: *mut ::std::os::raw::c_void,
     ) -> ::std::os::raw::c_int,
 >;
+extern "C" {
+    /// INTERNALLY USEFUL FUNCTIONS *
+    pub fn asn_generic_no_constraint(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        optional_callback: asn_app_constraint_failed_f,
+        optional_app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn asn_generic_unknown_constraint(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        optional_callback: asn_app_constraint_failed_f,
+        optional_app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
 pub type asn_struct_free_f = ::std::option::Option<
     unsafe extern "C" fn(
         type_descriptor: *mut asn_TYPE_descriptor_s,
@@ -4454,6 +7021,14 @@ pub type asn_outmost_tag_f = ::std::option::Option<
         tag: ber_tlv_tag_t,
     ) -> ber_tlv_tag_t,
 >;
+extern "C" {
+    pub fn asn_TYPE_outmost_tag(
+        type_descriptor: *const asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+    ) -> ber_tlv_tag_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct asn_TYPE_descriptor_s {
@@ -4924,6 +7499,13 @@ fn bindgen_test_layout_asn_TYPE_tag2member_s() {
     );
 }
 pub type asn_TYPE_tag2member_t = asn_TYPE_tag2member_s;
+extern "C" {
+    pub fn asn_fprint(
+        stream: *mut FILE,
+        td: *mut asn_TYPE_descriptor_t,
+        struct_ptr: *const ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct ASN__PRIMITIVE_TYPE_s {
@@ -4964,6 +7546,33 @@ fn bindgen_test_layout_ASN__PRIMITIVE_TYPE_s() {
     );
 }
 pub type ASN__PRIMITIVE_TYPE_t = ASN__PRIMITIVE_TYPE_s;
+extern "C" {
+    pub fn ASN__PRIMITIVE_TYPE_free(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        free_contents_only: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn ber_decode_primitive(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn der_encode_primitive(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
 pub const xer_pbd_rval_XPBD_SYSTEM_FAILURE: xer_pbd_rval = 0;
 pub const xer_pbd_rval_XPBD_DECODER_LIMIT: xer_pbd_rval = 1;
 pub const xer_pbd_rval_XPBD_BROKEN_ENCODING: xer_pbd_rval = 2;
@@ -4978,7 +7587,22 @@ pub type xer_primitive_body_decoder_f = ::std::option::Option<
         chunk_size: usize,
     ) -> xer_pbd_rval,
 >;
+extern "C" {
+    pub fn xer_decode_primitive(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        struct_size: usize,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        prim_body_decoder: xer_primitive_body_decoder_f,
+    ) -> asn_dec_rval_t;
+}
 pub type INTEGER_t = ASN__PRIMITIVE_TYPE_t;
+extern "C" {
+    pub static mut asn_DEF_INTEGER: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct asn_INTEGER_enum_map_s {
@@ -5144,12 +7768,196 @@ fn bindgen_test_layout_asn_INTEGER_specifics_s() {
     );
 }
 pub type asn_INTEGER_specifics_t = asn_INTEGER_specifics_s;
+extern "C" {
+    pub fn INTEGER_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn INTEGER_decode_ber(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn INTEGER_encode_der(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn INTEGER_decode_xer(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn INTEGER_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn INTEGER_decode_uper(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        per_data: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn INTEGER_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    /// Some handy conversion routines. *
+    pub fn asn_INTEGER2long(
+        i: *const INTEGER_t,
+        l: *mut ::std::os::raw::c_long,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn asn_INTEGER2ulong(
+        i: *const INTEGER_t,
+        l: *mut ::std::os::raw::c_ulong,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn asn_long2INTEGER(i: *mut INTEGER_t, l: ::std::os::raw::c_long) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn asn_ulong2INTEGER(
+        i: *mut INTEGER_t,
+        l: ::std::os::raw::c_ulong,
+    ) -> ::std::os::raw::c_int;
+}
 pub const asn_strtol_result_e_ASN_STRTOL_ERROR_RANGE: asn_strtol_result_e = -3;
 pub const asn_strtol_result_e_ASN_STRTOL_ERROR_INVAL: asn_strtol_result_e = -2;
 pub const asn_strtol_result_e_ASN_STRTOL_EXPECT_MORE: asn_strtol_result_e = -1;
 pub const asn_strtol_result_e_ASN_STRTOL_OK: asn_strtol_result_e = 0;
 pub const asn_strtol_result_e_ASN_STRTOL_EXTRA_DATA: asn_strtol_result_e = 1;
 pub type asn_strtol_result_e = i32;
+extern "C" {
+    pub fn asn_strtol_lim(
+        str: *const ::std::os::raw::c_char,
+        end: *mut *const ::std::os::raw::c_char,
+        l: *mut ::std::os::raw::c_long,
+    ) -> asn_strtol_result_e;
+}
+extern "C" {
+    pub fn asn_strtol(
+        str: *const ::std::os::raw::c_char,
+        end: *const ::std::os::raw::c_char,
+        l: *mut ::std::os::raw::c_long,
+    ) -> asn_strtol_result_e;
+}
+extern "C" {
+    pub fn INTEGER_map_value2enum(
+        specs: *mut asn_INTEGER_specifics_t,
+        value: ::std::os::raw::c_long,
+    ) -> *const asn_INTEGER_enum_map_t;
+}
+extern "C" {
+    pub static mut asn_DEF_NativeInteger: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    pub fn NativeInteger_free(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        free_contents_only: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn NativeInteger_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn NativeInteger_decode_ber(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn NativeInteger_encode_der(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn NativeInteger_decode_xer(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn NativeInteger_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn NativeInteger_decode_uper(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        per_data: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn NativeInteger_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct asn_SEQUENCE_specifics_s {
@@ -5281,6 +8089,87 @@ fn bindgen_test_layout_asn_SEQUENCE_specifics_s() {
     );
 }
 pub type asn_SEQUENCE_specifics_t = asn_SEQUENCE_specifics_s;
+extern "C" {
+    pub fn SEQUENCE_free(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        free_contents_only: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn SEQUENCE_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SEQUENCE_constraint(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        optional_callback: asn_app_constraint_failed_f,
+        optional_app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SEQUENCE_decode_ber(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn SEQUENCE_encode_der(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn SEQUENCE_decode_xer(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn SEQUENCE_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn SEQUENCE_decode_uper(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        per_data: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn SEQUENCE_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct Covariance {
@@ -5376,6 +8265,35 @@ fn bindgen_test_layout_Covariance() {
     );
 }
 pub type Covariance_t = Covariance;
+extern "C" {
+    pub static mut asn_DEF_Covariance: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    pub fn __assert_fail(
+        __assertion: *const ::std::os::raw::c_char,
+        __file: *const ::std::os::raw::c_char,
+        __line: ::std::os::raw::c_uint,
+        __function: *const ::std::os::raw::c_char,
+    );
+}
+extern "C" {
+    pub fn __assert_perror_fail(
+        __errnum: ::std::os::raw::c_int,
+        __file: *const ::std::os::raw::c_char,
+        __line: ::std::os::raw::c_uint,
+        __function: *const ::std::os::raw::c_char,
+    );
+}
+extern "C" {
+    pub fn __assert(
+        __assertion: *const ::std::os::raw::c_char,
+        __file: *const ::std::os::raw::c_char,
+        __line: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn get_asn1c_environment_version() -> ::std::os::raw::c_int;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct PositionOffset {
@@ -5453,6 +8371,9 @@ fn bindgen_test_layout_PositionOffset() {
     );
 }
 pub type PositionOffset_t = PositionOffset;
+extern "C" {
+    pub static mut asn_DEF_PositionOffset: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct PathPoint {
@@ -5504,6 +8425,26 @@ fn bindgen_test_layout_PathPoint() {
     );
 }
 pub type PathPoint_t = PathPoint;
+extern "C" {
+    pub static mut asn_DEF_PathPoint: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    /// Implementation of the SET OF structure.
+    pub fn asn_set_add(
+        asn_set_of_x: *mut ::std::os::raw::c_void,
+        ptr: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn asn_set_del(
+        asn_set_of_x: *mut ::std::os::raw::c_void,
+        number: ::std::os::raw::c_int,
+        _do_free: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn asn_set_empty(asn_set_of_x: *mut ::std::os::raw::c_void);
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct asn_anonymous_set_ {
@@ -5563,6 +8504,13 @@ fn bindgen_test_layout_asn_anonymous_set_() {
             "::",
             stringify!(free)
         )
+    );
+}
+extern "C" {
+    pub fn asn_sequence_del(
+        asn_sequence_of_x: *mut ::std::os::raw::c_void,
+        number: ::std::os::raw::c_int,
+        _do_free: ::std::os::raw::c_int,
     );
 }
 #[repr(C)]
@@ -5683,6 +8631,115 @@ fn bindgen_test_layout_asn_SET_OF_specifics_s() {
     );
 }
 pub type asn_SET_OF_specifics_t = asn_SET_OF_specifics_s;
+extern "C" {
+    pub fn SET_OF_free(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        free_contents_only: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn SET_OF_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SET_OF_constraint(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        optional_callback: asn_app_constraint_failed_f,
+        optional_app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SET_OF_decode_ber(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn SET_OF_encode_der(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn SET_OF_decode_xer(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn SET_OF_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn SET_OF_decode_uper(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        per_data: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn SET_OF_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn SEQUENCE_OF_encode_der(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn SEQUENCE_OF_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn SEQUENCE_OF_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct Path {
@@ -5784,6 +8841,9 @@ fn bindgen_test_layout_Path() {
     );
 }
 pub type Path_t = Path;
+extern "C" {
+    pub static mut asn_DEF_Path: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct PredictedPath {
@@ -5835,6 +8895,9 @@ fn bindgen_test_layout_PredictedPath() {
     );
 }
 pub type PredictedPath_t = PredictedPath;
+extern "C" {
+    pub static mut asn_DEF_PredictedPath: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct SectorIds {
@@ -5936,6 +8999,9 @@ fn bindgen_test_layout_SectorIds() {
     );
 }
 pub type SectorIds_t = SectorIds;
+extern "C" {
+    pub static mut asn_DEF_SectorIds: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct Error {
@@ -5982,6 +9048,9 @@ fn bindgen_test_layout_Error() {
     );
 }
 pub type Error_t = Error;
+extern "C" {
+    pub static mut asn_DEF_Error: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct Errors {
@@ -6083,6 +9152,9 @@ fn bindgen_test_layout_Errors() {
     );
 }
 pub type Errors_t = Errors;
+extern "C" {
+    pub static mut asn_DEF_Errors: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct ReferencePoint {
@@ -6145,6 +9217,9 @@ fn bindgen_test_layout_ReferencePoint() {
     );
 }
 pub type ReferencePoint_t = ReferencePoint;
+extern "C" {
+    pub static mut asn_DEF_ReferencePoint: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct EnvironmentEnvelope {
@@ -6220,7 +9295,116 @@ fn bindgen_test_layout_EnvironmentEnvelope() {
     );
 }
 pub type EnvironmentEnvelope_t = EnvironmentEnvelope;
+extern "C" {
+    pub static mut asn_DEF_EnvironmentEnvelope: asn_TYPE_descriptor_t;
+}
 pub type BOOLEAN_t = ::std::os::raw::c_int;
+extern "C" {
+    pub static mut asn_DEF_BOOLEAN: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    pub fn BOOLEAN_free(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        free_contents_only: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn BOOLEAN_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn BOOLEAN_decode_ber(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn BOOLEAN_encode_der(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn BOOLEAN_decode_xer(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn BOOLEAN_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn BOOLEAN_decode_uper(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        per_data: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn BOOLEAN_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub static mut asn_DEF_NativeEnumerated: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    pub fn NativeEnumerated_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn NativeEnumerated_decode_uper(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        per_data: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn NativeEnumerated_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
 pub const ObjectType_ObjectType_not_classified: ObjectType = 0;
 pub const ObjectType_ObjectType_pedestrian: ObjectType = 1;
 pub const ObjectType_ObjectType_car: ObjectType = 2;
@@ -6235,6 +9419,90 @@ pub const ObjectType_ObjectType_optinal_3: ObjectType = 10;
 pub type ObjectType = u32;
 pub use self::ObjectType as e_ObjectType;
 pub type ObjectType_t = ::std::os::raw::c_long;
+extern "C" {
+    pub static mut asn_DEF_ObjectType: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    pub fn ObjectType_free(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        free_contents_only: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn ObjectType_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn ObjectType_constraint(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        optional_callback: asn_app_constraint_failed_f,
+        optional_app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn ObjectType_decode_ber(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn ObjectType_encode_der(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn ObjectType_decode_xer(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn ObjectType_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn ObjectType_decode_uper(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        per_data: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn ObjectType_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct ObjectSize {
@@ -6330,6 +9598,9 @@ fn bindgen_test_layout_ObjectSize() {
     );
 }
 pub type ObjectSize_t = ObjectSize;
+extern "C" {
+    pub static mut asn_DEF_ObjectSize: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct EnvironmentObjectDetection {
@@ -6534,6 +9805,9 @@ fn bindgen_test_layout_EnvironmentObjectDetection() {
     );
 }
 pub type EnvironmentObjectDetection_t = EnvironmentObjectDetection;
+extern "C" {
+    pub static mut asn_DEF_EnvironmentObjectDetection: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct MovingVector {
@@ -6611,6 +9885,9 @@ fn bindgen_test_layout_MovingVector() {
     );
 }
 pub type MovingVector_t = MovingVector;
+extern "C" {
+    pub static mut asn_DEF_MovingVector: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct EnvironmentObjectDetections {
@@ -6734,6 +10011,9 @@ fn bindgen_test_layout_EnvironmentObjectDetections() {
     );
 }
 pub type EnvironmentObjectDetections_t = EnvironmentObjectDetections;
+extern "C" {
+    pub static mut asn_DEF_EnvironmentObjectDetections: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct Header {
@@ -6774,6 +10054,9 @@ fn bindgen_test_layout_Header() {
     );
 }
 pub type Header_t = Header;
+extern "C" {
+    pub static mut asn_DEF_Header: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct EnvironmentFrame {
@@ -6838,6 +10121,9 @@ fn bindgen_test_layout_EnvironmentFrame() {
     );
 }
 pub type EnvironmentFrame_t = EnvironmentFrame;
+extern "C" {
+    pub static mut asn_DEF_EnvironmentFrame: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct Area {
@@ -6939,6 +10225,9 @@ fn bindgen_test_layout_Area() {
     );
 }
 pub type Area_t = Area;
+extern "C" {
+    pub static mut asn_DEF_Area: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct Sector {
@@ -6990,6 +10279,9 @@ fn bindgen_test_layout_Sector() {
     );
 }
 pub type Sector_t = Sector;
+extern "C" {
+    pub static mut asn_DEF_Sector: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct Sectors {
@@ -7091,6 +10383,9 @@ fn bindgen_test_layout_Sectors() {
     );
 }
 pub type Sectors_t = Sectors;
+extern "C" {
+    pub static mut asn_DEF_Sectors: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct InitMessage {
@@ -7153,11 +10448,98 @@ fn bindgen_test_layout_InitMessage() {
     );
 }
 pub type InitMessage_t = InitMessage;
+extern "C" {
+    pub static mut asn_DEF_InitMessage: asn_TYPE_descriptor_t;
+}
 pub const ClientType_ClientType_sensor: ClientType = 0;
 pub const ClientType_ClientType_vehicle: ClientType = 1;
 pub type ClientType = u32;
 pub use self::ClientType as e_ClientType;
 pub type ClientType_t = ::std::os::raw::c_long;
+extern "C" {
+    pub static mut asn_DEF_ClientType: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    pub fn ClientType_free(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        free_contents_only: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn ClientType_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn ClientType_constraint(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        optional_callback: asn_app_constraint_failed_f,
+        optional_app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn ClientType_decode_ber(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn ClientType_encode_der(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn ClientType_decode_xer(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn ClientType_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn ClientType_decode_uper(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        per_data: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn ClientType_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct CoveredArea {
@@ -7259,11 +10641,98 @@ fn bindgen_test_layout_CoveredArea() {
     );
 }
 pub type CoveredArea_t = CoveredArea;
+extern "C" {
+    pub static mut asn_DEF_CoveredArea: asn_TYPE_descriptor_t;
+}
 pub const SubscriptionStatus_SubscriptionStatus_unsubscribed: SubscriptionStatus = 0;
 pub const SubscriptionStatus_SubscriptionStatus_subscribed: SubscriptionStatus = 1;
 pub type SubscriptionStatus = u32;
 pub use self::SubscriptionStatus as e_SubscriptionStatus;
 pub type SubscriptionStatus_t = ::std::os::raw::c_long;
+extern "C" {
+    pub static mut asn_DEF_SubscriptionStatus: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    pub fn SubscriptionStatus_free(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        free_contents_only: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn SubscriptionStatus_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SubscriptionStatus_constraint(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        optional_callback: asn_app_constraint_failed_f,
+        optional_app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SubscriptionStatus_decode_ber(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn SubscriptionStatus_encode_der(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn SubscriptionStatus_decode_xer(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn SubscriptionStatus_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn SubscriptionStatus_decode_uper(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        per_data: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn SubscriptionStatus_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct ClientRegistration {
@@ -7329,6 +10798,9 @@ fn bindgen_test_layout_ClientRegistration() {
     );
 }
 pub type ClientRegistration_t = ClientRegistration;
+extern "C" {
+    pub static mut asn_DEF_ClientRegistration: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct UpdateSubscription {
@@ -7384,12 +10856,99 @@ fn bindgen_test_layout_UpdateSubscription() {
     );
 }
 pub type UpdateSubscription_t = UpdateSubscription;
+extern "C" {
+    pub static mut asn_DEF_UpdateSubscription: asn_TYPE_descriptor_t;
+}
 pub const ConnectionStatus_ConnectionStatus_connected: ConnectionStatus = 0;
 pub const ConnectionStatus_ConnectionStatus_disconnected: ConnectionStatus = 1;
 pub const ConnectionStatus_ConnectionStatus_faulty: ConnectionStatus = 2;
 pub type ConnectionStatus = u32;
 pub use self::ConnectionStatus as e_ConnectionStatus;
 pub type ConnectionStatus_t = ::std::os::raw::c_long;
+extern "C" {
+    pub static mut asn_DEF_ConnectionStatus: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    pub fn ConnectionStatus_free(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        free_contents_only: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn ConnectionStatus_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn ConnectionStatus_constraint(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        optional_callback: asn_app_constraint_failed_f,
+        optional_app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn ConnectionStatus_decode_ber(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn ConnectionStatus_encode_der(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn ConnectionStatus_decode_xer(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn ConnectionStatus_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn ConnectionStatus_decode_uper(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        per_data: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn ConnectionStatus_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct OCTET_STRING {
@@ -7441,6 +11000,136 @@ fn bindgen_test_layout_OCTET_STRING() {
     );
 }
 pub type OCTET_STRING_t = OCTET_STRING;
+extern "C" {
+    pub static mut asn_DEF_OCTET_STRING: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    pub fn OCTET_STRING_free(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        free_contents_only: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn OCTET_STRING_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn OCTET_STRING_print_utf8(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn OCTET_STRING_decode_ber(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn OCTET_STRING_encode_der(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn OCTET_STRING_decode_xer_hex(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn OCTET_STRING_decode_xer_binary(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn OCTET_STRING_decode_xer_utf8(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn OCTET_STRING_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn OCTET_STRING_encode_xer_utf8(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn OCTET_STRING_decode_uper(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        per_data: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn OCTET_STRING_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    /// Handy conversion routines. *
+    pub fn OCTET_STRING_fromBuf(
+        s: *mut OCTET_STRING_t,
+        str: *const ::std::os::raw::c_char,
+        size: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn OCTET_STRING_new_fromBuf(
+        td: *mut asn_TYPE_descriptor_t,
+        str: *const ::std::os::raw::c_char,
+        size: ::std::os::raw::c_int,
+    ) -> *mut OCTET_STRING_t;
+}
 /// Internally useful stuff. *
 #[repr(C)]
 #[derive(Debug)]
@@ -7512,6 +11201,32 @@ fn bindgen_test_layout_asn_OCTET_STRING_specifics_s() {
 }
 pub type asn_OCTET_STRING_specifics_t = asn_OCTET_STRING_specifics_s;
 pub type UTF8String_t = OCTET_STRING_t;
+extern "C" {
+    pub static mut asn_DEF_UTF8String: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    pub fn UTF8String_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn UTF8String_constraint(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        optional_callback: asn_app_constraint_failed_f,
+        optional_app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn UTF8String_length(st: *const UTF8String_t) -> isize;
+}
+extern "C" {
+    pub fn UTF8String_to_wcs(st: *const UTF8String_t, dst: *mut u32, dstlen: usize) -> usize;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct UpdateStatus {
@@ -7574,6 +11289,9 @@ fn bindgen_test_layout_UpdateStatus() {
     );
 }
 pub type UpdateStatus_t = UpdateStatus;
+extern "C" {
+    pub static mut asn_DEF_UpdateStatus: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct RoadClearanceEnvelope {
@@ -7638,6 +11356,9 @@ fn bindgen_test_layout_RoadClearanceEnvelope() {
     );
 }
 pub type RoadClearanceEnvelope_t = RoadClearanceEnvelope;
+extern "C" {
+    pub static mut asn_DEF_RoadClearanceEnvelope: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct Parameter {
@@ -7711,6 +11432,9 @@ fn bindgen_test_layout_Parameter() {
     );
 }
 pub type Parameter_t = Parameter;
+extern "C" {
+    pub static mut asn_DEF_Parameter: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct Parameters {
@@ -7812,6 +11536,9 @@ fn bindgen_test_layout_Parameters() {
     );
 }
 pub type Parameters_t = Parameters;
+extern "C" {
+    pub static mut asn_DEF_Parameters: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct RoadSection {
@@ -7863,6 +11590,9 @@ fn bindgen_test_layout_RoadSection() {
     );
 }
 pub type RoadSection_t = RoadSection;
+extern "C" {
+    pub static mut asn_DEF_RoadSection: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct RoadSections {
@@ -7968,6 +11698,9 @@ fn bindgen_test_layout_RoadSections() {
     );
 }
 pub type RoadSections_t = RoadSections;
+extern "C" {
+    pub static mut asn_DEF_RoadSections: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct RoadClearanceFrame {
@@ -8032,12 +11765,99 @@ fn bindgen_test_layout_RoadClearanceFrame() {
     );
 }
 pub type RoadClearanceFrame_t = RoadClearanceFrame;
+extern "C" {
+    pub static mut asn_DEF_RoadClearanceFrame: asn_TYPE_descriptor_t;
+}
 pub const SensorType_SensorType_server: SensorType = 0;
 pub const SensorType_SensorType_cam: SensorType = 1;
 pub const SensorType_SensorType_lidar: SensorType = 2;
 pub type SensorType = u32;
 pub use self::SensorType as e_SensorType;
 pub type SensorType_t = ::std::os::raw::c_long;
+extern "C" {
+    pub static mut asn_DEF_SensorType: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    pub fn SensorType_free(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        free_contents_only: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn SensorType_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SensorType_constraint(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        optional_callback: asn_app_constraint_failed_f,
+        optional_app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SensorType_decode_ber(
+        opt_codec_ctx: *mut asn_codec_ctx_s,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+        tag_mode: ::std::os::raw::c_int,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn SensorType_encode_der(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        tag_mode: ::std::os::raw::c_int,
+        tag: ber_tlv_tag_t,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn SensorType_decode_xer(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        opt_mname: *const ::std::os::raw::c_char,
+        buf_ptr: *const ::std::os::raw::c_void,
+        size: usize,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn SensorType_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
+extern "C" {
+    pub fn SensorType_decode_uper(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut *mut ::std::os::raw::c_void,
+        per_data: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn SensorType_encode_uper(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        constraints: *mut asn_per_constraints_t,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        per_output: *mut asn_per_outp_t,
+    ) -> asn_enc_rval_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct SensorEnvelope {
@@ -8133,6 +11953,9 @@ fn bindgen_test_layout_SensorEnvelope() {
     );
 }
 pub type SensorEnvelope_t = SensorEnvelope;
+extern "C" {
+    pub static mut asn_DEF_SensorEnvelope: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct SensorObjectDetection {
@@ -8286,6 +12109,9 @@ fn bindgen_test_layout_SensorObjectDetection() {
     );
 }
 pub type SensorObjectDetection_t = SensorObjectDetection;
+extern "C" {
+    pub static mut asn_DEF_SensorObjectDetection: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct SensorObjectDetections {
@@ -8405,6 +12231,9 @@ fn bindgen_test_layout_SensorObjectDetections() {
     );
 }
 pub type SensorObjectDetections_t = SensorObjectDetections;
+extern "C" {
+    pub static mut asn_DEF_SensorObjectDetections: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct SensorFrame {
@@ -8467,6 +12296,9 @@ fn bindgen_test_layout_SensorFrame() {
     );
 }
 pub type SensorFrame_t = SensorFrame;
+extern "C" {
+    pub static mut asn_DEF_SensorFrame: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct SensorIdleFrame {
@@ -8529,6 +12361,9 @@ fn bindgen_test_layout_SensorIdleFrame() {
     );
 }
 pub type SensorIdleFrame_t = SensorIdleFrame;
+extern "C" {
+    pub static mut asn_DEF_SensorIdleFrame: asn_TYPE_descriptor_t;
+}
 #[repr(C)]
 #[derive(Debug)]
 pub struct BIT_STRING_s {
@@ -8591,6 +12426,36 @@ fn bindgen_test_layout_BIT_STRING_s() {
     );
 }
 pub type BIT_STRING_t = BIT_STRING_s;
+extern "C" {
+    pub static mut asn_DEF_BIT_STRING: asn_TYPE_descriptor_t;
+}
+extern "C" {
+    pub fn BIT_STRING_print(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        level: ::std::os::raw::c_int,
+        callback: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn BIT_STRING_constraint(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *const ::std::os::raw::c_void,
+        optional_callback: asn_app_constraint_failed_f,
+        optional_app_key: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn BIT_STRING_encode_xer(
+        type_descriptor: *mut asn_TYPE_descriptor_s,
+        struct_ptr: *mut ::std::os::raw::c_void,
+        ilevel: ::std::os::raw::c_int,
+        xer_flags: xer_encoder_flags_e,
+        consume_bytes_cb: asn_app_consume_bytes_f,
+        app_key: *mut ::std::os::raw::c_void,
+    ) -> asn_enc_rval_t;
+}
 pub const pxml_chunk_type_e_PXML_TEXT: pxml_chunk_type_e = 0;
 pub const pxml_chunk_type_e_PXML_TAG: pxml_chunk_type_e = 1;
 pub const pxml_chunk_type_e_PXML_COMMENT: pxml_chunk_type_e = 2;
@@ -8605,6 +12470,38 @@ pub type pxml_callback_f = ::std::option::Option<
         _key: *mut ::std::os::raw::c_void,
     ) -> ::std::os::raw::c_int,
 >;
+extern "C" {
+    pub fn pxml_parse(
+        _stateContext: *mut ::std::os::raw::c_int,
+        _buf: *const ::std::os::raw::c_void,
+        _size: usize,
+        cb: pxml_callback_f,
+        _key: *mut ::std::os::raw::c_void,
+    ) -> isize;
+}
+extern "C" {
+    pub fn uper_open_type_get(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        td: *mut asn_TYPE_descriptor_t,
+        constraints: *mut asn_per_constraints_t,
+        sptr: *mut *mut ::std::os::raw::c_void,
+        pd: *mut asn_per_data_t,
+    ) -> asn_dec_rval_t;
+}
+extern "C" {
+    pub fn uper_open_type_skip(
+        opt_codec_ctx: *mut asn_codec_ctx_t,
+        pd: *mut asn_per_data_t,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn uper_open_type_put(
+        td: *mut asn_TYPE_descriptor_t,
+        constraints: *mut asn_per_constraints_t,
+        sptr: *mut ::std::os::raw::c_void,
+        po: *mut asn_per_outp_t,
+    ) -> ::std::os::raw::c_int;
+}
 pub type __builtin_va_list = [__va_list_tag; 1usize];
 #[repr(C)]
 #[derive(Debug)]

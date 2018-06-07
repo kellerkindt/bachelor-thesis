@@ -1,0 +1,148 @@
+pipeline {
+    agent any
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '5'))
+    }
+
+
+    environment {
+        CARGO = '$HOME/.cargo/bin/cargo'
+        RUSTUP = '$HOME/.cargo/bin/rustup'
+        WORKSPACE = 'source'
+        CRATE_SERVER = 'source/mecview_server'
+        CRATE_LIBMSG = 'source/libmessages'
+        CRATE_LIBMSGSYS = 'source/libmessages-sys'
+    }
+    stages {
+        stage('prepare') {
+            steps {
+                // sh "$RUSTUP --version || curl https://sh.rustup.rs -sSf | sh -s -- -y"
+                sh "find . -name cobertura.xml -delete"
+                // sh "$RUSTUP install nightly"
+                // sh "$RUSTUP update stable 2>&1 | grep -i installing && $CARGO install cargo-tarpaulin --force || true"
+                // sh "$RUSTUP update beta"
+                // sh "$RUSTUP update nightly"
+                // sh "cd $WORKSPACE; $CARGO clean"
+                sh "$CARGO --version"
+                sh "$RUSTUP run stable rustc --version"
+            }
+        }
+        stage('check-src') {
+            parallel {
+                stage('Clippy') {
+                    steps {
+                        ansiColor('xterm') {
+                            // sh "cd $WORKSPACE; $CARGO +nightly clippy --all"
+                        }
+                    }
+                }
+                stage('Rustfmt') {
+                    steps {
+                        ansiColor('xterm') {
+                            // The build will fail if rustfmt thinks any changes are
+                            // required.
+                            sh "$RUSTUP component add rustfmt-preview"
+                            sh "$RUSTUP component add rustfmt-preview --toolchain nightly"
+                            // exclude libasn
+                            sh "cd $WORKSPACE; $CARGO +nightly fmt --package libalgorithm --package libasn-sys --package libmessages --package libshim --package libshim-sys --package mecview_server --package sample_algorithm -- --check"
+                        }
+                    }
+                }
+            }
+        }
+        stage('Build-Debug') {
+            steps {
+                ansiColor('xterm') {
+                    sh "cd $WORKSPACE; $CARGO build"
+                }
+            }
+        }
+        stage('Build-Release-And-Test-Debug') {
+            parallel {
+                stage('Test-Debug') {
+                    steps {
+                        ansiColor('xterm') {
+                            sh "cd $WORKSPACE; mv target/debug/mecview_server{,_debug}"
+                            sh "ls -lah $WORKSPACE"
+                            archiveArtifacts "$WORKSPACE/target/debug/mecview_server_debug"
+                            fingerprint "$WORKSPACE/target/debug/mecview_server_debug"
+                            sh "ls -lah $WORKSPACE"
+                            // libshim-sys produces c++ compile errors in test mode o.O
+                            sh "cd $WORKSPACE; $CARGO test -p libalgorithm -p libasn libmessages -p libshim -p mecview_server -p sample_algorithm"
+                        }
+                    }
+                }
+                stage('Build-Release') {
+                    steps {
+                        ansiColor('xterm') {
+                            sh "sleep 2"
+                            sh "cd $WORKSPACE; $CARGO build --release"
+                        }
+                    }
+                }
+            }
+        }
+        stage('Test-Release') {
+            steps {
+                ansiColor('xterm') {
+                    // sh "cd $WORKSPACE; mv target/release/mecview_server mecview_server"
+                    sh "ls -lah $WORKSPACE"
+                    archiveArtifacts "$WORKSPACE/target/release/mecview_server"
+                    fingerprint "$WORKSPACE/target/release/mecview_server"
+                    sh "ls -lah $WORKSPACE"
+                    // libshim-sys produces c++ compile errors in test mode o.O
+                    sh "cd $WORKSPACE; $CARGO test --release -p libalgorithm -p libasn -p libmessages -p libshim -p mecview_server -p sample_algorithm"
+                }
+            }
+        }
+        stage('Post-Build') {
+            parallel {
+                stage('Coverage') {
+                    steps {
+                        // sh "set +e; $CARGO tarpaulin --all --skip-clean | grep 'Error during run' || $CARGO install cargo-tarpaulin"
+                        sh "cd $WORKSPACE; $CARGO tarpaulin -p libalgorithm -p libasn -p libmessages -p libshim -p mecview_server -p sample_algorithm --skip-clean --out Xml"
+                        //sh "cd $CRATE_LIBMSG; $CARGO tarpaulin --all --skip-clean --out Xml"
+                        step([$class: 'CoberturaPublisher',
+                              autoUpdateHealth    : false,
+                              autoUpdateStability : false,
+                              coberturaReportFile : '**/cobertura.xml',
+                              failUnhealthy       : false,
+                              failUnstable        : false,
+                              maxNumberOfBuilds   : 0,
+                              onlyStable          : false,
+                              sourceEncoding      : 'ASCII',
+                              zoomCoverageChart   : false])
+                        // sh "$CARGO tarpaulin --all --skip-clean --out Xml --root $CRATE_LIBMSGSYS"
+                    }
+                }
+                stage('Documentation') {
+                    steps {
+                        sh "cd $WORKSPACE; $CARGO doc -p libalgorithm -p libasn -p libasn-sys -p libmessages -p libshim -p libshim-sys -p mecview_server -p sample_algorithm"
+                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: "$WORKSPACE/target/doc/", reportFiles: 'mecview_server/index.html', reportName: 'Documentation', reportTitles: ''])
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            script {
+                step([$class: 'WarningsPublisher',
+                      canResolveRelativePaths: true,
+                      canComputeNew: true,
+                      unHealthy: '10',
+                      healthy: '0',
+                      unstableTotalAll: '0',
+                      thresholds: [[$class              : 'FailedThreshold',
+                                    failureNewThreshold : '5',
+                                    failureThreshold    : '5',
+                                    unstableNewThreshold: '0',
+                                    unstableThreshold   : '0']],
+                      consoleParsers: [[parserName: 'Clippy Warnings Parser']]])
+            }
+            cleanWs()
+        }
+    }
+}
+

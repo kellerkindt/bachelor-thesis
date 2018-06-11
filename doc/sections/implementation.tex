@@ -200,7 +200,7 @@ Es lohnt sich nun, das Projekt in weiteren Crates aufzuteilen.
 Die \textit{Alogirhtm}-Schnittstelle und die \textit{RawMessage}-Hilfsklasse wird in jeweils eine eigene Crate verschoben. \todo{DIP}
 Die \textit{asn::Message} wird in \textit{AsnMessage} umbenannt und zusammen mit der \textit{AsnAdapter}-Klasse in die neue Crate \textit{libasn} verschoben.
 Auch der \textit{SampleAlgorithm} wird in eine extra Crate verschoben.
-Dies erlaubt das Hinzufügen von zwei weiteren Crates zum einbinden des externen C++ Algorithmus: \textit{libshim-sys} um den C++ Code in Rust zugänglich zu machen (analog zu \textit{libasn-sys}) und \textit{libshim} für die Implementation der \textit{Algorithm}-Schnittstelle und des Adaptercodes.
+Zwei weiteren Crates binden den externen C++ Algorithmus ein: \textit{libshim-sys} um den C++ Code in Rust zugänglich zu machen (analog zu \textit{libasn-sys}) und \textit{libshim} für die Implementation der \textit{Algorithm}-Schnittstelle und des Adaptercodes.
 
 Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architecture_v2_packages} zu sehen und entsprechen nun dem \enquote{Dependency Inversion Principle}.
 
@@ -211,6 +211,10 @@ Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architectur
 	\label{draft:architecture_v2_packages}
 \end{figure}
 
+Die roten Abhängigkeiten entstehen erst durch die Wahl einer Nachrichtentechnologie und des auszuführenden Algorithmus.
+\todo{??}
+Daher können sie als schwache Abhängigkeiten betrachtet werden.
+
 \todo{schwierig, bindgen nix c++}
 
 
@@ -220,9 +224,15 @@ Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architectur
 
 \todo{binary vs source code}
 
+\clearpage
 \section{Startparameter}
 
 \todo{show --help}
+
+\helpinclude
+	{help}
+	{Hilfsinformationen der Rust-Implementation mit allen möglichen Parametern}
+	{sections/help.info}
 
 \subsection{?? Unsichtbare Asynchronität des Algorithmus}
 \todo{impl Algorithm for Sender<..> proxy communication}

@@ -50,7 +50,7 @@ Die hier gelisteten funktionale Anforderungen beschreiben das gewünschte Verhal
 	Aus der empfangenen \textit{SensorFrame}-Nachricht soll hierzu lediglich der Zeitstempel in die \textit{EnvironmentFrame}-Nachricht (siehe \autoref{msg:environment_frame}) übertragen werden.
 }
 
-\requirement{possible:external_algorith}{2310}{OPTIONAL: Einbinden eines C++ Algorithmus}{Die C++ Referenzimplementation definiert die Schnittstellen \textit{Algorithmus}, \textit{EventListener},  \textit{UpdateQueue} und die Methode \textit{AlgorithmFactory::Create}. Dadurch ist es der C++ Implementation möglich, wahlweise mit dem \enquote{Dummy}-Algorithmus oder mit dem Fusionsalgorithmus der Universität Ulm compiliert zu werden. Die Rust Implementation soll ebenfalls einen C++ Algorithmus, der diesen Schnittstellen entspricht, nutzen können.}
+\requirement{possible:external_algorithm}{2310}{OPTIONAL: Einbinden eines C++ Algorithmus}{Die C++ Referenzimplementation definiert die Schnittstellen \textit{Algorithmus}, \textit{EventListener},  \textit{UpdateQueue} und die Methode \textit{AlgorithmFactory::Create}. Dadurch ist es der C++ Implementation möglich, wahlweise mit dem \enquote{Dummy}-Algorithmus oder mit dem Fusionsalgorithmus der Universität Ulm compiliert zu werden. Die Rust Implementation soll ebenfalls einen C++ Algorithmus, der diesen Schnittstellen entspricht, nutzen können.}
 
 
 %\requirement{impl:roadclearance}{Road-Clearance}{\todo{...}}

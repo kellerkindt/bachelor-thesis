@@ -78,10 +78,117 @@ Die frühen und starken Schwankungen resultieren aus Testdurchläufen bei der Ei
 
 Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingerichtet wurden.
 
-\section{ExternalAlgorithm}
 
-Für die Anforderung \reqNumberForLabel{req:possible:external_algorith} (siehe \autoref{possible:external_algorith}) wird der Architekturentwurf erweitert.
-\todo{\autoref{draft:architecture} relative simple, daher wenige module (YAGNI?), jetzt komplexer -> DIP}
+\clearpage
+\section{C++ Algorithmus laden}
+
+Um die optionale Anforderung \reqNumberForLabel{possible:external_algorithm} (siehe \autoref{req:possible:external_algorithm}) umsetzen zu können, muss zuerst die Kommunikation zwischen dem C++ Server und dem Algorithmus analysiert werden:
+
+\begin{figure}[H]
+	\begin{tikzpicture}[scale=0.9]
+	\begin{umlseqdiag} 
+	\umlobject[x=-7,no ddots]{MEC-View-Server}
+	\umlobject[x=4,no ddots]{AlgorithmFactory}
+%	\umlobject[x=12,class=Algorithm]{a}
+
+	\umlcreatecall[dt=7,class=QueueListener<SensorFrame\_t>,x=-2]{MEC-View-Server}{q}
+	\umlcreatecall[dt=5,class=EnvironmentListener,x=2]{MEC-View-Server}{e}
+	
+	
+	\begin{umlcall}[dt=7, op={<<static>> Create(e, q, config\_file)},return=a]{MEC-View-Server}{AlgorithmFactory}
+		\umlcreatecall[class=Extension,x=8]{AlgorithmFactory}{a}
+	\end{umlcall}
+	
+	%\begin{umlcall}[op={Start()}]{AlgorithmFactory}{a}
+		
+	\begin{umlfragment}[type=loop]
+	
+		\begin{umlcall}[dt=7, type=synchron, op={Add(sensor\_frame)},with return]{MEC-View-Server}{q}
+		\end{umlcall}
+		
+		\begin{umlcall}[dt=18, op={Pop()},return=sensor\_frame]{a}{q}
+		\end{umlcall}
+		%\begin{umlcall}[dt=7, op={Update(sensor\_frame)}]{a}{a}
+		%\end{umlcall}
+		\begin{umlcall}[dt=7, op={Update(env\_frame)}]{a}{e}
+		\end{umlcall}
+		
+	\end{umlfragment}
+	%\end{umlcall}
+	
+	\umlsdnode[dt=20]{MEC-View-Server}
+	\umlsdnode[dt=13]{q}
+	\umlsdnode[dt=4]{e}
+	\umlsdnode[dt=29]{AlgorithmFactory}
+	\umlsdnode[dt=4]{a}
+	
+	
+	\end{umlseqdiag}
+	\end{tikzpicture}
+	\centering
+	\caption{Instantiierung eines neuen Algorithmus in der C++ Implementation}
+	\label{seq_dia:algorithm:cpp}
+\end{figure}
+
+In \autoref{seq_dia:algorithm:cpp} ist sowohl die Instantiierung des Algorithmus (Klasse \textit{Extension}) als auch Übermittlung von \textit{SensorFrame}- und \textit{EnvironmentFrame}-Nachrichten (siehe \autoref{msg:sensor_frame} und \autoref{msg:environment_frame}) zu sehen.
+Die Kommunikation zwischen dem Algorithmus und der Außenwelt findet über den \textit{QueueListener} und den \textit{EnvironmentListener} statt.
+Neue \textit{SensorFrame}-Nachrichten werden in den \textit{QueueListener} eingefügt und zu einem späteren Zeitpunkt asynchron vom Algorithmus ausgelesen.
+Eine neue \textit{EnvironmentFrame}-Nachricht übergibt der Algorithmus an den \textit{EnvironmentListener}.
+Über diesen wird in der C++ Implementation anschließend die Nachricht an alle Fahrzeuge verteilt.
+
+\todo{?}
+Die C++ Implementation reduziert durch dieses Vorgehen die direkte Kommunikation zwischen dem Server und dem konkreten Algorithmus auf den Aufruf von \textit{Create}.
+Durch den Austausch dieser Methode kann ein anderer Algorithmus geladen werden.
+
+Damit die Rust-Implementation den C++ Algorithmus Instantiieren kann, muss die Methode \textit{Create} der Klasse \textit{AlgorithmFactory} ordnungsgemäß aufgerufen werden.
+Einen gültigen \textit{QueueListener} und \textit{EnvironmentListener} muss zuvor erstellt werden.
+Der Fokus liegt somit auf den folgenden Klassen:
+
+\begin{figure}[H]
+	\begin{tikzpicture}[scale=0.8, every node/.style={transform shape}]
+		\umlclass[x=-11.0,y=-9.5]{mec::algorithm::AlgorithmFactory}{}{
+			+ Create(\\
+			\quad{}std::weak\_ptr<mec::environment::EnvironmentListener>,\\
+			\quad{}std::weak\_ptr<mec::environment::QueueListener<SensorFrame\_t>>,\\
+			\quad{}config\_file: std::string\\
+			): std::shared\_ptr<mec::extension::Extension>
+		}
+		
+		\umlclass[x=-6.0,y=-5,type=interface]{mec::environment::EnvironmentListener}{}{
+			+ Update(frame: std::shared\_ptr<EnvironmentFrame\_t>) \\
+			+ Init(init\_message: std::shared\_ptr<InitMessage\_t>) \\
+		}
+		
+		\umlsimpleclass[y=-9.5,type=interface]{mec::extension::Extension}
+		
+		
+		\umlclass[x=-6.0,y=-15,type=interface,template=T]{mec::environment::QueueListener}{}{
+			+ Add(sensor\_frame: const std::shared\_ptr<T>): void \\
+			+ Pop(): const std::shared\_ptr<T> \\
+			+ Pop(timeout: std::chrono::duration<int, std::milli>): const std::shared\_ptr<T> \\
+			+ MessageAvailable(): bool \\
+			+ GetMessageCount(): int \\
+			+ SetStop(stop: bool) \\
+		}
+		
+		\umluniassoc{mec::extension::Extension}{mec::environment::QueueListener}
+		\umluniassoc{mec::extension::Extension}{mec::environment::EnvironmentListener}
+		\umluniassoc{mec::algorithm::AlgorithmFactory}{mec::extension::Extension}
+	\end{tikzpicture}
+	\centering
+	\caption{Instantiierung eines neuen Algorithmus in der C++ Implementation}
+	\label{class_dia:algorithm:cpp}
+\end{figure}
+
+Der C++ Algorithmus soll dem Merkmal des Rust Algorithmus entsprechen, um eine Änderung im bestehenden Rust Code möglichst gering zu halten. \todo{liskov}
+Eine Änderung im C++ Quellcode ist jedoch untersagt, stattdessen soll weitere Adaptercode die Lücke schließen. \todo{SRP}
+In einem ersten Schritt wird der Methodenaufruf von \textit{AlgorithmFactory::Create} in Rust zugänglich gemacht werden.
+Anschließend wird der nötige Adaptercode implementiert, um den C++ Algorithmus dem Rust-Merkmal \textit{Algorithm} zu entsprechen.
+
+
+Aufgrund der wachsenden Komplexität wird auch die Architektur erweitert und aufgeräumt \todo{DIP}.
+In \autoref{draft:architecture} ist die erweiterte Version zu sehen.
+Es lohnt sich nun, das Projekt in weiteren Crates aufzuteilen.
 
 \begin{figure}[H]
 	\centering
@@ -93,7 +200,9 @@ Für die Anforderung \reqNumberForLabel{req:possible:external_algorith} (siehe \
 Die \textit{Alogirhtm}-Schnittstelle und die \textit{RawMessage}-Hilfsklasse wird in jeweils eine eigene Crate verschoben. \todo{DIP}
 Die \textit{asn::Message} wird in \textit{AsnMessage} umbenannt und zusammen mit der \textit{AsnAdapter}-Klasse in die neue Crate \textit{libasn} verschoben.
 Auch der \textit{SampleAlgorithm} wird in eine extra Crate verschoben.
-Dies erlaubt das Hinzufügen von zwei weiteren Crates zum einbinden des externen C++ Algorithmus: \textit{libalgorithm-sys} für die direkten Bindings (analog zu \textit{libasn-sys}) und \textit{libshim} für die Implementation der \textit{Algorithm} Schnittstelle.
+Dies erlaubt das Hinzufügen von zwei weiteren Crates zum einbinden des externen C++ Algorithmus: \textit{libshim-sys} um den C++ Code in Rust zugänglich zu machen (analog zu \textit{libasn-sys}) und \textit{libshim} für die Implementation der \textit{Algorithm}-Schnittstelle und des Adaptercodes.
+
+Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architecture_v2_packages} zu sehen und entsprechen nun dem \enquote{Dependency Inversion Principle}.
 
 \begin{figure}[H]
 	\centering
@@ -102,9 +211,14 @@ Dies erlaubt das Hinzufügen von zwei weiteren Crates zum einbinden des externen
 	\label{draft:architecture_v2_packages}
 \end{figure}
 
-\todo{updated architecture}
+\todo{schwierig, bindgen nix c++}
 
-\todo{updated usecases}
+
+
+
+\todo{?? updated usecases}
+
+\todo{binary vs source code}
 
 \section{Startparameter}
 

@@ -78,6 +78,71 @@ Die frühen und starken Schwankungen resultieren aus Testdurchläufen bei der Ei
 
 Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingerichtet wurden.
 
+\clearpage
+\section{Asynchrone Kommunikation}
+Wie bereits in \autoref{design:communication:architecture:async} festgestellt, ist für eine hochperformante Kommunikationsplattform eine interne, asynchrone Kommunikation nötig.
+
+
+Mittels \enquote{channel} (dt. \enquote{Kanäle}) können in Rust Mitteilungen zwischen vielen Auftraggebern und einem Empfänger ausgetauscht werden (andere Rust-Bibliotheken erlauben auch viele Empfänger, zum Beispiel \enquote{crossbeam-channel}\footnote{\url{https://crates.io/crates/crossbeam-channel}}).
+Der zu versendende Datentyp muss lediglich das Merkmal \rustcinline{Send} aufweisen (siehe \autoref{rust:trait:send}):
+
+\rustcinclude
+	{impl:channels:example}
+	{Beispiel für die Nutzung von Kanälen}
+	{sections/impl.channels.rs}
+
+\autoref{impl:channels:example} zeigt ein einfaches Beispiel, wie ein asynchroner  und sicherer Nachrichtenaustausch in Rust umgesetzt werden kann.
+Zur Laufzeit gibt das Beispielprogramm \monospaceinline{Empfangen: Hallo, Kanal!} auf der Konsole aus.
+
+Um nicht für jeden Datentyp einen neuen Kanal erstellen zu müssen, kann das \enquote{Command Pattern} (dt. Kommando Verhaltensmuster) \cite[153]{goll2014architektur} verwendet werden, um über einen Kanal mehrere Aktionen zu befehligen.
+In Rust kann dies mit einem \rustcinline{enum} umgesetzt werden:
+
+\rustcinclude
+	{impl:commands:example}
+	{Beispiel für die Nutzung von Kanälen und dem Kommando-Verhaltensmusters}
+	{sections/impl.commands.rs}
+	
+In \autoref{impl:commands:example} ist die Aktion, etwas auf der Konsole auszugeben, als Variante \rustcinline{Say} in dem Kommando definiert.
+Für eine Instanz dieser Variante, wird zudem ein \rustcinline{String} verlangt, der daraufhin innerhalb von \rustcinline{execute} in Zeile 11 ausgegeben wird.
+
+Nach diesem Beispiel ist die Kommunikation zwischen dem dem \textit{Algorithmus}, dem \textit{Client}, dem \textit{Vehicle} und dem \textit{Sensor} in der tatsächlichen Implementation realisiert (siehe \autoref{draft:architecture}).
+In dem folgenden \autoref{impl:commands:algorithm} sind die Befehle zu sehen, die an den Algorithmus versendet werden können.
+
+\rustcinclude
+	{impl:commands:algorithm}
+	{Kommandos, die einem \textit{Algorithm} zugesandt werden können}
+	{sections/impl.command.algorithm.rs}
+
+Ob eine Kommunikation zwischen zwei Komponenten asynchron oder synchron stattfindet, sollte für die Implementation jedoch möglichst keine Rolle spielen.
+Zur Kommunikation mit anderen Komponenten sollte es nur nötig sein, die entsprechende Schnittstelle zu kennen (Stichwort \enquote{loose coupling} \cite[49]{goll2018entwurfsprinzipien}).
+Die verwendete Kommunikationstechnologie (\textit{tokio}) und Verhaltensmuster (Kommando) beziehen sich nicht mehr auf das Aufgabengebiet der Komponenten.
+Durch eine Fassade kann das Erstellen eines Kommandos und das übermitteln durch einen Kanal gekapselt und auf einen einfachen Methodenaufruf reduziert werden.
+Die Verwirklichung mittels Schnittstelle und einer Methode für jedes Kommando entspricht letztendlich dem \enquote{Proxy Pattern} (dt. Stellvertreter-Strukturmuster) \cite[137]{goll2018entwurfsprinzipien}.
+
+Da ein Beispiel aus der tatsächlich Implementierung zu groß für eine übersichtliche Erläuterung ist, wird das Beispiel aus \autoref{impl:channels:example} und \autoref{impl:commands:example} erneut aufgegriffen, um Beispielhaft das Prinzip zu erklären.
+
+Die neue Schnittstelle \rustcinline{EndPoint} definiert die Funktion \rustcinline{say}, um einen Text auf der Konsole auszugeben.
+Anschließend wird sie für den Sendeteil des Kanals implementiert, wodurch dieser quakt\footnote{\enquote{Duck Typing} \cite[44]{rust:orly_programming} in Rust teilweise möglich, dann aber ohne Laufzeitkosten. Theorem in etwa: \enquote{When I see a bird that walks like a duck and swims like a duck and quacks like a duck, I call that bird a duck.} - James Whitcomb Riley  \todo{cite? \url{https://de.wikipedia.org/wiki/James_Whitcomb_Riley}, Wiki: Die ursprüngliche Herkunft dieser Phrase ist jedoch umstritten}} wie die \rustcinline{EndPoint}-Schnittstelle.
+Für Zeile 35 ist daher nicht erkenntlich, dass es sich um einen Kanal handelt.
+
+Auf der Konsole wird \monospaceinline{Say: Hallo, Fassade!}.
+
+\rustcinclude
+	{impl:commands:facade}
+	{\todo{Command Pattern}, und Fassade}
+	{sections/impl.commands.facade.rs}
+
+In der tatsächlichen Implementierung wird innerhalb der \rustcinline{execute} Methode von \rustcinline{Command} eine entsprechende Methode in \textit{Client} oder \textit{Algorithm} aufgerufen.
+
+Als weitere Leistungsoptimierung sind die Kommunikationspartner, wie der \textit{Algorithm} für den \textit{Client}, mittels generische Typen eingebettet (siehe \autoref{rust:generics}).
+Dem Compiler ist hierdurch bekannt, welche Datentypen sich tatsächlich hinter den generischen Typen (\rustcinline{D} und \rustcinline{A} in \autoref{impl:commands:fast_generic}) verbergen und kann den Maschinencode trotz Abstraktion ungehindert optimieren\footnote{\enquote{Despite their flexibility, generic functions [and structs] are just as efficient as their nongeneric counterparts.}\cite[45]{rust:orly_programming}}.
+
+\rustcinclude
+	{impl:commands:fast_generic}
+	{Ausschnitt aus der Datenstruktur \textit{Client} zeigt generische Typen für \textit{Algorithm} und \textit{Adapter}}
+	{sections/impl.command.client.rs}
+	
+Ein \enquote{Trait-Object} (siehe \autoref{impl:commands:fast_generic}), wie etwa \rustcinline{Box<Adapter>}, würde dagegen einen \enquote{vtable} Zugriff zur Laufzeit erzwingen und eine Optimierung für den konkreten Datentyp unterbinden, da dieser meist nicht zur Compilezeit bekannt oder eindeutig ist.
 
 \clearpage
 \section{C++ Algorithmus laden}
@@ -210,8 +275,6 @@ Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architectur
 	\caption{Architekturentwurf}
 	\label{draft:architecture_v2_packages}
 \end{figure}
-
-\todo{show rust channels, command pattern(how awesome rust enums are, +cite!), facade...}
 
 Die roten Abhängigkeiten entstehen erst durch die Wahl einer Nachrichtentechnologie und des auszuführenden Algorithmus.
 \todo{??}

@@ -148,7 +148,7 @@ Ein \enquote{Trait-Object} (siehe \autoref{impl:commands:fast_generic}), wie etw
 \clearpage
 \section{C++ Algorithmus laden}
 
-Um die optionale Anforderung \reqNumberForLabel{possible:external_algorithm} (siehe \autoref{req:possible:external_algorithm}) umsetzen zu können, muss zuerst die Kommunikation zwischen dem C++ Server und dem Algorithmus analysiert werden:
+Um die optionale Anforderung \reqNumberForLabel{possible:external_algorithm} (siehe \autoref{req:possible:external_algorithm}) umsetzen zu können, muss zuerst die Kommunikation innerhalb des C++ Servers mit dem Algorithmus analysiert werden:
 
 \begin{figure}[H]
 	\begin{tikzpicture}[scale=0.9]
@@ -246,15 +246,14 @@ Der Fokus liegt somit auf den folgenden Klassen:
 	\label{class_dia:algorithm:cpp}
 \end{figure}
 
-Der C++ Algorithmus soll dem Merkmal des Rust Algorithmus entsprechen, um eine Änderung im bestehenden Rust Code möglichst gering zu halten. \todo{liskov}
-Eine Änderung im C++ Quellcode ist jedoch untersagt, stattdessen soll weitere Adaptercode die Lücke schließen. \todo{SRP}
-In einem ersten Schritt wird der Methodenaufruf von \textit{AlgorithmFactory::Create} in Rust zugänglich gemacht werden.
-Anschließend wird der nötige Adaptercode implementiert, um den C++ Algorithmus dem Rust-Merkmal \textit{Algorithm} zu entsprechen.
+Der C++ Algorithmus soll durch einen Adapter dem Merkmal des Rust \textit{Algorithm} entsprechen, um eine Änderung im bestehenden Rust Code möglichst gering zu halten.
+Eine Änderung im C++ Quellcode ist untersagt.
+In einem ersten Schritt wird der Methodenaufruf von \textit{AlgorithmFactory::Create} in Rust zugänglich gemacht.
+Anschließend wird der nötige Adaptercode implementiert.
 
 
-Aufgrund der wachsenden Komplexität wird auch die Architektur erweitert und aufgeräumt \todo{DIP}.
+Wegen der wachsenden Komplexität wird auch die Architektur erweitert und, aufgrund der nun höheren Anzahl an Klassen, in weitere Crates aufgeteilt.
 In \autoref{draft:architecture} ist die erweiterte Version zu sehen.
-Es lohnt sich nun, das Projekt in weiteren Crates aufzuteilen.
 
 \begin{figure}[H]
 	\centering
@@ -263,12 +262,12 @@ Es lohnt sich nun, das Projekt in weiteren Crates aufzuteilen.
 	\label{draft:architecture_v2}
 \end{figure}
 
-Die \textit{Alogirhtm}-Schnittstelle und die \textit{RawMessage}-Hilfsklasse wird in jeweils eine eigene Crate verschoben. \todo{DIP}
+Die \textit{Alogirhtm}-, \textit{CountListener}- und \textit{EnvironmentListener}-Schnittstelle wird in eine eigene Crate verschoben.
 Die \textit{asn::Message} wird in \textit{AsnMessage} umbenannt und zusammen mit der \textit{AsnAdapter}-Klasse in die neue Crate \textit{libasn} verschoben.
-Auch der \textit{SampleAlgorithm} wird in eine extra Crate verschoben.
-Zwei weiteren Crates binden den externen C++ Algorithmus ein: \textit{libshim-sys} um den C++ Code in Rust zugänglich zu machen (analog zu \textit{libasn-sys}) und \textit{libshim} für die Implementation der \textit{Algorithm}-Schnittstelle und des Adaptercodes.
+Auch der \textit{SampleAlgorithm} wird in eine eigene Crate verschoben.
+Zwei weiteren Crates binden den externen C++ Algorithmus ein: \textit{libshim-sys} um den C++ Code in Rust zugänglich zu machen (analog zu \textit{libasn-sys}) und \textit{libshim} für die Implementation der \textit{Algorithm}-Schnittstelle mittels Adaptercodes.
 
-Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architecture_v2_packages} zu sehen und entsprechen nun dem \enquote{Dependency Inversion Principle}.
+Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architecture_v2_packages} zu sehen und entsprechen nun dem \enquote{Dependency Inversion Principle}. \todo{naja, teils}
 
 \begin{figure}[H]
 	\centering
@@ -281,7 +280,20 @@ Die roten Abhängigkeiten entstehen erst durch die Wahl einer Nachrichtentechnol
 \todo{??}
 Daher können sie als schwache Abhängigkeiten betrachtet werden.
 
+
+\todo{.}
+Die Einbindung des C++ Quellcodes ist, im Gegensatz zum C-Code der ASN.1 Nachrichten, deutlich schwieriger.
+Die Abhängigkeiten zu den Datentypen der Standardbibliothek (siehe \autoref{class_dia:algorithm:cpp}) und die Klassenhierarchie macht einen Zugriff aus Rust deutlich komplizierter und würde eine manuelle Pflege der \textit{vtable} benötigen.
+Deswegen ist eine andere Herangehensweise ausgewählt worden.
+Weiterer C-Code soll den C++ Code über eine C-Datenstruktur und 5 Funktionen zugänglich machen \todo{Facade!} und eine Nutzung in Rust deutlich vereinfachen.
 \todo{schwierig, bindgen nix c++}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.9\textwidth]{dia/libshim}
+	\caption{\todo{Adaptercode}}
+	\label{draft:libshim}
+\end{figure}
 
 
 

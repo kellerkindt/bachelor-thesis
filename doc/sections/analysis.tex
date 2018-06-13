@@ -19,7 +19,7 @@ Um eine Gesamtübersicht über das System zu erhalten, wird zuerst ein Systemkon
 		\node [draw, rectangle, drop shadow, fill=white] (F) {Fahrzeug};
 		\node [draw, circle, drop shadow, fill=white, text width=3cm, align=center] (C) [below right=of F] {MEC-View Server};
 		\node [draw, rectangle, drop shadow, fill=white] (S) [below right=of C] {Sensor};
-%		\node [draw, rectangle, drop shadow, fill=white] (A) [above right=of C] {Fusions-Algorithmus};
+%		\node [draw, rectangle, drop shadow, fill=white] (A) [above right=of C] {Fusionsalgorithmus};
 		
 		\node (ctrl1) [above=of S] {};
 		\node (ctrl2) [above right=of C] {};
@@ -88,7 +88,7 @@ Um eine Gesamtübersicht über das System zu erhalten, wird zuerst ein Systemkon
 \end{figure}
 
 In \autoref{system_context_diagramm} ist das System \enquote{MEC-View Server} abgebildet.
-Die Pfeile zeigen Kontroll- und Datenflüsse auf andere  Systeme mit denen eine wechselwirkung stattfindet \cite[501]{goll2012methoden}.
+Die Pfeile zeigen Kontroll- und Datenflüsse auf andere  Systeme, mit denen eine wechselwirkung stattfindet \cite[501]{goll2012methoden}.
 
 \section{Gesamtübersicht der Anwendungsfälle}
 
@@ -136,7 +136,7 @@ Das folgende Anwendungsfalldiagramm in \autoref{use_case:sensor} zeigt dagegen d
 	\umlassoc{Sensor}{u6}
 	\umlassoc{Sensor}{u7}
 	\umlassoc{Sensor}{u8}
-	%		\umlassoc{Fusions-Algorithmus}{u4}
+	%		\umlassoc{Fusionsalgorithmus}{u4}
 	\end{tikzpicture}
 	\centering
 	\caption{Anwendungsfalldiagramm des MEC-View-Servers für den Aktuer \enquote{Sensor}}
@@ -159,6 +159,17 @@ Die einzelnen Anwendungsfälle aus \autoref{use_case:car} und \autoref{use_case:
 		\textbf{Nachbedingung:} & #7 \\
 	\end{tabular}
 }
+\newcommand{\usecaseWT}[8]{\subsection{#1}
+	\begin{tabular}[H]{lp{\usecasetablewidth}}
+		\textbf{Initiator:} & #2 \\
+		\textbf{Auslöser:} & #3 \\
+		\textbf{Beteiligte Akteure:} & #4 \\
+		\textbf{Vorbedingung:} & #5 \\
+		\textbf{Basisablauf:} & #6 \\
+		\textbf{Alternativablauf:} & #7 \\
+		\textbf{Nachbedingung:} & #8 \\
+	\end{tabular}
+}
 
 \usecase{Als Fahrzeug registrieren}
 	{Fahrzeug}
@@ -174,7 +185,7 @@ Die einzelnen Anwendungsfälle aus \autoref{use_case:car} und \autoref{use_case:
 	{Fahrzeug}
 	{Ist als Fahrzeug registriert}
 	{Ein Fahrzeug kann das Umgebungsmodell abonnieren, woraufhin neue Modelle vom Server an das Fahrzeug übermittelt werden.
-		Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription})}
+		Ein Abonnement wird durch eine \textit{UpdateSubscription}-Nachricht aktualisiert (siehe \autoref{msg:update_subscription}).}
 	{--}
 	{Neue Umgebungsmodelle werden an das Fahrzeug übermittelt.}
 	
@@ -202,29 +213,31 @@ Die einzelnen Anwendungsfälle aus \autoref{use_case:car} und \autoref{use_case:
 	{Sensor}
 	{Ist als Sensor registriert}
 	{Ein Sensor kann dem Server eine \textit{SensorFrame}-Nachricht übermitteln.
-		Der Server soll diese Nachricht dem Fusions-Algorithmus weiterleiten.}
+		Der Server soll diese Nachricht dem Fusionsalgorithmus weiterleiten.}
 	{--}
 	{--}
 
 \usecase{SensorIdleFrame zusenden}
 	{Sensor}
 	{Sensor}
-	{Ist als Sensor registriert, Sensor ist nicht abonniert}
+	{Ist als Sensor registriert, Sensor ist nicht abonniert.}
 	{Ein Sensor kann dem Server eine \textit{SensorIdleFrame}-Nachricht übermitteln.}
 	{--}
 	{--}
 	
 
-\usecase{Sensor abonnieren}
+\usecaseWT{Sensor abonnieren}
 	{MEC-View-Server}
+	{Ein Fahrzeug hat sich registriert.}
 	{Sensor}
 	{Ist als Sensor registriert}
 	{Der MEC-View-Server sendet eine \textit{UpdateSubscription}-Nachricht (siehe \autoref{msg:update_subscription}), um ein Abonnement zu erstellen.}
 	{--}
 	{Der MEC-View-Server erhält \textit{SensorFrame}-Nachrichten und keine \textit{SensorIdleFrame}-Nachrichten.}
 	
-\usecase{Sensor deabonnieren}
+\usecaseWT{Sensor deabonnieren}
 	{MEC-View-Server}
+	{Das letzte verbundene Fahrzeug hat die Verbindung getrennt.}
 	{Sensor}
 	{Ist als Sensor registriert}
 	{Der MEC-View-Server sendet eine \textit{UpdateSubscription}-Nachricht (siehe \autoref{msg:update_subscription}), um ein Abonnement zu beenden.}
@@ -233,16 +246,18 @@ Die einzelnen Anwendungsfälle aus \autoref{use_case:car} und \autoref{use_case:
 	
 
 
-\usecase{Fahrzeug Sektoren zusenden}
+\usecaseWT{Fahrzeug Sektoren zusenden}
 	{MEC-View-Server}
+	{Das Fahrzeug hat eine \textit{ClientRegistration}-Nachricht gesendet.}
 	{Fahrzeug}
 	{Ist als Fahrzeug registriert, Sektoren noch nicht übermittelt}
 	{Der MEC-View-Server soll dem Fahrzeug einmalig nach Registrierung alle bekannten Sektoren in einer \textit{InitMessage}-Nachricht (siehe \autoref{msg:init_message}) zusenden.}
 	{--}
 	{Sektoren können nicht erneut zugesendet werden.}
 	
-\usecase{Fahrzeug Umgebungsmodell zusenden}
+\usecaseWT{Fahrzeug Umgebungsmodell zusenden}
 	{MEC-View-Server}
+	{Der Algorithmus hat ein neues Umgebungsmodell erstellt.}
 	{Fahrzeug}
 	{Fahrzeug ist abonniert}
 	{Der MEC-View-Server kann dem Fahrzeug Umgebungsmodelle mit \textit{EnvironmentFrame}-Nachrichten (siehe \autoref{msg:environment_frame}) zusenden.}
@@ -251,7 +266,7 @@ Die einzelnen Anwendungsfälle aus \autoref{use_case:car} und \autoref{use_case:
 
 %\begin{figure}[H]
 %	\begin{tikzpicture}[node distance=5]
-%		\begin{umlsystem}{Fusions-Algorithmus}
+%		\begin{umlsystem}{Fusionsalgorithmus}
 %			\umlusecase[y=0,name=u1]{Sensordaten übergeben}
 %		\end{umlsystem} 
 %		\umlactor[x=-5,y=0]{MEC-View-Server}
@@ -259,7 +274,7 @@ Die einzelnen Anwendungsfälle aus \autoref{use_case:car} und \autoref{use_case:
 %	\end{tikzpicture}
 %	\centering
 %	\label{use_case:server_algorithmus}
-%	\caption{Use Case Diagramm des MEC-View-Servers gegenüber dem Fusions-Algorithmus}
+%	\caption{Use Case Diagramm des MEC-View-Servers gegenüber dem Fusionsalgorithmus}
 %\end{figure}
 
 
@@ -327,7 +342,7 @@ Die SensorFrame-Nachricht wird vom Sensor an den Server versendet und beschreibt
 \subsection{EnvironmentFrame}
 \label{msg:environment_frame}
 
-Die EnvironmentFrame-Nachricht wird vom Server an das Fahrzeug versendet und enthält das Ergebnis des Fusions-Algorithmus.
+Die EnvironmentFrame-Nachricht wird vom Server an das Fahrzeug versendet und enthält das Ergebnis des Fusionsalgorithmus.
 
 \subsection{UpdateSubscription}
 \label{msg:update_subscription}
@@ -495,7 +510,7 @@ Durch eine \textit{UpdateSubscription}-Nachricht kann das Fahrzeug jederzeit das
 
 In \autoref{seq_dia:both} ist das Zusammenspiel des Sensor aus \autoref{seq_dia:sensor}, des Fahrzeugs aus \autoref{seq_dia:vehicle} und des MEC-View-Servers zu sehen.
 Um die Übersichtlichkeit zu wahren, wurden die Nachrichtentypen durch Anweisungen ersetzt.
-Es ist zu erkennen, das der Server bereits ein Abonnement gegenüber dem Sensor erstellt, sobald sich ein Fahrzeug registriert.
+Es ist zu erkennen, dass der Server bereits ein Abonnement gegenüber dem Sensor erstellt, sobald sich ein Fahrzeug registriert.
 Dieses Abonnement ist so lange gültig, wie zumindest ein Fahrzeug verbunden ist.
 
 \begin{figure}[H]

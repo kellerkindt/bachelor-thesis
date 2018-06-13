@@ -7,7 +7,7 @@ Rust hat als Ziel, eine sichere (siehe \autoref{rust:guarantees}) und performant
 Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber keine unnötigen Performance-Einbußen verursachen (siehe \autoref{rust:zero_cost}).
 
 Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie vergessene \ccinline{NULL}-Pointer Prüfung, vergessene Fehlerprüfung, \enquote{dangling pointers} oder \enquote{memory leaks} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert (\autoref{rust:guarantees}).
-Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Kompilation überprüft und erzwungen.
+Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
 %\todo{Anderswo als Best Practice Vorschläge, hier in Regeln erzwungen, ändert nicht viel, erzwingt nur korrekte programmierung}
 Dadurch erreicht Rust eine zur Laufzeit hohe Ausführgeschwindigkeit.
 
@@ -584,7 +584,7 @@ Für Unit-Tests müssen Module und Funktionen mit entsprechenden Attributen vers
 
 Unit-Tests sind per Konvention immer in der Datei mit der zu testenden Funktionalität zu finden.
 Diese privaten, inneren Module, die konventionell \enquote{tests} benannt sind, werden durch das Attribut \rustcinline{#[cfg(test)]} markiert.
-Durch diese Markierung wird der beinhaltete Code nur für das Ausführen der Tests compiliert und spart bei normaler Kompilation Zeit.
+Durch diese Markierung wird der beinhaltete Code nur für das Ausführen der Tests compiliert und spart bei normaler Compilation Zeit.
 \rustcinline{cargo test} führt alle auffindbaren Funktionen mit dem Attribut \rustcinline{#[test]}, leeren Parameterlisten und keinen Rückgabewerten aus.
 Die Makros \rustcinline{assert!(a)}, \rustcinline{assert_eq!(a, b)} und \rustcinline{assert_ne!(a, b)} prüfen Ergebnisse und lösen \rustcinline{panic!}s aus (siehe \autoref{rust:panic}), falls Ergebnisse nicht den erwarteten Werten entsprechen.
 Ein Test gilt als bestanden, wenn keine \rustcinline{panic!} ausgelöst wurde.
@@ -768,7 +768,7 @@ Durch diese statische Analyse findet der Compiler heraus, wann der Speicher eine
 Dies ist genau dann, wenn der Geltungsbereich des Eigentümers zu Ende ist.
 Weder ein \gls{gc}, der dies zur Laufzeit nachverfolgt, noch ein manuelles Eingreifen durch den Entwickler (zum Beispiel durch \ccinline{free(*void)}, wie in C/C++ üblich) ist nötig.
 
-Falls der Compiler keine ordnungsgemäße Nutzung feststellen kann, wie zum Beispiel eine Referenz, die ihren referenzierten Wert überleben möchte, wird die Kompilation verweigert.
+Falls der Compiler keine ordnungsgemäße Nutzung feststellen kann, wie zum Beispiel eine Referenz, die ihren referenzierten Wert überleben möchte, wird die Compilation verweigert.
 Dadurch wird das Problem des \enquote{dangling pointers} verhindert, ohne Laufzeitkosten zu erzeugen (siehe \autoref{rust:guarantee:no_dangling_pointer}).
 
 Im folgenden \autoref{rust:memory:scope} wird beispielhaft Speicher auf dem Heap allokiert.
@@ -982,7 +982,7 @@ Das Feld \enquote{model} in der C-Struktur ist beim Erstellen der Eigentümer de
 Im Rust-Beispiel ist die Zeichenkette deswegen in Zeile 19 außerhalb der \rustcinline{erstelle_computer}-Funktion, da der Geltungsbereich ansonsten beim Verlassen der Funktion bereits zu Ende wäre und das Leihen an die Datenstruktur nicht möglich wäre.
 Dieser Unterschied ist gleichzeitig auch die Fehlerquelle im C-Beispiel.
 
-Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgehend dem Beispiel aus \autoref{rust:owner:c_bad_free}, zumindest genügend, um zu zeigen, dass der Rust Compiler den Fehler erkennt und die Kompilation abbricht (für Zeile 25):
+Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgehend dem Beispiel aus \autoref{rust:owner:c_bad_free}, zumindest genügend, um zu zeigen, dass der Rust Compiler den Fehler erkennt und die Compilation abbricht (für Zeile 25):
 
 \begin{figure}[H]
 	\begin{tcolorbox}[colback=codeBackground,boxrule=0pt,arc=0pt]

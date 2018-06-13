@@ -5,7 +5,7 @@
 In diesem Kapitel wird die Implementation des MEC-View-Servers in Rust mit der Referenzimplementation in C++ verglichen.
 Hierzu wird die Testumgebung aus dem C++ Projekt auch auf die Rust Implementation angewandt: Fahrzeuge und Sensoren werden simuliert und die Laufzeit für die Übermittlung von Nachrichten wird gemessen.
 
-Im ersten Testszenario führt die Implementation in Rust eine in Rust geschriebenen \enquote{Dummy}-Algorithmus aus (siehe Anforderung \reqNumberForLabel{impl:algorithmus} in \autoref{req:impl:algorithmus}).
+Im ersten Testszenario führt die Implementation in Rust einen in Rust geschriebenen \enquote{Dummy}-Algorithmus aus (siehe Anforderung \reqNumberForLabel{impl:algorithmus} in \autoref{req:impl:algorithmus}).
 Im zweiten Schritt wird stattdessen der \enquote{Dummy}-Algorithmus geladen, den auch die C++ Implementation benutzt.
 
 
@@ -36,15 +36,15 @@ Lediglich die Anzahl an Fahrzeugen und Sensoren, die als Übergabeparameter an d
 Das Vorgehen eines Tests sieht folgendermaßen aus:
 
 \begin{itemize}
-	\item Server mit Log-Level \enquote{info} starten um den Server nicht durch unnötige Logausgaben zu bremsen
-	\item Skript starten
-	\item Skript startet die Sensoren als Hintergrundprozesse
-	\item Skript pausiert für 2 Sekunden um genügend Zeit für den Verbindungsaufbau der Sensoren einzuräumen
-	\item Skript startet die Fahrzeugen, die 5 Sekunden nach dem Verbindungsaufbau das Umfeldmodell für 60 Sekunden abonnieren.
-	\item Skript wartet auf Prozessende der Fahrzeuge
-	\item Skript beendet alle Sensoren
-	\item Skript pausiert für 2 Sekunden um dem Server genügend Zeit für den Verbindungsabbau der Sensoren und Fahrzeuge einzuräumen
-	\item Skript wiederholt alle Schritt ab Schritt 2 bis 10 Durchläufe ausgeführt wurden
+	\item Server mit Log-Level \enquote{info} starten, um den Server nicht durch unnötige Log-Ausgaben zu bremsen.
+	\item Skript starten.
+	\item Skript startet die Sensoren als Hintergrundprozesse.
+	\item Skript pausiert für 2 Sekunden, um genügend Zeit für den Verbindungsaufbau der Sensoren einzuräumen.
+	\item Skript startet die Fahrzeuge, die 5 Sekunden nach dem Verbindungsaufbau das Umfeldmodell für 60 Sekunden abonnieren.
+	\item Skript wartet auf Prozessende der Fahrzeuge.
+	\item Skript beendet alle Sensoren.
+	\item Skript pausiert für 2 Sekunden, um dem Server genügend Zeit für den Verbindungsabbau der Sensoren und Fahrzeuge einzuräumen.
+	\item Skript wiederholt alle Schritt ab Schritt 2, bis 10 Durchläufe ausgeführt wurden.
 \end{itemize}
 
 Für jedes Umfeldmodell, das von einem Fahrzeug empfangen wird, wird auf der Konsole die Latenz in ganzen Millisekunden ausgegeben.
@@ -66,6 +66,8 @@ Im Produktivbetrieb und mit dem Fusionsalgorithmus der Universität Ulm werden \
 \todo{::} Falls eine Serverimplementation mit dieser Stresssituation umgehen kann, erfüllt sie auch die Anforderung \reqNumberForLabel{exec:time} im Produktivbetrieb.
 
 \section{Ergebnisse}
+
+\todo{text - y u keep forgetting?}
 
 \newcommand{\makeDias}[3]{
 	\begin{figure}[H]
@@ -170,24 +172,24 @@ Zudem verläuft eine waagrechte Gerade auf Höhe von 5ms. Sie markiert die maxim
 Es sind 5 Gruppierungen je Implementation auf der X-Achse zu erkennen (bei etwa 15.000, 30.000, 45.000, 60.000 und 75.000 Nachrichten).
 Dies resultiert aus der unterschiedlichen Anzahl an Fahrzeugen und der deshalb multiplikativ wachsenden Gesamtanzahl an übermittelten Nachrichten.
 Auf der Y-Achse ist dagegen für jede Gruppe eine Streuung zu sehen.
-Während sich die Streuung bei den Rust Implementation mit zunehmenden Fahrzeugen eher verringert, steigt bei der C++ Implementation die Streuung deutlich.
-Jeder Gruppierung einer Implementation hat zudem die Tendenz, eine höhere durchschnittliche Latenz wie ihre vorgehende Gruppe aufzuweisen.
+Während sich die Streuung bei der Rust Implementation mit zunehmenden Fahrzeugen eher verringert, steigt bei der C++ Implementation die Streuung deutlich.
+Jede Gruppierung einer Implementation hat zudem die Tendenz, eine höhere durchschnittliche Latenz wie ihre vorgehende Gruppe aufzuweisen.
 Dies ist durch die jeweilig steigende Trendlinie gut zu erkennen.
 
-Die Rust und C++ Implementierung weisen bei einem Client etwa die selbe durchschnittliche Latenz auf, während die Rust Implementation mit dem C++ Algorithmus hier eine leicht erhöhte Latenz aufweist.
+Die Rust und die C++ Implementierung weisen bei einem Client etwa die selbe durchschnittliche Latenz auf, während die Rust Implementation mit dem C++ Algorithmus hier eine leicht erhöhte Latenz aufweist.
 Die Trendlinie der C++ Implementation verläuft bei steigender Anzahl an Nachrichten deutlich steiler wie die Trendlinie der anderen zwei Implementationen.
-Bei zwei Fahrzeugen sind die beiden Rust Implementationen gleichauf und bei weiteren Fahrzeugen hat die die Rust Implementation mit dem C++ Algorithmus eine geringere durchschnittliche Latenz wie die reine Rust oder die C++ Implementation.
+Bei zwei Fahrzeugen sind die beiden Rust Implementationen gleichauf und bei weiteren Fahrzeugen hat die Rust Implementation mit dem C++ Algorithmus eine geringere durchschnittliche Latenz wie die reine Rust oder die C++ Implementation.
 
 \subsubsection{Auswertung}
 
-Aus dem Diagramm ist zu erkennen, das sowohl die C++ Implementation, als auch die Rust Implementationen, trotz erhöhtem Stress, die Anforderung \reqNumberForLabel{exec:time} (siehe \autoref{req:exec:time}) erfüllen.
-Im Gegensatz zur C++ Implementation, erfüllen die Rust Implementationen dies auch noch bei mehr Fahrzeugen (getestet bis inklusive 5, die Trendlinie lässt aber noch mehr vermuten).
+Aus dem Diagramm ist zu erkennen, dass sowohl die C++ Implementation als auch die Rust Implementationen, trotz erhöhtem Stress, die Anforderung \reqNumberForLabel{exec:time} (siehe \autoref{req:exec:time}) erfüllen.
+Im Gegensatz zur C++ Implementation erfüllen die Rust Implementationen dies auch noch bei mehr Fahrzeugen (getestet bis inklusive 5, die Trendlinie lässt aber noch mehr vermuten).
 
 Interessant ist der Verlauf der roten Linie (Rust mit C++ Algorithmus) zur braunen Linie (Rust Algorithmus).
 Eine Verschlechterung der Reaktionszeit, wie mit nur einem Fahrzeug (etwa 15.000 Nachrichten) gegenüber der reinen Rust Implementation war, durch die erhöhte Komplexität und die weitere Schicht zur Einbindung des C++ Algorithmus, zu erwarten gewesen.
 Eine bessere Reaktionszeit ab 3 Fahrzeugen ist dagegen unerwartet gewesen.
 Erst bei einer Codanalyse wurde klar, dass dies vermutlich daran liegt, dass der C++ Algorithmus parallel zum Rust Algorithmus-Adapter ausgeführt wird.
-Die Encodierung der Antwort (\textit{EnvironmentFrame}-Nachricht nach \textit{RawMessage}, etwa 130\textmu s) wird daher asynchron zum aufbereiten der nächsten und weiterleiten der vorherigen Nachricht an die Fahrzeuge ausgeführt.
+Die Encodierung der Antwort (\textit{EnvironmentFrame}-Nachricht nach \textit{RawMessage}, etwa 130\textmu s) wird daher asynchron zum Aufbereiten der nächsten und Weiterleiten der vorherigen Nachricht an die Fahrzeuge ausgeführt.
 
 Dieses weitere asynchrone Verhalten setzt eines der für das \enquote{Channel Architektur Pattern} erwähnten Optimierungsmöglichkeiten um (siehe \autoref{design:communication:architecture}).
 Wie in \cite[160]{douglass2003real} beschrieben, wird durch die parallele Verarbeitung von mehreren Elementen in einem Kanal (in diesem Fall \todo{AlgorithmAdapter} zu \todo{C++ Algorithmus} zu \todo{Fahrzeugen}) die Verarbeitung einer hohen Datenmenge ermöglicht.

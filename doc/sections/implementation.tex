@@ -9,7 +9,7 @@ In diesem Kapitel wird auf Besonderheiten und Schwierigkeiten bei der Implementi
 \section{Continuous Integration mittels Jenkins}
 
 Mittels der Continuous Integration Software Jenkins wird die Rust-Implementation nach jeder Aktualisierung der Quellcode-Repository gebaut.
-In einem Jenkinsfile ist hierzu die folgende Pipeline definiert:
+In einem Jenkinsfile\footnote{Eigenname: \url{https://jenkins.io/doc/book/pipeline/jenkinsfile/}} ist hierzu die folgende Pipeline definiert:
 
 \begin{figure}[H]
 	\includegraphics[width=\textwidth]{images/jenkins_pipeline_graph.png}
@@ -17,7 +17,7 @@ In einem Jenkinsfile ist hierzu die folgende Pipeline definiert:
 	\label{impl:jenkins:pipeline:graph}
 \end{figure}
 
-Im folgenden sind die einzelnen Schritte genauer erklärt.
+Im Folgenden sind die einzelnen Schritte genauer erklärt.
 
 
 \subsubsection{Schritt \enquote{prepare}}
@@ -25,14 +25,14 @@ In diesem Schritt wird überprüft, ob die richtige Version von Rust installiert
 Sowohl der Rust Compiler als auch Abhängigkeiten wie Cargo, Clippy oder Tarpaulin werden falls nötig  in diesem Schritt nachinstalliert und aktualisiert.
 
 \subsubsection{Schritt \enquote{check-src}}
-Hier wird der Quellcode auf einen schlechtem Programmierstil oder schlechte Programmierpraktiken durch Clippy und auf eine nicht standardkonforme Formatierung überprüft.
+Hier wird der Quellcode auf einen schlechten Programmierstil oder schlechte Programmierpraktiken durch Clippy und auf eine nicht standardkonforme Formatierung überprüft.
 Ein erkannter Mangel resultiert in einen Abbruch und einem entsprechendem roten Icon auf der Projektseite auf Jenkins.
 Ein Quellcode, der diese Qualitätsstandards nicht erfüllt, wird somit schnellstmöglich abgelehnt.
 
 \subsubsection{Schritt \enquote{Build-Debug}}
-In diesem Schritt wird das Projekt im Debug-Modus kompiliert.
+In diesem Schritt wird das Projekt im Debug-Modus compiliert.
 In einem Debug-Modus werden nahezu keine Optimierungen durchgeführt, weswegen die Ausführgeschwindigkeit meist mangelhaft ist.
-Im falle eines Fehlers in einem Unit-Test, können aus einem Debug-Artefakt jedoch nützlich Informationen gewonnen werden.
+Im Falle eines Fehlers in einem Unit-Test, können aus einem Debug-Artefakt jedoch nützlich Informationen gewonnen werden.
 
 \subsubsection{Schritt \enquote{Build-Release-And-Test-Debug}}
 Wie der Name bereits vermuten lässt, wird in diesem Schritt das Projekt im Release-Modus übersetzt.
@@ -48,9 +48,9 @@ Des weiteren soll kein Artefakt archiviert werden, das nicht auf Fehler überpr�
 Dieser Schritt dient zur Zusammenstellung der Testabdeckung der Unit-Tests und der automatisierten  Erstellung der Dokumentation.
 
 \subsubsection{Ergebnis des erfolgreichen Durchlaufs}
-Jede Aktualisierung der Quellcoderepository resultiert bei erfolgreicher Kompilation und durchlaufen der Tests in den folgenden Artefakten:
+Jede Aktualisierung der Quellcoderepository resultiert bei erfolgreicher Compilation und Durchlaufen der Tests in den folgenden Artefakten:
 \begin{itemize}
-	\item \textbf{Debug-Artefakt}: Kompilation für eine manuelle Fehlersuche mit vielen auf den Quellcode bezogenen Symbolen und ohne Optimierungen durch den Compiler
+	\item \textbf{Debug-Artefakt}: Compilation für eine manuelle Fehlersuche mit vielen auf den Quellcode bezogenen Symbolen und ohne Optimierungen durch den Compiler
 	\item \textbf{Release-Artefakt}: Kompilat mit Optimierungen für den Produktivbetrieb
 	\item \textbf{Testbericht}: Bericht über wie viele Zeilen, Dateien, Klassen und Verzweigungen durch die Unit-Tests getestet wurden.
 	\item \textbf{Dokumentation}: Die aus dem Quellcode generierte Dokumentation inklusive der Dokumentationen der Abhängigkeiten.
@@ -74,7 +74,7 @@ Für jeden erfolgreichen Bauvorgang, werden die erhobenen Informationen in die f
 
 \autoref{impl:jenkins:coverage:graph} zeigt die Testabdeckung seit Aufzeichnungsbeginn.
 Die frühen und starken Schwankungen resultieren aus Testdurchläufen bei der Einrichtung des Graphen.
-\autoref{impl:jenkins:warnings:graph} zeigt Warnungen die der Rust Compiler für die verschiedenen Builds ausgegeben hat.
+\autoref{impl:jenkins:warnings:graph} zeigt Warnungen, die der Rust Compiler für die verschiedenen Builds ausgegeben hat.
 
 Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingerichtet wurden.
 
@@ -114,8 +114,8 @@ In dem folgenden \autoref{impl:commands:algorithm} sind die Befehle zu sehen, di
 	{Kommandos, die einem \textit{Algorithm} zugesandt werden können}
 	{sections/impl.command.algorithm.rs}
 
-Ob eine Kommunikation zwischen zwei Komponenten asynchron oder synchron stattfindet, sollte für die Implementation jedoch möglichst keine Rolle spielen.
-Zur Kommunikation mit anderen Komponenten sollte es nur nötig sein, die entsprechende Schnittstelle zu kennen (Stichwort \enquote{loose coupling} \cite[49]{goll2018entwurfsprinzipien}).
+Ob eine Kommunikation zwischen zwei Klassen asynchron oder synchron stattfindet, sollte für die Implementation jedoch möglichst keine Rolle spielen.
+Zur Kommunikation mit anderen Klassen sollte es nur nötig sein, die entsprechende Schnittstelle zu kennen (Stichwort \enquote{loose coupling} \cite[49]{goll2018entwurfsprinzipien}).
 Die verwendete Kommunikationstechnologie (\textit{tokio}) und Verhaltensmuster (Kommando) beziehen sich nicht mehr auf das Aufgabengebiet der Komponenten.
 Durch eine Fassade kann das Erstellen eines Kommandos und das übermitteln durch einen Kanal gekapselt und auf einen einfachen Methodenaufruf reduziert werden.
 Die Verwirklichung mittels Schnittstelle und einer Methode für jedes Kommando entspricht letztendlich dem \enquote{Proxy Pattern} (dt. Stellvertreter-Strukturmuster) \cite[137]{goll2018entwurfsprinzipien}.

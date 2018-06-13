@@ -30,7 +30,7 @@ Die hier gelisteten funktionale Anforderungen beschreiben das gewünschte Verhal
 
 \requirement{sensor:pause}{2140}{Sensoren abonnieren}{Sensoren sollen bei verbunden Fahrzeugen abonniert sein.}
 
-\requirement{sensor:resume}{2150}{Sensoren deabonnieren}{Bei keinem verbundenem Fahrzeug, soll keiner der Sensoren abonniert sein.}
+\requirement{sensor:resume}{2150}{Sensoren deabonnieren}{Solange kein Fahrzeug verbunden ist, sollen die Sensoren nicht abonniert sein.}
 
 
 \requirement{impl:vehicle:subscribe}{2160}{Fahrzeug kann Umgebungsmodell abonnieren}{Ein Fahrzeug kann ein Abonnement für Umgebungsmodelle erstellen.}
@@ -38,13 +38,13 @@ Die hier gelisteten funktionale Anforderungen beschreiben das gewünschte Verhal
 \requirement{impl:vehicle:unsubscribe}{2170}{Fahrzeug kann Abonnement aufkündigen}{Ein Fahrzeug kann ein bestehendes Abonnement für Umgebungsmodelle aufkündigen.}
 
 \subsubsection{Nachrichtenverarbeitung}
-\requirement{impl:algorithmus:to}{2200}{Sensordaten weitergeben}{Empfangene Sensordaten sollen dekodiert und an den Fusions-Algorithmus übergeben werden.}
+\requirement{impl:algorithmus:to}{2200}{Sensordaten weitergeben}{Empfangene Sensordaten sollen dekodiert und an den Fusionsalgorithmus übergeben werden.}
 
 
-\requirement{impl:algorithmus:from}{2210}{Umgebungsmodell weitergeben}{Ergebnisse des Fusions-Algorithmus sollen enkodiert und an die mit einem Abonnement verbundenen Fahrzeuge versendet werden.}
+\requirement{impl:algorithmus:from}{2210}{Umgebungsmodell weitergeben}{Ergebnisse des Fusionsalgorithmus sollen enkodiert und an die mit einem Abonnement verbundenen Fahrzeuge versendet werden.}
 
 \subsubsection{Algorithmus}
-\requirement{impl:algorithmus}{2300}{Fusions-Algorithmus}{
+\requirement{impl:algorithmus}{2300}{Fusionsalgorithmus}{
 	Der Dummy-Algorithmus \enquote{SampleAlgorithm} der C++ Referenzimplementierung soll in Rust nachempfunden werden.
 	Diese Implementation soll für jede eingehende \textit{SensorFrame}-Nachricht (siehe \autoref{msg:sensor_frame}) eine \textit{EnvironmentFrame}-Nachricht versenden.
 	Aus der empfangenen \textit{SensorFrame}-Nachricht soll hierzu lediglich der Zeitstempel in die \textit{EnvironmentFrame}-Nachricht (siehe \autoref{msg:environment_frame}) übertragen werden.
@@ -87,7 +87,7 @@ Die hier gelisteten funktionale Anforderungen beschreiben das gewünschte Verhal
 
 \requirement{impl:arg:alg_json}{2450}{OPTIONAL: Nur wenn der C++ Algorithmus geladen ist: Pfad an Algorithmus übergeben}{
 	Ein Startparameter soll den Pfad zu einer Konfigurationsdatei festlegen.
-	Dieser Pfad soll dem C++ Algorithmus beim initiieren übergeben werden.
+	Dieser Pfad soll dem C++ Algorithmus beim Initiieren übergeben werden.
 	Falls dieser Startparameter nicht angegeben wird, soll der Standardwert \enquote{/etc/MECViewServer/algorithmus.json} übergeben werden.%
 }
 
@@ -106,8 +106,8 @@ Nichtfunktionale Anforderungen zeigen im Gegensatz zu funktionalen Anforderungen
 
 \subsubsection{Reaktionsverhalten}
 \requirement{exec:time}{3100}{Reaktionszeit des Servers}{Die Implementation des Servers soll Nachrichten von 6 Videosensoren mit einem Nachrichtenintervall von 100ms, 7 Lidarsensoren mit einem Nachrichtenintervall von 50ms und zwei gleichzeitig vebundenen Fahreugen 5ms beantworten können.
-	Dies umfasst Nachricht dekodieren, Fusions-Algorithmus darbieten, Resultat enkodieren und versenden.
-	Die Bearbeitungszeit des Fusions-Algorithmus zählt nicht dazu.}
+	Dies umfasst Nachricht dekodieren, Fusionsalgorithmus darbieten, Resultat enkodieren und versenden.
+	Die Bearbeitungszeit des Fusionsalgorithmus zählt nicht dazu.}
 
 \requirement{exec:realtime}{3110}{Kein Echtzeitsystem}{Trotz vorgegebener Reaktionszeit wird das System nicht als hartes Echtzeitsystem gewertet. Eine Analyse für die maximale Reaktionszeit ist nicht verlangt. Stattdessen soll das System als weiches Echtzeitsystem gewertet werden, weswegen die durchschnittliche Reaktionszeit betrachtet wird.}
 

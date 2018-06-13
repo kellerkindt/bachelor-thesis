@@ -54,7 +54,11 @@ Die folgenden ASN.1 Nachrichten sind aufgrund der Textlänge im Diagramm abgekü
 
 \todo{vllt eher in Implementation?}
 Die grün und blau markierten Klassen aus \autoref{draft:architecture} haben keine direkten Abhängigkeiten zu den ASN.1 Nachrichtentypen, da sie \textit{Generics} verwenden und nicht auf den Nachrichteninhalt zugreifen müssen (so muss der Client \textit{SensorFrame}-Nachrichten an den Algorithmus weiterleiten, den konkreten Typ jedoch nicht kennen).
-Lediglich durch die Nutzung in Kombination mit den ASN.1 Nachrichtentypen entstehen zur Compilezeit Abhängigkeiten, die aufgrund der Übersicht aber nicht eingezeichnet sind. 
+Lediglich durch die Nutzung in Kombination mit den ASN.1 Nachrichtentypen entstehen zur Compilezeit Abhängigkeiten, die aufgrund der Übersicht aber nicht eingezeichnet sind.
+
+\todo{.}
+Die Klasse \textit{RawMessage} ist eine Containerklasse, um binäre Daten mit Typindikatoren zwischen Decoder und Mapper und zwischen Encoder und Adapter auszutauschen.
+Die Klasse selbst hat keine weiteren Abhängigkeiten und ist von der eingesetzten Nachrichtentechnologie unabhängig. \todo{Kopf / Body \autoref{analysis:messages}}
 
 Die Implementation ist in drei Crates aufgeteilt:
 \begin{itemize}
@@ -65,9 +69,11 @@ Die Implementation ist in drei Crates aufgeteilt:
 	\item \textbf{libmessages}: Stellt Datenstrukturen und Implementationen bereit um unabhängig von der eingesetzten Nachrichtentechnologie eine Nachricht abbilden zu können.
 	Hierzu wird in \textit{RawMessage} der Kopf (siehe \autoref{analysis:messages}) und der binären Inhalt einer Nachricht dargestellt.
 	
-	Zusätzlich ist in dieser Crate für jede verwendete Technologie (in dieser Bachelorarbeit nur ASN.1) die Wandlung zwischen einer \textit{RawMessage} und einer entsprechenden Datenstruktur implementiert sein.
+	Zusätzlich ist in dieser Crate für jede verwendete Technologie (in dieser Bachelorarbeit nur ASN.1) die Wandlung zwischen einer \textit{RawMessage} und einer entsprechenden Datenstruktur implementiert.
 	
 	\item \textbf{MECViewServer}: Enthält die Logik für den Sensor, das Fahrzeug und den Algorithmus und bündelt sie mit der Kommunikationslogik zu einem ausführbaren Kompilat.
+	
+	\item \textbf{tokio::net}: \todo{.} Diese Crate ist Teil des Frameworks von Tokio (siehe \autoref{tokio}) und wird lediglich aus Gründen der Vollständigkeit erwähnt. Anstatt die TCP-Klassen der Standardbibliothek zu nutzen, werden die erweiterten Versionen von Tokio genutzt, \todo{um \textit{Future}s und channels wie geplant nutzen zu können.}
 \end{itemize}
 
 \subsubsection{Erklärung Server}
@@ -78,8 +84,8 @@ Jedem neuen Client wird eine Referenz auf den Algorithmus übergeben und asynchr
 \subsubsection{Erklärung Client, Sensor und Vehicle}
 
 Der Client hält eine Referenz auf einen Algorithmus und einen Adapter.
-Im Falle eines \textit{Vehicle}s kann ein \textit{EnvironmentListener} am Algorithmus registriert werden um neue Umgebungsmodelle zu erhalten.
-Im Falle eines \textit{Sensor}s kann ein \textit{CountListener} am Algorithmus registriert werden um über Änderungen bei der Anzahl der registrierten Fahrzeuge informiert zu werden.
+Im Falle eines \textit{Vehicle}s kann ein \textit{EnvironmentListener} am Algorithmus registriert werden, um neue Umgebungsmodelle zu erhalten.
+Im Falle eines \textit{Sensor}s kann ein \textit{CountListener} am Algorithmus registriert werden, um über Änderungen bei der Anzahl der registrierten Fahrzeuge informiert zu werden.
 
 \subsubsection{Erklärung Adapter}
 
@@ -118,7 +124,7 @@ Das Muster eignet sich besonders gut, da auf eingehende und ausgehende Datensät
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.4\textwidth]{dia/channel_sep}
-	\caption{Aktivitätsdiagramme zum dekodieren einer Anfrage aus dem TCP-Datenstrom (unten) und zum versenden einer Aufforderung (oben).}
+	\caption{Aktivitätsdiagramme zum Dekodieren einer Anfrage aus dem TCP-Datenstrom (unten) und zum Versenden einer Aufforderung (oben).}
 	\label{design:channel}
 \end{figure}
 

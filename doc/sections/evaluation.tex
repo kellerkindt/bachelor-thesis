@@ -189,8 +189,8 @@ Eine bessere Reaktionszeit ab 3 Fahrzeugen ist dagegen unerwartet gewesen.
 Erst bei einer Codanalyse wurde klar, dass dies vermutlich daran liegt, dass der C++ Algorithmus parallel zum Rust Algorithmus-Adapter ausgeführt wird.
 Die Encodierung der Antwort (\textit{EnvironmentFrame}-Nachricht nach \textit{RawMessage}, etwa 130\textmu s) wird daher asynchron zum aufbereiten der nächsten und weiterleiten der vorherigen Nachricht an die Fahrzeuge ausgeführt.
 
-Dieses weitere asynchrone Verhalten setzt eines der für das\enquote{Channel Architektur Pattern} erwähnten Optimierungsmöglichkeiten um (siehe \autoref{design:communication:architecture}).
-Wie in \todo{Seite} \cite[157]{douglass2003real} beschrieben, wird hierdurch die Verarbeitung einer hohen Datenmenge ermöglicht.
+Dieses weitere asynchrone Verhalten setzt eines der für das \enquote{Channel Architektur Pattern} erwähnten Optimierungsmöglichkeiten um (siehe \autoref{design:communication:architecture}).
+Wie in \cite[160]{douglass2003real} beschrieben, wird durch die parallele Verarbeitung von mehreren Elementen in einem Kanal (in diesem Fall \todo{AlgorithmAdapter} zu \todo{C++ Algorithmus} zu \todo{Fahrzeugen}) die Verarbeitung einer hohen Datenmenge ermöglicht.
 
 Die Rust Implementationen können nicht nur mit der C++ Implementation mithalten, sondern diese sogar einholen.
 

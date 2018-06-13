@@ -82,6 +82,7 @@ Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingeri
 \section{Asynchrone Kommunikation}
 Wie bereits in \autoref{design:communication:architecture:async} festgestellt, ist für eine hochperformante Kommunikationsplattform eine interne, asynchrone Kommunikation nötig.
 
+\todo{Message Queuing Pattern \cite[207]{douglass2003real}}
 
 Mittels \enquote{channel} (dt. \enquote{Kanäle}) können in Rust Mitteilungen zwischen vielen Auftraggebern und einem Empfänger ausgetauscht werden (andere Rust-Bibliotheken erlauben auch viele Empfänger, zum Beispiel \enquote{crossbeam-channel}\footnote{\url{https://crates.io/crates/crossbeam-channel}}).
 Der zu versendende Datentyp muss lediglich das Merkmal \rustcinline{Send} aufweisen (siehe \autoref{rust:trait:send}):
@@ -299,9 +300,6 @@ Daher können sie als schwache Abhängigkeiten betrachtet werden.
 	{Hilfsinformationen der Rust-Implementation mit allen möglichen Parametern}
 	{sections/help.info}
 
-\subsection{?? Unsichtbare Asynchronität des Algorithmus}
-\todo{impl Algorithm for Sender<..> proxy communication}
-
 \section{?? Bindgen für ASN}
 
 \label{impl:issue:ffi}
@@ -336,22 +334,15 @@ Daher können sie als schwache Abhängigkeiten betrachtet werden.
 \todo{SRP, impl Object separat from impl CommandProcessor for Object, testability?}
 
 
-\section{Schwierigkeit: Heap nicht gleich Heap}
-
-\todo{deadlock im heap allokieren, rust heap muss von rust aufgeräumt werden, libc von libc, asn+c++-alg -> libc}
 
 
-\subsection{Tokio}
-
-	\subsection{Generalisierung mittels Aufzählung für nicht erweiterbare Anzahl von Elementen}
+\section{libmessages make unsafe libmessages-sys safe}
 	
-	\subsection{libmessages make unsafe libmessages-sys safe}
-	
-	\subsection{Vorgehen, bindgen tests, C/unsafe/wrapper -> nach sicher ->  architektur entwickeln}
+\subsection{Vorgehen, bindgen tests, C/unsafe/wrapper -> nach sicher ->  architektur entwickeln}
 	
 
 	
-	\subsection{Unerwartete Schwierigkeiten}
+\section{Unerwartete Schwierigkeiten}
 	
 	\todo{Trailing zeroes issue, commit a02496d + tagged, libmessages/src/asn.rs:17 bzw :31 bzw :32 Ok((result.encoded as usize + 7) / 8}
 	
@@ -361,12 +352,11 @@ Daher können sie als schwache Abhängigkeiten betrachtet werden.
 	
 	\todo{RawMessage<T> machts leben schwer}
 	
-	
-	\subsection{--help}
+\subsection{Schwierigkeit: Heap nicht gleich Heap}
 
-\todo{bei der entwicklung nie segfault/deadlock gehabt, nur einmal heap problem wegen libc}
+\todo{deadlock im heap allokieren, rust heap muss von rust aufgeräumt werden, libc von libc, asn+c++-alg -> libc}
 
 
 \section{Valgrind: Race Conditions all over the place}
 
-\section{Mock TDD}
+\section{Mocks für TDD}

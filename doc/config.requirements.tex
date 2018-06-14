@@ -7,11 +7,13 @@
 \newcommand{\requirement}[4]{%
 	\begin{itemize}
 		\item \textbf{Anforderung #2: #3}\label{req:#1}\\#4
-	\end{itemize}%
-	\expandafter\edef\csname#1\endcsname{#2}%
+	\end{itemize}
+	\expandafter\edef\csname{}req_number_#1\endcsname{#2}
+	\expandafter\edef\csname{}req_name_#1\endcsname{#3}%
 }
 
-\newcommand{\reqNumberForLabel}[1]{\csname#1\endcsname}
+\newcommand{\reqNumberForLabel}[1]{\csname{}req_number_#1\endcsname}
+\newcommand{\reqNameForLabel}[1]{\csname{}req_name_#1\endcsname}
 
 \newcommand{\captionsource}[1]{\caption*{\footnotesize{Quelle: #1}}}
 \makeatother

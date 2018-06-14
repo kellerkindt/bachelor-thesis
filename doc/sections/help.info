@@ -10,18 +10,20 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
-    -a, --algorithm <PATH>            The path to the algorithm
-                                      configuration file [default:
-                                      /etc/mecview/algorithm.json]
-    -u, --use <ALGORITHM>             The algorithm to use [default:
-                                      sample]  [possible values: sample,
-                                      external]
-    -e, --environment-frame <PATH>    The path to the EnvironmentFrame
-                                      to send to the Vehicles
-    -v, --init-message <PATH>         The path to the InitMessage to
-                                      send to a Vehicle
-    -i, --interface <INTERFACE>       Sets the interface to listen on
-                                      [default: 0.0.0.0]
-    -l, --log <LEVEL>                 Sets the log level of the server
-    -p, --port <NUMBER>               Sets the TCP listen port
-                                      [default: 2000]
+    -a, --algorithm <PATH>           The path to the algorithm
+                                     configuration file [default:
+                                     /etc/mecview/algorithm.json]
+    -u, --use <ALGORITHM>            The algorithm to use
+                                     [default: sample]
+                                     [possible values: sample, external]
+    -e, --environment-frame <PATH>   The path to the EnvironmentFrame
+                                     to send to the Vehicles
+    -v, --init-message <PATH>        The path to the InitMessage to
+                                     send to a Vehicle
+    -i, --interface <INTERFACE>      Sets the interface to listen on
+                                     [default: 0.0.0.0]
+    -l, --log <LEVEL>                Sets the log level of the server
+                                     [possible values: trace, debug,
+                                                       info, warn, err]
+    -p, --port <NUMBER>              Sets the TCP listen port
+                                     [default: 2000]

@@ -71,16 +71,16 @@ Die hier gelisteten funktionale Anforderungen beschreiben das gewünschte Verhal
 	Bei keiner Angabe soll auf allen Netzwerkschnittstellen gelauscht werden (Standardwert 0.0.0.0).%
 }
 
-\requirement{impl:arg:port}{2420}{OPTIONAL: Startparameter für den Port}{
-	Ein Startparameter soll festlegen, auf welchem Port der Server auf eingehende Verbindungen lauscht.
-	Bei keiner Angabe soll auf dem Port 2000 gelauscht werden.%
+\requirement{impl:arg:port}{2420}{OPTIONAL: Startparameter für den TCP-Port}{
+	Ein Startparameter soll festlegen, auf welchem TCP-Port der Server auf eingehende Verbindungen lauscht.
+	Bei keiner Angabe soll auf dem TCP-Port 2000 gelauscht werden.%
 }
 
-\requirement{impl:arg:init_msg}{2430}{OPTIONAL: \textit{InitMessage}-Nachricht aus XML-Datei}{
+\requirement{impl:arg:init_msg}{2430}{OPTIONAL: Initialisierungsnachricht aus XML-Datei}{
 	Ein Startparameter soll mit dem Pfad zu einer XER-Codierten Datei die \textit{InitMessage}-Nachricht festlegen, die einem Fahrzeug nach dem Verbindungsaufbau zugesendet wird.%
 }
 
-\requirement{impl:arg:env_frame}{2440}{OPTIONAL: Nur wenn der Dummy-Algorithmus geladen ist: \textit{EnvironmentFrame}-Nachricht aus XML-Datei}{
+\requirement{impl:arg:env_frame}{2440}{OPTIONAL: Nur wenn der Dummy-Algorithmus geladen ist: Umgebungsmodell aus XML-Datei}{
 	\todo{Satz?}
 	Ein Startparameter soll den Pfad zu einer XER-Codierten Datei festlegen, die die \textit{EnvironmentFrame}-Nachricht beinhaltet, die einem Fahrzeug für eine eingehende \textit{SensorFrame}-Nachricht zugesendet wird.%
 }

@@ -177,7 +177,8 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
                 .long("log")
                 .value_name("LEVEL")
                 .help("Sets the log level of the server")
-                .takes_value(true),
+                .takes_value(true)
+                .possible_values(&["trace", "debug", "info", "warn", "err"]),
         )
         .arg(
             Arg::with_name("init_message")

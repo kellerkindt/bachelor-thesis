@@ -357,19 +357,53 @@ Weiterer C-Code soll den C++ Code über eine C-Datenstruktur und 5 Funktionen zu
 \vspace*{\fill}
 \end{landscape}
 
-\todo{?? updated usecases}
+%\todo{?? updated usecases}
 
-\todo{binary vs source code}
+%\todo{binary vs source code}
 
 \clearpage
 \section{Startparameter}
 
-\todo{show --help}
+Alle in \autoref{requirements} genannten optionale Anforderungen für Startparameter sind erfolgreich umgesetzt worden.
+Die Ausgabe in \autoref{help} zeigt alle möglichen Startparameter des Systems an.
 
 \helpinclude
 	{help}
 	{Hilfsinformationen der Rust-Implementation mit allen möglichen Parametern}
 	{sections/help.info}
+
+
+In der folgenden Übersicht sind die Startparameter aus den Anforderungen, eine kurze Erklärung und ein Beispiel gelistet.
+
+\newcommand{\proveReq}[3]{\textbf{Anforderung \reqNumberForLabel{#1}: \reqNameForLabel{#1}} \\ #2 \\ Beispiel: \monospaceinline{mecview_server #3}}
+
+\begin{itemize}
+	\item \proveReq{impl:arg:log}{
+		Mit dem Startparameter \monospaceinline{-l <LEVEL>} (Kurzform) oder \monospaceinline{--log <LEVEL>} (Langform) kann einer der folgenden Level gesetzt werden: \monospaceinline{trace, debug, info, warn, err}.
+	}{--log trace}
+	
+	\item \proveReq{impl:arg:interface}{
+		Mit dem Startparameter \monospaceinline{-i <INTERFACE>} (Kurzform) oder \monospaceinline{--interface <INTERFACE>} (Langform) kann eine lokale Netzwerkadresse des Systems übergeben werden, auf der für eingehende TCP-Verbindungen gelauscht werden soll.
+	}{-i 127.0.0.1}
+	
+	\item \proveReq{impl:arg:port}{
+		Der Startparameter \monospaceinline{-p <NUMBER>} (Kurzform) und \monospaceinline{--port <NUMBER>} setzt den TCP-Port, den der Server verwendet, um auf neue Verbindungen zu lauschen.
+	}{--port 4711}
+	
+	\item \proveReq{impl:arg:init_msg}{
+		Mit dem Startparameter \monospaceinline{-v <PATH>} (Kurzform) oder \monospaceinline{--init-message <PATH>} (Langform) kann der Pfad zu einer in XML-Datei übergeben werden, aus der die zu verschickende \textit{InitMessage}-Nachricht geladen wird.
+		}{--init-message scenario_5086.xml}
+		
+	\item \proveReq{impl:arg:env_frame}{
+		Mit dem Startparameter \monospaceinline{-e <PATH>} (Kurzform) oder \monospaceinline{--environment-frame <PATH>} (Langform) kann der Pfad zu einer in XML-Datei übergeben werden, aus der die zu verschickende \textit{EnvironmentFrame}-Nachricht geladen wird.
+	}{-e Kreuzung_2.xml}
+	
+	\item \proveReq{impl:arg:alg_json}{
+		Der Startparameter \monospaceinline{-a <PATH>} (Kurzform) und \monospaceinline{--algorithm <PATH>} setzt den Pfad, der dem externen C++ Algorithmus bei der Initialisierung übergeben wird.
+		Wenn der \enquote{Dummy}-Algorithmus verwendet wird, wird dieser Parameter ignoriert.
+		}{-a latency_measurement.json}
+\end{itemize}
+
 
 \section{?? Bindgen für ASN}
 

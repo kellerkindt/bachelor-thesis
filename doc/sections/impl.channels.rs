@@ -4,7 +4,7 @@ use std::sync::mpsc;
 fn main() {
   let (sender, receiver) = mpsc::channel();
 
-  let thread = thread::spawn(move|| {
+  let thread = thread::spawn(move || {
     println!("Empfangen: {}", receiver.recv().unwrap());
   });
 

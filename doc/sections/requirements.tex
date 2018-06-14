@@ -81,8 +81,7 @@ Die hier gelisteten funktionale Anforderungen beschreiben das gewünschte Verhal
 }
 
 \requirement{impl:arg:env_frame}{2440}{OPTIONAL: Nur wenn der Dummy-Algorithmus geladen ist: Umgebungsmodell aus XML-Datei}{
-	\todo{Satz?}
-	Ein Startparameter soll den Pfad zu einer XER-Codierten Datei festlegen, die die \textit{EnvironmentFrame}-Nachricht beinhaltet, die einem Fahrzeug für eine eingehende \textit{SensorFrame}-Nachricht zugesendet wird.%
+	Ein Startparameter soll den Pfad zu einer XER-Codierten Datei festlegen, in der die \textit{EnvironmentFrame}-Nachricht beinhaltet ist, die einem Fahrzeug zugesendet wird.%
 }
 
 \requirement{impl:arg:alg_json}{2450}{OPTIONAL: Nur wenn der C++ Algorithmus geladen ist: Pfad an Algorithmus übergeben}{
@@ -95,7 +94,7 @@ Die hier gelisteten funktionale Anforderungen beschreiben das gewünschte Verhal
 
 Nichtfunktionale Anforderungen zeigen im Gegensatz zu funktionalen Anforderungen Rahmenbedingungen bei der Umsetzung des Systems auf \cite[155]{goll2012methoden}.
 
-\subsubsection{\todo{Umgebung / Umfeld}}
+\subsubsection{Kontext}
 \requirement{rust}{3000}{Implementation in Rust}{Die Implementation des Servers soll in der Programmiersprache Rust vorgenommen werden.}
 
 \requirement{nfktl:styleguide}{3010}{Einhaltung des Styleguides}{Der Quellcode der Serverimplementation soll sich an den offiziellen Styleguide (siehe \autoref{rust:styleguide}) halten.}

@@ -27,7 +27,7 @@ fn main() {
   let (sender, receiver) = mpsc::channel();
   let endpoint = &sender as &EndPoint;
 
-  let thread = thread::spawn(move|| {
+  let thread = thread::spawn(move || {
     let command: Command = receiver.recv().unwrap();
     command.execute();
   });

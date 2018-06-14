@@ -8,6 +8,8 @@ In diesem Kapitel wird auf Besonderheiten und Schwierigkeiten bei der Implementi
 
 \section{Continuous Integration mittels Jenkins}
 
+\todo{OPTIONALE ANFORDERUNGEN 33*0}
+
 Mittels der Continuous Integration Software Jenkins wird die Rust-Implementation nach jeder Aktualisierung der Quellcode-Repository gebaut.
 In einem Jenkinsfile\footnote{Eigenname: \url{https://jenkins.io/doc/book/pipeline/jenkinsfile/}} ist hierzu die folgende Pipeline definiert:
 
@@ -82,7 +84,10 @@ Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingeri
 \section{Asynchrone Kommunikation}
 Wie bereits in \autoref{design:communication:architecture:async} festgestellt, ist für eine hochperformante Kommunikationsplattform eine interne, asynchrone Kommunikation nötig.
 
-\todo{Message Queuing Pattern \cite[207]{douglass2003real}}
+\todo{.}
+Das \enquote{Message Queuing Pattern} (dt. \todo{}) gilt als stabiles und einfach umzusetzendes Entwurfsmuster, um zwischen asynchron arbeitenden Komponenten oder Klassen Nachrichten auszutauschen \cite[207]{douglass2003real}.
+Es gilt allerdings als sehr schwergewichtig, da im klassischen Sinne nur Werte \enquote{by-value} ausgetauscht werden sollen (in einem \enquote{by-reference} System ist das Resourcenmanagement deutlich komplizierter und Speicherlecks oder \enquote{double-free}s könnten auftreten). 
+Aufgrund des Eigentümerprinzips in Rust können Nachrichten jedoch auch sicher \enquote{by-reference} (\todo{owning reference Box}) ausgetauscht werden.
 
 Mittels \enquote{channel} (dt. \enquote{Kanäle}) können in Rust Mitteilungen zwischen vielen Auftraggebern und einem Empfänger ausgetauscht werden (andere Rust-Bibliotheken erlauben auch viele Empfänger, zum Beispiel \enquote{crossbeam-channel}\footnote{\url{https://crates.io/crates/crossbeam-channel}}).
 Der zu versendende Datentyp muss lediglich das Merkmal \rustcinline{Send} aufweisen (siehe \autoref{rust:trait:send}):
@@ -94,6 +99,11 @@ Der zu versendende Datentyp muss lediglich das Merkmal \rustcinline{Send} aufwei
 
 \autoref{impl:channels:example} zeigt ein einfaches Beispiel, wie ein asynchroner  und sicherer Nachrichtenaustausch in Rust umgesetzt werden kann.
 Zur Laufzeit gibt das Beispielprogramm \monospaceinline{Empfangen: Hallo, Kanal!} auf der Konsole aus.
+
+In Zeile 5 wird ein neuer Kanal erzeugt und eine Sende- und Empfängerinstanz zurück gegeben.
+Zwischen Zeile 7 und 9 wird eine neuer Thread erzeugt und der auszuführenden Closure \todo{ref} die Eigentümerschaft über den Empfänger übertragen (Schlüsselwort \rustcinline{move}).
+Der neuer Thread wartet nach Start auf den Empfang einer neuen Nachricht und gibt diese anschließend auf der Konsole aus.
+In Zeile 11 sendet der Haupt-Thread über den Kanal dem anderen Thread eine Textnachricht zu und wartet in Zeile 12 bis dieser beendet wurde.
 
 Um nicht für jeden Datentyp einen neuen Kanal erstellen zu müssen, kann das \enquote{Command Pattern} (dt. Kommando Verhaltensmuster) \cite[153]{goll2014architektur} verwendet werden, um über einen Kanal mehrere Aktionen zu befehligen.
 In Rust kann dies mit einem \rustcinline{enum} umgesetzt werden:
@@ -148,7 +158,7 @@ Ein \enquote{Trait-Object} (siehe \autoref{impl:commands:fast_generic}), wie etw
 \clearpage
 \section{C++ Algorithmus laden}
 
-Um die optionale Anforderung \reqNumberForLabel{possible:external_algorithm} (siehe \autoref{req:possible:external_algorithm}) umsetzen zu können, muss zuerst die Kommunikation innerhalb des C++ Servers mit dem Algorithmus analysiert werden:
+Um die optionale Anforderung \reqNumberForLabel{possible:external_algorithm} (\enquote{\reqNameForLabel{possible:external_algorithm}}, siehe \autoref{req:possible:external_algorithm}) umsetzen zu können, muss zuerst die Kommunikation innerhalb des C++ Servers mit dem Algorithmus analysiert werden:
 
 \begin{figure}[H]
 	\begin{tikzpicture}[scale=0.9]
@@ -285,7 +295,8 @@ Daher können sie als schwache Abhängigkeiten betrachtet werden.
 Die Einbindung des C++ Quellcodes ist, im Gegensatz zum C-Code der ASN.1 Nachrichten, deutlich schwieriger.
 Die Abhängigkeiten zu den Datentypen der Standardbibliothek (siehe \autoref{class_dia:algorithm:cpp}) und die Klassenhierarchie macht einen Zugriff aus Rust deutlich komplizierter und würde eine manuelle Pflege der \textit{vtable} benötigen.
 Deswegen ist eine andere Herangehensweise ausgewählt worden.
-Weiterer C-Code soll den C++ Code über eine C-Datenstruktur und 5 Funktionen zugänglich machen \todo{Facade!} und eine Nutzung in Rust deutlich vereinfachen.
+Weiterer C-Code soll den C++ Code über eine C-Datenstruktur kapseln und über C-Funktionen zugänglich machen \todo{Facade!}.
+Eine Zugriff aus Rust heraus wird somit stark vereinfacht.
 \todo{schwierig, bindgen nix c++}
 
 \begin{figure}[H]
@@ -439,11 +450,13 @@ In der folgenden Übersicht sind die Startparameter aus den Anforderungen, eine 
 \todo{SRP, impl Object separat from impl CommandProcessor for Object, testability?}
 
 
+\section{DDOS}
 
+\todo{OPTIONALE ANFORDERUNGEN}
 
-\section{libmessages make unsafe libmessages-sys safe}
+%\section{libmessages make unsafe libmessages-sys safe}
 	
-\subsection{Vorgehen, bindgen tests, C/unsafe/wrapper -> nach sicher ->  architektur entwickeln}
+%\subsection{Vorgehen, bindgen tests, C/unsafe/wrapper -> nach sicher ->  architektur entwickeln}
 	
 
 	
@@ -464,4 +477,4 @@ In der folgenden Übersicht sind die Startparameter aus den Anforderungen, eine 
 
 \section{Valgrind: Race Conditions all over the place}
 
-\section{Mocks für TDD}
+%\section{Mocks für TDD}

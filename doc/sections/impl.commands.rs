@@ -16,7 +16,7 @@ impl Command {
 fn main() {
   let (sender, receiver) = mpsc::channel();
 
-  let thread = thread::spawn(move|| {
+  let thread = thread::spawn(move || {
     let command: Command = receiver.recv().unwrap();
     command.execute();
   });

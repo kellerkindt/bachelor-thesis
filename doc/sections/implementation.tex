@@ -170,6 +170,43 @@ Dem Compiler ist hierdurch bekannt, welche Datentypen sich tatsächlich hinter d
 Ein \enquote{Trait-Object} (siehe \autoref{impl:commands:fast_generic}), wie etwa \rustcinline{Box<Adapter>}, würde dagegen einen \enquote{vtable} Zugriff zur Laufzeit erzwingen und eine Optimierung für den konkreten Datentyp unterbinden, da dieser meist nicht zur Compilezeit bekannt oder eindeutig ist.
 
 \clearpage
+\section{ASN.1 via Bindgen einbinden}
+
+Wie bereits in \autoref{draft:no_asn_compiler} geschildert, existiert für Rust zum jetzigen Zeitpunkt kein ASN.1 Compiler, der die Nachrichtendefinition in nativen Rust-Code übersetzt.
+Aus diesem Grund müssen die vom \todo{asn1c} generierten Datenstrukturen und Funktionen genutzt werden.
+Damit nicht jeder Nachrichtentyp, Nachrichtenuntertyp und jede Funktion manuell in Rust deklariert werden muss, wird \todo{bindgen, ref?} genutzt.
+Bindgen erzeugt für vorhandenen C-Code automatisch nötige Rust-Deklarationen, um diese in Rust anzusprechen und verwenden zu können.
+
+Für diese Bachelorarbeit wurde die statische Linkung einer C-Bibliothek verwendet.
+
+Um zumindest einen gewissen Komfort bei der Nutzung der C-ASN-Nachrichtentypen zu erhalten, ist für zumindest jeden \todo{Top-Level-}Nachrichtentyp (siehe \autoref{asn:msgs}) ein Rust-Konstruktor und -Destruktor erstellt worden.
+Durch den Konstruktor kann ein Nachrichtentyp einfach instantiiert werden, und durch den Destruktor wird eine ordnungsgemäße Speicherfreigabe der C-Datenstrukturen gewährleistet.
+
+Als Beispiel dient \autoref{impl:bindings:constructor:clientregistration}, in dem die Implementierung des Konstruktors und des Destruktors für den Nachrichtentyp \textit{ClientRegistration} gezeigt wird.
+
+
+\rustcinclude
+	{impl:bindings:constructor:clientregistration}
+	{Rust \enquote{Konstruktor} und \enquote{Destruktor} für den C-\textit{ClientRegistration}-Nachrichtentyp}
+	{sections/impl.constructor.destructor.rs}
+
+
+Aufgrund des deallocationsverhalten von Rust, muss Nachrichtentyp selbst von Rust allokiert und freigegeben werden, während der referenzierte Werte von den ASN C-Funktionen verwaltet werden.
+
+\subsubsection{Schwierigkeiten}
+
+Bei ersten Tests wurde stell festgestellt, dass der Speicher, der über C Funktionen allokiert wurde, von C Funktionen freigeben werden muss.
+Falls innerhalb der C-Nachrichtentypen Rust-Heap referenziert, oder die C-Nachrichtentypen von Rust Funktionen freigegeben werden, wird der jeweilige Heap \todo{korrupiert}.
+Ein späterer Allokationsversuch endet \todo{mehrfach testbar / wiederholbar} in einem Deadlock.
+
+\todo{was ist bindgen}
+
+\todo{drop implementation für free}
+
+\todo{separate heap}
+
+
+\clearpage
 \section{C++ Algorithmus laden}
 
 Um die optionale Anforderung \reqNumberForLabel{possible:external_algorithm} (\enquote{\reqNameForLabel{possible:external_algorithm}}, siehe \autoref{req:possible:external_algorithm}) umsetzen zu können, muss zuerst die Kommunikation innerhalb des C++ Servers mit dem Algorithmus analysiert werden:

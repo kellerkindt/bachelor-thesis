@@ -32,6 +32,6 @@ fn main() {
     command.execute();
   });
 
-  endpoint.say("Hallo, Fassade!");
+  endpoint.say("Hallo, Proxy!");
   thread.join().unwrap();
 }

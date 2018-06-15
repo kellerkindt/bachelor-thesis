@@ -1,11 +1,25 @@
-\chapter{Zusammenfassung und Fazit}
+\chapter{Fazit}
 
 \todo{.}
-Rust wirbt mit den verlockenden Versprechen, sicher und auch performant Programmieren zu können.
+Rust wirbt mit dem verlockenden Versprechen, die Programmierung von sicheren und performanten Programmen zu ermöglichen.
 Diese Verlockungen in Kombination mit der guten Dokumentation waren nötig, um die Anfangszeit zu überwinden.
-Gerade zu beginn, fühlt es sich an, als würde man gegen den Compiler kämpfen.
+Gerade zu beginn fühlt es sich an, als wäre das größte Hindernis ein Rust-Programm zu schreiben, der Compiler selbst.
 Änderungen im Quellcode mit direkt darauf folgenden erfolgreichen Compilevorgängen gleichen Wundern.
-Rückblickend betrachtet, lag es aber vor allem an den aus der objektorientierten Welt bekannte und verinnerlichten Prinzipien, \todo{die einem das Programmieren erschwert haben}.
+Rückblickend betrachtet, lag dies aber vor allem an den aus der objektorientierten Welt bekannte und unpassend angewandten Prinzipien.
+Anstatt das der Compiler nur bei einer nachweislich unsachgemäßen Programmierung den Compilevorgang abbrechen darf (zbsp. bei einem Syntaxfehler), bricht der Compiler ab, sobald eine ordnungsgemäße Programmierung nicht nachgewiesen werden kann \todo{(Borrowchecker, immutable and mutable use)}.
+
+Nach einer Gewöhnungsphase \enquote{versöhnt} man sich mit dem Compiler.
+Man beginnt nicht nur zu verstehen, was grundsätzlich bemängelt wird, sondern Laufzeitfehler (abgesehen von Logikfehlern) treten praktisch nicht mehr auf \todo{sowas wie sigseg NPE etc}.
+So ist bei der Implementierung des MEC-View-Servers das Programm \textbf{nie} aufgrund eines Fehlers in Rust abgestürzt.
+Erst bei der Einbindung des C und C++ Codes zeigten sich kurzzeitig wieder Speicherzugriffsfehler oder double-frees.
+Diese Kombination macht es einem erstaunlich deutlich, wie komfortabel die Garantien von Rust sind und wie sehr man ansonsten aufpassen muss \todo{das klingt als würde man nie aufpassen (wollen)}.
+
+Anstatt das der Compiler einem glaubt, ordnungsgemäß programmiert zu haben, muss dies durch eine korrekte Notation bewiesen werden.
+Keine Randsituation darf zu einer ungültigen Situation führen.
+
+Wenn es compiliert, funktioniert es auch.
+
+Dass sich die \todo{Beweislastumkehr} für eine ordnungsgemäße Verwendung umdreht (Eigentümerprinzip), \todo{kaltes wasser?}
 
 %Der sehr strenge und zu beginn geradezu verteufelte Compiler kann einem oft zum Augenbraun verziehen bringen.
 Einige aus der objektorientierten Welt bekannte und verinnerlichten Prinzipien konnten oft nur in einer Abwandlung in Rust übertragen werden.
@@ -13,7 +27,7 @@ Herangehensweisen, die für einen selbst sicher erscheinen (bei der nebenläufig
 Wenn man sich aber Zeit nimmt und versucht zu verstehen, was der Compiler grundsätzlich bemängelt, verliert der Compiler \todo{böse} und wird stattdessen langsam zum hilfsbereiten \todo{companion}.
 Gerade weil nach einem erfolgreichem Compilevorgang, das Programm meist wie erwartet läuft.
 
-Rust erzwingt fast die Trennung von Verantwortlichkeiten.
+Rust erzwingt die Trennung von Verantwortlichkeiten.
 
 
 Positiv zu erwähnen ist auch die Kontrolle, die Rust einem gegenüber zum Beispiel Java gibt.
@@ -22,9 +36,11 @@ Datenstrukturen
 Zu den positiven Überraschungen zählt die Umfangreiche Standardbibliothek und die immense Anzahl an Crates aus der öffentlichen \todo{repository}.
 Zusammen mit Werkzeugen wie Cargo und Rustup ist die Installation und Pflege von Rust und die Verwendung von externen Crates \todo{berauschend} einfach und unkompliziert.
 
-Letztendlich bleibt der Eindruck, dass die Programmiersprache Rust da ist um zu bleiben \todo{its here to stay}.
-Weder im Laufzeitverhalten, Funktionsumfang oder Unterstützung stößt man auf Argumente, die gegen eine Verwendung von Rust sprechen würden.
-Im Gegenteil, es macht sich das Gefühl breit, keine andere Programmiersprache könne die Anforderungen der funktionalen Sicherheit ausreichend erfüllen.
+Letztendlich bleibt der Eindruck, dass die Programmiersprache Rust keine kurzzeitige Modeerscheinung ist.
+Weder im Laufzeitverhalten, Funktionsumfang oder Platzformunterstützung stößt man auf Argumente, die gegen eine Verwendung von Rust sprechen würden.
+Im Gegenteil, es macht sich das Gefühl breit, keine andere Programmiersprache könne die Anforderungen der funktionalen Sicherheit derart gut erfüllen.
+Im Gegenteil, es macht sich das Gefühl breit, keine andere Programmiersprache ist für den Einsatz im Umfeld der funktionalen Sicherheit derart gut geeignet.
+\todo{angst randsituation vergessen bei anderen programmiersprachen}
 
 \todo{too much fanciness of rust?}
 

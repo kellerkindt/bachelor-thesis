@@ -116,7 +116,7 @@ Zur Laufzeit gibt das Beispielprogramm \monospaceinline{Empfangen: Hallo, Kanal!
 In Zeile 5 wird ein neuer Kanal erzeugt und eine Sende- und \todo{Empfängerinstanz} zurückgegeben.
 Zwischen Zeile 7 und 9 wird ein neuer Thread erzeugt und der auszuführenden Closure (siehe \autoref{rust:closures}) die Eigentümerschaft über den Empfänger übertragen (Schlüsselwort \rustcinline{move}).
 Der neuer Thread wartet nach Start auf den Empfang einer neuen Nachricht und gibt diese anschließend auf der Konsole aus.
-In Zeile 11 sendet der Haupt-Thread über den Kanal dem anderen Thread einen Text\footnote{Um genau zu sein, ist der Wert vom Datentyp \rustcinline{&'static str} \todo{.}} zu und wartet in Zeile 12 bis dieser beendet wurde.
+In Zeile 11 sendet der Haupt-Thread über den Kanal dem anderen Thread einen Text\footnote{Um genau zu sein, ist der Wert vom Datentyp \rustcinline{&`static str} \todo{.}} zu und wartet in Zeile 12 bis dieser beendet wurde.
 
 Um nicht für jeden Datentyp einen neuen Kanal erstellen zu müssen, kann das \enquote{Command Pattern} (dt. Kommando Verhaltensmuster) \cite[153]{goll2014architektur} verwendet werden, um über einen Kanal mehrere Aktionen zu befehligen.
 In Rust kann dies mit einem \rustcinline{enum} umgesetzt werden:
@@ -150,7 +150,7 @@ Die neue Schnittstelle \rustcinline{EndPoint} definiert die Funktion \rustcinlin
 Anschließend wird sie für den Sendeteil des Kanals implementiert, wodurch dieser quakt\footnote{\enquote{Duck Typing} \cite[44]{rust:orly_programming} in Rust teilweise möglich, dann aber ohne Laufzeitkosten. Theorem in etwa: \enquote{When I see a bird that walks like a duck and swims like a duck and quacks like a duck, I call that bird a duck.} - James Whitcomb Riley  \todo{cite? \url{https://de.wikipedia.org/wiki/James_Whitcomb_Riley}, Wiki: Die ursprüngliche Herkunft dieser Phrase ist jedoch umstritten}} wie die \rustcinline{EndPoint}-Schnittstelle.
 Für Zeile 35 ist daher nicht erkenntlich, dass es sich um einen Kanal handelt.
 
-Auf der Konsole wird \monospaceinline{Say: Hallo, Fassade!} \todo{.}.
+Auf der Konsole wird \monospaceinline{Say: Hallo, Proxy!} \todo{.}.
 
 \rustcinclude
 	{impl:commands:facade}

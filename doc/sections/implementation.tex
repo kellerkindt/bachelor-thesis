@@ -321,9 +321,10 @@ Die in türkis eingefärbten Klassen ud Schnittstellen sind die aus der C++ Impl
 Für das Laufzeitverhalten sind die zusätzlichen Sprünge durch den Adaptercode (\textit{AlgorithmShim} zu \textit{RustShim}, \textit{RustShim} zu \textit{RustShimInternal} und \textit{RustShimInternal} zu \textit{UpdateQueue} \todo{und zurück}) als ungünstig eingestuft.
 Ein weiterer Sprung (\textit{ExternalAlgorithm} zu \textit{AlgorithmShim}) wird durch die Komposition verhindert.
 
-In der \autoref{seq_dia:algorithm:cpp:binding} wird aufgezeigt, wie der C++ Algorithmus instantiiert, eine \textit{SensorFrame}-Nachricht weitergeleitet und eine \textit{RawMessage} verteilt wird.
-Zur Vereinfachung sind hierzu einige Schritte, wie die Registrierung des Fahrzeugs, ausgelassen.
-
+In der \autoref{seq_dia:algorithm:cpp:binding:create} wird aufgezeigt, wie der C++ Algorithmus instantiiert wird.
+\autoref{seq_dia:algorithm:cpp:binding:communication} zeigt wie eine \textit{SensorFrame}-Nachricht weitergeleitet und mit einer \textit{RawMessage} beantwortet wird.
+Zur Vereinfachung sind hierzu einige Schritte, wie die Registrierung des Fahrzeugs, zwischen den Abbildungen ausgelassen.
+Die Sequenzdiagramme in sind mit den Hintergrundfarben aus den bisherigen Diagrammen eingefärbt, um eine Zuordnung der aufgezeigten Klassen zu vereinfachen.
 
 \begin{figure}[H]
 	\centering
@@ -470,7 +471,17 @@ In der folgenden Übersicht sind die Startparameter aus den Anforderungen, eine 
 		}{-a latency_measurement.json}
 \end{itemize}
 
+\section{Serverresistenz gegenüber böswilligen oder defekten Clients}
 
+\todo{.}
+Die Anforderungen \reqNumberForLabel{dos:sensor} \enquote{\reqNameForLabel{dos:sensor}} und \reqNumberForLabel{dos:car} \enquote{\reqNameForLabel{dos:car}} (siehe \autoref{req:dos:sensor}) beschreiben ein Szenario, bei dem sich im Server Nachrichten anstauen.
+Bei einem zu großen Rückstau, kann dem Server der Arbeitsspeicher ausgehen und das Betriebssystem müsste den Prozess beenden.
+Das bedeutet, die Erreichbarkeit des MEC-View-Servers kann durch einen böswilligen oder defekten Client beeinflusst werden.
+Um dies zu verhindern, sind die Kanäle (siehe \autoref{}) zwischen Client und Algorithmus in ihrer Größe limitiert.
+Der Versuch, diese Limitierung zu überschreiten, wird mit einem Fehler beantwortet, woraufhin die Verbindung von dem betroffenem Client getrennt wird.
+Durch diese Maßnahme kann die Erreichbarkeit des MEC-View-Servers gewahrt werden.
+
+\clearpage
 \section{?? Bindgen für ASN}
 
 \label{impl:issue:ffi}
@@ -505,9 +516,6 @@ In der folgenden Übersicht sind die Startparameter aus den Anforderungen, eine 
 \todo{SRP, impl Object separat from impl CommandProcessor for Object, testability?}
 
 
-\section{DDOS}
-
-\todo{OPTIONALE ANFORDERUNGEN}
 
 %\section{libmessages make unsafe libmessages-sys safe}
 	

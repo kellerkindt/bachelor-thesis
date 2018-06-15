@@ -4,12 +4,12 @@
 \makeatletter
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
 
-\newcommand{\requirement}[4]{%
+\newcommand{\requirement}[5]{%
 	\begin{itemize}
-		\item \textbf{Anforderung #2: #3}\label{req:#1}\\#4
+		\item \textbf{Anforderung #2: #3#4}\label{req:#1}\\#5
 	\end{itemize}
 	\expandafter\edef\csname{}req_number_#1\endcsname{#2}
-	\expandafter\edef\csname{}req_name_#1\endcsname{#3}%
+	\expandafter\edef\csname{}req_name_#1\endcsname{#4}%
 }
 
 \newcommand{\reqNumberForLabel}[1]{\csname{}req_number_#1\endcsname}

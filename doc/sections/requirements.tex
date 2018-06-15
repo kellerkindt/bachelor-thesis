@@ -14,44 +14,44 @@ Eine Umsetzung wird trotzdem angestrebt, insofern die Zeitlimitierung durch dies
 Die hier gelisteten funktionale Anforderungen beschreiben das gewünschte Verhalten des Systems  \cite[155]{goll2012methoden}.
 
 \subsection{Top-Level Requirement}
-\requirement{top}{1000}{MEC-View-Server}{Die neue Implementation des MEC-View-Servers soll an Stelle der existierenden MEC-View-Server Implementation treten können. Empfangene Nachrichten von Sensoren sollen an den Algorithmus und dessen Ergebnisse an verbundene Fahrzeuge weitergeleitet werden.}
+\requirement{top}{1000}{}{MEC-View-Server}{Die neue Implementation des MEC-View-Servers soll an Stelle der existierenden MEC-View-Server Implementation treten können. Empfangene Nachrichten von Sensoren sollen an den Algorithmus und dessen Ergebnisse an verbundene Fahrzeuge weitergeleitet werden.}
 
 \subsection{Anforderungen}
 \subsubsection{Kommunikation}
-\requirement{com:tcp}{2000}{TCP Server}{Auf Port 2000 sollen neue TCP-Verbindungen angenommen werden. Jedem Client soll eine eigenen TCP Verbindung zugewiesen sein.}
+\requirement{com:tcp}{2000}{}{TCP Server}{Auf Port 2000 sollen neue TCP-Verbindungen angenommen werden. Jedem Client soll eine eigenen TCP Verbindung zugewiesen sein.}
 
 \subsubsection{Protokoll}
-\requirement{client:sensor}{2100}{Client als Sensor}{Ein Client soll sich nach dem Verbindungsaufbau als Sensor registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ des Clients unbekannt sein und er soll nicht als Sensor agieren können.}
+\requirement{client:sensor}{2100}{}{Client als Sensor}{Ein Client soll sich nach dem Verbindungsaufbau als Sensor registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ des Clients unbekannt sein und er soll nicht als Sensor agieren können.}
 
-\requirement{client:car}{2110}{Client als Fahrzeug}{Ein Client soll sich nach dem Verbindungsaufbau als Fahrzeug registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ des Clients unbekannt sein und er soll nicht als Fahrzeug  agieren können.}
+\requirement{client:car}{2110}{}{Client als Fahrzeug}{Ein Client soll sich nach dem Verbindungsaufbau als Fahrzeug registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ des Clients unbekannt sein und er soll nicht als Fahrzeug  agieren können.}
 
-\requirement{client:sectors}{2120}{Fahrzeug initialisieren}{Der Server soll dem Fahrzeug nach Registrierung alle bekannten Sektoren übermitteln.}
+\requirement{client:sectors}{2120}{}{Fahrzeug initialisieren}{Der Server soll dem Fahrzeug nach Registrierung alle bekannten Sektoren übermitteln.}
 
-\requirement{client:defunsub}{2130}{Sensor initialisieren}{Der Server soll dem Sensor nach Registrierung eine \textit{UpdateSubscription}-Nachricht zusenden, um das Abonnement als aufgekündigt zu initialisieren.}
+\requirement{client:defunsub}{2130}{}{Sensor initialisieren}{Der Server soll dem Sensor nach Registrierung eine \textit{UpdateSubscription}-Nachricht zusenden, um das Abonnement als aufgekündigt zu initialisieren.}
 
-\requirement{sensor:pause}{2140}{Sensoren abonnieren}{Sensoren sollen bei verbunden Fahrzeugen abonniert sein.}
+\requirement{sensor:pause}{2140}{}{Sensoren abonnieren}{Sensoren sollen bei verbunden Fahrzeugen abonniert sein.}
 
-\requirement{sensor:resume}{2150}{Sensoren deabonnieren}{Solange kein Fahrzeug verbunden ist, sollen die Sensoren nicht abonniert sein.}
+\requirement{sensor:resume}{2150}{}{Sensoren deabonnieren}{Solange kein Fahrzeug verbunden ist, sollen die Sensoren nicht abonniert sein.}
 
 
-\requirement{impl:vehicle:subscribe}{2160}{Fahrzeug kann Umgebungsmodell abonnieren}{Ein Fahrzeug kann ein Abonnement für Umgebungsmodelle erstellen.}
+\requirement{impl:vehicle:subscribe}{2160}{}{Fahrzeug kann Umgebungsmodell abonnieren}{Ein Fahrzeug kann ein Abonnement für Umgebungsmodelle erstellen.}
 
-\requirement{impl:vehicle:unsubscribe}{2170}{Fahrzeug kann Abonnement aufkündigen}{Ein Fahrzeug kann ein bestehendes Abonnement für Umgebungsmodelle aufkündigen.}
+\requirement{impl:vehicle:unsubscribe}{2170}{}{Fahrzeug kann Abonnement aufkündigen}{Ein Fahrzeug kann ein bestehendes Abonnement für Umgebungsmodelle aufkündigen.}
 
 \subsubsection{Nachrichtenverarbeitung}
-\requirement{impl:algorithmus:to}{2200}{Sensordaten weitergeben}{Empfangene Sensordaten sollen dekodiert und an den Fusionsalgorithmus übergeben werden.}
+\requirement{impl:algorithmus:to}{2200}{}{Sensordaten weitergeben}{Empfangene Sensordaten sollen dekodiert und an den Fusionsalgorithmus übergeben werden.}
 
 
-\requirement{impl:algorithmus:from}{2210}{Umgebungsmodell weitergeben}{Ergebnisse des Fusionsalgorithmus sollen enkodiert und an die mit einem Abonnement verbundenen Fahrzeuge versendet werden.}
+\requirement{impl:algorithmus:from}{2210}{}{Umgebungsmodell weitergeben}{Ergebnisse des Fusionsalgorithmus sollen enkodiert und an die mit einem Abonnement verbundenen Fahrzeuge versendet werden.}
 
 \subsubsection{Algorithmus}
-\requirement{impl:algorithmus}{2300}{Fusionsalgorithmus}{
+\requirement{impl:algorithmus}{2300}{}{Fusionsalgorithmus}{
 	Der Dummy-Algorithmus \enquote{SampleAlgorithm} der C++ Referenzimplementierung soll in Rust nachempfunden werden.
 	Diese Implementation soll für jede eingehende \textit{SensorFrame}-Nachricht (siehe \autoref{msg:sensor_frame}) eine \textit{EnvironmentFrame}-Nachricht versenden.
 	Aus der empfangenen \textit{SensorFrame}-Nachricht soll hierzu lediglich der Zeitstempel in die \textit{EnvironmentFrame}-Nachricht (siehe \autoref{msg:environment_frame}) übertragen werden.
 }
 
-\requirement{possible:external_algorithm}{2310}{OPTIONAL: Einbinden eines C++ Algorithmus}{Die C++ Referenzimplementation definiert die Schnittstellen \textit{Algorithmus}, \textit{EventListener},  \textit{UpdateQueue} und die Methode \textit{AlgorithmFactory::Create}. Dadurch ist es der C++ Implementation möglich, wahlweise mit dem \enquote{Dummy}-Algorithmus oder mit dem Fusionsalgorithmus der Universität Ulm compiliert zu werden. Die Rust Implementation soll ebenfalls einen C++ Algorithmus, der diesen Schnittstellen entspricht, nutzen können.}
+\requirement{possible:external_algorithm}{2310}{OPTIONAL: }{Einbinden eines C++ Algorithmus}{Die C++ Referenzimplementation definiert die Schnittstellen \textit{Algorithmus}, \textit{EventListener},  \textit{UpdateQueue} und die Methode \textit{AlgorithmFactory::Create}. Dadurch ist es der C++ Implementation möglich, wahlweise mit dem \enquote{Dummy}-Algorithmus oder mit dem Fusionsalgorithmus der Universität Ulm compiliert zu werden. Die Rust Implementation soll ebenfalls einen C++ Algorithmus, der diesen Schnittstellen entspricht, nutzen können.}
 
 
 %\requirement{impl:roadclearance}{Road-Clearance}{\todo{...}}
@@ -60,32 +60,32 @@ Die hier gelisteten funktionale Anforderungen beschreiben das gewünschte Verhal
 
 \subsubsection{Startparameter}
 
-\requirement{impl:arg:log}{2400}{OPTIONAL: Startparameter für Logausgabe}{
+\requirement{impl:arg:log}{2400}{OPTIONAL: }{Startparameter für Logausgabe}{
 	Ein Startparameter soll den Mindestlevel für Logausgaben auf der Konsole festlegen können.
 	Gültige Level sind hierbei \enquote{err}, \enquote{warn}, \enquote{info}, \enquote{debug} und \enquote{trace}.
 	Nach dem Setzen eines Mindestlevel, sollen nur noch Ausgaben auf der Konsole erscheinen, die diesen Level oder einen höheren haben.
 	Es gilt \enquote{err} > \enquote{warn} > \enquote{info} > \enquote{debug} > \enquote{trace}.
 }
 
-\requirement{impl:arg:interface}{2410}{OPTIONAL: Startparameter für die Netzwerkschnittstelle}{
+\requirement{impl:arg:interface}{2410}{OPTIONAL: }{Startparameter für die Netzwerkschnittstelle}{
 	Ein Startparameter soll festlegen, auf welcher Netzwerkschnittstelle der Server auf eingehende Verbindungen lauscht.
 	Bei keiner Angabe soll auf allen Netzwerkschnittstellen gelauscht werden (Standardwert 0.0.0.0).%
 }
 
-\requirement{impl:arg:port}{2420}{OPTIONAL: Startparameter für den TCP-Port}{
+\requirement{impl:arg:port}{2420}{OPTIONAL: }{Startparameter für den TCP-Port}{
 	Ein Startparameter soll festlegen, auf welchem TCP-Port der Server auf eingehende Verbindungen lauscht.
 	Bei keiner Angabe soll auf dem TCP-Port 2000 gelauscht werden.%
 }
 
-\requirement{impl:arg:init_msg}{2430}{OPTIONAL: Initialisierungsnachricht aus XML-Datei}{
+\requirement{impl:arg:init_msg}{2430}{OPTIONAL: }{Initialisierungsnachricht aus XML-Datei}{
 	Ein Startparameter soll mit dem Pfad zu einer XER-Codierten Datei die \textit{InitMessage}-Nachricht festlegen, die einem Fahrzeug nach dem Verbindungsaufbau zugesendet wird.%
 }
 
-\requirement{impl:arg:env_frame}{2440}{OPTIONAL: Nur wenn der Dummy-Algorithmus geladen ist: Umgebungsmodell aus XML-Datei}{
+\requirement{impl:arg:env_frame}{2440}{OPTIONAL: }{Nur wenn der Dummy-Algorithmus geladen ist: Umgebungsmodell aus XML-Datei}{
 	Ein Startparameter soll den Pfad zu einer XER-Codierten Datei festlegen, in der die \textit{EnvironmentFrame}-Nachricht beinhaltet ist, die einem Fahrzeug zugesendet wird.%
 }
 
-\requirement{impl:arg:alg_json}{2450}{OPTIONAL: Nur wenn der C++ Algorithmus geladen ist: Pfad an Algorithmus übergeben}{
+\requirement{impl:arg:alg_json}{2450}{OPTIONAL: }{Nur wenn der C++ Algorithmus geladen ist: Pfad an Algorithmus übergeben}{
 	Ein Startparameter soll den Pfad zu einer Konfigurationsdatei festlegen.
 	Dieser Pfad soll dem C++ Algorithmus beim Initiieren übergeben werden.
 	Falls dieser Startparameter nicht angegeben wird, soll der Standardwert \enquote{/etc/MECViewServer/algorithmus.json} übergeben werden.%
@@ -96,35 +96,35 @@ Die hier gelisteten funktionale Anforderungen beschreiben das gewünschte Verhal
 Nichtfunktionale Anforderungen zeigen im Gegensatz zu funktionalen Anforderungen Rahmenbedingungen bei der Umsetzung des Systems auf \cite[155]{goll2012methoden}.
 
 \subsubsection{Kontext}
-\requirement{rust}{3000}{Implementation in Rust}{Die Implementation des Servers soll in der Programmiersprache Rust vorgenommen werden.}
+\requirement{rust}{3000}{}{Implementation in Rust}{Die Implementation des Servers soll in der Programmiersprache Rust vorgenommen werden.}
 
-\requirement{com:asn}{3010}{Kommunikationsprotokoll ist ASN.1/UPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients soll ASN.1 mit der Encodierung UPER sein. Es sollen die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert werden. Das Kommunikationsverhalten soll die Anforderungen der C++ Referenzimplementation erfüllen, sprich den Clients soll nicht ersichtlich sein, ob die Rust- oder die Referenzimplementation des Servers ausgeführt wird.}
+\requirement{com:asn}{3010}{}{Kommunikationsprotokoll ist ASN.1/UPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients soll ASN.1 mit der Encodierung UPER sein. Es sollen die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert werden. Das Kommunikationsverhalten soll die Anforderungen der C++ Referenzimplementation erfüllen, sprich den Clients soll nicht ersichtlich sein, ob die Rust- oder die Referenzimplementation des Servers ausgeführt wird.}
 
-\requirement{exec:mec}{3020}{Plattform MEC}{Die Implementation des Servers soll in compilierter Form auf einem MEC Server mit dem Betriebssystem Ubuntu 16.04 LTS Server und der Architektur x86-64 ausführbar sein.}
+\requirement{exec:mec}{3020}{}{Plattform MEC}{Die Implementation des Servers soll in compilierter Form auf einem MEC Server mit dem Betriebssystem Ubuntu 16.04 LTS Server und der Architektur x86-64 ausführbar sein.}
 
 \subsubsection{Reaktionsverhalten}
-\requirement{exec:time}{3100}{Reaktionszeit des Servers}{Die Implementation des Servers soll Nachrichten von 6 Videosensoren mit einem Nachrichtenintervall von 100ms, 7 Lidarsensoren mit einem Nachrichtenintervall von 50ms und zwei gleichzeitig vebundenen Fahreugen 5ms beantworten können.
+\requirement{exec:time}{3100}{}{Reaktionszeit des Servers}{Die Implementation des Servers soll Nachrichten von 6 Videosensoren mit einem Nachrichtenintervall von 100ms, 7 Lidarsensoren mit einem Nachrichtenintervall von 50ms und zwei gleichzeitig vebundenen Fahreugen 5ms beantworten können.
 	Dies umfasst Nachricht dekodieren, Fusionsalgorithmus darbieten, Resultat enkodieren und versenden.
 	Die Bearbeitungszeit des Fusionsalgorithmus zählt nicht dazu.}
 
-\requirement{exec:realtime}{3110}{Kein Echtzeitsystem}{Trotz vorgegebener Reaktionszeit wird das System nicht als hartes Echtzeitsystem gewertet. Eine Analyse für die maximale Reaktionszeit ist nicht verlangt. Stattdessen soll das System als weiches Echtzeitsystem gewertet werden, weswegen die durchschnittliche Reaktionszeit betrachtet wird.}
+\requirement{exec:realtime}{3110}{}{Kein Echtzeitsystem}{Trotz vorgegebener Reaktionszeit wird das System nicht als hartes Echtzeitsystem gewertet. Eine Analyse für die maximale Reaktionszeit ist nicht verlangt. Stattdessen soll das System als weiches Echtzeitsystem gewertet werden, weswegen die durchschnittliche Reaktionszeit betrachtet wird.}
 
 \subsubsection{Widerstandsfähigkeit}
-\requirement{dos:sensor}{3200}{OPTIONAL: Widerstand gegen Nachrichtenüberflutung}{Die Funktionalität des Servers gegenüber anderen Clients soll durch eine Überflutung von Nachrichten eines einzelnen Sensors nicht beeinträchtigt werden.}
+\requirement{dos:sensor}{3200}{OPTIONAL: }{Widerstand gegen Nachrichtenüberflutung}{Die Funktionalität des Servers gegenüber anderen Clients soll durch eine Überflutung von Nachrichten eines einzelnen Sensors nicht beeinträchtigt werden.}
 
-\requirement{dos:car}{3210}{OPTIONAL: Widerstand gegen Nachrichtenrückstau}{Die Funktionalität des Servers soll durch Fahrzeuge, für die sich ein Nachrichtenrückstau gebildet hat, oder von einzelnen langsamen Verbindungen nicht beeinträchtigt werden.}
+\requirement{dos:car}{3210}{OPTIONAL: }{Widerstand gegen Nachrichtenrückstau}{Die Funktionalität des Servers soll durch Fahrzeuge, für die sich ein Nachrichtenrückstau gebildet hat, oder von einzelnen langsamen Verbindungen nicht beeinträchtigt werden.}
 
 \subsubsection{Qualität}
-\requirement{quality:ci}{3300}{OPTIONAL: Continuous-Integration}{
+\requirement{quality:ci}{3300}{OPTIONAL: }{Continuous-Integration}{
 	Eine Software zur kontinuierliche Integration soll fortlaufend den aktuellen Quellcode auf Übersetzungsfähigkeit überprüfen.
 }
 
-\requirement{quality:ci:test}{3310}{OPTIONAL: Continuous-Integration mit Tests}{
+\requirement{quality:ci:test}{3310}{OPTIONAL: }{Continuous-Integration mit Tests}{
 	 Eine Software zur kontinuierliche Integration soll fortlaufend den aktuellen Quellcode mittels Unit-Tests prüfen.
 }
 
-\requirement{quality:ci:artefacts}{3320}{OPTIONAL: Continuous-Integration liefert Artefakte}{
+\requirement{quality:ci:artefacts}{3320}{OPTIONAL: }{Continuous-Integration liefert Artefakte}{
 	Eine Software zur kontinuierliche Integration soll fortlaufend den aktuellen Quellcode übersetzen und diese Artefakte bereitstellen.
 }
 
-\requirement{nfktl:styleguide}{3330}{Einhaltung des Styleguides}{Der Quellcode der Serverimplementation soll sich an den offiziellen Styleguide (siehe \autoref{rust:styleguide}) halten.}
+\requirement{nfktl:styleguide}{3330}{}{Einhaltung des Styleguides}{Der Quellcode der Serverimplementation soll sich an den offiziellen Styleguide (siehe \autoref{rust:styleguide}) halten.}

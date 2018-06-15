@@ -338,52 +338,76 @@ Zur Vereinfachung sind hierzu einige Schritte, wie die Registrierung des Fahrzeu
 \begin{figure}[H]
 	\begin{tikzpicture}[scale=0.65, every node/.style={transform shape}]
 	{[on background layer]
-		\fill[green!15] (-13,1) -- (-7,1) -- (-7,-16) -- (-13,-16) -- cycle;
-		\fill[red!30!white!15] (-7,1) -- (1,1) -- (1,-16) -- (-7,-16) -- cycle;
-		\fill[orange!40!white!15] (1,1) -- (13,1) -- (13,-16) -- (1,-16) -- cycle;
-		\fill[cyan!8] (13,1) -- (21,1) -- (21,-16) -- (13,-16) -- cycle;
+		\fill[green!15] (-13,1) -- (-7,1) -- (-7,-8.5) -- (-13,-8.5) -- cycle;
+		\fill[red!30!white!15] (-7,1) -- (1,1) -- (1,-8.5) -- (-7,-8.5) -- cycle;
+		\fill[orange!40!white!15] (1,1) -- (13,1) -- (13,-8.5) -- (1,-8.5) -- cycle;
+		\fill[cyan!8] (13,1) -- (21,1) -- (21,-8.5) -- (13,-8.5) -- cycle;
 	}
 	\begin{umlseqdiag} 
 	\umlobject[x=-10,no ddots]{MEC-View-Server}
 	%\umlmulti[x=-16,no ddots,class=Vehicle]{v}
 	\umlobject[x=15,no ddots]{AlgorithmFactory}
 	
-	\begin{umlcreatecall}[x=-5,dt=5,class=ExternalAlgorithm]{MEC-View-Server}{a}
-		\begin{umlcreatecall}[x=-1,dt=5,class=AlgorithmShim]{a}{ashim}
-		
-		\end{umlcreatecall}
-	\end{umlcreatecall}
-	%\umlcreatecall[x=-5,dt=5,class=ExternalAlgorithm]{MEC-View-Server}{a}
-	%\umlcreatecall[x=-1,dt=5,class=AlgorithmShim]{a}{ashim}
-	\umlcreatecall[x=3,dt=5,class=RustShim]{ashim}{rshim}
-	\umlcreatecall[x=7,dt=5,class=RustShimInternal]{rshim}{i}
-	\umlcreatecall[x=11,dt=5,class=UpdateQueue]{rshim}{q}
+	\umlobject[x=-5,no ddots]{ExternalAlgorithm}
+	\umlobject[x=-1,y=-0.5,no ddots]{AlgorithmShim}
+	\umlobject[x=3,y=-1,no ddots]{RustShim}
 	
-	\begin{umlcall}[op={<<static>> Create(e, q, config\_file)},return=a]{rshim}{AlgorithmFactory}
-		\umlcreatecall[x=19,class=Extension]{AlgorithmFactory}{e}
+	\begin{umlcall}[op=<<create>>,with return]{MEC-View-Server}{ExternalAlgorithm}
+		\begin{umlcall}[op=<<create>>,with return]{ExternalAlgorithm}{AlgorithmShim}
+			\begin{umlcall}[op=<<create>>,with return]{AlgorithmShim}{RustShim}
+				\umlcreatecall[x=7,dt=5,class=RustShimInternal]{RustShim}{i}
+				\umlcreatecall[x=11,dt=5,class=UpdateQueue]{RustShim}{q}
+				\begin{umlcall}[op={<<static>> Create(e, q, config\_file)},return=a]{RustShim}{AlgorithmFactory}
+					\umlcreatecall[x=19,class=Extension]{AlgorithmFactory}{e}
+				\end{umlcall}
+			\end{umlcall}
+		\end{umlcall}
 	\end{umlcall}
 	
+	\end{umlseqdiag} 
+	\end{tikzpicture}
+	\centering
+	\caption{Instantiierung eines neuen C++ Algorithmus aus der Rust Implementation}
+	\label{seq_dia:algorithm:cpp:binding:create}
+\end{figure}
+\begin{figure}[H]
+	\begin{tikzpicture}[scale=0.65, every node/.style={transform shape}]
+	{[on background layer]
+		\fill[green!15] (-13,1) -- (-7,1) -- (-7,-8) -- (-13,-8) -- cycle;
+		\fill[red!30!white!15] (-7,1) -- (1,1) -- (1,-8) -- (-7,-8) -- cycle;
+		\fill[orange!40!white!15] (1,1) -- (13,1) -- (13,-8) -- (1,-8) -- cycle;
+		\fill[cyan!8] (13,1) -- (21,1) -- (21,-8) -- (13,-8) -- cycle;
+	}
+	\begin{umlseqdiag} 
+	
+	\umlobject[x=-5,no ddots]{ExternalAlgorithm}
+	\umlobject[x=-1,no ddots]{AlgorithmShim}
+	\umlobject[x=3,no ddots]{RustShim}
+	\umlobject[x=7,no ddots]{RustShimInternal}
+	\umlobject[x=11,no ddots]{UpdateQueue}
+	\umlobject[x=19,no ddots]{Extension}
+	
+	
 	\umlmulti[x=-9,class=Sensor]{s}
-	\begin{umlcall}[dt=5,op=update(SensorFrame), with return]{s}{a}
-		\begin{umlcall}[op=SensorFrame, with return]{a}{ashim}
-			\begin{umlcall}[op=SensorFrame,with return]{ashim}{q}
-				
+	\begin{umlcall}[dt=5,op=SensorFrame, with return]{s}{ExternalAlgorithm}
+		\begin{umlcall}[op=SensorFrame, with return]{ExternalAlgorithm}{AlgorithmShim}
+			\begin{umlcall}[op=SensorFrame,with return]{AlgorithmShim}{UpdateQueue}
 			\end{umlcall}
 		\end{umlcall}
 	\end{umlcall}
 	
 	
-	\begin{umlcall}[dt=17,op=Pop(),return=SensorFrame]{e}{q}
-		
+	\begin{umlcall}[dt=17,op=Pop(),return=SensorFrame]{Extension}{UpdateQueue}
+	
 	\end{umlcall}
 	
 	
-	\umlmulti[x=-12,y=-10,class=Vehicle]{v}
-	\begin{umlcall}[op=RawMessage,with return]{e}{i}
-		\begin{umlcall}[op=RawMessage,with return]{i}{rshim}
-			\begin{umlcall}[op=RawMessage,with return]{rshim}{ashim}
-				\begin{umlcall}[op=RawMessage,with return]{ashim}{a}
-					\begin{umlcall}[op=RawMessage,with return]{a}{v}
+	\umlmulti[x=-12,class=Vehicle]{v}
+	\begin{umlcall}[op=RawMessage,with return]{Extension}{RustShimInternal}
+		\begin{umlcall}[op=RawMessage,with return]{RustShimInternal}{RustShim}
+			\begin{umlcall}[op=RawMessage,with return]{RustShim}{AlgorithmShim}
+				\begin{umlcall}[op=RawMessage,with return]{AlgorithmShim}{ExternalAlgorithm}
+					\begin{umlcall}[op=RawMessage,with return]{ExternalAlgorithm}{v}
 					\end{umlcall}
 				\end{umlcall}
 			\end{umlcall}
@@ -393,8 +417,8 @@ Zur Vereinfachung sind hierzu einige Schritte, wie die Registrierung des Fahrzeu
 	\end{umlseqdiag} 
 	\end{tikzpicture}
 	\centering
-	\caption{Instantiierung eines neuen C++ Algorithmus aus der Rust Implementation \todo{fix create calls}}
-	\label{seq_dia:algorithm:cpp:binding}
+	\caption{Kommunikation mit dem C++ Algorithmus}
+	\label{seq_dia:algorithm:cpp:binding:communication}
 \end{figure}
 \vspace*{\fill}
 \end{landscape}

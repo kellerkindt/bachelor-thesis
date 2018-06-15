@@ -53,12 +53,15 @@ Die folgenden ASN.1 Nachrichten sind aufgrund der Textlänge im Diagramm abgekü
 \end{figure}
 
 \todo{vllt eher in Implementation?}
-Die grün und blau markierten Klassen aus \autoref{draft:architecture} haben keine direkten Abhängigkeiten zu den ASN.1 Nachrichtentypen, da sie \textit{Generics} verwenden und nicht auf den Nachrichteninhalt zugreifen müssen (so muss der Client \textit{SensorFrame}-Nachrichten an den Algorithmus weiterleiten, den konkreten Typ jedoch nicht kennen).
+Die grün und blau markierten Klassen aus \autoref{draft:architecture} haben keine direkten Abhängigkeiten zu den ASN.1 Nachrichtentypen.
+Klassen, die eine Nachricht weiterleiten müssen und deshalb einen Berührungspunkt mit diesen haben, verwenden \textit{Generics} (so muss der Client \textit{SensorFrame}-Nachrichten an den Algorithmus weiterleiten, den konkreten Typ jedoch nicht kennen).
 Lediglich durch die Nutzung in Kombination mit den ASN.1 Nachrichtentypen entstehen zur Compilezeit Abhängigkeiten, die aufgrund der Übersicht aber nicht eingezeichnet sind.
 
 \todo{.}
-Die Klasse \textit{RawMessage} ist eine Containerklasse, um binäre Daten mit Typindikatoren zwischen Decoder und Mapper und zwischen Encoder und Adapter auszutauschen.
-Die Klasse selbst hat keine weiteren Abhängigkeiten und ist von der eingesetzten Nachrichtentechnologie unabhängig. \todo{Kopf / Body \autoref{analysis:messages}}
+Die Klasse \textit{RawMessage} aus der Crate \textit{libmessages} ist eine Containerklasse um binäre Daten mit Typindikatoren zwischen Decoder und Mapper und zwischen Encoder und Adapter auszutauschen.
+Die Klasse selbst hat keine weiteren Abhängigkeiten und ist von der eingesetzten Nachrichtentechnologie unabhängig.
+Die \textit{asn::Message} soll Methoden bereitstellen, eine ASN.1 Nachricht in eine \textit{RawMessage} zu serialisieren und eine ASN.1 Nachricht aus einer \textit{RawMessage} zu deserialisieren.
+% \todo{Kopf / Body \autoref{analysis:messages}}
 
 Die Implementation ist in drei Crates aufgeteilt:
 \begin{itemize}
@@ -73,7 +76,9 @@ Die Implementation ist in drei Crates aufgeteilt:
 	
 	\item \textbf{MECViewServer}: Enthält die Logik für den Sensor, das Fahrzeug und den Algorithmus und bündelt sie mit der Kommunikationslogik zu einem ausführbaren Kompilat.
 	
-	\item \textbf{tokio::net}: \todo{.} Diese Crate ist Teil des Frameworks von Tokio (siehe \autoref{tokio}) und wird lediglich aus Gründen der Vollständigkeit erwähnt. Anstatt die TCP-Klassen der Standardbibliothek zu nutzen, werden die erweiterten Versionen von Tokio genutzt, \todo{um \textit{Future}s und channels wie geplant nutzen zu können.}
+	\item \textbf{tokio::net}: Diese Crate ist Teil des Frameworks von Tokio (siehe \autoref{design:tokio}) und wird hier lediglich aus Gründen der Vollständigkeit erwähnt.
+	Anstatt die TCP-Klassen der Standardbibliothek zu nutzen, werden die erweiterten Versionen von Tokio genutzt.
+	Die TCP-Klassen von Tokio können asynchron mittels \textit{Future}s und Kanälen genutzt werden, wie es in der Standardbibliothek (noch \cite{rust:github:futures}) nicht möglich ist.
 \end{itemize}
 
 \subsubsection{Erklärung Server}

@@ -1,16 +1,17 @@
 
 \chapter{Implementierung}
 
-In diesem Kapitel wird auf Besonderheiten und Schwierigkeiten bei der Implementierung eingegangen.
+\todo{.}
+In diesem Kapitel wird auf Besonderheiten und Schwierigkeiten bei der Implementierung des Systems eingegangen.
+Optionale Anforderungen die zusätzlich umgesetzt werden konnten, werden zudem aufgezeigt.
 
 
 %Weitestgehend wie in \autoref{draft:architecture}, aber Futures, tokio, Queues
 
 \section{Continuous Integration mittels Jenkins}
 
-\todo{OPTIONALE ANFORDERUNGEN 33*0}
-
-Mittels der Continuous Integration Software Jenkins wird die Rust-Implementation nach jeder Aktualisierung der Quellcode-Repository gebaut.
+Um die nichtfunktionalen Anforderungen zur Qualität umsetzen zu können (Anforderung \reqNumberForLabel{quality:ci}, siehe \autoref{req:quality:ci}), wird die Continuous Integration Software Jenkins genutzt.
+Nach jeder Aktualisierung der Quellcode-Repository wird eine neuer Compileversuch gestartet.
 In einem Jenkinsfile\footnote{Eigenname: \url{https://jenkins.io/doc/book/pipeline/jenkinsfile/}} ist hierzu die folgende Pipeline definiert:
 
 \begin{figure}[H]
@@ -27,6 +28,7 @@ In diesem Schritt wird überprüft, ob die richtige Version von Rust installiert
 Sowohl der Rust Compiler als auch Abhängigkeiten wie Cargo, Clippy oder Tarpaulin werden falls nötig  in diesem Schritt nachinstalliert und aktualisiert.
 
 \subsubsection{Schritt \enquote{check-src}}
+\todo{\reqNumberForLabel{nfktl:styleguide} \reqNameForLabel{nfktl:styleguide}} \\
 Hier wird der Quellcode auf einen schlechten Programmierstil oder schlechte Programmierpraktiken durch Clippy und auf eine nicht standardkonforme Formatierung überprüft.
 Ein erkannter Mangel resultiert in einen Abbruch und einem entsprechendem roten Icon auf der Projektseite auf Jenkins.
 Ein Quellcode, der diese Qualitätsstandards nicht erfüllt, wird somit schnellstmöglich abgelehnt.
@@ -42,6 +44,8 @@ Gleichzeitig wird das zuvor erstellte Debug-Artefakt auf Fehler überprüft, ind
 Ein Release-Artefakt ist stark optimiert und ist für den Produktivbetrieb gedacht.
 
 \subsubsection{Schritt \enquote{Test-Release}}
+\todo{\reqNumberForLabel{quality:ci:test} \reqNameForLabel{quality:ci:test}} \\
+
 In diesem Schritt wird das Release-Artefakt mittels Unit-Tests auf Fehler überprüft.
 Hierdurch soll sichergestellt werden, dass kein Fehler durch Optimierungen des Compilers aufgedeckt oder verursacht wurde.
 Des weiteren soll kein Artefakt archiviert werden, das nicht auf Fehler überprüft wurde.
@@ -50,6 +54,7 @@ Des weiteren soll kein Artefakt archiviert werden, das nicht auf Fehler überpr�
 Dieser Schritt dient zur Zusammenstellung der Testabdeckung der Unit-Tests und der automatisierten  Erstellung der Dokumentation.
 
 \subsubsection{Ergebnis des erfolgreichen Durchlaufs}
+\todo{\reqNumberForLabel{quality:ci:artefacts} \reqNameForLabel{quality:ci:artefacts}} \\
 Jede Aktualisierung der Quellcoderepository resultiert bei erfolgreicher Compilation und Durchlaufen der Tests in den folgenden Artefakten:
 \begin{itemize}
 	\item \textbf{Debug-Artefakt}: Compilation für eine manuelle Fehlersuche mit vielen auf den Quellcode bezogenen Symbolen und ohne Optimierungen durch den Compiler

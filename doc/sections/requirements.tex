@@ -6,7 +6,8 @@ In diesem Kapitel sind die Anforderungen an das umzusetzende System gelistet.
 Die Anforderungen sind in funktionale und nichtfunktionale Anforderungen aufgeteilt.
 
 Anforderungen, die mit einem \textbf{OPTIONAL} gekennzeichnet sind, sind keine Pflichtanforderungen, sondern erweitern das Grundsystem.
-Eine Umsetzung wird trotzdem angestrebt. \todo{Zeitlimitierung erwähnen?}
+\todo{.}
+Eine Umsetzung wird trotzdem angestrebt, insofern die Zeitlimitierung durch diese Bachelorarbeit dies erlaubt.
 
 \section{Funktionale Anforderungen}
 
@@ -97,11 +98,9 @@ Nichtfunktionale Anforderungen zeigen im Gegensatz zu funktionalen Anforderungen
 \subsubsection{Kontext}
 \requirement{rust}{3000}{Implementation in Rust}{Die Implementation des Servers soll in der Programmiersprache Rust vorgenommen werden.}
 
-\requirement{nfktl:styleguide}{3010}{Einhaltung des Styleguides}{Der Quellcode der Serverimplementation soll sich an den offiziellen Styleguide (siehe \autoref{rust:styleguide}) halten.}
+\requirement{com:asn}{3010}{Kommunikationsprotokoll ist ASN.1/UPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients soll ASN.1 mit der Encodierung UPER sein. Es sollen die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert werden. Das Kommunikationsverhalten soll die Anforderungen der C++ Referenzimplementation erfüllen, sprich den Clients soll nicht ersichtlich sein, ob die Rust- oder die Referenzimplementation des Servers ausgeführt wird.}
 
-\requirement{com:asn}{3020}{Kommunikationsprotokoll ist ASN.1/UPER}{Das Protokoll für die Kommunikation zwischen dem Server und den Clients soll ASN.1 mit der Encodierung UPER sein. Es sollen die bereits definierten Nachrichten verwendet und keine neuen Nachrichten definiert werden. Das Kommunikationsverhalten soll die Anforderungen der C++ Referenzimplementation erfüllen, sprich den Clients soll nicht ersichtlich sein, ob die Rust- oder die Referenzimplementation des Servers ausgeführt wird.}
-
-\requirement{exec:mec}{3030}{Plattform MEC}{Die Implementation des Servers soll in compilierter Form auf einem MEC Server mit dem Betriebssystem Ubuntu 16.04 LTS Server und der Architektur x86-64 ausführbar sein.}
+\requirement{exec:mec}{3020}{Plattform MEC}{Die Implementation des Servers soll in compilierter Form auf einem MEC Server mit dem Betriebssystem Ubuntu 16.04 LTS Server und der Architektur x86-64 ausführbar sein.}
 
 \subsubsection{Reaktionsverhalten}
 \requirement{exec:time}{3100}{Reaktionszeit des Servers}{Die Implementation des Servers soll Nachrichten von 6 Videosensoren mit einem Nachrichtenintervall von 100ms, 7 Lidarsensoren mit einem Nachrichtenintervall von 50ms und zwei gleichzeitig vebundenen Fahreugen 5ms beantworten können.
@@ -124,6 +123,8 @@ Nichtfunktionale Anforderungen zeigen im Gegensatz zu funktionalen Anforderungen
 	 Eine Software zur kontinuierliche Integration soll fortlaufend den aktuellen Quellcode mittels Unit-Tests prüfen.
 }
 
-\requirement{quality:ci:test}{3320}{OPTIONAL: Continuous-Integration liefert Artefakte}{
+\requirement{quality:ci:artefacts}{3320}{OPTIONAL: Continuous-Integration liefert Artefakte}{
 	Eine Software zur kontinuierliche Integration soll fortlaufend den aktuellen Quellcode übersetzen und diese Artefakte bereitstellen.
 }
+
+\requirement{nfktl:styleguide}{3330}{Einhaltung des Styleguides}{Der Quellcode der Serverimplementation soll sich an den offiziellen Styleguide (siehe \autoref{rust:styleguide}) halten.}

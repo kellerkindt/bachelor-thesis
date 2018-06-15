@@ -28,9 +28,9 @@ In diesem Schritt wird überprüft, ob die richtige Version von Rust installiert
 Sowohl der Rust Compiler als auch Abhängigkeiten wie Cargo, Clippy oder Tarpaulin werden falls nötig  in diesem Schritt nachinstalliert und aktualisiert.
 
 \subsubsection{Schritt \enquote{check-src}}
-\todo{\reqNumberForLabel{nfktl:styleguide} \reqNameForLabel{nfktl:styleguide}} \\
-Hier wird der Quellcode auf einen schlechten Programmierstil oder schlechte Programmierpraktiken durch Clippy und auf eine nicht standardkonforme Formatierung überprüft.
-Ein erkannter Mangel resultiert in einen Abbruch und einem entsprechendem roten Icon auf der Projektseite auf Jenkins.
+%\todo{\reqNumberForLabel{nfktl:styleguide} \reqNameForLabel{nfktl:styleguide}} \\
+Hier wird der Quellcode auf einen schlechten Programmierstil oder schlechte Programmierpraktiken durch Clippy und auf eine nicht standardkonforme Formatierung überprüft (Anforderung \reqNumberForLabel{nfktl:styleguide}, siehe \autoref{req:nfktl:styleguide}).
+Ein erkannter Mangel resultiert in einem Abbruch und entsprechendem roten Icon auf der Projektseite auf Jenkins.
 Ein Quellcode, der diese Qualitätsstandards nicht erfüllt, wird somit schnellstmöglich abgelehnt.
 
 \subsubsection{Schritt \enquote{Build-Debug}}
@@ -40,11 +40,11 @@ Im Falle eines Fehlers in einem Unit-Test, können aus einem Debug-Artefakt jedo
 
 \subsubsection{Schritt \enquote{Build-Release-And-Test-Debug}}
 Wie der Name bereits vermuten lässt, wird in diesem Schritt das Projekt im Release-Modus übersetzt.
-Gleichzeitig wird das zuvor erstellte Debug-Artefakt auf Fehler überprüft, indem Unit-Tests ausgeführt werden.
-Ein Release-Artefakt ist stark optimiert und ist für den Produktivbetrieb gedacht.
+%\todo{\reqNumberForLabel{quality:ci:test} \reqNameForLabel{quality:ci:test}} \\
+Gleichzeitig wird das zuvor erstellte Debug-Artefakt auf Fehler überprüft, indem Unit-Tests ausgeführt werden (Anforderung \reqNumberForLabel{quality:ci:test}, siehe \autoref{req:quality:ci:test}).
+Ein Release-Artefakt ist stark optimiert und ist für den Produktivbetrieb geeignet.
 
 \subsubsection{Schritt \enquote{Test-Release}}
-\todo{\reqNumberForLabel{quality:ci:test} \reqNameForLabel{quality:ci:test}} \\
 
 In diesem Schritt wird das Release-Artefakt mittels Unit-Tests auf Fehler überprüft.
 Hierdurch soll sichergestellt werden, dass kein Fehler durch Optimierungen des Compilers aufgedeckt oder verursacht wurde.
@@ -54,8 +54,8 @@ Des weiteren soll kein Artefakt archiviert werden, das nicht auf Fehler überpr�
 Dieser Schritt dient zur Zusammenstellung der Testabdeckung der Unit-Tests und der automatisierten  Erstellung der Dokumentation.
 
 \subsubsection{Ergebnis des erfolgreichen Durchlaufs}
-\todo{\reqNumberForLabel{quality:ci:artefacts} \reqNameForLabel{quality:ci:artefacts}} \\
-Jede Aktualisierung der Quellcoderepository resultiert bei erfolgreicher Compilation und Durchlaufen der Tests in den folgenden Artefakten:
+%\todo{\reqNumberForLabel{quality:ci:artefacts} \reqNameForLabel{quality:ci:artefacts}} \\
+Jede Aktualisierung der Quellcoderepository resultiert bei erfolgreicher Compilation und Durchlaufen der Tests in den folgenden Artefakten (Anforderung \reqNumberForLabel{quality:ci:artefacts}, siehe \autoref{req:quality:ci:artefacts}):
 \begin{itemize}
 	\item \textbf{Debug-Artefakt}: Compilation für eine manuelle Fehlersuche mit vielen auf den Quellcode bezogenen Symbolen und ohne Optimierungen durch den Compiler
 	\item \textbf{Release-Artefakt}: Kompilat mit Optimierungen für den Produktivbetrieb
@@ -90,9 +90,13 @@ Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingeri
 Wie bereits in \autoref{design:communication:architecture:async} festgestellt, ist für eine hochperformante Kommunikationsplattform eine interne, asynchrone Kommunikation nötig.
 
 \todo{.}
-Das \enquote{Message Queuing Pattern} (dt. \todo{}) gilt als stabiles und einfach umzusetzendes Entwurfsmuster, um zwischen asynchron arbeitenden Komponenten oder Klassen Nachrichten auszutauschen \cite[207]{douglass2003real}.
-Es gilt allerdings als sehr schwergewichtig, da im klassischen Sinne nur Werte \enquote{by-value} ausgetauscht werden sollen (in einem \enquote{by-reference} System ist das Resourcenmanagement deutlich komplizierter und Speicherlecks oder \enquote{double-free}s könnten auftreten). 
-Aufgrund des Eigentümerprinzips in Rust können Nachrichten jedoch auch sicher \enquote{by-reference} (\todo{owning reference Box}) ausgetauscht werden.
+Das \enquote{Message Queuing Pattern} (dt. Nachrichten-Warteschlange-Muster) gilt als stabiles und einfach umzusetzendes Entwurfsmuster, um zwischen asynchron arbeitenden Klassen Nachrichten auszutauschen \cite[207]{douglass2003real}.
+Der von E. Douglas Jensen genannte Nachteil, Werte nur \enquote{by-value} austauschen zu können \cite[211]{douglass2003real}, ist seit der Verfügbarkeit des \ccinline{std::shared_ptr} ab C++11 nicht mehr relevant.
+Auch in Rust ist diese Einschränkung durch das Eigentümerprinzip und der Hilfsklassen \rustcinline{Arc}  nicht gegeben.
+%Es gilt allerdings als schwergewichtig, da im klassischen Sinne nur Werte \enquote{by-value} ausgetauscht werden können sollen.
+%Bei Austausch von Werten \enquote{by-reference} ist das Ressourcenmanagement deutlich komplizierter und Speicherlecks oder \enquote{double-free}s könnten auftreten\footnote{Helfer, wie \ccinline{std::shared_ptr} aus C++11, sind zum Zeitpunkt der }. 
+%Aufgrund des Eigentümerprinzips in Rust können Nachrichten jedoch auch sicher \enquote{by-reference} (\todo{owning reference Box}) ausgetauscht werden.
+Das \enquote{Message Queuing Pattern} soll für die interne Kommunikation zwischen \textit{Algorithm} und \textit{Client} bzw. zwischen \textit{Algorithm} und \textit{CountListener} und \textit{EnvironmentListener} verwendet werden
 
 Mittels \enquote{channel} (dt. \enquote{Kanäle}) können in Rust Mitteilungen zwischen vielen Auftraggebern und einem Empfänger ausgetauscht werden (andere Rust-Bibliotheken erlauben auch viele Empfänger, zum Beispiel \enquote{crossbeam-channel}\footnote{\url{https://crates.io/crates/crossbeam-channel}}).
 Der zu versendende Datentyp muss lediglich das Merkmal \rustcinline{Send} aufweisen (siehe \autoref{rust:trait:send}):
@@ -105,10 +109,10 @@ Der zu versendende Datentyp muss lediglich das Merkmal \rustcinline{Send} aufwei
 \autoref{impl:channels:example} zeigt ein einfaches Beispiel, wie ein asynchroner  und sicherer Nachrichtenaustausch in Rust umgesetzt werden kann.
 Zur Laufzeit gibt das Beispielprogramm \monospaceinline{Empfangen: Hallo, Kanal!} auf der Konsole aus.
 
-In Zeile 5 wird ein neuer Kanal erzeugt und eine Sende- und Empfängerinstanz zurück gegeben.
-Zwischen Zeile 7 und 9 wird eine neuer Thread erzeugt und der auszuführenden Closure \todo{ref} die Eigentümerschaft über den Empfänger übertragen (Schlüsselwort \rustcinline{move}).
+In Zeile 5 wird ein neuer Kanal erzeugt und eine Sende- und \todo{Empfängerinstanz} zurück gegeben.
+Zwischen Zeile 7 und 9 wird eine neuer Thread erzeugt und der auszuführenden Closure (siehe \autoref{rust:closures}) die Eigentümerschaft über den Empfänger übertragen (Schlüsselwort \rustcinline{move}).
 Der neuer Thread wartet nach Start auf den Empfang einer neuen Nachricht und gibt diese anschließend auf der Konsole aus.
-In Zeile 11 sendet der Haupt-Thread über den Kanal dem anderen Thread eine Textnachricht zu und wartet in Zeile 12 bis dieser beendet wurde.
+In Zeile 11 sendet der Haupt-Thread über den Kanal dem anderen Thread einen String\footnote{Um genau zu sein, ist der Wert vom Datentyp \rustcinline{&'static str} \todo{.}} zu und wartet in Zeile 12 bis dieser beendet wurde.
 
 Um nicht für jeden Datentyp einen neuen Kanal erstellen zu müssen, kann das \enquote{Command Pattern} (dt. Kommando Verhaltensmuster) \cite[153]{goll2014architektur} verwendet werden, um über einen Kanal mehrere Aktionen zu befehligen.
 In Rust kann dies mit einem \rustcinline{enum} umgesetzt werden:
@@ -121,8 +125,8 @@ In Rust kann dies mit einem \rustcinline{enum} umgesetzt werden:
 In \autoref{impl:commands:example} ist die Aktion, etwas auf der Konsole auszugeben, als Variante \rustcinline{Say} in dem Kommando definiert.
 Für eine Instanz dieser Variante, wird zudem ein \rustcinline{String} verlangt, der daraufhin innerhalb von \rustcinline{execute} in Zeile 11 ausgegeben wird.
 
-Nach diesem Beispiel ist die Kommunikation zwischen dem dem \textit{Algorithmus}, dem \textit{Client}, dem \textit{Vehicle} und dem \textit{Sensor} in der tatsächlichen Implementation realisiert (siehe \autoref{draft:architecture}).
-In dem folgenden \autoref{impl:commands:algorithm} sind die Befehle zu sehen, die an den Algorithmus versendet werden können.
+Nach diesem Beispiel ist die Kommunikation zwischen dem dem \textit{Algorithm}, dem \textit{Client}, dem \textit{Vehicle} und dem \textit{Sensor} in der tatsächlichen Implementation realisiert (siehe \autoref{draft:architecture}).
+In dem folgenden \autoref{impl:commands:algorithm} sind die Befehle zu sehen, die in der tatsächlichen Implementation an den Algorithmus versendet werden können.
 
 \rustcinclude
 	{impl:commands:algorithm}
@@ -131,9 +135,10 @@ In dem folgenden \autoref{impl:commands:algorithm} sind die Befehle zu sehen, di
 
 Ob eine Kommunikation zwischen zwei Klassen asynchron oder synchron stattfindet, sollte für die Implementation jedoch möglichst keine Rolle spielen.
 Zur Kommunikation mit anderen Klassen sollte es nur nötig sein, die entsprechende Schnittstelle zu kennen (Stichwort \enquote{loose coupling} \cite[49]{goll2018entwurfsprinzipien}).
-Die verwendete Kommunikationstechnologie (\textit{tokio}) und Verhaltensmuster (Kommando) beziehen sich nicht mehr auf das Aufgabengebiet der Komponenten.
+Die verwendete Kommunikationstechnologie (\textit{Tokio}) und das Verhaltensmuster (Kommando) beziehen sich nicht mehr auf das Aufgabengebiet der Klassen.
 Durch eine Fassade kann das Erstellen eines Kommandos und das übermitteln durch einen Kanal gekapselt und auf einen einfachen Methodenaufruf reduziert werden.
-Die Verwirklichung mittels Schnittstelle und einer Methode für jedes Kommando entspricht letztendlich dem \enquote{Proxy Pattern} (dt. Stellvertreter-Strukturmuster) \cite[137]{goll2018entwurfsprinzipien}.
+\todo{.}
+Die Verwirklichung mittels Schnittstellen und einer Methode für jedes Kommando entspricht letztendlich dem \enquote{Proxy Pattern} (dt. Stellvertreter-Strukturmuster) \cite[137]{goll2018entwurfsprinzipien}.
 
 Da ein Beispiel aus der tatsächlich Implementierung zu groß für eine übersichtliche Erläuterung ist, wird das Beispiel aus \autoref{impl:channels:example} und \autoref{impl:commands:example} erneut aufgegriffen, um Beispielhaft das Prinzip zu erklären.
 

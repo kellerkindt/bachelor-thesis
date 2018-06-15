@@ -1,4 +1,9 @@
-mod bindgen;
+#[macro_use]
+extern crate log;
+extern crate libc;
+
+mod bindings;
+pub use bindings::*;
 
 pub unsafe fn free_content<T>(asn_type: &mut asn_TYPE_descriptor_t, value: &T) {
     free_struct(asn_type, value, true)

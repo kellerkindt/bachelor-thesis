@@ -115,7 +115,7 @@ Zur Laufzeit gibt das Beispielprogramm \monospaceinline{Empfangen: Hallo, Kanal!
 In Zeile 5 wird ein neuer Kanal erzeugt und eine Sende- und Empfängerteil zurückgegeben.
 Zwischen Zeile 7 und 9 wird ein neuer Thread erzeugt und der auszuführenden Closure (siehe \autoref{rust:closures}) die Eigentümerschaft über den Empfänger übertragen (Schlüsselwort \rustcinline{move}).
 Der neuer Thread wartet nach Start auf den Empfang einer neuen Nachricht und gibt diese anschließend auf der Konsole aus.
-In Zeile 11 sendet der Haupt-Thread über den Kanal dem anderen Thread einen Text\footnote{Um genau zu sein, ist der Wert vom Datentyp \rustcinline{&`static str} \todo{.}} zu und wartet in Zeile 12 bis dieser beendet wurde.
+In Zeile 11 sendet der Haupt-Thread über den Kanal dem anderen Thread einen Text\footnote{Um genau zu sein, ist der Wert vom Datentyp \rustcinline{&`static str} } zu und wartet in Zeile 12 bis dieser beendet wurde.
 
 Um nicht für jeden Datentyp einen neuen Kanal erstellen zu müssen, kann das \enquote{Command Pattern} (dt. Kommando Verhaltensmuster) \cite[153]{goll2014architektur} verwendet werden, um über einen Kanal mehrere Aktionen zu befehligen.
 In Rust kann dies mit einem \rustcinline{enum} umgesetzt werden:

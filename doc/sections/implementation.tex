@@ -512,55 +512,49 @@ Um zu verhindern, dass sich zu viele Nachrichten anstauen, sind die Kanäle (sie
 Bei einem Versuch, diese Limitierung zu überschreiten, wird die Verbindung von dem betroffenem Client getrennt.
 Durch diese Maßnahme kann die Erreichbarkeit des MEC-View-Servers gewahrt werden.
 
-\clearpage
+%\clearpage
 
-\section{...}
+%\section{...}
 
-\todo{bzgl coverage viele tests für encodieren / decodieren, server instanz nicht getestet weil nur mit tokio verdrahtet... schwierig zu testen}
-
-
-\todo{tdd schwierig weil viel integration mit framework / async, schnell wird daraus integrationstest(?, unerwünscht)}
-
-\todo{rust-clippy: https://github.com/rust-lang-nursery/rust-clippy}
+%\todo{bzgl coverage viele tests für encodieren / decodieren, server instanz nicht getestet weil nur mit tokio verdrahtet... schwierig zu testen}
 
 
-\section{Strategien für Performance}
+%\todo{tdd schwierig weil viel integration mit framework / async, schnell wird daraus integrationstest(?, unerwünscht)}
 
-\todo{\enquote{bypass} via RawMessage for algorithm->many vehicles}
-
-
+%\todo{rust-clippy: https://github.com/rust-lang-nursery/rust-clippy}
 
 
+%\section{Strategien für Performance}
 
-\todo{diagramm: jede future ein eigenes "paket", queues dazwischen für kommunikation}
+%\todo{\enquote{bypass} via RawMessage for algorithm->many vehicles}
 
-\todo{catch panic? mention how in \autoref{rust:no_null}}
 
-\todo{SRP, impl Object separat from impl CommandProcessor for Object, testability?}
+%\todo{diagramm: jede future ein eigenes "paket", queues dazwischen für kommunikation}
 
+%\todo{catch panic? mention how in \autoref{rust:no_null}}
+
+%\todo{SRP, impl Object separat from impl CommandProcessor for Object, testability?}
 
 
 %\section{libmessages make unsafe libmessages-sys safe}
 	
 %\subsection{Vorgehen, bindgen tests, C/unsafe/wrapper -> nach sicher ->  architektur entwickeln}
 	
+%\section{Unerwartete Schwierigkeiten}
+	
+%	\todo{Trailing zeroes issue, commit a02496d + tagged, libmessages/src/asn.rs:17 bzw :31 bzw :32 Ok((result.encoded as usize + 7) / 8}
+	
+%	\todo{unterschiedlicher Heap libc / rust --> Rust Heap wird von Rust aufgeräumt, libc von libc... or deadlock}
+	
+%	\todo{jenkins clippy nightly often broken}
+	
+%	\todo{RawMessage<T> machts leben schwer}
+	
+%\subsection{Schwierigkeit: Heap nicht gleich Heap}
 
-	
-\section{Unerwartete Schwierigkeiten}
-	
-	\todo{Trailing zeroes issue, commit a02496d + tagged, libmessages/src/asn.rs:17 bzw :31 bzw :32 Ok((result.encoded as usize + 7) / 8}
-	
-	\todo{unterschiedlicher Heap libc / rust --> Rust Heap wird von Rust aufgeräumt, libc von libc... or deadlock}
-	
-	\todo{jenkins clippy nightly often broken}
-	
-	\todo{RawMessage<T> machts leben schwer}
-	
-\subsection{Schwierigkeit: Heap nicht gleich Heap}
-
-\todo{deadlock im heap allokieren, rust heap muss von rust aufgeräumt werden, libc von libc, asn+c++-alg -> libc}
+%\todo{deadlock im heap allokieren, rust heap muss von rust aufgeräumt werden, libc von libc, asn+c++-alg -> libc}
 
 
-\section{Valgrind: Race Conditions all over the place}
+% \section{Valgrind: Race Conditions all over the place}
 
 %\section{Mocks für TDD}

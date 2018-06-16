@@ -89,12 +89,11 @@ Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingeri
 \section{Asynchrone Kommunikation}
 \label{impl:channels}
 
-\todo{.} Wie bereits in \autoref{design:communication:architecture:async} festgestellt, ist für eine hochperformante Kommunikationsplattform eine interne Parallelisierung fördernd.
+Wie bereits in \autoref{design:communication:architecture:async} festgestellt, ist für eine hochperformante Kommunikationsplattform eine interne Parallelisierung fördernd.
 Die Kommunikation von den zueinander asynchron arbeitenden Klassen, kann mit Hilfe von verschiedenen Entwurfsmuster umgesetzt werden,
 
-\todo{.}
 Das \enquote{Message Queuing Pattern} (dt. Nachrichten-Warteschlange-Muster) gilt als stabiles und einfach umzusetzendes Entwurfsmuster, um zwischen asynchron arbeitenden Klassen Nachrichten auszutauschen \cite[207]{douglass2003real}.
-Der von E. Douglas Jensen genannte Nachteil, Werte nur \enquote{by-value} austauschen zu können \cite[211]{douglass2003real}, ist seit der Verfügbarkeit des \ccinline{std::shared_ptr} ab C++11 nicht mehr relevant.
+Der im Jahre 2003 von E. Douglas Jensen genannte Nachteil, Werte nur \enquote{by-value} austauschen zu können \cite[211]{douglass2003real}, ist seit der Verfügbarkeit des \ccinline{std::shared_ptr} ab C++11 nicht mehr relevant.
 Auch in Rust ist diese Einschränkung durch das Eigentümerprinzip und der Hilfsklassen \rustcinline{Arc}  nicht gegeben.
 %Es gilt allerdings als schwergewichtig, da im klassischen Sinne nur Werte \enquote{by-value} ausgetauscht werden können sollen.
 %Bei Austausch von Werten \enquote{by-reference} ist das Ressourcenmanagement deutlich komplizierter und Speicherlecks oder \enquote{double-free}s könnten auftreten\footnote{Helfer, wie \ccinline{std::shared_ptr} aus C++11, sind zum Zeitpunkt der }. 
@@ -114,7 +113,7 @@ Der zu versendende Datentyp muss lediglich das Merkmal \rustcinline{Send} aufwei
 \autoref{impl:channels:example} zeigt ein einfaches Beispiel, wie ein asynchroner  und sicherer Nachrichtenaustausch in Rust umgesetzt werden kann.
 Zur Laufzeit gibt das Beispielprogramm \monospaceinline{Empfangen: Hallo, Kanal!} auf der Konsole aus.
 
-In Zeile 5 wird ein neuer Kanal erzeugt und eine Sende- und \todo{Empfängerinstanz} zurückgegeben.
+In Zeile 5 wird ein neuer Kanal erzeugt und eine Sende- und Empfängerteil zurückgegeben.
 Zwischen Zeile 7 und 9 wird ein neuer Thread erzeugt und der auszuführenden Closure (siehe \autoref{rust:closures}) die Eigentümerschaft über den Empfänger übertragen (Schlüsselwort \rustcinline{move}).
 Der neuer Thread wartet nach Start auf den Empfang einer neuen Nachricht und gibt diese anschließend auf der Konsole aus.
 In Zeile 11 sendet der Haupt-Thread über den Kanal dem anderen Thread einen Text\footnote{Um genau zu sein, ist der Wert vom Datentyp \rustcinline{&`static str} \todo{.}} zu und wartet in Zeile 12 bis dieser beendet wurde.
@@ -140,22 +139,22 @@ In dem folgenden \autoref{impl:commands:algorithm} sind die Befehle zu sehen, di
 
 Ob eine Kommunikation zwischen zwei Klassen asynchron oder synchron stattfindet, sollte für die Implementation jedoch möglichst keine Rolle spielen.
 Zur Kommunikation mit anderen Klassen sollte es nur nötig sein, die entsprechende Schnittstelle zu kennen (Stichwort \enquote{loose coupling} \cite[49]{goll2018entwurfsprinzipien}).
-Die verwendete Kommunikationstechnologie (\textit{Tokio}) und das Verhaltensmuster (Kommando) beziehen sich nicht mehr auf das Aufgabengebiet der Klassen.
+Die verwendete Kommunikationstechnologie (\textit{Tokio}) und das Verhaltensmuster (Kommando) beziehen sich nicht mehr auf das Aufgabengebiete der Klassen.
 Durch eine Fassade kann das Erstellen eines Kommandos und das übermitteln durch einen Kanal gekapselt und auf einen einfachen Methodenaufruf reduziert werden.
-\todo{.}
-Die Verwirklichung mittels Schnittstellen und einer Methode für jedes Kommando entspricht letztendlich dem \enquote{Proxy Pattern} (dt. Stellvertreter-Strukturmuster) \cite[137]{goll2018entwurfsprinzipien}.
+Durch eine Implementation der Schnittstelle für den Sendeteil kann aber auch das \enquote{Proxy Pattern} (dt. Stellvertreter-Strukturmuster) \cite[137]{goll2018entwurfsprinzipien} umgesetzt werden, wodurch keine Änderung in der aufrufenden Klasse bemerkbar ist.
+%Die Verwirklichung mittels Schnittstellen und einer Methode für jedes Kommando entspricht letztendlich dem \enquote{Proxy Pattern} (dt. Stellvertreter-Strukturmuster) \cite[137]{goll2018entwurfsprinzipien}.
 
 Da ein Beispiel aus der tatsächlich Implementierung zu groß für eine übersichtliche Erläuterung ist, wird das Beispiel aus \autoref{impl:channels:example} und \autoref{impl:commands:example} erneut aufgegriffen, um Beispielhaft das Prinzip zu erklären.
 
 Die neue Schnittstelle \rustcinline{EndPoint} definiert die Funktion \rustcinline{say}, um einen Text auf der Konsole auszugeben.
-Anschließend wird sie für den Sendeteil des Kanals implementiert, wodurch dieser quakt\footnote{\enquote{Duck Typing} \cite[44]{rust:orly_programming} in Rust teilweise möglich, dann aber ohne Laufzeitkosten. Theorem in etwa: \enquote{When I see a bird that walks like a duck and swims like a duck and quacks like a duck, I call that bird a duck.} - James Whitcomb Riley  \todo{cite? \url{https://de.wikipedia.org/wiki/James_Whitcomb_Riley}, Wiki: Die ursprüngliche Herkunft dieser Phrase ist jedoch umstritten}} wie die \rustcinline{EndPoint}-Schnittstelle.
+Anschließend wird sie für den Sendeteil des Kanals implementiert, wodurch dieser quakt\footnote{\enquote{Duck Typing} \cite[44]{rust:orly_programming} in Rust teilweise möglich, dann aber ohne Laufzeitkosten. Auch genannt Ententest: \enquote{When I see a bird that walks like a duck and swims like a duck and quacks like a duck, I call that bird a duck.} von James Whitcomb Riley \cite{wiki:duck}} wie die \rustcinline{EndPoint}-Schnittstelle.
 Für Zeile 35 ist daher nicht erkenntlich, dass es sich um einen Kanal handelt.
 
-Auf der Konsole wird \monospaceinline{Say: Hallo, Proxy!} \todo{.}.
+Auf der Konsole wird \monospaceinline{Say: Hallo, Proxy!}
 
 \rustcinclude
 	{impl:commands:facade}
-	{\todo{Command Pattern}, und Fassade}
+	{Command und Proxy Pattern}
 	{sections/impl.commands.facade.rs}
 
 In der tatsächlichen Implementierung wird innerhalb der \rustcinline{execute} Methode von \rustcinline{Command} eine entsprechende Methode in \textit{Client} oder \textit{Algorithm} aufgerufen.

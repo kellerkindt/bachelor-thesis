@@ -87,6 +87,7 @@ Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingeri
 
 \clearpage
 \section{Asynchrone Kommunikation}
+\label{impl:channels}
 
 \todo{.} Wie bereits in \autoref{design:communication:architecture:async} festgestellt, ist für eine hochperformante Kommunikationsplattform eine interne Parallelisierung fördernd.
 Die Kommunikation von den zueinander asynchron arbeitenden Klassen, kann mit Hilfe von verschiedenen Entwurfsmuster umgesetzt werden,
@@ -504,14 +505,13 @@ In der folgenden Übersicht sind die Startparameter aus den Anforderungen, eine 
 		}{-a latency_measurement.json}
 \end{itemize}
 
-\section{Serverresistenz gegenüber böswilligen oder defekten Clients}
+\section{Resistenz gegenüber böswilligen oder defekten Clients}
 
-\todo{.}
-Die Anforderungen \reqNumberForLabel{dos:sensor} \enquote{\reqNameForLabel{dos:sensor}} und \reqNumberForLabel{dos:car} \enquote{\reqNameForLabel{dos:car}} (siehe \autoref{req:dos:sensor}) beschreiben ein Szenario, bei dem sich im Server Nachrichten anstauen.
-Bei einem zu großen Rückstau, kann dem Server der Arbeitsspeicher ausgehen und das Betriebssystem müsste den Prozess beenden.
+Die Anforderungen \reqNumberForLabel{dos:sensor} \enquote{\reqNameForLabel{dos:sensor}} und \reqNumberForLabel{dos:car} \enquote{\reqNameForLabel{dos:car}} (siehe \autoref{req:dos:sensor}) beschreiben ein Szenario, bei dem sich im MEC-View-Server Nachrichten anstauen.
+Bei einem zu großen Rückstau, könnte der Arbeitsspeicher ausgehen und weitere Versuche, Speicher zu allokieren, würden fehlschlagen.
 Das bedeutet, die Erreichbarkeit des MEC-View-Servers kann durch einen böswilligen oder defekten Client beeinflusst werden.
-Um dies zu verhindern, sind die Kanäle (siehe \autoref{}) zwischen Client und Algorithmus in ihrer Größe limitiert.
-Der Versuch, diese Limitierung zu überschreiten, wird mit einem Fehler beantwortet, woraufhin die Verbindung von dem betroffenem Client getrennt wird.
+Um zu verhindern, dass sich zu viele Nachrichten anstauen, sind die Kanäle (siehe \autoref{impl:channels}) zwischen Client und Algorithmus in ihrer Größe limitiert.
+Bei einem Versuch, diese Limitierung zu überschreiten, wird die Verbindung von dem betroffenem Client getrennt.
 Durch diese Maßnahme kann die Erreichbarkeit des MEC-View-Servers gewahrt werden.
 
 \clearpage

@@ -171,8 +171,8 @@ Ein \enquote{Trait-Object} (siehe \autoref{impl:commands:fast_generic}), wie etw
 
 \clearpage
 \section{ASN.1 via Bindgen einbinden}
+\label{impl:asn1_bindings}
 \label{impl:issue:ffi}
-
 
 
 Wie bereits in \autoref{draft:no_asn_compiler} geschildert, existiert für Rust zum jetzigen Zeitpunkt kein ASN.1 Compiler, der die Nachrichtendefinition in nativen Rust-Code übersetzt.
@@ -204,13 +204,13 @@ Bei ersten Tests wurde schnell festgestellt, dass der Speicher, der durch C-Funk
 Falls innerhalb der C-Nachrichtentypen Rust-Heap referenziert, oder die C-Nachrichtentypen von Rust Funktionen freigegeben werden, wird der jeweilige Heap korrumpiert.
 Ein späterer Versuch Speicher zu allokieren endet in einem Deadlock-ähnlichen Zustand, bei dem der Allokator stehen bleibt.
 
-\todo{Image}
+%\todo{Image}
 
 
 \clearpage
 \section{C++ Algorithmus laden}
 
-Um die optionale Anforderung \reqNumberForLabel{possible:external_algorithm} (\enquote{\reqNameForLabel{possible:external_algorithm}}, siehe \autoref{req:possible:external_algorithm}) umsetzen zu können, muss zuerst die Kommunikation innerhalb des C++ Servers mit dem Algorithmus analysiert werden:
+Um die optionale Anforderung \reqNumberForLabel{possible:external_algorithm} (\enquote{\reqNameForLabel{possible:external_algorithm}}, siehe \autoref{req:possible:external_algorithm}) umsetzen zu können, muss zuerst die Kommunikation innerhalb des C++ Servers mit dessen Algorithmus analysiert werden:
 
 \begin{figure}[H]
 	\begin{tikzpicture}[scale=0.9]
@@ -264,7 +264,6 @@ Neue \textit{SensorFrame}-Nachrichten werden in den \textit{QueueListener} einge
 Eine neue \textit{EnvironmentFrame}-Nachricht übergibt der Algorithmus an den \textit{EnvironmentListener}.
 Über diesen wird in der C++ Implementation anschließend die Nachricht an alle Fahrzeuge verteilt.
 
-\todo{?}
 Die C++ Implementation reduziert durch dieses Vorgehen die direkte Kommunikation zwischen dem Server und dem konkreten Algorithmus auf den Aufruf von \textit{Create}.
 Durch den Austausch dieser Methode kann ein anderer Algorithmus geladen werden.
 
@@ -304,16 +303,15 @@ Der Fokus liegt somit auf den folgenden Klassen:
 		\umluniassoc{mec::algorithm::AlgorithmFactory}{mec::extension::Extension}
 	\end{tikzpicture}
 	\centering
-	\caption{Instantiierung eines neuen Algorithmus in der C++ Implementation}
+	\caption{Abhängigkeiten zum Instantiieren des C++ Algorithmus}
 	\label{class_dia:algorithm:cpp}
 \end{figure}
 
 Der C++ Algorithmus soll durch einen Adapter dem Merkmal des Rust \textit{Algorithm} entsprechen, um eine Änderung im bestehenden Rust Code möglichst gering zu halten.
-Eine Änderung im C++ Quellcode ist untersagt.
-In einem ersten Schritt wird der Methodenaufruf von \textit{AlgorithmFactory::Create} in Rust zugänglich gemacht.
+Eine Änderung im C++ Quellcode des Algorithmus ist untersagt.
+
+Im ersten Schritt wird der Methodenaufruf von \textit{AlgorithmFactory::Create} in Rust zugänglich gemacht.
 Anschließend wird der nötige Adaptercode implementiert.
-
-
 Wegen der wachsenden Komplexität wird auch die Architektur erweitert und, aufgrund der nun höheren Anzahl an Klassen, in weitere Crates aufgeteilt.
 In \autoref{draft:architecture} ist die erweiterte Version zu sehen.
 
@@ -324,12 +322,12 @@ In \autoref{draft:architecture} ist die erweiterte Version zu sehen.
 	\label{draft:architecture_v2}
 \end{figure}
 
-Die \textit{Alogirhtm}-, \textit{CountListener}- und \textit{EnvironmentListener}-Schnittstelle wird in eine eigene Crate verschoben.
+Die \textit{Alogirhtm}-, \textit{CountListener}- und \textit{EnvironmentListener}-Schnittstellen werden in eigene Crates verschoben.
 Die \textit{asn::Message} wird in \textit{AsnMessage} umbenannt und zusammen mit der \textit{AsnAdapter}-Klasse in die neue Crate \textit{libasn} verschoben.
 Auch der \textit{SampleAlgorithm} wird in eine eigene Crate verschoben.
 Zwei weiteren Crates binden den externen C++ Algorithmus ein: \textit{libshim-sys} um den C++ Code in Rust zugänglich zu machen (analog zu \textit{libasn-sys}) und \textit{libshim} für die Implementation der \textit{Algorithm}-Schnittstelle mittels Adaptercodes.
 
-Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architecture_v2_packages} zu sehen und entsprechen nun dem \enquote{Dependency Inversion Principle}. \todo{depend on abstraction, abstraction not on implementation, implementation maybe on implementation... naja, zumindest großteilig}
+Die neuen Abhängigkeiten zwischen den Crates ist in \autoref{draft:architecture_v2_packages} abgebildet.
 
 \begin{figure}[H]
 	\centering
@@ -338,38 +336,35 @@ Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architectur
 	\label{draft:architecture_v2_packages}
 \end{figure}
 
-Die roten Abhängigkeiten entstehen erst durch die Wahl einer Nachrichtentechnologie und des auszuführenden Algorithmus.
-\todo{??}
-Daher können sie als schwache Abhängigkeiten betrachtet werden.
+Die roten Abhängigkeiten entstehen erst durch die Wahl einer Nachrichtentechnologie und des auszuführenden Algorithmus und können durch die Instantiierung einer anderen Implementation in der \textit{main}-Funktion der \textit{MECViewServer}-Crate ausgetauscht werden.
 
 
-\todo{.}
-Die Einbindung des C++ Quellcodes ist, im Gegensatz zum C-Code der ASN.1 Nachrichten, deutlich schwieriger.
+Die Einbindung des C++ Quellcodes ist im Gegensatz zum C-Code der ASN.1 Nachrichten (siehe \autoref{impl:asn1_bindings}) deutlich schwieriger.
 Die Abhängigkeiten zu den Datentypen der Standardbibliothek (siehe \autoref{class_dia:algorithm:cpp}) und die Klassenhierarchie macht einen Zugriff aus Rust deutlich komplizierter und würde eine manuelle Pflege der \textit{vtable} benötigen.
 Deswegen ist eine andere Herangehensweise ausgewählt worden.
-Weiterer C-Code soll den C++ Code über eine C-Datenstruktur kapseln und über C-Funktionen zugänglich machen \todo{Fassade!}\cite[700]{goll2018entwurfsprinzipien}.
-Eine Zugriff aus Rust heraus wird somit stark vereinfacht.
-\todo{schwierig, bindgen nix c++}
+Weiterer C-Code soll den C++ Code über eine C-Datenstruktur kapseln und über C-Funktionen zugänglich machen (Stichwort Fassade, \cite[700]{goll2018entwurfsprinzipien}).
+Eine Zugriff aus Rust heraus soll somit stark vereinfacht werden.
 
-Die in der \autoref{draft:libshim} orange eingefärbten Klassen und Datenstrukturen stellen den nötige Adaptercode dar.
-Die in türkis eingefärbten Klassen ud Schnittstellen sind die aus der C++ Implementation stammende Klassen und dürfen nicht verändert werden.
-\todo{abbildung ist detailierter weil diesmal wichtig}
-
-\todo{. Sprung? expain}
-Für das Laufzeitverhalten sind die zusätzlichen Sprünge durch den Adaptercode (\textit{AlgorithmShim} zu \textit{RustShim}, \textit{RustShim} zu \textit{RustShimInternal} und \textit{RustShimInternal} zu \textit{UpdateQueue} \todo{und zurück}) als ungünstig eingestuft.
-Ein weiterer Sprung (\textit{ExternalAlgorithm} zu \textit{AlgorithmShim}) wird durch die Komposition verhindert.
-
-In der \autoref{seq_dia:algorithm:cpp:binding:create} wird aufgezeigt, wie der C++ Algorithmus instantiiert wird.
-\autoref{seq_dia:algorithm:cpp:binding:communication} zeigt wie eine \textit{SensorFrame}-Nachricht weitergeleitet und mit einer \textit{RawMessage} beantwortet wird.
-Zur Vereinfachung sind hierzu einige Schritte, wie die Registrierung des Fahrzeugs, zwischen den Abbildungen ausgelassen.
-Die Sequenzdiagramme in sind mit den Hintergrundfarben aus den bisherigen Diagrammen eingefärbt, um eine Zuordnung der aufgezeigten Klassen zu vereinfachen.
+In \autoref{draft:libshim} ist hierzu eine Detailansicht der Crate \textit{libshim-sys} dargestellt, inklusive C-Datenstrukturen und C++ Klassen.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=2.5\textwidth]{dia/libshim}
-	\caption{Detailansicht der Crate libshim-sys}
+	\caption{Detailansicht der Crate \textit{libshim-sys}}
 	\label{draft:libshim}
 \end{figure}
+
+Die orange eingefärbten Klassen und Datenstrukturen aus \autoref{draft:libshim} stellen den nötige Adaptercode dar.
+Die in türkis eingefärbten Klassen und Schnittstellen sind die aus der C++ Implementation stammende Klassen und Schnittstellen, die nicht verändert werden dürfen.
+
+Für das Laufzeitverhalten sind die zusätzlichen Funktionsaufrufe durch den Adaptercode (\textit{AlgorithmShim} zu \textit{RustShim}, \textit{RustShim} zu \textit{RustShimInternal} und \textit{RustShimInternal} zu \textit{UpdateQueue}, gut zu sehen an der enormen Breite von \autoref{seq_dia:algorithm:cpp:binding:communication}) als ungünstig eingestuft.
+Die Komposition von \textit{AlgorithmShim} in \textit{ExternalAlgorithm} soll dem Compiler ermögliche, den Funktionsaufruf von \textit{send\_sensor\_frame(frame: Box<SensorFrame>)} zu inlinen und so das Laufzeitverhalten zu verbessern.
+
+In der \autoref{seq_dia:algorithm:cpp:binding:create} wird aufgezeigt, wie der C++ Algorithmus instantiiert wird.
+\autoref{seq_dia:algorithm:cpp:binding:communication} zeigt wie eine \textit{SensorFrame}-Nachricht weitergeleitet und mit einer \textit{RawMessage} beantwortet wird.
+Zur Vereinfachung sind hierzu einige Schritte, wie die Registrierung des Fahrzeugs, zwischen den Abbildungen ausgelassen.
+Die Sequenzdiagramme sind mit den Hintergrundfarben aus den bisherigen Diagrammen eingefärbt, um eine Zuordnung der aufgezeigten Klassen zu vereinfachen.
+
 
 
 \begin{landscape}

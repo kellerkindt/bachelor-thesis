@@ -1,60 +1,81 @@
 \chapter{Fazit}
 
-\todo{ausblick}
 
-\todo{.}
-Rust wirbt mit dem verlockenden Versprechen, die Programmierung von sicheren und performanten Programmen zu ermöglichen.
-Diese Verlockungen in Kombination mit der guten Dokumentation waren nötig, um die Anfangszeit zu überwinden.
-Gerade zu beginn fühlt es sich an, als wäre das größte Hindernis ein Rust-Programm zu schreiben, der Compiler selbst.
-Änderungen im Quellcode mit direkt darauf folgenden erfolgreichen Compilevorgängen gleichen Wundern.
-Rückblickend betrachtet, lag dies aber vor allem an den aus der objektorientierten Welt bekannte und unpassend angewandten Prinzipien.
-Anstatt das der Compiler nur bei einer nachweislich unsachgemäßen Programmierung den Compilevorgang abbrechen darf (zbsp. bei einem Syntaxfehler), bricht der Compiler ab, sobald eine ordnungsgemäße Programmierung nicht nachgewiesen werden kann \todo{(Borrowchecker, immutable and mutable use)}.
+Rust wirbt mit dem verlockenden Versprechen, die Programmierung von sicheren, hoch parallelisierten und daher performanten Programmen zu ermöglichen.
+Diese Verlockungen in Kombination mit der guten Dokumentation der Standardbibliothek waren nötig, um die Anfangszeit zu überwinden.
+Gerade zu beginn fühlt es sich an, als wäre das größte Hindernis, ein nicht triviales Rust-Programm zu schreiben, der Compiler selbst.
+Änderungen im Quellcode mit direkt darauf folgenden erfolgreichen Compilevorgängen glichen Wundern.
+%Rückblickend betrachtet, lag dies aber auch an den aus der objektorientierten Welt bekannte und zum Teil nicht übertragbaren Prinzipien.
 
-Nach einer Gewöhnungsphase \enquote{versöhnt} man sich mit dem Compiler.
-Man beginnt nicht nur zu verstehen, was grundsätzlich bemängelt wird, sondern Laufzeitfehler (abgesehen von Logikfehlern) treten praktisch nicht mehr auf \todo{sowas wie sigseg NPE etc}.
-So ist bei der Implementierung des MEC-View-Servers das Programm \textbf{nie} aufgrund eines Fehlers in Rust abgestürzt.
-Erst bei der Einbindung des C und C++ Codes zeigten sich kurzzeitig wieder Speicherzugriffsfehler oder double-frees.
-Diese Kombination macht es einem erstaunlich deutlich, wie komfortabel die Garantien von Rust sind und wie sehr man ansonsten aufpassen muss \todo{das klingt als würde man nie aufpassen (wollen)}.
+Erst nach einer Eingewöhnungszeit \enquote{versöhnt} man sich mit dem Compiler.
+Man beginnt zu verstehen, was grundsätzlich bemängelt wird und wie sich das Eigentümer- und Verleihprinzip in der Praxis auswirkt.
+Die Abwesenheit von fatalen Laufzeitfehlern hilft zudem, über die zusätzlichen Compilefehler hinwegzusehen.
+So ist die Rust-Implementierung des MEC-View-Servers nie aufgrund von Rust-Code abgestürzt -- eine Aussage, die sich so nicht für die C++ Variante wiederholen lässt.
+Erst bei der Einbindung des C und C++ Codes zeigten sich kurzzeitig Speicherzugriffsfehler oder \enquote{double-frees}.
+Diese Kombination macht es einem erstaunlich deutlich, wie komfortabel die Garantien von Rust sind, wie schnell diese als selbstverständlich angesehen werden und wie gefährlich es ohne diese \enquote{normalerweise} ist.
 
-Anstatt das der Compiler einem glaubt, ordnungsgemäß programmiert zu haben, muss dies durch eine korrekte Notation bewiesen werden.
-Keine Randsituation darf zu einer ungültigen Situation führen.
+Die Ergebnissen aus \autoref{eval:results} bestätigten die Erwartung, dass Reaktionszeiten von Rust denen von C++ ähneln und nicht deutlich schlechter ausfallen.
+Dass die Garantien von Rust jedoch überhaupt keine negativen Auswirkungen auf das Laufzeitverhalten zu haben scheinen (Szenario mit einem Fahrzeug), ist dann doch angenehm überraschend gewesen.
 
-Wenn es compiliert, funktioniert es auch.
+Aufgrund der schnellen und umfangreichen Entwicklungszyklen (siehe \autoref{rust:release_cycles}), der bereits hohen Adaption (sieh \autoref{rust:adaptation}) der jungen Programmiersprache und der starken Beliebtheit (siehe \autoref{rust}), bleibt der Eindruck, dass die Programmiersprache Rust keine kurzzeitige Modeerscheinung ist.
+Weder im Laufzeitverhalten, Funktionsumfang oder Plattformunterstützung stößt man auf Argumente, die gegen eine Verwendung von Rust sprechen würden.
+Im Gegenteil, es macht sich das Gefühl breit, keine andere Programmiersprache könne die Anforderungen der funktionalen Sicherheit mit den Leistungsanforderungen aus dem echtzeitnahen Umfeld derart gut vereinen.
+%Auch für die \todo{...} Sicherheit könnte Rust interessant sein, da ein Bufferoverflow - 
+%Im Gegenteil, es macht sich das Gefühl breit, keine andere Programmiersprache ist für den Einsatz im Umfeld der funktionalen Sicherheit derart gut geeignet.
 
-Dass sich die \todo{Beweislastumkehr} für eine ordnungsgemäße Verwendung umdreht (Eigentümerprinzip), \todo{kaltes wasser?}
+%\todo{buffer overflows wären geschichte}
+
+%\todo{angst randsituation vergessen bei anderen programmiersprachen}
+
+
+%~\\ ~\\ ~\\
+
+
+%Wenn es compiliert, funktioniert es auch.
+
+%Dass sich die \todo{Beweislastumkehr} für eine ordnungsgemäße Verwendung umdreht (Eigentümerprinzip), \todo{kaltes wasser?}
 
 %Der sehr strenge und zu beginn geradezu verteufelte Compiler kann einem oft zum Augenbraun verziehen bringen.
-Einige aus der objektorientierten Welt bekannte und verinnerlichten Prinzipien konnten oft nur in einer Abwandlung in Rust übertragen werden.
-Herangehensweisen, die für einen selbst sicher erscheinen (bei der nebenläufigen Programmierung), lehnt der Compiler oft ab, da sie nicht als allgemein sicher bewiesen werden können.
-Wenn man sich aber Zeit nimmt und versucht zu verstehen, was der Compiler grundsätzlich bemängelt, verliert der Compiler \todo{böse} und wird stattdessen langsam zum hilfsbereiten \todo{companion}.
-Gerade weil nach einem erfolgreichem Compilevorgang, das Programm meist wie erwartet läuft.
+%Einige aus der objektorientierten Welt bekannte und verinnerlichten Prinzipien konnten oft nur in einer Abwandlung in Rust übertragen werden.
+%Herangehensweisen, die für einen selbst sicher erscheinen (bei der nebenläufigen Programmierung), lehnt der Compiler oft ab, da sie nicht als allgemein sicher bewiesen werden können.
+%Wenn man sich aber Zeit nimmt und versucht zu verstehen, was der Compiler grundsätzlich bemängelt, verliert der Compiler \todo{böse} und wird stattdessen langsam zum hilfsbereiten \todo{companion}.
+%Gerade weil nach einem erfolgreichem Compilevorgang, das Programm meist wie erwartet läuft.
 
-Rust erzwingt die Trennung von Verantwortlichkeiten.
+%Rust erzwingt die Trennung von Verantwortlichkeiten.
 
+%\todo{Gute Compilefehlermeldungen}
 
-Positiv zu erwähnen ist auch die Kontrolle, die Rust einem gegenüber zum Beispiel Java gibt.
-Datenstrukturen
+%Positiv zu erwähnen ist auch die Kontrolle, die Rust einem gegenüber zum Beispiel Java gibt.
+%Datenstrukturen
 
-Zu den positiven Überraschungen zählt die Umfangreiche Standardbibliothek und die immense Anzahl an Crates aus der öffentlichen \todo{repository}.
-Zusammen mit Werkzeugen wie Cargo und Rustup ist die Installation und Pflege von Rust und die Verwendung von externen Crates \todo{berauschend} einfach und unkompliziert.
-
-Letztendlich bleibt der Eindruck, dass die Programmiersprache Rust keine kurzzeitige Modeerscheinung ist.
-Weder im Laufzeitverhalten, Funktionsumfang oder Platzformunterstützung stößt man auf Argumente, die gegen eine Verwendung von Rust sprechen würden.
-Im Gegenteil, es macht sich das Gefühl breit, keine andere Programmiersprache könne die Anforderungen der funktionalen Sicherheit derart gut erfüllen.
-Im Gegenteil, es macht sich das Gefühl breit, keine andere Programmiersprache ist für den Einsatz im Umfeld der funktionalen Sicherheit derart gut geeignet.
-\todo{angst randsituation vergessen bei anderen programmiersprachen}
-
-\todo{too much fanciness of rust?}
+%Zu den positiven Überraschungen zählt die Umfangreiche Standardbibliothek und die immense Anzahl an Crates aus der öffentlichen \todo{repository}.
+%Zusammen mit Werkzeugen wie Cargo und Rustup ist die Installation und Pflege von Rust und die Verwendung von externen Crates \todo{berauschend} einfach und unkompliziert.
 
 
-\todo{war rust toll?}
 
-\todo{Eigentümerprinzip gewöhnungsbedürftig, learning curve, einem wird sehr deutlich unter die nase gehalt, wo etwas performance kostet}
+%\todo{ausblick}
 
-\todo{messen ist nicht einfach}
 
-\todo{setup, toolchain etc gut}
+%~\\ ~\\ ~\\
 
-\todo{performance muss sich nicht verstecken, für funktional sichere Anwendungen interessant}
 
-\todo{Paketmanager cargo, standardbibliothek}
+
+
+%\todo{too much fanciness of rust?}
+
+%\todo{war rust toll?}
+
+%\todo{Eigentümerprinzip gewöhnungsbedürftig, learning curve, einem wird sehr deutlich unter die nase gehalt, wo etwas performance kostet}
+
+%\todo{messen ist nicht einfach}
+
+%\todo{setup, toolchain etc gut}
+
+%\todo{performance muss sich nicht verstecken, für funktional sichere Anwendungen interessant}
+
+%\todo{Paketmanager cargo, standardbibliothek}
+
+%An die Beweislastumkehr des Compilers muss man sich erst gewöhnen.
+%Ein syntaktisch richtiger Programmcode kann Logikfehler enthalten, die der Compiler bemängelt.
+
+%Anstatt das der Compiler nur bei einer nachweislich unsachgemäßen Programmierung den Compilevorgang abbricht (zbsp. bei einem Syntaxfehler), bricht der Rust-Compiler ab, sobald eine ordnungsgemäße Programmierung nicht nachgewiesen werden kann \todo{(Borrowchecker, immutable and mutable use)}.

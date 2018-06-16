@@ -66,6 +66,7 @@ Im Produktivbetrieb und mit dem Fusionsalgorithmus der Universität Ulm werden \
 Es wird erwartet, \todo{dasss wenn} eine Serverimplementation mit dieser Stresssituation umgehen kann, sie auch die Anforderung \reqNumberForLabel{exec:time} im Produktivbetrieb erfüllen kann.
 
 \section{Ergebnisse}
+\label{eval:results}
 
 In der \autoref{dia_25_60s} sind auf der linken Seite die Messergebnisse dargestellt, die durch das in \autoref{eval:howto} beschrieben Vorgehen gesammelt wurden.
 Auf der rechten Seite ist für jede Implementation ein Boxplot für jeweils alle Latenzen aufgezeichnet.
@@ -184,16 +185,23 @@ Bei zwei Fahrzeugen sind die beiden Rust Implementationen gleichauf und bei weit
 Aus dem Diagramm ist zu erkennen, dass sowohl die C++ Implementation als auch die Rust Implementationen, trotz erhöhtem Stress, die Anforderung \reqNumberForLabel{exec:time} (siehe \autoref{req:exec:time}) erfüllen.
 Im Gegensatz zur C++ Implementation erfüllen die Rust Implementationen dies auch noch bei mehr Fahrzeugen (getestet bis inklusive 5, die Trendlinie lässt aber noch mehr vermuten).
 
+Der proportionale Anstieg der Reaktionszeit der C++ Implementation für jedes zusätzlich verbundene Fahrzeug (etwa 2ms bei einem Fahrzeug, kurz unter 4ms, 6ms, 8ms und 10ms bei 2, 3, 4 und 5 Fahrzeugen) lässt einen Fehler bei der Parallelisierung der Fahrzeuge vermuten.
+Der Versand von Nachrichten an die verbundenen Fahrzeuge scheint nicht parallel, sondern sequenziell ausgeführt zu werden.
+Vergleiche zwischen der Rust und C++ Implementierung für mehr als einem verbundenem Fahrzeug sind daher wenig aussagekräftig.
+
 Interessant ist der Verlauf der roten Linie (Rust mit C++ Algorithmus) zur braunen Linie (Rust Algorithmus).
 Eine Verschlechterung der Reaktionszeit, wie mit nur einem Fahrzeug (etwa 15.000 Nachrichten) gegenüber der reinen Rust Implementation war, durch die erhöhte Komplexität und die weitere Schicht zur Einbindung des C++ Algorithmus, zu erwarten gewesen.
-Eine gleiche Reaktionszeit bei 1 und 2 Fahrzeugen un eine bessere Reaktionszeit ab 3 Fahrzeugen ist dagegen unerwartet gewesen.
+Eine ähnliche Reaktionszeit bei 1, gleiche Reaktionszeit bei 2 Fahrzeugen und bessere Reaktionszeit ab 3 Fahrzeugen ist dagegen unerwartet gewesen.
 Erst bei einer Codanalyse wurde klar, dass dies vermutlich daran liegt, dass der C++ Algorithmus parallel zum Rust Algorithmus-Adapter ausgeführt wird.
 Die Encodierung der Antwort (\textit{EnvironmentFrame}-Nachricht nach \textit{RawMessage}, etwa 130\textmu s) wird daher asynchron zum Aufbereiten der nächsten und Weiterleiten der vorherigen Nachricht an die Fahrzeuge ausgeführt.
 
 Dieses weitere asynchrone Verhalten setzt eines der für das \enquote{Channel Architektur Pattern} erwähnten Optimierungsmöglichkeiten um (siehe \autoref{design:communication:architecture}).
-Wie in \cite[160]{douglass2003real} beschrieben, wird durch die parallele Verarbeitung von mehreren Elementen in einem Kanal (in diesem Fall \todo{AlgorithmAdapter} zu \todo{C++ Algorithmus} zu \todo{Fahrzeugen}) die Verarbeitung einer hohen Datenmenge ermöglicht.
+Wie in \cite[160]{douglass2003real} beschrieben, wird durch die parallele Verarbeitung von mehreren Elementen in einem Kanal (in diesem Fall der Kanal vom \textit{AlgorithmAdapter} über den C++ Algorithmus zu den Fahrzeugen) die Verarbeitung einer hohen Datenmenge ermöglicht.
 
-Die Rust Implementationen können nicht nur mit der C++ Implementation mithalten, sondern diese sogar einholen.
+Eine Implementation in Rust scheint keinen auffallenden oder gravierenden Nachteil im Laufzeitverhalten gegenüber einer Implementation in C++ aufzuweisen.
+Das Szenario mit einem verbundenem Fahrzeug lässt dagegen vermuten, dass sich das Laufzeitverhalten der beiden Programmiersprachen sehr ähnelt.
+Auch lässt der geringe Anstieg der Rust-Kurven wenig Spielraum, um von einer ausgebesserten C++ Implementation auffallend stark übertrumpft zu werden, da
+kein oder ein negativer Anstieg der Kurve bei Erhöhung der Last aus logischen Gründen ausgeschlossen ist.
 
 
 %\section{..}

@@ -171,39 +171,40 @@ Ein \enquote{Trait-Object} (siehe \autoref{impl:commands:fast_generic}), wie etw
 
 \clearpage
 \section{ASN.1 via Bindgen einbinden}
+\label{impl:issue:ffi}
+
+
 
 Wie bereits in \autoref{draft:no_asn_compiler} geschildert, existiert für Rust zum jetzigen Zeitpunkt kein ASN.1 Compiler, der die Nachrichtendefinition in nativen Rust-Code übersetzt.
-Aus diesem Grund müssen die vom \todo{asn1c} generierten Datenstrukturen und Funktionen genutzt werden.
-Damit nicht jeder Nachrichtentyp, Nachrichtenuntertyp und jede Funktion manuell in Rust deklariert werden muss, wird \todo{bindgen, ref?} genutzt.
-Bindgen erzeugt für vorhandenen C-Code automatisch nötige Rust-Deklarationen, um diese in Rust anzusprechen und verwenden zu können.
+Aus diesem Grund müssen die selben C-Datenstrukturen und C-Funktionen genutzt werden, die auch die C++ Referenzimplementation nutzt.
+Mittels \gls{ffi} (siehe \autoref{rust:ffi}) wird auf diese zugegriffen.
+Damit nicht jeder Nachrichtentyp, eingebetteter Nachrichtenuntertyp und jede Funktion manuell eine Rust Deklaration geschrieben werden muss, wird Bindgen\footnote{\url{https://crates.io/crates/bindgen}} genutzt, um diese automatisiert zu generieren.
 
-Für diese Bachelorarbeit wurde die statische Linkung einer C-Bibliothek verwendet.
-
-Um zumindest einen gewissen Komfort bei der Nutzung der C-ASN-Nachrichtentypen zu erhalten, ist für zumindest jeden \todo{Top-Level-}Nachrichtentyp (siehe \autoref{asn:msgs}) ein Rust-Konstruktor und -Destruktor erstellt worden.
-Durch den Konstruktor kann ein Nachrichtentyp einfach instantiiert werden, und durch den Destruktor wird eine ordnungsgemäße Speicherfreigabe der C-Datenstrukturen gewährleistet.
-
-Als Beispiel dient \autoref{impl:bindings:constructor:clientregistration}, in dem die Implementierung des Konstruktors und des Destruktors für den Nachrichtentyp \textit{ClientRegistration} gezeigt wird.
+Um wichtige Nachrichtentypen ohne \rustcinline{unsafe} Blöcke instantiieren zu können und für eine korrekte deallocation, sind hierfür die Rust equivalente von Konstruktoren und Destruktoren implementiert worden.
+Als Beispiel dient die \textit{ClientRegistration}-Nachricht in \autoref{impl:bindings:constructor:clientregistration}:
 
 
 \rustcinclude
 	{impl:bindings:constructor:clientregistration}
-	{Rust \enquote{Konstruktor} und \enquote{Destruktor} für den C-\textit{ClientRegistration}-Nachrichtentyp}
+	{Auszug aus \textit{lib.rs} der \textit{libmessages-sys} Crate}
 	{sections/impl.constructor.destructor.rs}
+	
+Die \textit{ClientRegistration}-Nachricht aus \autoref{impl:bindings:constructor:clientregistration} wird selbst im Speicherbereich von Rust allokiert, während der Inhalt der Nachricht auf dem C-Heap erwartet wird.
+Dieser Mix ist nicht zu vermeiden, da die ASN.1 Funktionen zum Dekodieren der UPER-Nachrichten die inneren Datenstrukturen auf dem C-Heap anlegen, während eine deallokation einer Heap-Variable in Rust (\rustcinline{Box}) nicht erheblichen Aufwand\footnote{Die Deallokation müsste \textbf{manuell} und durch Nutzung von unsicherem Code erfolgen, ohne ein Hilfe durch den Compiler, ob dies immer an jeder Stelle umgesetzt wurde.} beeinflusst werden kann.
+
+Die Deklarationen, zusammen mit einer statischen Linkung mit der C-Bibliothek, ist in der \textit{libmessages-sys} umgesetzt und entspricht damit der Rust-Konvention beim Einbinden externer Bibliotheken\cite{rust:cargo:build_scripts}.
+Durch die Kapselung möglichst aller \rustcinline{unsafe} Operationen in \textit{libmessages-sys} wird eine sicherer Nutzung außerhalb dieser Crate ermöglicht.
+Das Prinzip, unsichere Code in sichere Funktionen oder Abstraktionen zu kapseln, entspricht auch der Rust-Konvention zur Einbindung externer Bibliotheken\footnote{\enquote{Creating a Safe Abstraction Over Unsafe Code}}\cite{rust:book:unsafe}.
 
 
-Aufgrund des deallocationsverhalten von Rust, muss Nachrichtentyp selbst von Rust allokiert und freigegeben werden, während der referenzierte Werte von den ASN C-Funktionen verwaltet werden.
 
 \subsubsection{Schwierigkeiten}
 
-Bei ersten Tests wurde stell festgestellt, dass der Speicher, der über C Funktionen allokiert wurde, von C Funktionen freigeben werden muss.
-Falls innerhalb der C-Nachrichtentypen Rust-Heap referenziert, oder die C-Nachrichtentypen von Rust Funktionen freigegeben werden, wird der jeweilige Heap \todo{korrupiert}.
-Ein späterer Allokationsversuch endet \todo{mehrfach testbar / wiederholbar} in einem Deadlock.
+Bei ersten Tests wurde schnell festgestellt, dass der Speicher, der durch C-Funktionen allokiert wurde, von C-Funktionen wieder freigeben werden muss\footnote{Kommentar: Das klingt im Nachhinein leider offensichtlicher als es ist.}.
+Falls innerhalb der C-Nachrichtentypen Rust-Heap referenziert, oder die C-Nachrichtentypen von Rust Funktionen freigegeben werden, wird der jeweilige Heap korrumpiert.
+Ein späterer Versuch Speicher zu allokieren endet in einem Deadlock-ähnlichen Zustand, bei dem der Allokator stehen bleibt.
 
-\todo{was ist bindgen}
-
-\todo{drop implementation für free}
-
-\todo{separate heap}
+\todo{Image}
 
 
 \clearpage
@@ -519,14 +520,6 @@ Der Versuch, diese Limitierung zu überschreiten, wird mit einem Fehler beantwor
 Durch diese Maßnahme kann die Erreichbarkeit des MEC-View-Servers gewahrt werden.
 
 \clearpage
-\section{?? Bindgen für ASN}
-
-\label{impl:issue:ffi}
-\todo{schnell problem: kein asn->rs compiler, c bindings aufwending -> autogen via bindgen}
-
-\todo{link issues fixed in commit d5d694c}
-
-\todo{impl Drop / free structs, important but do not overengineer}
 
 \section{...}
 

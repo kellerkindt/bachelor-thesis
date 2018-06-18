@@ -189,6 +189,8 @@ Der proportionale Anstieg der Reaktionszeit der C++ Implementation für jedes zu
 Der Versand von Nachrichten an die verbundenen Fahrzeuge scheint nicht parallel, sondern sequenziell ausgeführt zu werden.
 Vergleiche zwischen der Rust und C++ Implementierung für mehr als einem verbundenem Fahrzeug sind daher wenig aussagekräftig.
 
+\makeDias{sensors_60s}{10.5}{90000}
+
 Interessant ist der Verlauf der roten Linie (Rust mit C++ Algorithmus) zur braunen Linie (Rust Algorithmus).
 Eine Verschlechterung der Reaktionszeit, wie mit nur einem Fahrzeug (etwa 15.000 Nachrichten) gegenüber der reinen Rust Implementation war, durch die erhöhte Komplexität und die weitere Schicht zur Einbindung des C++ Algorithmus, zu erwarten gewesen.
 Eine ähnliche Reaktionszeit bei 1, gleiche Reaktionszeit bei 2 Fahrzeugen und bessere Reaktionszeit ab 3 Fahrzeugen ist dagegen unerwartet gewesen.

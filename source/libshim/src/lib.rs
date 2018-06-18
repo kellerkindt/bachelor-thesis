@@ -54,6 +54,7 @@ impl<I: Send + Debug + PartialEq + 'static> ExternalAlgorithm<I> {
 
 impl<I: Send + Debug + PartialEq + 'static> Algorithm<SensorFrame, I> for ExternalAlgorithm<I> {
     fn update(&mut self, update: Box<SensorFrame>) {
+        info!("Sending SensorFrame to shim");
         self.shim.send_sensor_frame(update);
     }
 

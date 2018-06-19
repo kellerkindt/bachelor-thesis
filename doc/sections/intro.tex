@@ -3,7 +3,7 @@
 
 % Without it being a section, it fits on one page
 %\section{Motivation}
-Der Begriff \enquote{autonomes Fahren} hat spätestens seit den Autos von Tesla einen allgemeinen Bekanntheitsgrad erreicht. Damit ein Auto selbstständig fahren kann, müssen erst viele Hürden gemeistert werden.
+Der Begriff \enquote{Autonomes Fahren} hat spätestens seit den Autos von Tesla einen allgemeinen Bekanntheitsgrad erreicht. Damit ein Auto selbstständig fahren kann, müssen erst viele Hürden gemeistert werden.
 Dazu gehört zum Beispiel das Spur halten, das richtige Interpretieren von Verkehrsschildern und das Navigieren durch komplexe Kreuzungen.
 
 Bevor ein autonomes Fahrzeug Entscheidungen treffen kann, benötigt es ein möglichst genaues Modell seines Umfelds.
@@ -11,24 +11,24 @@ Hierzu werden von verschiedenen Sensoren wie Front-, Rück- und Seitenkameras un
 Aber vielleicht kann ein Auto nicht immer selbständig genügend Informationen zu seinem Umfeld sammeln? %\todo{(huhuhu Server implied huhuhu)}
 %Diese Arbeit beschäftigt sich mit genau dem Thema, einem selbst fahrendem Auto Informationen zu anderen Teilnehmern an einer Kreuzung zu vermitteln.
 
-Externe Sensorik könnte Informationen liefern, die das Auto selbst nicht erfassen kann.
+Externe Sensorik könnte zusätzliche Informationen liefern, die das Auto selbst nicht erfassen kann.
 Ein viel zu schneller Radfahrer hinter einer Hecke in einer unübersichtlicher Kreuzung?
 Eine Lücke zwischen Autos, die ausreichend groß ist, um einzufahren ohne zu bremsen?
 Die nächste Ampel wird bei Ankunft rot sein, ein schnelles und Umwelt belastendes Anfahren ist nicht nötig?
 Ideen gibt es zuhauf.
 
-Aber was ist, wenn das System aussetzt?
-Die Antwort hierzu ist einfach: das Auto muss immer noch selbstständig agieren können, externe Systeme sollen nur optionale Helfer sein.
+Aber was ist, wenn das externe System aussetzt?
+Die Antwort hierzu ist einfach: das Auto muss immer selbstständig agieren können, externe Systeme sollen nur optionale Helfer sein.
 Viel schlimmer ist es dagegen, wenn das unterstützende System falsche Informationen liefert.
 Eine Lücke zwischen Autos, wo keine ist; eine freie Fahrbahn, wo ein Radfahrer fährt; ein angeblich entgegenkommendes Auto, eine unnötig Vollbremsung, ein Auffahrunfall.
 Ein solches System muss sicher sein -- nicht nur vor Hackern.
 Es muss funktional sicher sein, Redundanzen und Notfallsysteme müssen jederzeit greifen.
 
-Aber was nützt die beste Idee, die ausgeklügelte Strategie, wenn nur ein einziges Mal vergessen wurde, einen Rückgabewert auf den Fehlerfall zu prüfen?
+Aber was nützt die beste Idee, die ausgeklügelte Strategie, wenn beim Programmieren nur ein einziges Mal vergessen wurde, einen Rückgabewert auf den Fehlerfall zu prüfen?
 Was nützt es, wenn Strategien für das Freigeben von Speicher in Notfallsituationen einen Sonderfall übersehen haben?
 Das System handelt total unvorhersehbar.
 
-Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt: die fehlerhaften Strategien zur Compilezeit findet und die Compilation stoppt; die trotz erzwungener Sicherheitsmaßnahmen, schnell und echtzeitnah reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
+Was wäre, wenn es eine Programmiersprache geben würde, die so etwas nicht zulässt: die fehlerhafte Strategien zur Compilezeit findet und die Compilation stoppt; die trotz erzwungener Sicherheitsmaßnahmen, schnell und echtzeitnah reagieren kann und sich nicht vor Geschwindigkeitsvergleichen mit etablierten, aber unsicheren Programmiersprachen, scheuen muss?
 
 Diese Arbeit soll zeigen, dass Rust genau so eine Programmiersprache ist und sich für sicherheitsrelevante, hoch parallelisierte und echtzeitnahe Anwendungsfälle bestens eignet.
 %Könnte Rust die Antwort sein? \todo{zuuu viele Fragen}
@@ -71,7 +71,7 @@ Zu dem zuvor beschriebenen Verhalten des Kommunikationsservers besteht bereits e
 Das Ziel dieser Bachelorarbeit ist es, eine alternative Implementierung des Kommunikationsservers in Rust zu schaffen.
 Durch die Garantien (\autoref{rust:guarantees}) von Rust wird erhofft, dass der menschliche Faktor als Fehlerquelle gemindert und somit eine fehlertolerantere und sicherere Implementation geschaffen werden kann.
 
-Eine Ähnlichkeit in Struktur und Architektur zu der bestehender C++ Implementation ist explizit nicht vonnöten.
+Eine Ähnlichkeit in Struktur und Architektur zu der bestehenden C++ Implementation ist explizit nicht vonnöten.
 Eventuelle Spracheigenheiten und einzigartige Features von Rust sollen im vollen Umfang genutzt werden können, ohne durch auferzwungene und unpassende Architekturmuster benachteiligt zu werden.
 Es ist erwünscht, eine kompetitive Implementation in Rust zu schaffen.
 

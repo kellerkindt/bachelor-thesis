@@ -3,14 +3,14 @@
 \chapter{Systemrelevante Technologien}
 \label{com_plattform}
 
-Dieses Kapitel erläutert weitere, relevante Themen, die zur Umsetzung der hochperformante, serverbasierte Kommunikationsplattform wichtig sind.
+Dieses Kapitel erläutert weitere relevante Themen, die zur Umsetzung der hochperformanten, serverbasierten Kommunikationsplattform wichtig sind.
 
 \section{Echtzeitsysteme}
 \label{real_time_systems}
 Echtzeitsysteme zeichnen sich im allgemeinen dadurch aus, eine Aufgabe in einem zuvor vorgegebenen Zeitraum bearbeiten zu können.
 Es existiert zu einer Aufgabe also immer eine Frist.
 Bei der Bewertung der Korrektheit eines Systems wird die Fähigkeit, eine Frist einhalten zu können, auch bewertet \cite[2]{perf:buttazzo2006soft}.
-Je nach Art des Echtzeitsystems, wird diese Frist jedoch unterschiedlich gewichtet:
+Je nach Art des Echtzeitsystems wird diese Frist jedoch unterschiedlich gewichtet:
 
 \begin{itemize}
 	\item Bei einem harten Echtzeitsystem kann eine Überschreitung der Frist einen katastrophalen Ausgang haben.
@@ -33,7 +33,7 @@ Wenn in dieser Arbeit auf MEC Bezug genommen wird, sind damit explizit direkt an
 Dadurch, dass die Recheneinheiten direkt an einen Funkmast angeschlossen sind, können sie Anfragen aus dem Abdeckungsbereich der Antenne deutlich schneller beantworten (Latenz kleiner 20ms) als Cloudlösungen (Latenz ca 100ms) \cite[2]{perf:mec:fraunhofer}.
 Hierfür werden die Anfragen aus dem Mobilfunknetz direkt an die Recheneinheit weitergeleitet, anstatt über einen Provider eine Internetverbindung zu einer Cloudlösung aufzubauen.
 
-Die Serverimplementierung des \gls{mec}-View Projekts wird in einer \gls{mec}-Recheneinheit ausgeführt, um die Sensordaten der Sensoren möglichst schnell an die Fahrzeuge des Abdeckungsbereichs des Funkamstes weiterleiten zu können.
+Die Serverimplementierung des \gls{mec}-View Projekts wird in einer \gls{mec}-Recheneinheit ausgeführt, um die Sensordaten der Sensoren möglichst schnell an die Fahrzeuge des Abdeckungsbereichs des Funkmastes weiterleiten zu können.
 
 
 \input{sections/asn}
@@ -117,7 +117,7 @@ Eine typische synchrone Kommunikation ist ein Funktionsaufruf.
 Zuerst werden die Parameter vorbereitet, dann die Funktion aufgerufen.
 Der weitere Code der aufrufenden Funktion wird nicht ausgeführt, bis der Aufruf der aufgerufenden Funktion beendet wurde.
 
-Auch für Datenströme, bei zum Beispiel TCP-Verbindungen, bieten Standardbibliotheken der entsprechenden Programmiersprachen oft eine synchrone Kommunikation an.
+Auch für Datenströme, zum Beispiel bei TCP-Verbindungen, bieten Standardbibliotheken der entsprechenden Programmiersprachen oft eine synchrone Kommunikation an.
 Hierbei beendet ein Funktionsaufruf für das Versenden oder Empfangen von Daten (bei TCP Bytes) erst, wenn die erwartete Anzahl an Elementen empfangen oder versendet wurde.
 
 Für einen Client, der nur zu einem Server eine Verbindung aufbaut, ist diese Herangehensweise aufgrund der niedrigen Komplexität gut geeignet.
@@ -127,7 +127,7 @@ Einen Sende- und Empfangsthread je Client würde das Problem der Latenz lösen, 
 
 Eine asynchrone Kommunikation ermöglicht dagegen die Kommunikation mit vielen Datenströmen gleichzeitig, ohne die zuvor erwähnte Probleme zu provozieren.
 Bei einem asynchronen Sende- oder Empfangsaufruf wird nicht auf dessen Fertigstellung gewartet, sondern in der darunterliegende Implementation wird die Anfrage notiert, sobald möglich abgearbeitet und der Aufrufende bei Fertigstellung informiert.
-Das erlaubt dem Aufrufer dem nächsten Datenstrom Daten zuzusenden, ohne das dies durch die Fertigstellung des ersten Aufrufs verzögert wird.
+Das erlaubt dem Aufrufer dem nächsten Datenstrom Daten zuzusenden, ohne dass dies durch die Fertigstellung des ersten Aufrufs verzögert wird.
 Eine asynchrone Kommunikation erhöht jedoch die Komplexität des Aufrufers (hier: des Servers), da nun zusätzlich der Status einer Sende- und Empfangsanfrage nachverfolgt werden muss.
 Im Gegenzug wird die Verwaltung von vielen Datenströmen bzw. Verbindungen mit wenigen Threads ermöglicht.
 

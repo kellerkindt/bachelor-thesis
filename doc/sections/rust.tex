@@ -3,8 +3,8 @@
 \label{rust}
 
 %Rust ist eine Programmiersprache, die versucht performante -- und daher durch Abstraktionen mit keinem zusätzlichen \enquote{Kosten} \todo{ref zero cost abstractions} -- und sichere Programmierung zu ermöglichen.
-Rust hat als Ziel, eine sichere (siehe \autoref{rust:guarantees}) und performante Systemprogrammiersprache zu sei.
-Abstraktionen sollen die Sicherheit, Lesbarkeit und Nutzbarkeit verbessern aber keine unnötigen Performance-Einbußen verursachen (siehe \autoref{rust:zero_cost}).
+Rust hat als Ziel, eine sichere (siehe \autoref{rust:guarantees}) und performante Systemprogrammiersprache zu sein.
+Abstraktionen sollen die Sicherheit, Lesbar- und Nutzbarkeit verbessern aber, keine unnötigen Performance-Einbußen verursachen (siehe \autoref{rust:zero_cost}).
 
 Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie vergessene \ccinline{NULL}-Pointer Prüfung, vergessene Fehlerprüfung, \enquote{dangling pointers} oder \enquote{memory leaks} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert (\autoref{rust:guarantees}).
 Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
@@ -76,7 +76,7 @@ Rust ist wahlweise unter MIT oder der Apache Lizenz in Version 2 verfügbar \cit
 \section{Anwendungsgebiet}
 
 Das Ziel von Rust ist es, das Designen und Implementieren von sicheren und nebenläufigen Programmen möglich zu machen.
-Gleichzeitig soll der Spagat geschaffen werden, nicht nur ein sicheres aber lediglich theoretisches Konstrukt zu sein, sondern  in der Praxis anwendbar zu sein.
+Gleichzeitig soll der Spagat geschaffen werden, nicht nur ein sicheres, aber lediglich theoretisches Konstrukt zu sein, sondern  in der Praxis anwendbar zu sein.
 Als Beweis könnte hierbei auf die Umstellung von Firefox auf Rust und Servo -- ein minimaler Webbrowser komplett in Rust geschrieben -- verwiesen werden \cite{rust:faq}.
 
 Interessant ist eine Diskussion von 2009, bei der \enquote{sicher aber nutzlos} und \enquote{unsicher aber brauchbar} gegenübergestellt wurde.
@@ -141,7 +141,7 @@ Unter \url{https://rustup.rs} ist dagegen das Installations- und Aktualisierungs
 
 Der Aufbau eines Rust Projektverzeichnis ist auf zwei verschiedene Arten möglich.
 Zum einen gibt es den klassische Aufbau, in dem lediglich der Programmcode liegt und der Compiler direkt aufgerufen und parametrisiert wird.
-Zum anderen wird der Aufbau als Crate (siehe \autoref{rust:structure:crate}) empfohlen, da dadurch Abhängigkeiten automatisch aufgelöst werden können aber auch Metainformationen bezüglich des Autors, der Version und der Abhängigkeiten hinterlegt werden müssen.
+Zum anderen wird der Aufbau als Crate (siehe \autoref{rust:structure:crate}) empfohlen, da dadurch Abhängigkeiten automatisch aufgelöst werden können, aber auch Metainformationen bezüglich des Autors, der Version und der Abhängigkeiten hinterlegt werden müssen.
 Ein klassischer Aufbau ist nur selten anzutreffen.
 
 
@@ -164,7 +164,7 @@ Um Datentypen und Funktionen aus einem Modul nutzen zu können, ohne deren kompl
 Dies ähnelt einem \javacinline{import} aus Java oder einem \cscinline{using} aus C\#.
 
 Wie bereits angedeutet, wird in Rust nicht eine \enquote{Klasse}, Datenstruktur oder Aufzählung pro Datei erwartet, sondern eine Quelldatei entspricht einem Modul.
-Dieses umfasst in vielen Fällen wenige aber mehrere Datenstrukturen, zugehörige Aufzählungen und Fehlertypen.
+Dieses umfasst in vielen Fällen wenige, aber mehrere Datenstrukturen, zugehörige Aufzählungen und Fehlertypen.
 %Module (Verzeichnisse oder Quelldateien) gesucht wird. , in der Module durch \rustcinline{mod module;} und Quelldateien durch \rustcinline{mod functionality;} \enquote{inkludiert} werden können.
 %Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 
@@ -220,7 +220,8 @@ Die darauf folgende Zahl gibt die Anzahl der Bits wieder, die für den Datentyp 
 Die einzige Ausnahme sind die ganzzahligen Datentypen \rustcinline{usize} und \rustcinline{isize}, da diese immer so groß sind, wie die Architektur der Zielplattform.
 Für die Indexierung eines Arrays oder einer Slice würden andere Datentypen, mit einer fest definierten Größe, keinen Sinn ergeben, da das Maximum an adressierbaren Elementen von der Architektur der Zielplattform abhängig ist.
 
-Durch dieses Schema bei der Bezeichnung der Datentypen wird eine Verwirrung wie zum Beispiel in C unterbunden, wo die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe haben, sondern abhängig vom eingesetzten Compiler und der Zielplattform sind \cite[187]{deitel2013c}. Erst ab C99 wurden zusätzliche, aber optionale, ganzzahlige Datentypen mit festen Größe definiert \cite[141]{goll2014c}.
+Durch dieses angewandte Schema der Bezeichnung der Datentypen wird eine Verwirrung, wie zum Beispiel in C, unterbunden.
+Dort haben die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe, sondern sind abhängig vom eingesetzten Compiler und der Zielplattform \cite[187]{deitel2013c}. Erst ab C99 wurden zusätzliche, aber optionale, ganzzahlige Datentypen mit festen Größe definiert \cite[141]{goll2014c}.
 
 Konstanten können in Rust direkt einem Datentyp zugewiesen werden, indem dieser angehängt wird: \rustcinline{4711u16} ist vom Datentyp \rustcinline{u16}.
 Unterstriche dürfen an beliebiger Stelle Ziffern trennen, um die Lesbarkeit zu erhöhen: \rustcinline{1_000_000_f32}.
@@ -392,7 +393,7 @@ Im Folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibl
 \begin{itemize}
 	\item \monospaceinline{Send}: Markiert einen Datentyp als zwischen Threads übertragbar. Automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ Send sind. Manuelle Implementation ist nicht sicher \cite{rust:book:send_sync}.
 	
-	\rustcinline{!Send} verhindert dagegen, dass ein Wert zu anderen Threads übertragen werden darf.
+	\rustcinline{!Send}: Verhindert dagegen, dass ein Wert zu anderen Threads übertragen werden darf.
 	Somit können ansonsten rein textuell beschriebene Beschränkungen, wie zum Beispiel für der OpenGL-Kontext, durch den Compiler überprüft und erzwungen werden.
 	
 	\item \monospaceinline{Sync}: Markiert einen Datentype als zwischen Threads synchronisierbar, d.h. mehrere Threads dürfen gleichzeitig lesend darauf zugreifen.
@@ -450,7 +451,7 @@ Eine Closure ist eine automatisch generierte Datenstruktur, die eines der folgen
 	\item \rustcinline{FnOnce<Args>} mit \rustcinline{fn call_once(self, arg: Args) -> Self::Output}: Ein Aufruf ist wegen des Eigenkonsums nur einmalig möglich.
 \end{itemize}
 
-Closures in Rust sind sehr performant (siehe \autoref{rust:zero_cost}), weswegen eine Anwendung selbst in Zeitkritischen Anwendungsfällen problemlos möglich ist \cite[310]{rust:orly_programming}.
+Closures in Rust sind sehr performant (siehe \autoref{rust:zero_cost}), weswegen eine Anwendung selbst in zeitkritischen Anwendungsfällen problemlos möglich ist \cite[310]{rust:orly_programming}.
 
 
 
@@ -493,12 +494,10 @@ Hiermit wird verhindert, dass, nachdem eine Aufzählung um eine Variation erweit
 
 Wenn nur ein konkreter Fall von Bedeutung ist, kann dies in der verkürzten \rustcinline{if let} Schreibweise notiert werden:
 
-\begin{figure}[H]
-	\rustcinclude
-		{rust:match:iflet}
-		{Vereinfachte \rustcinline{if let} Ausdruck}
-		{sections/rust.match.iflet.rs}
-\end{figure}
+\rustcinclude
+	{rust:match:iflet}
+	{Vereinfachter \rustcinline{if let} Ausdruck}
+	{sections/rust.match.iflet.rs}
 
 Ein weiterer Unterschied von \autoref{rust:match:iflet} gegenüber \autoref{rust:match:large} ist in Zeile 3 das Schlüsselwort \rustcinline{ref}, wodurch der Konsum des Wertes verhindert wird.
 Das Schlüsselwort \rustcinline{mut} erlaubt zudem eine Änderung des Wertes, weswegen \rustcinline{value} in Zeile 4 vom Typ \rustcinline{&mut u32} ist.
@@ -524,24 +523,20 @@ Somit ist eine, auf den ersten Blick unverständliche Formulierung wie \ccinline
 \autoref{rust:loops:loop} zeigt, dass eine \rustcinline{loop}-Schleife zusätzlich auch einen Wert zurück geben kann (\rustcinline{break} in Zeile 9).
 
 
-\begin{figure}[H]
-	\rustcinclude
-		{rust:loops:loop}
-		{Beispiel Verwendung einer \rustcinline{loop} Schleife}
-		{sections/rust.loop.rs}
-\end{figure}
+\rustcinclude
+	{rust:loops:loop}
+	{Beispiel Verwendung einer \rustcinline{loop} Schleife}
+	{sections/rust.loop.rs}
 
 
 Die \rustcinline{for} Schleife erwartet immer etwas iterierbares und entspricht damit einer \ccinline{foreach} aus anderen Programmiersprachen.
 Eine inkrementelle Laufvariable, zum Beispiel für die Indizierung eines Arrays, wird durch das Iterieren über einen Zahlenstrahl dargestellt.
 In \autoref{rust:loops:for} ist dies in Zeile 4 zu sehen, während in Zeile 8 direkt über die Werte des Arrays iteriert wird.
 
-\begin{figure}[H]
-	\rustcinclude
-		{rust:loops:for}
-		{Beispiel Verwendung einer \rustcinline{for} Schleife}
-		{sections/rust.for.rs}
-\end{figure}
+\rustcinclude
+	{rust:loops:for}
+	{Beispiel Verwendung einer \rustcinline{for} Schleife}
+	{sections/rust.for.rs}
 
 
 Die \rustcinline{while} Schleife ist die einfachste aller Schleifen, da das Verhalten dem aus anderen Programmiersprachen entspricht.
@@ -549,23 +544,19 @@ Der Rumpf wird so lange wiederholt, wie die Bedingung \rustcinline{true} ergibt.
 Das Beispiel in \autoref{rust:loops:while} gibt eine Sekunde lang wiederholend \rustcinline{\"Zeit noch nicht um\"} auf der Konsole aus.
 
 
-\begin{figure}[H]
-	\rustcinclude
-		{rust:loops:while}
-		{Beispiel Verwendung einer \rustcinline{while} Schleife}
-		{sections/rust.while.rs}
-\end{figure}
+\rustcinclude
+	{rust:loops:while}
+	{Beispiel Verwendung einer \rustcinline{while} Schleife}
+	{sections/rust.while.rs}
 
 Auch in \rustcinline{while} Schleifen können verkürzte Musterabgleichungen durchgeführt werden.
 Die Notation ähnelt dem \rustcinline{if let} und ist in \autoref{rust:loops:while:pattern} zu sehen.
 Die eingelesene Zeile wird hierbei so lange wieder auf der Konsole ausgegeben, bis beim Einlesen ein Fehler auftritt.
 
-\begin{figure}[H]
-	\rustcinclude
-		{rust:loops:while:pattern}
-		{Beispiel Musterabgleichung in einer \rustcinline{while} Schleife}
-		{sections/rust.while.pattern.rs}
-\end{figure}
+\rustcinclude
+	{rust:loops:while:pattern}
+	{Beispiel Musterabgleichung in einer \rustcinline{while} Schleife}
+	{sections/rust.while.pattern.rs}
 
 \section{Attribute}
 \label{rust:attributes}
@@ -602,12 +593,10 @@ Test-Funktionen sind jedoch weiterhin mit \rustcinline{#[test]} markiert.
 Rust bietet einen offiziellen Styleguide, der u.a. eine Namenskonvention für Funktionen, Datentypen, Variationen und Variablen beinhaltet \cite{rust:styleguide:naming}.
 Auch über die Formatierung und Einrückungen werden bevorzugte Arten aufgezeigt \cite{rust:styleguide}.
 
-\begin{figure}[H]
-	\rustcinclude
-		{rust:styleguide:bad}
-		{Beispiel für eine nicht konforme Aufzählung}
-		{sections/rust.styleguide.bad.rs}
-\end{figure}
+\rustcinclude
+	{rust:styleguide:bad}
+	{Beispiel für eine nicht konforme Aufzählung}
+	{sections/rust.styleguide.bad.rs}
 
 Der Compiler überprüft einige dieser Konventionen und warnt bei Nichteinhaltung.
 Das Beispiel in \autoref{rust:styleguide:bad} führt dabei zu den Warnungen in \autoref{rust:styleguide:bad_output}.
@@ -629,7 +618,7 @@ Von einer weiteren Vertiefung der verschiedenen Konventionen wird hier abgesehen
 \section{Niemals nichts und niemals unbehandelte Ausnahmen}
 \label{rust:no_null}
 
-Rust kennt \ccinline{NULL}(-Pointer) nicht und erlaubt auch keine Zugriff auf nicht initialisierte Variablen (siehe \autoref{rust:no_unitialized_usage}), bietet aber einen \rustcinline{Option<_>}-Datentyp als Ersatz an.
+Rust kennt \ccinline{NULL}(-Pointer) nicht und erlaubt auch keinen Zugriff auf nicht initialisierte Variablen (siehe \autoref{rust:no_unitialized_usage}), bietet aber einen \rustcinline{Option<_>}-Datentyp als Ersatz an.
 Dieser Datentyp erzwingt eine Prüfung vor dem Zugriff (siehe \autoref{rust:guarantee:no_null}).
 
 Für die Fehlerbehandlung wird nicht auf ein Exception-Handling zurückgegriffen, sondern ein eigener Datentyp angeboten, der entweder den Rückgabewert enthält, oder aber einen Fehler: \rustcinline{Result<_, _>} (siehe \autoref{rust:result}).
@@ -637,7 +626,7 @@ Für die Fehlerbehandlung wird nicht auf ein Exception-Handling zurückgegriffen
 Durch den Fragezeichenoperator kann trotzdem ein ähnliches Verhalten wie beim Auftreten einer Ausnahme in Java oder C++ erzielt werden (siehe \autoref{rust:result}).
 
 \label{rust:panic}
-Ein besonderer Fehlertyp ist die Panik, denn sie bedeutet in den meisten Fällen ein Logikfehler im Programmcode, der zur Laufzeit nur schwierig zu beheben ist.
+Ein besonderer Fehlertyp ist die Panik, denn sie bedeutet in den meisten Fällen ein Logikfehler im Programmcode, der zur Laufzeit nur schwer zu beheben ist.
 Eine Panik kann zum Beispiel beim Zugriffsversuch außerhalb der Grenzen einer Slice oder eines Arrays, beim Teilen durch 0 oder auch bei einem \rustcinline{.unwrap()} ausgelöst werden.
 Eine Panik durchläuft daraufhin, wie eine Exception in C\#, Java oder C++, rückwärts alle Funktionsaufrufe und gibt den Speicher geordnet wieder frei, bis sie gefangen wird oder zuletzt der panische Thread endet.
 Falls dies im Main-Thread auftritt, wird danach der Prozess beendet.
@@ -775,12 +764,10 @@ Dadurch wird das Problem des \enquote{dangling pointers} verhindert, ohne Laufze
 Im folgenden \autoref{rust:memory:scope} wird beispielhaft Speicher auf dem Heap allokiert.
 Dieser wird ordnungsgemäß freigegeben, ohne manuell eine Freigabe einzuleiten.
 
-\begin{figure}[H]
-	\rustcinclude
-		{rust:memory:scope}
-		{Geltungsbereich von Variablen}
-		{sections/rust.memory.rs}
-\end{figure}
+\rustcinclude
+	{rust:memory:scope}
+	{Geltungsbereich von Variablen}
+	{sections/rust.memory.rs}
 
 Eine Variable kann auch vorzeitig durch den Aufruf von \rustcinline{std::mem::drop(_)} freigegeben werden.
 Die optionalen Implementation des \rustcinline{std::op::Drop}-Merkmals (siehe \autoref{rust:generics}) kommt der Implementation des Destruktors aus C++ gleich.
@@ -801,12 +788,10 @@ Ein entsprechender Versuch wird mit einer Fehlermeldung durch den Compiler bemä
 Die statische Lebenszeitanalyse garantiert, dass es nur einen Eigentümer, eine exklusive Schreiberlaubnis oder mehrere Leseerlaubnisse auf eine Variable gibt.
 Da dies zur Compilezeit geschieht, ist eine Überprüfung zur Laufzeit nicht nötig und diese Philosophie keinen Laufzeitkosten mit sich bringt.
 
-\begin{figure}[H]
-	\rustcinclude
-		{rust:ownership:scope}
-		{Eigentümer und Referenzen von Variablen}
-		{sections/rust.ownership.rs}
-\end{figure}
+\rustcinclude
+	{rust:ownership:scope}
+	{Eigentümer und Referenzen von Variablen}
+	{sections/rust.ownership.rs}
 
 Das Beispiel in \autoref{rust:ownership:scope} zeigt verschiedene Möglichkeiten und Beschränkungen beim Verleihen und Übertragen von Werten.
 
@@ -844,19 +829,21 @@ Eine \javacinline{ConcurrentModificationException} (Java)  wird deshalb nicht be
 \section{Versprechen von Rust}
 \label{rust:guarantees}
 
-\begin{quotation}
-	\textit{\enquote{It’s not bad programmers, it’s that C is a hostile language}} 
-	\cite[54]{rust:c_is_hostile_mena}
-\end{quotation}
-
-\begin{quotation}
-	\textit{\enquote{I’m thinking that C is actively hostile to writing and maintaining reliable code}} 
-	\cite[129]{rust:c_is_hostile_mena}
-\end{quotation}
+\begin{figure}[H]
+	\begin{quotation}
+		\textit{\enquote{It’s not bad programmers, it’s that C is a hostile language}} 
+		\cite[54]{rust:c_is_hostile_mena}
+	\end{quotation}
+	
+	\begin{quotation}
+		\textit{\enquote{I’m thinking that C is actively hostile to writing and maintaining reliable code}} 
+		\cite[129]{rust:c_is_hostile_mena}
+	\end{quotation}
+\end{figure}
 
 Rust wirbt mit Versprechen und Garantien, die dafür sorgen sollen, typische Fehler zu vermeiden.
 In einer perfekten Welt wären viele dieser Maßnahmen nicht nötig, da perfekte Wesen niemals einen Fehler machen und niemals etwas übersehen würden.
-Programmierer sind aber Menschen, Menschen machen Fehler.
+Programmierer sind aber Menschen und Menschen machen Fehler.
 Deswegen hat Rust einige interessante Mechaniken eingeführt, bekannte Fehlerquellen zu unterbinden und erzwingt deren Einhaltung, indem andere Vorgehensweisen meist ausgeschlossen werden.
 
 Dieses Kapitel beschäftigt sich mit den wichtigsten und bekanntesten dieser Mechaniken.
@@ -894,7 +881,6 @@ Der Compiler stoppt mit einem Fehler:
 \begin{quotation}
 	\textit{\enquote{I call it my billion-dollar mistake. It was the invention of the null reference in 1965}}
 	\cite[Tony Hoare, QCon Software Konferenz in London, 2009]{rust:infoq:null}
-	\todo{cant find moment in video / presentation of this quote!?}
 \end{quotation}
 
 Wie in \autoref{rust:no_null} bereits erwähnt, kennt Rust keinen \ccinline{NULL}-Pointer.
@@ -910,12 +896,10 @@ In vielen Fällen kann der \rustcinline{Option<_>} Datentyp in Maschinencode als
 \subsection{Keine vergessene Fehlerprüfung}
 \label{rust:result}
 
-\begin{figure}[H]
-	\ccinclude
+\ccinclude
 	{rust:result:c_bad_fopen}
 	{Negativbeispiel: Fehlende Fehlerprüfung in C}
 	{sections/rust.fopen.c}
-\end{figure}
 
 In \autoref{rust:result:c_bad_fopen} sind mindestens zwei Fehler versteckt, die aber keinen Compileabbruch auslösen, sondern sich zur Laufzeit zeigen können.
 Der erste Fehler ist eine fehlende Überprüfung des Rückgabewertes von \ccinline{fopen} in Zeile 4.
@@ -924,12 +908,10 @@ Der Versuch in die Datei zu schreiben in Zeile 5 kann daraufhin in einem Speiche
 
 In Rust wird weder eine Ausnahme geworfen, noch ein Rückgabewert zurück gegeben, der ohne Prüfung verwendet werden kann:
 
-\begin{figure}[H]
-	\rustcinclude
-		{rust:result:rust_good_fopen}
-		{Positivbeispiel: Keine fehlende Fehlerprüfung in Rust}
-		{sections/rust.fopen.rs}
-\end{figure}
+\rustcinclude
+	{rust:result:rust_good_fopen}
+	{Positivbeispiel: Keine fehlende Fehlerprüfung in Rust}
+	{sections/rust.fopen.rs}
 
 Der Rückgabewert von \rustcinline{File::open("private.key")} in Zeile 5 von \autoref{rust:result:rust_good_fopen} ist vom Typ \rustcinline{Result<File, Error>}.
 Auf den eigentlichen Rückgabewert \rustcinline{File} kann nicht ohne eine Fehlerprüfung zugegriffen werden, da dies \rustcinline{Result} verhindert.
@@ -942,12 +924,10 @@ In einem größeren Programm könnte so zu unbekanntem Zeitpunkt das Limit an gl
 Da ein \rustcinline{match} oder ein \rustcinline{if let} für jeden Funktionsaufruf, der einen Fehler zurückgeben könnte, sehr umständlich und bereits für kleine Beispiele wie \autoref{rust:result:rust_good_fopen} unübersichtlich wird, kann dies durch den Operator \rustcinline{?} abgekürzt werden.
 Dazu muss die Funktion, die den Operator verwendet aber auch ein \rustcinline{Result} in einem kompatiblen Fehlertyp zurückgeben, wie in \autoref{rust:result:shorthand} zu sehen:
 
-\begin{figure}[H]
-	\rustcinclude
-		{rust:result:shorthand}
-		{Verkürzte Fehlerbehandlung in Rust}
-		{sections/rust.result.shorthand.rs}
-\end{figure}
+\rustcinclude
+	{rust:result:shorthand}
+	{Verkürzte Fehlerbehandlung in Rust}
+	{sections/rust.result.shorthand.rs}
 
 
 
@@ -964,19 +944,15 @@ Daraufhin wird versucht, mit dem gleichen Beispiel in \autoref{rust:owner:rust_b
 
 
 
-\begin{figure}[H]
-	\ccinclude
+\ccinclude
 	{rust:owner:c_bad_free}
 	{Negativbeispiel: Fehlerhafter Klon in C}
 	{sections/rust.owner.free.c}
-\end{figure}
 
-\begin{figure}[H]
-	\rustcinclude
+\rustcinclude
 	{rust:owner:rust_bad_free}
 	{Negativbeispiel: Fehlerhafter Klon in Rust}
 	{sections/rust.owner.free.rs}
-\end{figure}
 
 Ein äquivalentes Beispiel zu dem C-Beispiel in Rust zu schreiben, ist schwierig.
 Das Feld \enquote{model} in der C-Struktur ist beim Erstellen der Eigentümer der Zeichenkette (Datentyp \rustcinline{String} in Rust) und beim Klonen der Entleiher (Datentyp \rustcinline{&str} in Rust).
@@ -1000,7 +976,7 @@ Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgeh
 \label{rust:guarantee:memory_safety}
 
 
-In Rust werden verschiedene Arten von Speichersicherheit garantiert. Zum einen, wird niemals auf einen \ccinline{NULL}-Pointer zugegriffen (siehe \autoref{rust:guarantee:no_null}), zum anderen wird niemals auf einen bereits deallokierten Speicherbereich zugegriffen (siehe \autoref{rust:guarantee:no_dangling_pointer}).
+In Rust werden verschiedene Arten von Speichersicherheit garantiert. Zum einen wird niemals auf einen \ccinline{NULL}-Pointer zugegriffen (siehe \autoref{rust:guarantee:no_null}), zum anderen wird niemals auf einen bereits deallokierten Speicherbereich zugegriffen (siehe \autoref{rust:guarantee:no_dangling_pointer}).
 
 Die Speichersicherheit umfasst aber auch den Zugriffe auf Puffer. So ist es nicht möglich einen Pufferüberlauf zu provozieren, da die Größe von einem Array und einer Slice immer bekannt ist.
 Der Compiler erzwingt eine Grenzüberprüfung beim Zugriff zur Laufzeit, falls die Einhaltung statisch nicht ersichtlich ist (\autoref{rust:zero_cost}).
@@ -1029,12 +1005,10 @@ In Rust wird auf einen geschützten Wert durch eine gültige Sperre zugegriffen.
 Es wird nicht ein Codebereich exklusiv betreten, sondern ein Speicherbereich exklusiv genutzt.
 Ein Zugriff ohne gültige Sperre ist deshalb nicht möglich:
 
-\begin{figure}[H]
-	\rustcinclude
-		{test}
-		{test2}
-		{sections/rust.lock.rs}
-\end{figure}
+\rustcinclude
+	{test}
+	{test2}
+	{sections/rust.lock.rs}
 
 %\todo{interrior mutability pattern}
 
@@ -1149,13 +1123,11 @@ oder im Falle von Strukturen stattdessen optional mit einem \rustcinline{#[repr(
 
 In einem Beispiel soll die Nutzung von \gls{ffi} demonstriert werden.
 
-\begin{figure}[H]
-	\ccinclude
-		{rust:ffi:position_offset_c}
-		{Ausschnitt von \enquote{PositionOffset} (C-Code) aus der \textit{libmessages-sys} Crate}
-		{sections/rust.position_offset.c}
+\ccinclude
+	{rust:ffi:position_offset_c}
+	{Ausschnitt von \enquote{PositionOffset} (C-Code) aus der \textit{libmessages-sys} Crate}
+	{sections/rust.position_offset.c}
 	
-\end{figure}
 
 Die Struktur in \autoref{rust:ffi:position_offset_c} muss zur Nutzung in Rust zuerst bekannt gemacht werden.
 Dabei gibt es mehrere Möglichkeiten:
@@ -1168,12 +1140,11 @@ Dabei gibt es mehrere Möglichkeiten:
 	Dies ist zum jetzigen Zeitpunkt aber nur in \enquote{nightly} und hinter dem \enquote{feature gate} \monospaceinline{extern_types} möglich.
 	
 	\item Der Inhalt der Struktur ist von Bedeutung, da darauf zugegriffen oder in Rust eine Instanz werden soll. In diesem Fall ist eine komplette Wiedergabe der Struktur unumgänglich:
-	\begin{figure}[H]
-		\rustcinclude
-			{rust:ffi:position_offset_rust}
-			{Ausschnitt von \enquote{PositionOffset} (Rust-Code) aus der \textit{libmessages-sys} Crate}
-			{sections/rust.position_offset.rs}
-	\end{figure}
+	
+	\rustcinclude
+		{rust:ffi:position_offset_rust}
+		{Ausschnitt von \enquote{PositionOffset} (Rust-Code) aus der \textit{libmessages-sys} Crate}
+		{sections/rust.position_offset.rs}
 	
 	In \autoref{rust:ffi:position_offset_rust} ist die Struktur \enquote{PositionOffset} deklariert,
 	die durch das Attribut \rustcinline{#[repr(C)]} wie eine C-Struktur im Speicher organisiert wird.
@@ -1206,12 +1177,10 @@ Dabei gibt es mehrere Möglichkeiten:
 
 Externe Funktionen müssen im Gegensatz zu externen Strukturen immer in einem \rustcinline{extern \{\}} Block deklariert sein.
 
-\begin{figure}[H]
-	\rustcinclude
-		{rust:ffi:uper_encode_to_buffer}
-		{Externe Funktionsdefinition der ASN.1 Funktion zum Enkodieren}
-		{sections/rust.uper_encode_to_buffer.rs}
-\end{figure}
+\rustcinclude
+	{rust:ffi:uper_encode_to_buffer}
+	{Externe Funktionsdefinition der ASN.1 Funktion zum Enkodieren}
+	{sections/rust.uper_encode_to_buffer.rs}
 
 Wie in \autoref{rust:ffi:uper_encode_to_buffer} zu sehen ist, können auch \rustcinline{extern \{\}} Blöcke mit Attributen (siehe \autoref{rust:attributes}) versehen werden. Zwingend ist bei der Verwendung einer \rustcinline{#[link(..)]} Attributs der Name der Bibliothek, auf die sich der im \rustcinline{extern \{\}} Block stehende Code bezieht. Optional kann auch wie in \autoref{rust:ffi:uper_encode_to_buffer} die Art der Verlinkung (dynamisch oder statisch) angegeben werden.
 

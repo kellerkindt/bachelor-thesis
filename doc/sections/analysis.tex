@@ -14,8 +14,11 @@ Um eine Gesamtübersicht über das System zu erhalten, wird zuerst ein Systemkon
 
 %In der folgenden Abbildung sind die Systemgrenzen aufgezeigt.
 
+In \autoref{system_context_diagramm} ist das System \enquote{MEC-View Server} abgebildet.
+Die Pfeile zeigen Kontroll- und Datenflüsse auf andere  Systeme, mit denen eine wechselwirkung stattfindet \cite[501]{goll2012methoden}.
+
 \begin{figure}[H]
-	\begin{tikzpicture}[node distance=5]
+	\begin{tikzpicture}[node distance=5,scale=0.8, every node/.style={transform shape}]
 		\node [draw, rectangle, drop shadow, fill=white] (F) {Fahrzeug};
 		\node [draw, circle, drop shadow, fill=white, text width=3cm, align=center] (C) [below right=of F] {MEC-View Server};
 		\node [draw, rectangle, drop shadow, fill=white] (S) [below right=of C] {Sensor};
@@ -87,8 +90,6 @@ Um eine Gesamtübersicht über das System zu erhalten, wird zuerst ein Systemkon
 	\label{system_context_diagramm}
 \end{figure}
 
-In \autoref{system_context_diagramm} ist das System \enquote{MEC-View Server} abgebildet.
-Die Pfeile zeigen Kontroll- und Datenflüsse auf andere  Systeme, mit denen eine wechselwirkung stattfindet \cite[501]{goll2012methoden}.
 
 \section{Gesamtübersicht der Anwendungsfälle}
 
@@ -96,7 +97,7 @@ In diesem Kapitel werden die Kontroll- und Datenflüsse aus \autoref{system_cont
 Aufgrund des Umfangs ist dies in zwei Anwendungsfalldiagramme aufgeteilt.
 
 \begin{figure}[H]
-	\begin{tikzpicture}[node distance=5]
+	\scalebox{.65}{\begin{tikzpicture}[node distance=5]
 		\begin{umlsystem}{MEC-View-Server}
 %			\umlusecase[y=4,name=u0]{Verbindung aufbauen}
 			\umlusecase[y=2,name=u3]{Als Fahrzeug registrieren}
@@ -112,7 +113,7 @@ Aufgrund des Umfangs ist dies in zwei Anwendungsfalldiagramme aufgeteilt.
 		\umlassoc{Fahrzeug}{u3}
 		\umlassoc{Fahrzeug}{u9}
 		\umlassoc{Fahrzeug}{u10}
-	\end{tikzpicture}
+	\end{tikzpicture}}
 	\centering
 	\caption{Anwendungsfalldiagramm des MEC-View-Servers für den Akteur \enquote{Fahrzeug}}
 	\label{use_case:car}
@@ -122,7 +123,7 @@ Das Anwendungsfalldiagramm in \autoref{use_case:car} zeigt die Funktionalität d
 Das folgende Anwendungsfalldiagramm in \autoref{use_case:sensor} zeigt dagegen die Funktionalität, die einem Sensor zur Verfügung gestellt werden soll.
 
 \begin{figure}[H]
-	\begin{tikzpicture}[node distance=5]
+	\scalebox{.65}{\begin{tikzpicture}[node distance=5]
 	\begin{umlsystem}{MEC-View-Server}
 	\umlusecase[y=-4,name=u4]{Als Sensor registrieren}
 	\umlusecase[y=-6,name=u5]{SensorFrame zusenden}
@@ -137,13 +138,14 @@ Das folgende Anwendungsfalldiagramm in \autoref{use_case:sensor} zeigt dagegen d
 	\umlassoc{Sensor}{u7}
 	\umlassoc{Sensor}{u8}
 	%		\umlassoc{Fusionsalgorithmus}{u4}
-	\end{tikzpicture}
+	\end{tikzpicture}}
 	\centering
 	\caption{Anwendungsfalldiagramm des MEC-View-Servers für den Aktuer \enquote{Sensor}}
 	\label{use_case:sensor}
 \end{figure}
 
 
+\clearpage
 \section{Beschreibung der Anwendungsfälle}
 
 Die einzelnen Anwendungsfälle aus \autoref{use_case:car} und \autoref{use_case:sensor} sollen in diesem Kapitel genauer erklärt werden.
@@ -514,6 +516,9 @@ In \autoref{seq_dia:both} ist das Zusammenspiel des Sensor aus \autoref{seq_dia:
 Um die Übersichtlichkeit zu wahren, wurden die Nachrichtentypen durch Anweisungen ersetzt.
 Es ist zu erkennen, dass der Server bereits ein Abonnement gegenüber dem Sensor erstellt, sobald sich ein Fahrzeug registriert.
 Dieses Abonnement ist so lange gültig, wie zumindest ein Fahrzeug verbunden ist.
+
+\vspace*{\fill}
+\null
 
 \begin{figure}[H]
 	\begin{tikzpicture}[scale=.9]

@@ -57,7 +57,7 @@ Die grün und blau markierten Klassen aus \autoref{draft:architecture} haben kei
 Klassen, die eine Nachricht weiterleiten müssen und deshalb einen Berührungspunkt mit diesen haben, verwenden \textit{Generics} (so muss der Client \textit{SensorFrame}-Nachrichten an den Algorithmus weiterleiten, den konkreten Typ jedoch nicht kennen).
 Lediglich durch die Nutzung in Kombination mit den ASN.1 Nachrichtentypen entstehen zur Compilezeit Abhängigkeiten, die aufgrund der Übersicht aber nicht eingezeichnet sind.
 
-Die Klasse \textit{RawMessage} aus der Crate \textit{libmessages} ist eine Containerklasse um binäre Daten mit Typindikatoren zwischen Decoder und Mapper und zwischen Encoder und Adapter auszutauschen.
+Die Klasse \textit{RawMessage} aus der Crate \textit{libmessages} ist eine Containerklasse, um binäre Daten mit Typindikatoren zwischen Decoder und Mapper und zwischen Encoder und Adapter auszutauschen.
 Die Klasse selbst hat keine weiteren Abhängigkeiten und ist von der eingesetzten Nachrichtentechnologie unabhängig.
 Die \textit{asn::Message} soll Methoden bereitstellen, eine Instanz einer ASN.1 Nachricht in eine \textit{RawMessage} zu serialisieren und eine Instanz einer ASN.1 Nachricht aus einer \textit{RawMessage} zu deserialisieren.
 % \todo{Kopf / Body \autoref{analysis:messages}}
@@ -93,7 +93,7 @@ Im Falle eines \textit{Sensor}s kann ein \textit{CountListener} am Algorithmus r
 
 \subsubsection{Erklärung Adapter}
 
-Der Adapter bietet  Schnittstelle, damit eine Client-Instanz Nachrichten versenden kann, ohne die eingesetzte Nachrichtentechnologie zu kennen.
+Der Adapter bietet  Schnittstellen, damit eine Client-Instanz Nachrichten versenden kann, ohne die eingesetzte Nachrichtentechnologie zu kennen.
 Hierzu wird der Client-Instanz Funktionen bereitgestellt, die von der Adapterimplementation in entsprechende Nachrichten übersetzt werden.
 
 \subsubsection{Erklärung Mapper}
@@ -146,7 +146,7 @@ Die Aktivitätsdiagramme in \autoref{design:channel} beschreiben die nötigen Tr
 \end{itemize}
 
 Nach dem \enquote{Channel Architektur Pattern} ist eine sequentielle Bearbeitung zwischen dem TCP-Datenstrom und der Client-Instanz in jede Richtung als Kanal interpretierbar (sprich jedes Aktivitätsdiagramm aus \autoref{design:channel}).
-Da jeder Zwischenschritt innerhalb eines Kanals lediglich von dem Ergebnis des vorhergehenden abhängig ist, könnten die einzelnen Schritte parallel zueinander bearbeiten werden.
+Da jeder Zwischenschritt innerhalb eines Kanals lediglich vom Ergebnis des vorhergehenden abhängig ist, könnten die einzelnen Schritte parallel zueinander bearbeiten werden.
 Durch einen zusätzlichen, vorangestellten Multiplexer und nachfolgenden Demultiplexer könnten zudem mehrere Kanäle parallel die Client-Instanz oder den Datenstrom speisen.
 Hiervon wird in der ersten Implementierung jedoch abgesehen, da je Client keine derart große Datenflut erwartet wird.
 Stattdessen werden viele Clients erwartet, weshalb jeder Kanal eines Clients parallel zu den Kanälen anderer Clients ausgeführt werden soll.

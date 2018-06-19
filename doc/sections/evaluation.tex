@@ -17,7 +17,7 @@ Der CPU Governor wurde für alle Tests auf \enquote{performance} gestellt, um Sc
 Eine derart überdimensionierte Hardware soll Unterschiede im Laufzeitverhalten besser aufzeigen, ohne der limitierende Faktor zu sein.
 
 Für jede Kombination aus Sensoren, Fahrzeugen und Serverimplementierung werden 10 Tests durchgeführt.
-Während jedem Test wird für jede empfangene Nachricht am Fahrzeug, die Latenz seit dem Versand am Sensor in eine Datei geschrieben.
+Bei jedem Test wird am Fahrzeug für jede empfangene Nachricht, die Latenz seit dem Versand am Sensor in eine Datei geschrieben.
 Nach einem Testdurchlauf werden die Anzahl an Nachrichten gezählt und der Durchschnitt für die Latenzen gebildet.
 
 Zu jedem Zeitpunkt wird maximal ein Test gleichzeitig auf dem System ausgeführt.
@@ -31,8 +31,8 @@ Alle Implementationen sind im Release-Modus compiliert und in der C++ Implementa
 \section{Vorgehen}
 \label{eval:howto}
 
-Das Vorgehen ist für alle Tests gleich und ist bis auf den Start des Servers durch ein Bash-Skript automatisiert.
-Lediglich die Anzahl an Fahrzeugen und Sensoren, die als Übergabeparameter an das Skript übergeben werden, variieren je Testdurchlauf (10 Tests).
+Das Vorgehen ist für alle Tests gleich und bis auf den Start des Servers durch ein Bash-Skript automatisiert.
+Lediglich die Anzahl an Fahrzeugen und Sensoren, die als Parameter an das Skript übergeben werden, variieren je Testdurchlauf (10 Tests).
 Das Vorgehen eines Tests sieht folgendermaßen aus:
 
 \begin{itemize}
@@ -44,7 +44,7 @@ Das Vorgehen eines Tests sieht folgendermaßen aus:
 	\item Skript wartet auf Prozessende der Fahrzeuge.
 	\item Skript beendet alle Sensoren.
 	\item Skript pausiert für 2 Sekunden, um dem Server genügend Zeit für den Verbindungsabbau der Sensoren und Fahrzeuge einzuräumen.
-	\item Skript wiederholt alle Schritt ab Schritt 2, bis 10 Durchläufe ausgeführt wurden.
+	\item Skript wiederholt alle Schritte ab Schritt 2, bis 10 Durchläufe ausgeführt wurden.
 \end{itemize}
 
 Für jedes Umfeldmodell, das von einem Fahrzeug empfangen wird, wird auf der Konsole die Latenz in ganzen Millisekunden ausgegeben.

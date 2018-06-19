@@ -4,7 +4,7 @@
 
 %Rust ist eine Programmiersprache, die versucht performante -- und daher durch Abstraktionen mit keinem zusätzlichen \enquote{Kosten} \todo{ref zero cost abstractions} -- und sichere Programmierung zu ermöglichen.
 Rust hat als Ziel, eine sichere (siehe \autoref{rust:guarantees}) und performante Systemprogrammiersprache zu sein.
-Abstraktionen sollen die Sicherheit, Lesbar- und Nutzbarkeit verbessern aber, keine unnötigen Performance-Einbußen verursachen (siehe \autoref{rust:zero_cost}).
+Abstraktionen sollen die Sicherheit, Lesbar- und Nutzbarkeit verbessern, aber keine unnötigen Performance-Einbußen verursachen (siehe \autoref{rust:zero_cost}).
 
 Aus anderen Programmiersprachen bekannte Fehlerquellen -- wie vergessene \ccinline{NULL}-Pointer Prüfung, vergessene Fehlerprüfung, \enquote{dangling pointers} oder \enquote{memory leaks} --  werden durch strikte Regeln und mit Hilfe des Compilers verhindert (\autoref{rust:guarantees}).
 Im Gegensatz zu Programmiersprachen, die dies mit Hilfe ihrer Laufzeitumgebung\footnote{u.a. Java Virtual Maschine (JVM), Common Language Runtime (CLR)} sicherstellen, werden diese Regeln in Rust durch eine statische Lebenszeitanalyse (\autoref{rust:static_analysis}) und mit dem Eigentümerprinzip (\autoref{rust:ownership}) bei der Compilation überprüft und erzwungen.
@@ -69,7 +69,7 @@ Ab 2009 begann Mozilla die Weiterentwicklung finanziell zu fördern, als mit ein
 Die Entwicklung der Programmiersprache, des Compilers, des Buchs, von Cargo, von crates.io und von weiteren Bestandteilen findet öffentlich einsehbar auf \gls{github}  unter \url{https://github.com/rust-lang} statt.
 Dadurch kann sich jeder an Diskussionen oder Implementation beteiligen, seine Bedenken äußern oder Verbesserungen vorschlagen.
 
-Durch automatisierte Tests (siehe \autoref{rust:tests}) in Kombination mit drei Veröffentlichungskanälen (\enquote{release}, \enquote{stable} und \enquote{nightly}) und \enquote{feature gates} (siehe \autoref{rust:feature_gates}) wird die Stabilität des Compilers und die der Standardbibliothek (\autoref{rust:stdlib}) gewährleistet.
+Durch automatisierte Tests (siehe \autoref{rust:tests}), in Kombination mit drei Veröffentlichungskanälen (\enquote{release}, \enquote{stable} und \enquote{nightly}) und \enquote{feature gates} (siehe \autoref{rust:feature_gates}), wird die Stabilität des Compilers und die der Standardbibliothek (\autoref{rust:stdlib}) gewährleistet.
 
 Rust ist wahlweise unter MIT oder der Apache Lizenz in Version 2 verfügbar \cite{rust:copyright}.
 
@@ -118,7 +118,8 @@ Mit Rust wird nicht nur eine Programmiersprache, sondern auch ein umfassendes Ö
 
 Cargo ist hierbei vermutlich das größte angebotene Werkzeug.
 Es löst Abhängigkeiten auf, indem es auf das öffentliche Verzeichnis unter \url{https://crates.io} zurückgreift und diese entsprechend herunterlädt und compiliert.
-Zum jetzigen Zeitpunkt (\today) sind über 14.000 Crates öffentlich erreichbar und nutzbar.
+%Zum jetzigen Zeitpunkt ~März~ sind über 14.000 Crates öffentlich erreichbar und nutzbar.
+Zum jetzigen Zeitpunkt (\today) sind über 16.000 Crates öffentlich erreichbar und nutzbar.
 %Zudem wird bei der Nutzung von Cargo eine \textit{Cargo.toml} verlangt, in der Metainformationen einer Crate hinterlegt sind.
 %Dies umfasst u.a. Name, Version, Autor, Lizenz und Abhängigkeiten.
 
@@ -212,11 +213,11 @@ Daraufhin wird das \rustcinline{writeln!} Makro verwendet, um die formatierte Ze
 \section{Einfache Datentypen}
 \label{rust:types:simple}
 
-Die Datentypen in Rust sind im wesentlichen die üblichen  Verdächtigen: \rustcinline{bool} für boolische Ausdrücke; \rustcinline{char} für ein einzelnes Unicode Zeichen; \rustcinline{str} für eine Zeichenkette; \rustcinline{u8}, \rustcinline{i8}, \rustcinline{u16}, \rustcinline{i16}, \rustcinline{u32}, \rustcinline{i32}, \rustcinline{u64}, \rustcinline{i64}, (bald \rustcinline{u128}, \rustcinline{i128} \cite{rust:github:128bit_integer:rfc}) und \rustcinline{usize}, \rustcinline{isize}  für ganzzahlige Werte; \rustcinline{f32}, \rustcinline{f64} für Fließkommazahlen in einfacher und zweifacher Präzision; Arrays und Slices \cite{rust:book:primitives}.
+Die Datentypen in Rust sind im Wesentlichen die üblichen  Verdächtigen: \rustcinline{bool} für boolische Ausdrücke; \rustcinline{char} für ein einzelnes Unicode Zeichen; \rustcinline{str} für eine Zeichenkette; \rustcinline{u8}, \rustcinline{i8}, \rustcinline{u16}, \rustcinline{i16}, \rustcinline{u32}, \rustcinline{i32}, \rustcinline{u64}, \rustcinline{i64}, (bald \rustcinline{u128}, \rustcinline{i128} \cite{rust:github:128bit_integer:rfc}) und \rustcinline{usize}, \rustcinline{isize}  für ganzzahlige Werte; \rustcinline{f32}, \rustcinline{f64} für Fließkommazahlen in einfacher und zweifacher Präzision; Arrays und Slices \cite{rust:book:primitives}.
 
 Ganzzahlige Datentypen mit einem führenden \rustcinline{u} sind vorzeichenlos (\textit{unsigned}), vorzeichenbehaftete Datentypen (\textit{signed}) sind dagegen mit einem \rustcinline{i} gekennzeichnet.
 Fließkommazahlen sind stattdessen mit einem führenden \rustcinline{f} (\textit{floating point}) gekennzeichnet.
-Die darauf folgende Zahl gibt die Anzahl der Bits wieder, die für den Datentyp verwendet wird.
+Die darauf folgende Zahl gibt die Anzahl der Bits wieder, die für den Datentyp verwendet werden.
 Die einzige Ausnahme sind die ganzzahligen Datentypen \rustcinline{usize} und \rustcinline{isize}, da diese immer so groß sind, wie die Architektur der Zielplattform.
 Für die Indexierung eines Arrays oder einer Slice würden andere Datentypen, mit einer fest definierten Größe, keinen Sinn ergeben, da das Maximum an adressierbaren Elementen von der Architektur der Zielplattform abhängig ist.
 
@@ -225,8 +226,8 @@ Dort haben die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinlin
 
 Konstanten können in Rust direkt einem Datentyp zugewiesen werden, indem dieser angehängt wird: \rustcinline{4711u16} ist vom Datentyp \rustcinline{u16}.
 Unterstriche dürfen an beliebiger Stelle Ziffern trennen, um die Lesbarkeit zu erhöhen: \rustcinline{1_000_000_f32}.
-Eine Schreibweise in Binär (\rustcinline{0b0000_1000_u8}), in Hexadezimal (\rustcinline{0xFF_08_u16}) oder in Oktal (\rustcinline{0o64_u8}) ist auch möglich. 
-Konstante Zeichen und Zeichenketten können auch automatisch durch ein vorangestelltes \textit{b} in Bytes gewandelt werden: \rustcinline{b'b'} entspricht \rustcinline{0x62_u8} und \rustcinline{b"abc"} entspricht \rustcinline{&[0x61_u8, 0x62_u8, 0x63_u8]}.
+Eine Schreibweise in Binär (\rustcinline{0b0000_1000_u8}), in Hexadezimal (\rustcinline{0xFF_08_u16}) oder in Oktal (\rustcinline{0o64_u8}) ist ebenso möglich. 
+Konstante Zeichen und Zeichenketten können automatisch durch ein vorangestelltes \textit{b} in Bytes gewandelt werden: \rustcinline{b'b'} entspricht \rustcinline{0x62_u8} und \rustcinline{b"abc"} entspricht \rustcinline{&[0x61_u8, 0x62_u8, 0x63_u8]}.
 
 Arrays haben immer eine zur Compilezeit bekannte Größe und müssen auch immer mit einem Wert initialisiert werden (siehe \autoref{rust:no_unitialized_usage}).
 Dynamische Arrays auf dem Stack gibt es (noch? \cite{rust:github:alloca}) nicht,
@@ -240,7 +241,7 @@ Hierdurch kann ein Zugriff außerhalb den Grenzen einer Slice oder eines Arrays 
 ein Buffer-Overflow ist in Rust daher nicht möglich.
 
 Die Notation einer Slice ähnelt der eines Arrays: \rustcinline{&[<Datentyp>]}.
-Eine Slice kann zudem immer nur über eine eine Referenz angesprochen werden (siehe \autoref{rust:reference}).
+Eine Slice kann zudem immer nur über eine Referenz angesprochen werden (siehe \autoref{rust:reference}).
 Um eine Slice auf ein Array oder eine andere Slice zu erhalten, muss der Start- und  Endindex des Teilbereiches angegeben werden.
 Falls kein Start- oder Endindex angegeben wird, wird das jeweilige Limit übernommen.
 
@@ -252,15 +253,15 @@ Folgendes Beispiel soll die Notation von Arrays und Slices verdeutlichen:
 	{Beispiel eines Arrays und einer Slice}
 	{sections/rust.slices.rs}
 	
-Das in \autoref{rust:slices:example} gezeigte Programm, gibt auf der Konsole \rustcinline{2, 3, 4, } aus.
+Das in \autoref{rust:slices:example} gezeigte Programm gibt auf der Konsole \rustcinline{2, 3, 4, } aus.
 
-Variablen werden durch das \rustcinline{let} Schlüsselwort gebunden, das heißt, der Variable wird die Eigentümerschaft für den Wert zugewiesen.
+Variablen werden durch das \rustcinline{let} Schlüsselwort gebunden. Das heißt, der Variable wird die Eigentümerschaft für den Wert zugewiesen.
 Ausnahmen können Datentypen mit dem Merkmal \rustcinline{Copy} bilden, da diese ein implizite Kopie erlauben (siehe \autoref{rust:generics}).
 Anstatt eine Variable optional als unveränderlich zu kennzeichnen (\ccinline{const} in C, \javacinline{final} in Java), wird eine Variable in Rust optional als veränderlich gekennzeichnet (\rustcinline{mut}). Standardmäßig ist eine Variable unveränderlich.
 
 \subsubsection{Lokale Typinferenz}
 
-Da Rust ein statisches Typensystem mit lokaler Typinferenz besitzt, muss der Datentyp einer Variable nicht notiert werden, sondern können automatisiert erkannt werden.
+Da Rust ein statisches Typensystem mit lokaler Typinferenz besitzt, muss der Datentyp einer Variable nicht notiert werden, sondern kann automatisiert erkannt werden.
 Dies gilt aber nur lokal, also innerhalb von Funktionen und Closures.
 Parameterlisten und Rückgabewerte von Funktionen müssen die Datentypen explizit angegeben (siehe \autoref{rust:fn}).
 
@@ -272,7 +273,7 @@ Parameterlisten und Rückgabewerte von Funktionen müssen die Datentypen explizi
 
 
 
-\section{Zusammengesetzen Datentypen}
+\section{Zusammengesetze Datentypen}
 \label{rust:types:composed}
 
 Die Programmiersprache Rust kennt neben den einfachen Datentypen (\autoref{rust:types:simple}) weitere Möglichkeiten Daten zu organisieren:
@@ -307,7 +308,7 @@ In Fällen, in denen dies nicht wie erwartet automatisch geschieht, kann eine ma
 \label{rust:fn}
 
 Funktionen werden durch \rustcinline{fn} gekennzeichnet, gefolgt von dem Funktionsnamen, der Parameterliste und zuletzt der Datentyp für den Rückgabewert.
-Selbst wenn kein expliziter Rückgabetyp angegeben wird, wird formal \rustcinline{()} zurück gegeben; \rustcinline{()} entspricht etwa \ccinline{void} aus bekannten Programmiersprachen.
+Selbst wenn kein expliziter Rückgabetyp angegeben is, wird formal \rustcinline{()} zurück gegeben; \rustcinline{()} entspricht etwa \ccinline{void} aus bekannten Programmiersprachen.
 Die Parameterliste unterscheidet sich von bekannten Programmiersprachen wie C und Java, indem zuerst der Variablenname und darauf folgend der Datentyp notiert wird.
 
 \rustcinclude
@@ -339,10 +340,10 @@ Manchmal wird auch \rustcinline{Default} implementiert (siehe \autoref{rust:trai
 Da eine Funktionsüberladung nicht möglich ist, sollen stattdessen sprechende Name verwendet werden.
 Der \rustcinline{Vec<_>} der Standardbibliothek (siehe \autoref{rust:stdlib}) bietet zum Beispiel zusätzlich \rustcinline{Vec::with_capacity(capacity: usize)} an, um einen Vektor mit einer bestimmten Kapazität zu initialisieren.
 
-Funktionen die sich auf eine Instanz beziehen, haben als ersten Parameter die Variable \rustcinline{self} (konsumierend), \rustcinline{&self} (lesend leihend) oder \rustcinline{&mut self} (exklusiv leihend) deklariert.
+Funktionen, die sich auf eine Instanz beziehen, haben als ersten Parameter die Variable \rustcinline{self} (konsumierend), \rustcinline{&self} (lesend leihend) oder \rustcinline{&mut self} (exklusiv leihend) deklariert.
 Die \rustcinline{self}-Variable entspricht dabei dem \javacinline{this} aus C++, C\# oder Java:
 \rustcinline{fn x_eq_y(&self) -> bool \{ self.x == self.y \}}.
-Ein großgeschriebenes \rustcinline{Self} bezieht sich auf den eigenen Typ, deshalb könnte die Funktion aus \autoref{rust:struct:impl} auch folgende Signatur haben: \rustcinline{pub fn new(x: f32, y: f32) -> Self ...}.
+Ein großgeschriebenes \rustcinline{Self} bezieht sich auf den eigenen Typ. Deshalb könnte die Funktion aus \autoref{rust:struct:impl} auch folgende Signatur haben: \rustcinline{pub fn new(x: f32, y: f32) -> Self ...}.
 Dies ist aber selten und oft nur in generischem Code anzutreffen (siehe \autoref{rust:traits}).
 
 Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe \autoref{rust:access_modifier}).
@@ -354,7 +355,7 @@ Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe 
 \label{rust:trait:drop}
 \label{rust:trait:send}
 
-Ähnlich wie Java oder C\# bietet Rust durch einen eigenen Typ die Möglichkeit, ein gewünschtes Erscheinungsbild zu generalisieren, ohne gleichzeitig eine Implementation vorzugeben.
+Ähnlich wie Java oder C\#, bietet Rust durch einen eigenen Typ die Möglichkeit, ein gewünschtes Erscheinungsbild zu generalisieren, ohne gleichzeitig eine Implementation vorzugeben.
 Im Rust wird dieser Typ \enquote{Trait} (dt. Merkmal) genannt.
 
 Für Merkmale werden Funktionen in einem entsprechenden \rustcinline{trait <Name> \{ \}}-Block ohne Rumpf deklariert.
@@ -372,7 +373,7 @@ Während dies in Programmiersprachen wie Java und C\# automatisch durch die Dars
 Dabei gibt es mehrere Vorgehensweisen:
 \begin{itemize}
 	\item Die einfachste Art erfolgt über das Leihen mittels Referenz: \rustcinline{fn foo(bar: \&Bar)} oder \rustcinline{fn foo(bar: \&mut Bar)} -- ein Unterschied zu anderen Datentypen ist nicht zu erkennen.
-	Hierbei werden Funktionen aber dynamisch über eine \enquote{vtable} aufgerufen, weswegen dies höhere Laufzeitkosten mit sich bringt.
+	Hierbei werden Funktionen dynamisch über eine \enquote{vtable} aufgerufen, wodurch höhere Laufzeitkosten \todo{entstehen}.
 	In Zukunft soll dieser Syntax eventuell durch \rustcinline{fn foo(bar: \&dyn Bar)} und \rustcinline{fn foo(bar: \&mut dyn Bar)} ersetzt werden, um deutlicher auf den dynamischen Aufruf hinzuweisen \cite{rust:github:dyn}.
 	
 	\item Alternativ kann das Objekt, das das geforderte Merkmal implementiert, auf den Heap verschoben und anschließend davon die Eigentümerschaft übertragen werden.
@@ -615,7 +616,7 @@ Von einer weiteren Vertiefung der verschiedenen Konventionen wird hier abgesehen
 \end{figure}
 
 
-\section{Niemals nichts und niemals unbehandelte Ausnahmen}
+\section{Niemals Nichts und niemals unbehandelte Ausnahmen}
 \label{rust:no_null}
 
 Rust kennt \ccinline{NULL}(-Pointer) nicht und erlaubt auch keinen Zugriff auf nicht initialisierte Variablen (siehe \autoref{rust:no_unitialized_usage}), bietet aber einen \rustcinline{Option<_>}-Datentyp als Ersatz an.

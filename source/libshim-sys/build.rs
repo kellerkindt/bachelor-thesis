@@ -48,7 +48,10 @@ fn compile_sdk(sdk_dirs: &[&str], out: &str) -> Vec<String> {
     gcc_build.include("cpp/mecview-sdk/proto/");
 
     let libs_path = ::std::path::Path::new("cpp/lib/").canonicalize().unwrap();
-    println!("cargo:rustc-link-search={}", libs_path.as_path().to_str().unwrap());
+    println!(
+        "cargo:rustc-link-search={}",
+        libs_path.as_path().to_str().unwrap()
+    );
     /*{
         let paths = ::std::fs::read_dir(&libs_path).unwrap();
         paths.filter_map(|entry| {
@@ -68,8 +71,8 @@ fn compile_sdk(sdk_dirs: &[&str], out: &str) -> Vec<String> {
     //println!("cargo:rustc-link-lib=MECFusionAlgorithm");
     //println!("cargo:rustc-link-lib=FusionToolbox");
     //gcc_build.flag("-Lcpp/lib/");
-   // gcc_build.flag("-l:libMECFusionAlgorithm.a");
-   // gcc_build.flag("-l:libFusionToolbox.a");
+    // gcc_build.flag("-l:libMECFusionAlgorithm.a");
+    // gcc_build.flag("-l:libFusionToolbox.a");
 
     gcc_build.cpp(true);
     gcc_build.flag("-std=c++11");

@@ -160,7 +160,7 @@ Auf der rechten Seite ist für jede Implementation ein Boxplot für jeweils alle
 	\end{figure}
 }
 
-%\makeDias{25_60s}{10.5}{90000}
+\makeDias{25_60s}{10.5}{90000}
 
 \subsubsection{Beschreibung}
 
@@ -189,8 +189,6 @@ Der proportionale Anstieg der Reaktionszeit der C++ Implementation für jedes zu
 Der Versand von Nachrichten an die verbundenen Fahrzeuge scheint nicht parallel, sondern sequenziell ausgeführt zu werden.
 Vergleiche zwischen der Rust und C++ Implementierung für mehr als einem verbundenem Fahrzeug sind daher wenig aussagekräftig.
 
-\makeDias{sensors_60s}{10.5}{90000}
-
 Interessant ist der Verlauf der roten Linie (Rust mit C++ Algorithmus) zur braunen Linie (Rust Algorithmus).
 Eine Verschlechterung der Reaktionszeit, wie mit nur einem Fahrzeug (etwa 15.000 Nachrichten) gegenüber der reinen Rust Implementation war, durch die erhöhte Komplexität und die weitere Schicht zur Einbindung des C++ Algorithmus, zu erwarten gewesen.
 Eine ähnliche Reaktionszeit bei 1, gleiche Reaktionszeit bei 2 Fahrzeugen und bessere Reaktionszeit ab 3 Fahrzeugen ist dagegen unerwartet gewesen.
@@ -205,6 +203,15 @@ Das Szenario mit einem verbundenem Fahrzeug lässt dagegen vermuten, dass sich d
 Auch lässt der geringe Anstieg der Rust-Kurven wenig Spielraum, um von einer ausgebesserten C++ Implementation auffallend stark übertrumpft zu werden, da
 kein oder ein negativer Anstieg der Kurve bei Erhöhung der Last aus logischen Gründen ausgeschlossen ist.
 
+\subsubsection{Nachtrag}
+
+Aufgrund der schwachen Aussagekräftigkeit des ersten Tests, wurde ein weiterer Test durchgeführt. Anstatt die Anzahl der Fahrzeuge zu variieren, wobei die C++ Implementation eine Schwäche zeigt, variiert die Anzahl der Sensoren, bei nur einem verbundenem Fahrzeug.
+In der \autoref{sensors_60s} ist hierzu das Resultat für 25, 50, 75 und 100 Sensoren zu sehen.
+
+\makeDias{sensors_60s}{10.5}{90000}
+
+Zu sehen ist, dass die Rust-Implementationen trotzdem geringere Laufzeiten aufweisen.
+Die C++ Implementation zeigt keinen proportionalen Anstieg, weshalb dem Vergleich diesmal eine höhere Aussagekräftigkeit zugesprochen werden kann.
 
 %\section{..}
 %\todo{Während den tests zeigte sich ein Fehler im C++ Server. Race-conditional missing cleanup for closed sockets in certain error cases?}

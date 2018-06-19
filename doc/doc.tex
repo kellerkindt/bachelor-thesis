@@ -19,8 +19,8 @@
 	pointlessnumbers,
 	cleardoubleempty,
 	fleqn,
-	halfparskip%,
-	%twoside
+	halfparskip,
+	twoside
 ]{scrbook}
 
 \input{config.imports.tex}
@@ -70,7 +70,8 @@
 	
 	
 	\pagenumbering{arabic}
-	\setcounter{page}{1}
+	%\newpage
+	\setcounter{page}{0}
 	
 	
 	\include{sections/intro}
@@ -86,7 +87,8 @@
 	
 	
 	
-	\pagenumbering{Roman}
+	%\pagenumbering{Roman}
+	%\setcounter{page}{0}
 	
 	\clearpage
 	\normalem

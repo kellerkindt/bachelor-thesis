@@ -10,7 +10,7 @@ Optionale Anforderungen die umgesetzt wurden, werden zudem erwähnt und die Umse
 \section{Continuous Integration mittels Jenkins}
 
 Um die nichtfunktionalen Anforderungen zur Qualität umsetzen zu können (Anforderung \reqNumberForLabel{quality:ci}, siehe \autoref{req:quality:ci}), wird die Continuous Integration Software Jenkins genutzt.
-Nach jeder Aktualisierung der Quellcode-Repository wird eine neuer Compileversuch gestartet.
+Nach jeder Aktualisierung des Quellcode-Repository wird eine neuer Compileversuch gestartet.
 In einem Jenkins-File ist hierzu die folgende Pipeline definiert:
 
 \begin{figure}[H]
@@ -54,10 +54,10 @@ Dieser Schritt dient zur Zusammenstellung der Testabdeckung der Unit-Tests und d
 
 \subsubsection{Ergebnis des erfolgreichen Durchlaufs}
 %\todo{\reqNumberForLabel{quality:ci:artefacts} \reqNameForLabel{quality:ci:artefacts}} \\
-Jede Aktualisierung der Quellcoderepository resultiert bei erfolgreicher Compilation und Durchlaufen der Tests in den folgenden Artefakten (Anforderung \reqNumberForLabel{quality:ci:artefacts}, siehe \autoref{req:quality:ci:artefacts}):
+Jede Aktualisierung des Quellcode-Repository resultiert bei erfolgreicher Compilation und Durchlaufen der Tests in den folgenden Artefakten (Anforderung \reqNumberForLabel{quality:ci:artefacts}, siehe \autoref{req:quality:ci:artefacts}):
 \begin{itemize}
-	\item \textbf{Debug-Artefakt}: Compilation für eine manuelle Fehlersuche mit vielen auf den Quellcode bezogenen Symbolen und ohne Optimierungen durch den Compiler
-	\item \textbf{Release-Artefakt}: Kompilat mit Optimierungen für den Produktivbetrieb
+	\item \textbf{Debug-Artefakt}: Compilation für eine manuelle Fehlersuche mit vielen auf den Quellcode bezogenen Symbolen und ohne Optimierungen durch den Compiler.
+	\item \textbf{Release-Artefakt}: Kompilat mit Optimierungen für den Produktivbetrieb.
 	\item \textbf{Testbericht}: Bericht über wie viele Zeilen, Dateien, Klassen und Verzweigungen durch die Unit-Tests getestet wurden.
 	\item \textbf{Dokumentation}: Die aus dem Quellcode generierte Dokumentation inklusive der Dokumentationen der Abhängigkeiten.
 \end{itemize}
@@ -112,23 +112,23 @@ Der zu versendende Datentyp muss lediglich das Merkmal \rustcinline{Send} aufwei
 \autoref{impl:channels:example} zeigt ein einfaches Beispiel, wie ein asynchroner  und sicherer Nachrichtenaustausch in Rust umgesetzt werden kann.
 Zur Laufzeit gibt das Beispielprogramm \monospaceinline{Empfangen: Hallo, Kanal!} auf der Konsole aus.
 
-In Zeile 5 wird ein neuer Kanal erzeugt und eine Sende- und Empfängerteil zurückgegeben.
-Zwischen Zeile 7 und 9 wird ein neuer Thread erzeugt und der auszuführenden Closure (siehe \autoref{rust:closures}) die Eigentümerschaft über den Empfänger übertragen (Schlüsselwort \rustcinline{move}).
+In Zeile 5 wird ein neuer Kanal erzeugt und ein Sende- und ein Empfängerteil zurückgegeben.
+Zwischen Zeile 7 und 9 wird ein neue Thread erzeugt und der auszuführenden Closure (siehe \autoref{rust:closures}) die Eigentümerschaft über den Empfänger übertragen (Schlüsselwort \rustcinline{move}).
 Der neuer Thread wartet nach Start auf den Empfang einer neuen Nachricht und gibt diese anschließend auf der Konsole aus.
-In Zeile 11 sendet der Haupt-Thread über den Kanal dem anderen Thread einen Text\footnote{Um genau zu sein, ist der Wert vom Datentyp \rustcinline{&`static str} } zu und wartet in Zeile 12 bis dieser beendet wurde.
+In Zeile 11 sendet der Haupt-Thread über den Kanal dem anderen Thread einen Text\footnote{Um genau zu sein, ist der Wert vom Datentyp \rustcinline{&`static str} } zu und wartet in Zeile 12, bis dieser beendet wurde.
 
 Um nicht für jeden Datentyp einen neuen Kanal erstellen zu müssen, kann das \enquote{Command Pattern} (dt. Kommando Verhaltensmuster) \cite[153]{goll2014architektur} verwendet werden, um über einen Kanal mehrere Aktionen zu befehligen.
 In Rust kann dies mit einem \rustcinline{enum} umgesetzt werden:
 
 \rustcinclude
 	{impl:commands:example}
-	{Beispiel für die Nutzung von Kanälen und dem Kommando-Verhaltensmusters}
+	{Beispiel für die Nutzung von Kanälen und des Kommando-Verhaltensmusters}
 	{sections/impl.commands.rs}
 	
 In \autoref{impl:commands:example} ist die Aktion, etwas auf der Konsole auszugeben, als Variante \rustcinline{Say} in dem Kommando definiert.
-Für eine Instanz dieser Variante, wird zudem ein \rustcinline{String} verlangt, der daraufhin innerhalb von \rustcinline{execute} in Zeile 11 ausgegeben wird.
+Für eine Instanz dieser Variante wird zudem ein \rustcinline{String} verlangt, der daraufhin innerhalb von \rustcinline{execute} in Zeile 11 ausgegeben wird.
 
-Nach diesem Beispiel ist die Kommunikation zwischen dem dem \textit{Algorithm}, dem \textit{Client}, dem \textit{Vehicle} und dem \textit{Sensor} in der tatsächlichen Implementation realisiert (siehe \autoref{draft:architecture}).
+Nach diesem Beispiel ist die Kommunikation zwischen dem \textit{Algorithm}, dem \textit{Client}, dem \textit{Vehicle} und dem \textit{Sensor} in der tatsächlichen Implementation realisiert (siehe \autoref{draft:architecture}).
 In dem folgenden \autoref{impl:commands:algorithm} sind die Befehle zu sehen, die in der tatsächlichen Implementation an den Algorithmus versendet werden können.
 
 \rustcinclude
@@ -139,11 +139,11 @@ In dem folgenden \autoref{impl:commands:algorithm} sind die Befehle zu sehen, di
 Ob eine Kommunikation zwischen zwei Klassen asynchron oder synchron stattfindet, sollte für die Implementation jedoch möglichst keine Rolle spielen.
 Zur Kommunikation mit anderen Klassen sollte es nur nötig sein, die entsprechende Schnittstelle zu kennen (Stichwort \enquote{loose coupling} \cite[49]{goll2018entwurfsprinzipien}).
 Die verwendete Kommunikationstechnologie (\textit{Tokio}) und das Verhaltensmuster (Kommando) beziehen sich nicht mehr auf das Aufgabengebiete der Klassen.
-Durch eine Fassade kann das Erstellen eines Kommandos und das übermitteln durch einen Kanal gekapselt und auf einen einfachen Methodenaufruf reduziert werden.
+Durch eine Fassade kann das Erstellen eines Kommandos und das Übermitteln durch einen Kanal gekapselt und auf einen einfachen Methodenaufruf reduziert werden.
 Durch eine Implementation der Schnittstelle für den Sendeteil kann aber auch das \enquote{Proxy Pattern} (dt. Stellvertreter-Strukturmuster) \cite[137]{goll2018entwurfsprinzipien} umgesetzt werden, wodurch keine Änderung in der aufrufenden Klasse bemerkbar ist.
 %Die Verwirklichung mittels Schnittstellen und einer Methode für jedes Kommando entspricht letztendlich dem \enquote{Proxy Pattern} (dt. Stellvertreter-Strukturmuster) \cite[137]{goll2018entwurfsprinzipien}.
 
-Da ein Beispiel aus der tatsächlich Implementierung zu groß für eine übersichtliche Erläuterung ist, wird das Beispiel aus \autoref{impl:channels:example} und \autoref{impl:commands:example} erneut aufgegriffen, um Beispielhaft das Prinzip zu erklären.
+Da ein Beispiel aus der tatsächlich Implementierung zu groß für eine übersichtliche Erläuterung ist, wird das Beispiel aus \autoref{impl:channels:example} und \autoref{impl:commands:example} erneut aufgegriffen, um beispielhaft das Prinzip zu erklären.
 
 Die neue Schnittstelle \rustcinline{EndPoint} definiert die Funktion \rustcinline{say}, um einen Text auf der Konsole auszugeben.
 Anschließend wird sie für den Sendeteil des Kanals implementiert, wodurch dieser quakt\footnote{\enquote{Duck Typing} \cite[44]{rust:orly_programming} in Rust teilweise möglich, dann aber ohne Laufzeitkosten. Auch genannt Ententest: \enquote{When I see a bird that walks like a duck and swims like a duck and quacks like a duck, I call that bird a duck.} von James Whitcomb Riley \cite{wiki:duck}} wie die \rustcinline{EndPoint}-Schnittstelle.
@@ -179,7 +179,8 @@ Aus diesem Grund müssen die selben C-Datenstrukturen und C-Funktionen genutzt w
 Mittels \gls{ffi} (siehe \autoref{rust:ffi}) wird auf diese zugegriffen.
 Damit nicht jeder Nachrichtentyp, eingebetteter Nachrichtenuntertyp und jede Funktion manuell eine Rust Deklaration geschrieben werden muss, wird Bindgen\footnote{\url{https://crates.io/crates/bindgen}} genutzt, um diese automatisiert zu generieren.
 
-Um wichtige Nachrichtentypen ohne \rustcinline{unsafe} Blöcke instantiieren zu können und für eine korrekte deallocation, sind hierfür die Rust equivalente von Konstruktoren und Destruktoren implementiert worden.
+\todo{komplizierter Satz}
+Um wichtige Nachrichtentypen ohne \rustcinline{unsafe} Blöcke instantiieren zu können und für eine korrekte Deallocation, sind hierfür die Rust Äquivalente von Konstruktoren und Destruktoren implementiert worden.
 Als Beispiel dient die \textit{ClientRegistration}-Nachricht in \autoref{impl:bindings:constructor:clientregistration}:
 
 
@@ -189,7 +190,7 @@ Als Beispiel dient die \textit{ClientRegistration}-Nachricht in \autoref{impl:bi
 	{sections/impl.constructor.destructor.rs}
 	
 Die \textit{ClientRegistration}-Nachricht aus \autoref{impl:bindings:constructor:clientregistration} wird selbst im Speicherbereich von Rust allokiert, während der Inhalt der Nachricht auf dem C-Heap erwartet wird.
-Dieser Mix ist nicht zu vermeiden, da die ASN.1 Funktionen zum Dekodieren der UPER-Nachrichten die inneren Datenstrukturen auf dem C-Heap anlegen, während eine deallokation einer Heap-Variable in Rust (\rustcinline{Box}) nicht erheblichen Aufwand\footnote{Die Deallokation müsste \textbf{manuell} und durch Nutzung von unsicherem Code erfolgen, ohne ein Hilfe durch den Compiler, ob dies immer an jeder Stelle umgesetzt wurde.} beeinflusst werden kann.
+\todo{Satz?} Dieser Mix ist nicht zu vermeiden, da die ASN.1 Funktionen zum Dekodieren der UPER-Nachrichten die inneren Datenstrukturen auf dem C-Heap anlegen, während eine Deallokation einer Heap-Variable in Rust (\rustcinline{Box}) nicht erheblichen Aufwand\footnote{Die Deallokation müsste \textbf{manuell} und durch Nutzung von unsicherem Code erfolgen, ohne ein Hilfe durch den Compiler, ob dies immer an jeder Stelle umgesetzt wurde.} beeinflusst werden kann.
 
 Die Deklarationen, zusammen mit einer statischen Linkung mit der C-Bibliothek, ist in der \textit{libmessages-sys} umgesetzt und entspricht damit der Rust-Konvention beim Einbinden externer Bibliotheken\cite{rust:cargo:build_scripts}.
 Durch die Kapselung möglichst aller \rustcinline{unsafe} Operationen in \textit{libmessages-sys} wird eine sicherer Nutzung außerhalb dieser Crate ermöglicht.
@@ -199,8 +200,8 @@ Das Prinzip, unsichere Code in sichere Funktionen oder Abstraktionen zu kapseln,
 
 \subsubsection{Schwierigkeiten}
 
-Bei ersten Tests wurde schnell festgestellt, dass der Speicher, der durch C-Funktionen allokiert wurde, von C-Funktionen wieder freigeben werden muss\footnote{Kommentar: Das klingt im Nachhinein leider offensichtlicher als es ist.}.
-Falls innerhalb der C-Nachrichtentypen Rust-Heap referenziert, oder die C-Nachrichtentypen von Rust Funktionen freigegeben werden, wird der jeweilige Heap korrumpiert.
+Bei ersten Tests wurde schnell festgestellt, dass der Speicher, der durch C-Funktionen allokiert wurde, von C-Funktionen wieder freigegeben werden muss\footnote{Kommentar: Das klingt im Nachhinein leider offensichtlicher als es ist.}.
+Falls innerhalb der C-Nachrichtentypen Rust-Heap referenziert oder die C-Nachrichtentypen von Rust Funktionen freigegeben werden, wird der jeweilige Heap korrumpiert.
 Ein späterer Versuch Speicher zu allokieren endet in einem Deadlock-ähnlichen Zustand, bei dem der Allokator stehen bleibt.
 
 %\todo{Image}
@@ -266,8 +267,8 @@ Eine neue \textit{EnvironmentFrame}-Nachricht übergibt der Algorithmus an den \
 Die C++ Implementation reduziert durch dieses Vorgehen die direkte Kommunikation zwischen dem Server und dem konkreten Algorithmus auf den Aufruf von \textit{Create}.
 Durch den Austausch dieser Methode kann ein anderer Algorithmus geladen werden.
 
-Damit die Rust-Implementation den C++ Algorithmus Instantiieren kann, muss die Methode \textit{Create} der Klasse \textit{AlgorithmFactory} ordnungsgemäß aufgerufen werden.
-Einen gültigen \textit{QueueListener} und \textit{EnvironmentListener} muss zuvor erstellt werden.
+Damit die Rust-Implementation den C++ Algorithmus instantiieren kann, muss die Methode \textit{Create} der Klasse \textit{AlgorithmFactory} ordnungsgemäß aufgerufen werden.
+Ein gültiger \textit{QueueListener} und \textit{EnvironmentListener} muss zuvor erstellt werden.
 Der Fokus liegt somit auf den folgenden Klassen:
 
 \begin{figure}[H]
@@ -321,12 +322,12 @@ In \autoref{draft:architecture} ist die erweiterte Version zu sehen.
 	\label{draft:architecture_v2}
 \end{figure}
 
-Die \textit{Alogirhtm}-, \textit{CountListener}- und \textit{EnvironmentListener}-Schnittstellen werden in eigene Crates verschoben.
+Die \textit{Algorithm}-, \textit{CountListener}- und \textit{EnvironmentListener}-Schnittstellen werden in eigene Crates verschoben.
 Die \textit{asn::Message} wird in \textit{AsnMessage} umbenannt und zusammen mit der \textit{AsnAdapter}-Klasse in die neue Crate \textit{libasn} verschoben.
 Auch der \textit{SampleAlgorithm} wird in eine eigene Crate verschoben.
 Zwei weiteren Crates binden den externen C++ Algorithmus ein: \textit{libshim-sys} um den C++ Code in Rust zugänglich zu machen (analog zu \textit{libasn-sys}) und \textit{libshim} für die Implementation der \textit{Algorithm}-Schnittstelle mittels Adaptercodes.
 
-Die neuen Abhängigkeiten zwischen den Crates ist in \autoref{draft:architecture_v2_packages} abgebildet.
+Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architecture_v2_packages} abgebildet.
 
 \begin{figure}[H]
 	\centering
@@ -353,7 +354,7 @@ In \autoref{draft:libshim} ist hierzu eine Detailansicht der Crate \textit{libsh
 	\label{draft:libshim}
 \end{figure}
 
-Die orange eingefärbten Klassen und Datenstrukturen aus \autoref{draft:libshim} stellen den nötige Adaptercode dar.
+Die orange eingefärbten Klassen und Datenstrukturen aus \autoref{draft:libshim} stellen den nötigen Adaptercode dar.
 Die in türkis eingefärbten Klassen und Schnittstellen sind die aus der C++ Implementation stammende Klassen und Schnittstellen, die nicht verändert werden dürfen.
 
 Für das Laufzeitverhalten sind die zusätzlichen Funktionsaufrufe durch den Adaptercode (\textit{AlgorithmShim} zu \textit{RustShim}, \textit{RustShim} zu \textit{RustShimInternal} und \textit{RustShimInternal} zu \textit{UpdateQueue}, gut zu sehen an der enormen Breite von \autoref{seq_dia:algorithm:cpp:binding:communication}) als ungünstig eingestuft.
@@ -463,7 +464,7 @@ Die Sequenzdiagramme sind mit den Hintergrundfarben aus den bisherigen Diagramme
 \clearpage
 \section{Startparameter}
 
-Alle in \autoref{requirements} genannten optionale Anforderungen für Startparameter sind erfolgreich umgesetzt worden.
+Alle in \autoref{requirements} genannten optionalen Anforderungen für Startparameter sind erfolgreich umgesetzt worden.
 Die Ausgabe in \autoref{help} zeigt alle möglichen Startparameter des Systems an.
 
 \helpinclude

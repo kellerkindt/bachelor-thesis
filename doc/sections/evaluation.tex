@@ -23,7 +23,7 @@ Nach einem Testdurchlauf werden die Anzahl an Nachrichten gezählt und der Durch
 Zu jedem Zeitpunkt wird maximal ein Test gleichzeitig auf dem System ausgeführt.
 
 Um Latenzen durch das Netzwerk auszuschließen, werden auch die virtuellen Sensoren und Fahrzeuge auf dem gleichen Server wie die Serverimplementation ausgeführt und durch die Loopback-Netzwerkschnittstelle verbunden.
-Ein kurzer Test ergab hierbei einen Durchsatz von ca 40Gbit/s (mittels \textit{iperf}) und eine Latenz von ca 24us (mittels \textit{ping}) auf der Loopback-Netzwerkschnittstelle.
+Ein kurzer Test ergab hierbei einen Durchsatz von ca 40Gbit/s (mittels \textit{iperf}) und eine Latenz von ca 24\textmu{}s (mittels \textit{ping}) auf der Loopback-Netzwerkschnittstelle.
 Auswirkungen auf die Testergebnisse sind damit vernachlässigbar klein.
 
 Alle Implementationen sind im Release-Modus compiliert und in der C++ Implementation ist das \enquote{RoadClearanceModule} abgeschaltet.
@@ -70,6 +70,8 @@ Es wird erwartet, \todo{dasss wenn} eine Serverimplementation mit dieser Stresss
 
 In der \autoref{dia_25_60s} sind auf der linken Seite die Messergebnisse dargestellt, die durch das in \autoref{eval:howto} beschrieben Vorgehen gesammelt wurden.
 Auf der rechten Seite ist für jede Implementation ein Boxplot für jeweils alle Latenzen aufgezeichnet.
+
+\todo{R++: sollte vorher oder per Fußnote erklärt werden}
 
 \newcommand{\makeDias}[3]{
 	\begin{figure}[H]
@@ -178,7 +180,7 @@ Dies ist durch die jeweilig steigende Trendlinie gut zu erkennen.
 
 Die Rust und die C++ Implementierung weisen bei einem Client etwa die selbe durchschnittliche Latenz auf, während die Rust Implementation mit dem C++ Algorithmus hier eine leicht erhöhte Latenz aufweist.
 Die Trendlinie der C++ Implementation verläuft bei steigender Anzahl an Nachrichten deutlich steiler wie die Trendlinie der anderen zwei Implementationen.
-Bei zwei Fahrzeugen sind die beiden Rust Implementationen gleichauf und bei weiteren Fahrzeugen hat die Rust Implementation mit dem C++ Algorithmus eine geringere durchschnittliche Latenz wie die reine Rust oder die C++ Implementation.
+Bei zwei Fahrzeugen sind die beiden Rust Implementationen gleichauf und bei weiteren Fahrzeugen hat die Rust Implementation mit dem C++ Algorithmus eine geringere durchschnittliche Latenz wie die reine Rust oder die reine C++ Implementation.
 
 \subsubsection{Auswertung}
 

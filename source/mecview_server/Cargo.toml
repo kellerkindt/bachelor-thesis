@@ -1,6 +1,6 @@
 [package]
 name = "mecview_server"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["Michael Watzko <michael@watzko.de>"]
 description = "MECViewServer implementation in Rust"
 

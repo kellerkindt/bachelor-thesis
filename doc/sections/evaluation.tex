@@ -56,7 +56,7 @@ Bei der Auswertung wird der Durchschnitt errechnet (mittels \textit{awk}-Skript)
 Für jeden Test werden 25 virtuelle Sensoren mit der Server-Instanz verbunden.
 Jeder dieser Sensoren versendet in Intervallen von 100ms eine \textit{SensorFrame}-Nachricht.
 Hieraus resultieren 250 Nachrichten pro Sekunde.
-Die Anforderung \reqNumberForLabel{exec:time} (siehe \autoref{req:exec:time}) mit 200 Nachrichten pro Sekunde ($6*10 + 7*20$) ist somit übererfüllt.
+Die Anforderung \reqNumberForLabel{exec:time} (siehe \autoref{req:exec:time}) mit 200 Nachrichten pro Sekunde ($6 \cdot 10 + 7 \cdot 20$) ist somit übererfüllt.
 Für jede empfangene \textit{SensorFrame}-Nachricht generiert der \enquote{Dummy}-Algorithmus eine \textit{EnvironmentFrame}-Nachricht und überträgt in diese den Zeitstempel aus der \textit{SensorFrame}-Nachricht.
 Für jede Implementation werden 10 Tests mit 1 bis inklusive 5 Fahrzeugen durchgeführt.
 

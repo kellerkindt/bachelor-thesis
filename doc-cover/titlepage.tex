@@ -1,0 +1,62 @@
+
+
+% title page (hacky)
+\newcommand{\setitle}{Bachelorarbeit}
+\newcommand{\seauthor}{Michael Watzko}
+\newcommand{\figurewidth}{0.66\textwidth}
+
+% page header and footer
+\clearscrheadings
+\clearscrplain
+
+\pagestyle{scrheadings}	
+
+\ihead[]{\leftmark}
+\ohead[]{\rightmark}
+
+\ifoot[]{}
+\ofoot[\pagemark]{\pagemark}
+\automark[section]{chapter}
+\setheadsepline{.4pt}[\color{black}]
+
+
+\begin{titlepage}
+	\centering
+	~\\ ~\\ 
+	%	\noindent\begin{minipage}{0.3\textwidth}\end{minipage}
+	\vspace*{2em}
+	~\\ %Fakultät Informationstechnik \\
+	~\\ %Studiengang Softwaretechnik und Medieninformatik
+	 ~\\ ~\\ ~\\ ~\\
+\textsf{\LARGE{
+		\textbf{\setitle} ~\\ ~\\
+		Evaluation der Programmiersprache Rust für den
+		Entwurf und die Implementierung einer\\hochperformanten,
+		serverbasierten Kommunikationsplattform für Sensordaten\\
+		im Umfeld des automatisierten Fahrens
+	}
+	~\\ ~\\ ~\\
+	\normalsize \textbf{Michael Watzko} \\
+	Sommersemester 2018
+}
+%	 ~\\ ~\\ ~\\ ~\\ ~\\
+%	\begin{tabular}{rl}
+%		Erstprüfer: & Prof. Dr. Manfred Dausmann\\
+%		Zweitprüfer: & Dipl.-Ing. (FH) Kevin Erath M. Sc.\\
+%	\end{tabular}
+%	~\\ ~\\ ~\\	
+%	\begin{figure}[H]
+%		\vspace{3em}
+%		\begin{minipage}{0.7\textwidth}
+%			\begin{tabular}{ll}
+%				Firma: & IT Designers GmbH\\
+%				Betreuer: & Dipl.-Inf. Hannes Todenhagen
+%			\end{tabular}
+%		\end{minipage}
+%	\end{figure}
+\end{titlepage}
+
+
+
+
+

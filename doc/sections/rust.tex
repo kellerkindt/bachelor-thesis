@@ -138,6 +138,7 @@ Unter \url{https://internals.rust-lang.org/} finden Diskussionen zu fundamentale
 Kleine Testprogramme und Experimente können auf dem \enquote{Spielplatz} unter \url{https://play.rust-lang.org} compiliert und ausgeführt werden, ohne dass hierfür eine lokale Installation benötigt wird.
 Unter \url{https://rustup.rs} ist dagegen das Installations- und Aktualisierungsprogramm  zu finden.
 
+\clearpage
 \section{Aufbau eines Projektverzeichnisses}
 
 Der Aufbau eines Rust Projektverzeichnis ist auf zwei verschiedene Arten möglich.
@@ -169,6 +170,7 @@ Dieses umfasst in vielen Fällen wenige, aber mehrere Datenstrukturen, zugehöri
 %Module (Verzeichnisse oder Quelldateien) gesucht wird. , in der Module durch \rustcinline{mod module;} und Quelldateien durch \rustcinline{mod functionality;} \enquote{inkludiert} werden können.
 %Eine Datei \textit{mod.rs} ist die Wurzeldatei eines Moduls.
 
+\clearpage
 \subsection{Als Crate}
 \label{rust:structure:crate}
 
@@ -178,8 +180,6 @@ Dieses umfasst in vielen Fällen wenige, aber mehrere Datenstrukturen, zugehöri
 		{Vereinfachte Verzeichnisstruktur einer \enquote{crate}}
 		{sections/rust.cargo.txt}
 \end{wrapfigure}
-
-
 
 Eine \enquote{Crate} (dt. Kiste/Kasten) erweitert den klassischen Aufbau um eine \textit{Cargo.toml} Datei, in der Metainformationen zum Projekt hinterlegt werden.
 Durch die Benutzung des Werkzeugs \enquote{Cargo} (dt. Fracht/Ladung) können Abhängigkeiten automatisch aufgelöst, heruntergeladen und compiliert werden.
@@ -494,6 +494,7 @@ Das \rustcinline{match} Statement von Rust verlangt, dass eine Musterabgleichung
 Dementsprechend müssen entweder alle Varianten einer Aufzählung aufgeführt sein oder ein Standardpfad vorhanden sein \rustcinline{_ => \{ \} }.
 Hiermit wird verhindert, dass, nachdem eine Aufzählung um eine Variation erweitert wurde, eine Musterabgleichung nicht um das neue Element ergänzt wurde.
 
+\clearpage
 Wenn nur ein konkreter Fall von Bedeutung ist, kann dies in der verkürzten \rustcinline{if let} Schreibweise notiert werden:
 
 \rustcinclude
@@ -524,11 +525,12 @@ Durch diesen Schleifentyp wird dem Compiler mehr über den eigentlichen Verwendu
 Somit ist eine, auf den ersten Blick unverständliche Formulierung wie \ccinline{while (true) \{ \} } oder \ccinline{for(;;) \{ \} } unnötig.
 \autoref{rust:loops:loop} zeigt, dass eine \rustcinline{loop}-Schleife zusätzlich auch einen Wert zurück geben kann (\rustcinline{break} in Zeile 9).
 
-
+\begin{figure}[H]
 \rustcinclude
 	{rust:loops:loop}
 	{Beispiel Verwendung einer \rustcinline{loop} Schleife}
 	{sections/rust.loop.rs}
+\end{figure}
 
 
 Die \rustcinline{for} Schleife erwartet immer etwas iterierbares und entspricht damit einer \ccinline{foreach} aus anderen Programmiersprachen.
@@ -1020,6 +1022,7 @@ Ein Zugriff ohne gültige Sperre ist deshalb nicht möglich:
 
 %\todo{Mutex+RwLock: *Guard -> niemals vergessen lock zu lösen}
 
+\clearpage
 \subsection{Zero Cost Abstraction}
 \label{rust:zero_cost}
 

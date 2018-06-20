@@ -182,9 +182,9 @@ Damit nicht für jeden Nachrichtentyp, eingebetteten Nachrichtenuntertyp und jed
 
 %\todo{komplizierter Satz}
 Um wichtige Nachrichtentypen ohne \rustcinline{unsafe}-Blöcke instantiieren zu können, ist der unsicher Code in \rustcinline{Default} gekapselt worden.
-Für eine korrekte Deallocation des Nachrichtenrumpfes wurde bei diesen Nachrichtentypen zudem \rustcinline{Drop} %(das Rust Äquivalent zu C++ Destruktoren, siehe \autoref{rust:drop})
+Für eine korrekte Deallokation des Nachrichtenrumpfes wurde bei diesen Nachrichtentypen zudem \rustcinline{Drop} %(das Rust Äquivalent zu C++ Destruktoren, siehe \autoref{rust:drop})
 implementiert.
-% und für eine korrekte Deallocation, sind hierfür die Rust Äquivalente von Konstruktoren und Destruktoren implementiert worden.
+% und für eine korrekte Deallokation, sind hierfür die Rust Äquivalente von Konstruktoren und Destruktoren implementiert worden.
 Als Beispiel dient die \textit{ClientRegistration}-Nachricht in \autoref{impl:bindings:constructor:clientregistration}:
 
 
@@ -196,8 +196,8 @@ Als Beispiel dient die \textit{ClientRegistration}-Nachricht in \autoref{impl:bi
 Die \textit{ClientRegistration}-Nachricht aus \autoref{impl:bindings:constructor:clientregistration} wird selbst im Speicherbereich von Rust allokiert, während der Inhalt der Nachricht auf dem C-Heap erwartet wird.
 Dieser Mix ist nicht zu vermeiden, da die ASN.1 Funktionen zum Dekodieren der UPER-Nachrichten die inneren Datenstrukturen auf dem C-Heap anlegen.
 Dieser Mix ist nicht zu vermeiden, da die ASN.1 Funktionen zum Dekodieren der UPER-Nachrichten die inneren Datenstrukturen auf dem C-Heap anlegen, während eine Deallokation einer Heap-Variable in Rust (\rustcinline{Box}) nicht ohne erheblichen Aufwand\footnote{Die Deallokation müsste \textbf{manuell} und durch Nutzung von unsicherem Code erfolgen, ohne ein Hilfe durch den Compiler, ob dies immer an jeder Stelle umgesetzt wurde.} beeinflusst werden kann.
-%Würde sich die \textit{ClientRegistration}-Nachricht auch auf dem C-Heap befinden, müsste entweder ein Zugriff mittels \enquote{Raw-Pointer} (siehe \autoref{rust:ffi}) erfolgen oder die automatische Deallocation von Rust müsste verhindert werden.
-%Die Deallocation von Rust würde bei einem vergessenen manuelle Eingriff den C-Heap korrumpieren.
+%Würde sich die \textit{ClientRegistration}-Nachricht auch auf dem C-Heap befinden, müsste entweder ein Zugriff mittels \enquote{Raw-Pointer} (siehe \autoref{rust:ffi}) erfolgen oder die automatische Deallokation von Rust müsste verhindert werden.
+%Die Deallokation von Rust würde bei einem vergessenen manuelle Eingriff den C-Heap korrumpieren.
 %Beide Szenarien würden Konzepte der Speichersicherheit von Rust untergraben.
 
 Die Deklarationen, zusammen mit einer statischen Linkung mit der C-Bibliothek, ist in der \textit{libmessages-sys} umgesetzt und entspricht damit der Rust-Konvention beim Einbinden externer Bibliotheken\cite{rust:cargo:build_scripts}.
@@ -262,11 +262,11 @@ Um die optionale Anforderung \reqNumberForLabel{possible:external_algorithm} (\e
 	\end{umlseqdiag}
 	\end{tikzpicture}
 	\centering
-	\caption{Instantiierung eines neuen Algorithmus in der C++ Implementation}
+	\caption{Instanziierung eines neuen Algorithmus in der C++ Implementation}
 	\label{seq_dia:algorithm:cpp}
 \end{figure}
 
-In \autoref{seq_dia:algorithm:cpp} ist sowohl die Instantiierung des Algorithmus (Klasse \textit{Extension}) als auch Übermittlung von \textit{SensorFrame}- und \textit{EnvironmentFrame}-Nachrichten (siehe \autoref{msg:sensor_frame} und \autoref{msg:environment_frame}) zu sehen.
+In \autoref{seq_dia:algorithm:cpp} ist sowohl die Instanziierung des Algorithmus (Klasse \textit{Extension}) als auch Übermittlung von \textit{SensorFrame}- und \textit{EnvironmentFrame}-Nachrichten (siehe \autoref{msg:sensor_frame} und \autoref{msg:environment_frame}) zu sehen.
 Die Kommunikation zwischen dem Algorithmus und der Außenwelt findet über den \textit{QueueListener} und den \textit{EnvironmentListener} statt.
 Neue \textit{SensorFrame}-Nachrichten werden in den \textit{QueueListener} eingefügt und zu einem späteren Zeitpunkt asynchron vom Algorithmus ausgelesen.
 Eine neue \textit{EnvironmentFrame}-Nachricht übergibt der Algorithmus an den \textit{EnvironmentListener}.
@@ -348,7 +348,7 @@ Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architectur
 	\label{draft:architecture_v2_packages}
 \end{figure}
 
-Die roten Abhängigkeiten entstehen erst durch die Wahl einer Nachrichtentechnologie und des auszuführenden Algorithmus, und können durch die Instantiierung einer anderen Implementation in der \textit{main}-Funktion der \textit{MECViewServer}-Crate ausgetauscht werden.
+Die roten Abhängigkeiten entstehen erst durch die Wahl einer Nachrichtentechnologie und des auszuführenden Algorithmus, und können durch die Instanziierung einer anderen Implementation in der \textit{main}-Funktion der \textit{MECViewServer}-Crate ausgetauscht werden.
 
 
 Die Einbindung des C++ Quellcodes ist im Gegensatz zum C-Code der ASN.1 Nachrichten (siehe \autoref{impl:asn1_bindings}) deutlich schwieriger.
@@ -413,7 +413,7 @@ Die Sequenzdiagramme sind mit den Hintergrundfarben aus den bisherigen Diagramme
 	\end{umlseqdiag} 
 	\end{tikzpicture}
 	\centering
-	\caption{Instantiierung eines neuen C++ Algorithmus aus der Rust Implementation}
+	\caption{Instanziierung eines neuen C++ Algorithmus aus der Rust Implementation}
 	\label{seq_dia:algorithm:cpp:binding:create}
 \end{figure}
 \begin{figure}[H]

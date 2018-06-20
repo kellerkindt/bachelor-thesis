@@ -8,7 +8,7 @@ Die Struktur des Systems wird durch einen Architekturentwurf visualisiert und di
 \label{draft:no_asn_compiler}
 
 Eine frühe Recherche hat ergeben, dass kein ASN.1 Compiler für Rust verfügbar ist.
-Mit \textit{yasna}, \textit{raisin} und \textit{rust-asn1} wird teilweise ASN.1 Funktionalität in Rust zur Verfügung gestellt, aber keine unterstützt die benötigte UPER Codierung.
+Mit \textit{yasna}, \textit{raisin} und \textit{rust-asn1} wird teilweise ASN.1 Funktionalität in Rust zur Verfügung gestellt, aber keine dieser Crates unterstützt die benötigte UPER Codierung.
 Auch kann keine der genannten Crates die in ASN.1 Notation definierten Nachrichten in native Rust Datenstrukturen übersetzten.
 Die von der ITU genannten Compiler\footnote{\url{https://www.itu.int/en/ITU-T/asn1/Pages/Tools.aspx}} unterstützen Rust auch nicht.
 Dieser Umstand erzwingt die Nutzung der C-Datenstrukturen, wie die Referenzimplementierung, mittels \gls{ffi} (siehe \autoref{rust:ffi}).
@@ -147,7 +147,7 @@ Die Aktivitätsdiagramme in \autoref{design:channel} beschreiben die nötigen Tr
 
 Nach dem \enquote{Channel Architektur Pattern} ist eine sequentielle Bearbeitung zwischen dem TCP-Datenstrom und der Client-Instanz in jede Richtung als Kanal interpretierbar (sprich jedes Aktivitätsdiagramm aus \autoref{design:channel}).
 Da jeder Zwischenschritt innerhalb eines Kanals lediglich vom Ergebnis des vorhergehenden abhängig ist, könnten die einzelnen Schritte parallel zueinander bearbeiten werden.
-Durch einen zusätzlichen, vorangestellten Multiplexer und nachfolgenden Demultiplexer könnten zudem mehrere Kanäle parallel die Client-Instanz oder den Datenstrom speisen.
+Durch einen zusätzlich vorangestellten Multiplexer und nachfolgenden Demultiplexer könnten zudem mehrere Kanäle parallel die Client-Instanz oder den Datenstrom speisen.
 Hiervon wird in der ersten Implementierung jedoch abgesehen, da je Client keine derart große Datenflut erwartet wird.
 Stattdessen werden viele Clients erwartet, weshalb jeder Kanal eines Clients parallel zu den Kanälen anderer Clients ausgeführt werden soll.
 

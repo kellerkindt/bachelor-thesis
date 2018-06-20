@@ -7,7 +7,7 @@ Dieses Kapitel erläutert weitere relevante Themen, die zur Umsetzung der hochpe
 
 \section{Echtzeitsysteme}
 \label{real_time_systems}
-Echtzeitsysteme zeichnen sich im allgemeinen dadurch aus, eine Aufgabe in einem zuvor vorgegebenen Zeitraum bearbeiten zu können.
+Echtzeitsysteme zeichnen sich im Allgemeinen dadurch aus, eine Aufgabe in einem zuvor vorgegebenen Zeitraum bearbeiten zu können.
 Es existiert zu einer Aufgabe also immer eine Frist.
 Bei der Bewertung der Korrektheit eines Systems wird die Fähigkeit, eine Frist einhalten zu können, auch bewertet \cite[2]{perf:buttazzo2006soft}.
 Je nach Art des Echtzeitsystems wird diese Frist jedoch unterschiedlich gewichtet:
@@ -71,7 +71,7 @@ Daraus resultiert, dass gerade komplexe Algorithmen mit vielen Tests abgesichert
 Bestehende Tests bilden ein Sicherheitsnetz, mit dem Fehler durch Änderungen detektiert werden können.
 
 %\todo{manchmal stellt man beim erstellen des tests fest, dass die Anforderung blöd ist}
-Test-getriebene Entwicklung verändert auch die Vorgehensweise bei der Implementation von Anforderungen. Anstatt zu fragen \enquote{Wie würde ich das implementieren?}, wird überlegt \enquote{Wie würde ich das testen?} \cite[39]{tdd}, womit auch implizit gefragt wird, wie die äußere Schnittstelle idealerweise aussehen sollen \cite[4]{tdd}.
+Test-getriebene Entwicklung verändert auch die Vorgehensweise bei der Implementation von Anforderungen. Anstatt zu fragen \enquote{wie würde ich das implementieren?}, wird überlegt \enquote{wie würde ich das testen?} \cite[39]{tdd}, womit auch implizit gefragt wird, wie die äußere Schnittstelle idealerweise aussehen sollen \cite[4]{tdd}.
 
 
 %\todo{p.11, shift of practice in p.13, \enquote{Make it run, make it good} p.24, no changes unless enough motivation p.34, tests run -> not broken anything p.37, never interrupt an interruption p.41, TDD is a steering process, unsure -> smaller steps, sure -> bigger steps p.42, Test First can reduce stress p.127}
@@ -88,10 +88,10 @@ Deswegen ist es wichtig, den Begriff \enquote{funktionale Sicherheit} kurz zu er
 
 Bei funktionaler Sicherheit (\textit{safety}) geht es um die Betriebssicherheit, eine \enquote{Freiheit von unvertretbaren Risiken} \cite[6]{safety}.
 Unvertretbare Risiken sind in erster Linie Personenschäden, weswegen einheitliche Regularien in Normen wie der IEC 61508 bzw der DIN EN 61508 festgehalten sind.
-Für den Automobilbereich wurde die Norm in der ISO 26262 angepasst, um u.a. eine Einzelabnahme eines jeden Fahrzeuges, durch eine Gesamtabnahme des Produktes zu ermöglichen \cite[14]{safety}.
+Für den Automobilbereich wurde die Norm in der ISO 26262 angepasst, um u. a. eine Einzelabnahme eines jeden Fahrzeuges, durch eine Gesamtabnahme des Produktes zu ermöglichen \cite[14]{safety}.
 
 Durch die Test-getriebene Entwicklung und der Verwendung von Rust und dessen Garantien (siehe \autoref{rust:guarantees}), sollen Fehler reduziert und eine möglichst sichere Implementierung geschaffen werden.
-Eine Entwicklung nach ISO 26262 findet nicht statt, da dies zum Einen nicht durch das Forschungsprojekt gefordert ist und zum Anderen den Umfang dieser Bachelorarbeit überschreitet.
+Eine Entwicklung nach ISO 26262 findet nicht statt, da dies zum einen nicht durch das Forschungsprojekt gefordert ist und zum anderen den Umfang dieser Bachelorarbeit überschreitet.
 
 %\todo{such shiat argument, arguemnt: more rust -> f. safety}
 %Obwohl funktionale Sicherheit für das Forschungsprojekt \gls{mec}-View eine nicht irrelevante Rolle Bedeutung hat, wird in dieser Bachelorarbeit keine Entwicklung nach ISO 26262 vorgenommen.

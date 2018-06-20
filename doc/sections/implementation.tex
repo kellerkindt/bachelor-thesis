@@ -179,8 +179,11 @@ Aus diesem Grund müssen die selben C-Datenstrukturen und C-Funktionen genutzt w
 Mittels \gls{ffi} (siehe \autoref{rust:ffi}) wird auf diese zugegriffen.
 Damit nicht jeder Nachrichtentyp, eingebetteter Nachrichtenuntertyp und jede Funktion manuell eine Rust Deklaration geschrieben werden muss, wird Bindgen\footnote{\url{https://crates.io/crates/bindgen}} genutzt, um diese automatisiert zu generieren.
 
-\todo{komplizierter Satz}
-Um wichtige Nachrichtentypen ohne \rustcinline{unsafe} Blöcke instantiieren zu können und für eine korrekte Deallocation, sind hierfür die Rust Äquivalente von Konstruktoren und Destruktoren implementiert worden.
+%\todo{komplizierter Satz}
+Um wichtige Nachrichtentypen ohne \rustcinline{unsafe}-Blöcke instantiieren zu können, ist der unsicher Code in \rustcinline{Default} gekapselt worden.
+Für eine korrekte Deallocation des Nachrichtenrumpfes wurde bei diesen Nachrichtentypen zudem \rustcinline{Drop} %(das Rust Äquivalent zu C++ Destruktoren, siehe \autoref{rust:drop})
+implementiert.
+% und für eine korrekte Deallocation, sind hierfür die Rust Äquivalente von Konstruktoren und Destruktoren implementiert worden.
 Als Beispiel dient die \textit{ClientRegistration}-Nachricht in \autoref{impl:bindings:constructor:clientregistration}:
 
 

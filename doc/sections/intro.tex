@@ -45,12 +45,12 @@ Diese Arbeit soll zeigen, dass Rust genau so eine Programmiersprache ist und sic
 \end{figure}
 \footnotetext{Quelle: \url{https://www.uni-due.de/~hp0309/images/Arch_de_V1.png} (Legende verschoben)}
 
-Diese Abschlussarbeit befasst sich mit dem Kommunikationsserver von \gls{mec}-View.
+Diese Abschlussarbeit befasst sich mit dem Kommunikationsserver von MEC-View\footnote{\gls{mec}-View}.
 Das \gls{mec}-View Projekt wird durch das \gls{bmwi} gefördert und befasst sich mit der Thematik hochautomatisierter Fahrzeuge.
 Es soll erforscht werden, ob und inwieweit eine durch externe Sensorik geleistete Unterstützung nötig und möglich ist, um in eine Vorfahrtstraße automatisiert einzufahren.
 
 Das Forschungsprojekt ist dabei ein Zusammenschluss mehrerer Unternehmen mit unterschiedlichen Themengebieten.
-Die IT-Designers Gruppe beschäftigt sich mit der Implementation des Kommunikationsservers, der auf der von Nokia zur Verfügung gestellten Infrastruktur im 5G Mobilfunk als \gls{mec} Server betrieben wird.
+Die IT-Designers Gruppe beschäftigt sich mit der Implementation des Kommunikationsservers, der auf der von Nokia zur Verfügung gestellten Infrastruktur im 5G Mobilfunk als \gls{mec}-Server betrieben wird.
 Erkannte Fahrzeuge und andere Verkehrsteilnehmer werden von den Sensoren von Osram via Mobilfunk an den Kommunikationsserver übertragen.
 Der Kommunikationsserver stellt diese Informationen dem Fusionsalgorithmus der Universität Ulm zur Verfügung und leitet das daraus gewonnene Umfeldmodell an die hochautomatisierten Fahrzeuge der Robert Bosch GmbH  und der Universität Ulm weiter.
 Durch hochgenaue, statische und dynamische Karten von TomTom und den Fahrstrategien von Daimler und der Universität Duisburg soll das Fahrzeug daraufhin automatisiert in die Kreuzung einfahren können.
@@ -84,10 +84,10 @@ Im Themengebiet Grundlagen sollen wesentliche Bestandteile dieser Arbeit erläut
 Hierzu zählt zum einen die Programmiersprache Rust in ihrer Entstehungsgeschichte, Garantien  und Sprachfeatures  (\autoref{rust}).
 Zum anderen geht es um die hochperformante, serverbasierte Kommunikationsplattform mit ihren Protokollen (\autoref{com_plattform}) und dem Systemkontext, in dem diese betrieben wird.
 
-In der Anforderungs- und Systemanalyse wird der Kontext, in dem der Server betrieben werden soll, genauer betrachtet. Umzusetzende funktionale und nicht-funktionale Anforderungen werden aufgestellt, sowie eine Übersicht über die Systeme gegeben, mit denen der Server interagieren soll.
+In der Anforderungs- und Systemanalyse wird der Kontext, in dem der Server betrieben werden soll, genauer betrachtet. Umzusetzende funktionale und nicht-funktionale Anforderungen werden aufgestellt (\autoref{requirements}), sowie eine Übersicht über die Systeme gegeben, mit denen der Server interagieren soll (\autoref{analysis}).
 
-Das Themengebiet Systementwurf und Implementation befasst sich mit dem theoretischen und praktischen Lösen der im vorherigen Kapitel aufgestellten Anforderungen. Aufgrund der Tatsache, dass es sich hierbei
+Das Themengebiet Systementwurf und Implementation (\autoref{design} und \autoref{impl}) befasst sich mit dem theoretischen und praktischen Lösen der im vorherigen Kapitel aufgestellten Anforderungen. Aufgrund der Tatsache, dass es sich hierbei
 um eine alternative Implementation handelt, wird zur bestehenden C++ Implementation Bezug genommen.
 Architektonische Unterschiede im Systementwurf, die sich aufgrund von Sprach- und Bibliotheksunterschiede ergeben, werden hier genauer beschrieben.
 
-Zuletzt wird eine Auswertung der Implementation und ein Fazit aufgezeigt.
+Zuletzt wird eine Auswertung der Implementation (\autoref{eval}) aufgezeigt und ein Fazit (\autoref{conclusion}) gezogen.

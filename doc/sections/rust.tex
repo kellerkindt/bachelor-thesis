@@ -309,7 +309,7 @@ In Fällen, in denen dies nicht wie erwartet automatisch geschieht, kann eine ma
 \label{rust:fn}
 
 Funktionen werden durch \rustcinline{fn} gekennzeichnet, gefolgt von dem Funktionsnamen, der Parameterliste und zuletzt der Datentyp für den Rückgabewert.
-Selbst wenn kein expliziter Rückgabetyp angegeben is, wird formal \rustcinline{()} zurück gegeben; \rustcinline{()} entspricht etwa \ccinline{void} aus bekannten Programmiersprachen.
+Selbst wenn kein expliziter Rückgabetyp angegeben ist, wird formal \rustcinline{()} zurück gegeben; \rustcinline{()} entspricht etwa \ccinline{void} aus bekannten Programmiersprachen.
 Die Parameterliste unterscheidet sich von bekannten Programmiersprachen wie C und Java, indem zuerst der Variablenname und darauf folgend der Datentyp notiert wird.
 
 \rustcinclude
@@ -320,7 +320,7 @@ Die Parameterliste unterscheidet sich von bekannten Programmiersprachen wie C un
 Obwohl in Zeile 2 von \autoref{rust:fn:add} kein \rustcinline{return} zu sehen ist, wird trotzdem das Ergebnis der Addition zurückgegeben.
 Dies liegt daran, dass in Rust vieles ein Ausdruck ist und somit einen Rückgabewert liefert \cite{rust:book:statements}.
 Auch ein if-else ist ein Ausdruck und kann einen Rückgabewert haben.
-Ein bedingter Operator (?:) is somit unnötig, da stattdessen ein if-else verwendet werden kann: \rustcinline{let a = if b \{ c \} else \{ d \};}.
+Ein bedingter Operator (?:) ist somit unnötig, da stattdessen ein if-else verwendet werden kann: \rustcinline{let a = if b \{ c \} else \{ d \};}.
 
 
 

@@ -207,14 +207,13 @@ kein oder ein negativer Anstieg der Kurve bei Erhöhung der Last aus logischen G
 
 \subsubsection{Nachtrag}
 
-\todo{.}
 Aufgrund der schwachen Aussagekraft des ersten Tests, wurde ein weiterer Test durchgeführt. Anstatt die Anzahl der Fahrzeuge zu variieren, wobei die C++ Implementation eine Schwäche zeigt, variiert die Anzahl der Sensoren, bei nur einem verbundenem Fahrzeug.
-In der \autoref{sensors_60s} ist hierzu das Resultat für 25, 50, 75 und 100 Sensoren zu sehen.
+In der \autoref{sensors_60s} ist hierzu das Resultat für 10, 25, 50, 75 und 100 Sensoren zu sehen.
+Auch in diesem Test weisen die Rust-Implementationen ähnliche oder geringere Laufzeiten auf.
 
 \makeDias{sensors_60s}{12.5}{80000}
 
-Zu sehen ist, dass die Rust-Implementationen trotzdem geringere Laufzeiten aufweisen.
-Die C++ Implementation zeigt keinen proportionalen Anstieg, weshalb dem Vergleich diesmal eine höhere Aussagekraft zugesprochen werden kann.
+%Die C++ Implementation zeigt keinen proportionalen Anstieg, weshalb dem Vergleich diesmal eine höhere Aussagekraft zugesprochen werden kann.
 
 %\section{..}
 %\todo{Während den tests zeigte sich ein Fehler im C++ Server. Race-conditional missing cleanup for closed sockets in certain error cases?}

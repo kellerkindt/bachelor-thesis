@@ -80,7 +80,7 @@ Gleichzeitig soll der Spagat geschaffen werden, nicht nur ein sicheres, aber led
 Als Beweis könnte hierbei auf die Umstellung von Firefox auf Rust und Servo -- ein minimaler Webbrowser komplett in Rust geschrieben -- verwiesen werden \cite{rust:faq}.
 
 Interessant ist eine Diskussion von 2009, bei der \enquote{sicher aber nutzlos} und \enquote{unsicher aber brauchbar} gegenübergestellt wurde.
-Programmiersprachen scheinen auf der Suche nach dem nicht existierende \enquote{Nirvana} zu sein, das sowohl sichere als auch brauchbare Programmierung verspricht \cite[ab ca Minute 58:20]{rust:infoq:null}.
+Programmiersprachen scheinen auf der Suche nach dem nicht existierenden \enquote{Nirvana} zu sein, das sowohl sichere als auch brauchbare Programmierung verspricht \cite[ab ca Minute 58:20]{rust:infoq:null}.
 Rust möchte dieses Nirvana gefunden haben.
 % bei einer Diskussion \footnote{Siehe auch \enquote{unsafe but useful}/\enquote{safe but useless} \cite[ab ca Minute 58:20]{rust:infoq:null}}.
 
@@ -204,7 +204,7 @@ Dass \rustcinline{fn} die Funktion \rustcinline{main} definiert und diese der St
 Viel überraschender ist im Gegensatz eher das Ausrufezeichen in Zeile 2, da es auf den ersten Blick dort nicht hingehören sollte.
 In Rust haben Ausrufezeichen und Fragezeichen besondere Bedeutungen, weswegen die Verwendung in Zeile 2 so richtig ist.
 
-Die Bedeutung des Fragezeichens dient zum schnelleren Auswerten von \rustcinline{Rusult<_, _>}-Werten und wird in \autoref{rust:result} genauer erklärt.
+Die Bedeutung des Fragezeichens dient zum schnelleren Auswerten von \rustcinline{Result<_, _>}-Werten und wird in \autoref{rust:result} genauer erklärt.
 Das Ausrufezeichen kennzeichnet, dass der ansonsten augenscheinliche Funktionsaufruf tatsächlich ein Aufruf einer Makrofunktion ist.
 
 Eine Funktion \rustcinline{println} gibt es nicht, auch keine aus C erwarteten Funktionen wie \ccinline{printf}, \ccinline{fputs} oder \ccinline{sprintf}.
@@ -256,7 +256,7 @@ Folgendes Beispiel soll die Notation von Arrays und Slices verdeutlichen:
 	
 Das in \autoref{rust:slices:example} gezeigte Programm gibt auf der Konsole \rustcinline{2, 3, 4, } aus.
 
-Variablen werden durch das \rustcinline{let} Schlüsselwort gebunden. Das heißt, der Variable wird die Eigentümerschaft für den Wert zugewiesen.
+Variablen werden durch das \rustcinline{let} Schlüsselwort gebunden. Das heißt, der Variablen wird die Eigentümerschaft für den Wert zugewiesen.
 Ausnahmen können Datentypen mit dem Merkmal \rustcinline{Copy} bilden, da diese ein implizite Kopie erlauben (siehe \autoref{rust:generics}).
 Anstatt eine Variable optional als unveränderlich zu kennzeichnen (\ccinline{const} in C, \javacinline{final} in Java), wird eine Variable in Rust optional als veränderlich gekennzeichnet (\rustcinline{mut}). Standardmäßig ist eine Variable unveränderlich.
 
@@ -318,7 +318,7 @@ Die Parameterliste unterscheidet sich von bekannten Programmiersprachen wie C un
 	{sections/rust.fn.add.rs}
 	
 Obwohl in Zeile 2 von \autoref{rust:fn:add} kein \rustcinline{return} zu sehen ist, wird trotzdem das Ergebnis der Addition zurückgegeben.
-Dies liegt daran, dass in Rust vieles ein Ausdruck ist und somit einen Rückgabewerte liefert \cite{rust:book:statements}.
+Dies liegt daran, dass in Rust vieles ein Ausdruck ist und somit einen Rückgabewert liefert \cite{rust:book:statements}.
 Auch ein if-else ist ein Ausdruck und kann einen Rückgabewert haben.
 Ein bedingter Operator (?:) is somit unnötig, da stattdessen ein if-else verwendet werden kann: \rustcinline{let a = if b \{ c \} else \{ d \};}.
 
@@ -357,7 +357,7 @@ Für Funktionen können auch die Zugriffsmodifikatoren festgelegt werden (siehe 
 \label{rust:trait:send}
 
 Ähnlich wie Java oder C\#, bietet Rust durch einen eigenen Typ die Möglichkeit, ein gewünschtes Erscheinungsbild zu generalisieren, ohne gleichzeitig eine Implementation vorzugeben.
-Im Rust wird dieser Typ \enquote{Trait} (dt. Merkmal) genannt.
+In Rust wird dieser Typ \enquote{Trait} (dt. Merkmal) genannt.
 
 Für Merkmale werden Funktionen in einem entsprechenden \rustcinline{trait <Name> \{ \}}-Block ohne Rumpf deklariert.
 Optional kann auch ein Standardrumpf implementiert werden, der bei einer Spezialisierung überschrieben werden darf.
@@ -398,10 +398,10 @@ Im Folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibl
 	\rustcinline{!Send}: Verhindert dagegen, dass ein Wert zu anderen Threads übertragen werden darf.
 	Somit können ansonsten rein textuell beschriebene Beschränkungen, wie zum Beispiel für der OpenGL-Kontext, durch den Compiler überprüft und erzwungen werden.
 	
-	\item \monospaceinline{Sync}: Markiert einen Datentype als zwischen Threads synchronisierbar, d. h. mehrere Threads dürfen gleichzeitig lesend darauf zugreifen.
+	\item \monospaceinline{Sync}: Markiert einen Datentyp als zwischen Threads synchronisierbar, d. h. mehrere Threads dürfen gleichzeitig lesend darauf zugreifen.
 	\rustcinline{!Sync} verbietet dies hingegen.
 	Wird automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ \rustcinline{Sync} sind.
-	Eine Manuelle Implementation ist nicht sicher \cite{rust:book:send_sync}.
+	Eine manuelle Implementation ist nicht sicher \cite{rust:book:send_sync}.
 	
 	\item \monospaceinline{Sized}: Verlangt eine zur Compilezeit bekannte Größe. \monospaceinline{?Sized} erlaubt dagegen eine unbekannte Größe zur Compilezeit.
 	

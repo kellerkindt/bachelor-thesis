@@ -335,6 +335,10 @@ Die \textit{asn::Message} wird in \textit{AsnMessage} umbenannt und zusammen mit
 Auch der \textit{SampleAlgorithm} wird in eine eigene Crate verschoben.
 Zwei weiteren Crates binden den externen C++ Algorithmus ein: \textit{libshim-sys} um den C++ Code in Rust zugänglich zu machen (analog zu \textit{libasn-sys}) und \textit{libshim} für die Implementation der \textit{Algorithm}-Schnittstelle mittels Adaptercodes.
 
+
+\vspace*{\fill}
+\clearpage
+
 Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architecture_v2_packages} abgebildet.
 
 \begin{figure}[H]

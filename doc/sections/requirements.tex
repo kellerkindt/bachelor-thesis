@@ -28,7 +28,7 @@ Die hier gelisteten funktionale Anforderungen beschreiben das gewünschte Verhal
 
 \requirement{client:defunsub}{2130}{}{Sensor initialisieren}{Der Server soll dem Sensor nach Registrierung eine \textit{UpdateSubscription}-Nachricht zusenden, um das Abonnement als aufgekündigt zu initialisieren.}
 
-\requirement{sensor:pause}{2140}{}{Sensoren abonnieren}{Sensoren sollen bei verbunden Fahrzeugen abonniert sein.}
+\requirement{sensor:pause}{2140}{}{Sensoren abonnieren}{Sensoren sollen bei verbundenen Fahrzeugen abonniert sein.}
 
 \requirement{sensor:resume}{2150}{}{Sensoren deabonnieren}{Solange kein Fahrzeug verbunden ist, sollen die Sensoren nicht abonniert sein.}
 
@@ -102,7 +102,7 @@ Nichtfunktionale Anforderungen zeigen im Gegensatz zu funktionalen Anforderungen
 \requirement{exec:mec}{3020}{}{Plattform MEC}{Die Implementation des Servers soll in compilierter Form auf einem MEC Server mit dem Betriebssystem Ubuntu 16.04 LTS Server und der Architektur x86-64 ausführbar sein.}
 
 \subsubsection{Reaktionsverhalten}
-\requirement{exec:time}{3100}{}{Reaktionszeit des Servers}{Die Implementation des Servers soll Nachrichten von 6 Videosensoren mit einem Nachrichtenintervall von 100ms, 7 Lidarsensoren mit einem Nachrichtenintervall von 50ms und zwei gleichzeitig vebundenen Fahreugen 5ms beantworten können.
+\requirement{exec:time}{3100}{}{Reaktionszeit des Servers}{Die Implementation des Servers soll Nachrichten von 6 Videosensoren mit einem Nachrichtenintervall von 100ms, 7 Lidarsensoren mit einem Nachrichtenintervall von 50ms und zwei gleichzeitig vebundenen Fahreugen in unter 5ms beantworten können.
 	Dies umfasst Nachricht dekodieren, Fusionsalgorithmus darbieten, Resultat enkodieren und versenden.
 	Die Bearbeitungszeit des Fusionsalgorithmus zählt nicht dazu.}
 

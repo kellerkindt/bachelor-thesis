@@ -343,14 +343,14 @@ Die neuen Abhängigkeiten zwischen den Crates sind in \autoref{draft:architectur
 	\label{draft:architecture_v2_packages}
 \end{figure}
 
-Die roten Abhängigkeiten entstehen erst durch die Wahl einer Nachrichtentechnologie und des auszuführenden Algorithmus und können durch die Instantiierung einer anderen Implementation in der \textit{main}-Funktion der \textit{MECViewServer}-Crate ausgetauscht werden.
+Die roten Abhängigkeiten entstehen erst durch die Wahl einer Nachrichtentechnologie und des auszuführenden Algorithmus, und können durch die Instantiierung einer anderen Implementation in der \textit{main}-Funktion der \textit{MECViewServer}-Crate ausgetauscht werden.
 
 
 Die Einbindung des C++ Quellcodes ist im Gegensatz zum C-Code der ASN.1 Nachrichten (siehe \autoref{impl:asn1_bindings}) deutlich schwieriger.
 Die Abhängigkeiten zu den Datentypen der Standardbibliothek (siehe \autoref{class_dia:algorithm:cpp}) und die Klassenhierarchie macht einen Zugriff aus Rust deutlich komplizierter und würde eine manuelle Pflege der \textit{vtable} benötigen.
 Deswegen ist eine andere Herangehensweise ausgewählt worden.
 Weiterer C-Code soll den C++ Code über eine C-Datenstruktur kapseln und über C-Funktionen zugänglich machen (Stichwort Fassade, \cite[700]{goll2018entwurfsprinzipien}).
-Eine Zugriff aus Rust heraus soll somit stark vereinfacht werden.
+Ein Zugriff aus Rust heraus soll somit stark vereinfacht werden.
 
 In \autoref{draft:libshim} ist hierzu eine Detailansicht der Crate \textit{libshim-sys} dargestellt, inklusive C-Datenstrukturen und C++ Klassen.
 
@@ -365,7 +365,7 @@ Die orange eingefärbten Klassen und Datenstrukturen aus \autoref{draft:libshim}
 Die in türkis eingefärbten Klassen und Schnittstellen sind die aus der C++ Implementation stammende Klassen und Schnittstellen, die nicht verändert werden dürfen.
 
 Für das Laufzeitverhalten sind die zusätzlichen Funktionsaufrufe durch den Adaptercode (\textit{AlgorithmShim} zu \textit{RustShim}, \textit{RustShim} zu \textit{RustShimInternal} und \textit{RustShimInternal} zu \textit{UpdateQueue}, gut zu sehen an der enormen Breite von \autoref{seq_dia:algorithm:cpp:binding:communication}) als ungünstig eingestuft.
-Die Komposition von \textit{AlgorithmShim} in \textit{ExternalAlgorithm} soll dem Compiler ermögliche, den Funktionsaufruf von \textit{send\_sensor\_frame(frame: Box<SensorFrame>)} zu inlinen und so das Laufzeitverhalten zu verbessern.
+Die Komposition von \textit{AlgorithmShim} in \textit{ExternalAlgorithm} soll dem Compiler ermöglichen, den Funktionsaufruf von \textit{send\_sensor\_frame(frame: Box<SensorFrame>)} zu inlinen und so das Laufzeitverhalten zu verbessern.
 
 In der \autoref{seq_dia:algorithm:cpp:binding:create} wird aufgezeigt, wie der C++ Algorithmus instantiiert wird.
 \autoref{seq_dia:algorithm:cpp:binding:communication} zeigt wie eine \textit{SensorFrame}-Nachricht weitergeleitet und mit einer \textit{RawMessage} beantwortet wird.
@@ -514,7 +514,7 @@ In der folgenden Übersicht sind die Startparameter aus den Anforderungen, eine 
 \section{Resistenz gegenüber böswilligen oder defekten Clients}
 
 Die Anforderungen \reqNumberForLabel{dos:sensor} \enquote{\reqNameForLabel{dos:sensor}} und \reqNumberForLabel{dos:car} \enquote{\reqNameForLabel{dos:car}} (siehe \autoref{req:dos:sensor}) beschreiben ein Szenario, bei dem sich im MEC-View-Server Nachrichten anstauen.
-Bei einem zu großen Rückstau, könnte der Arbeitsspeicher ausgehen und weitere Versuche, Speicher zu allokieren, würden fehlschlagen.
+Bei einem zu großen Rückstau könnte der Arbeitsspeicher ausgehen und weitere Versuche, Speicher zu allokieren, würden fehlschlagen.
 Das bedeutet, die Erreichbarkeit des MEC-View-Servers kann durch einen böswilligen oder defekten Client beeinflusst werden.
 Um zu verhindern, dass sich zu viele Nachrichten anstauen, sind die Kanäle (siehe \autoref{impl:channels}) zwischen Client und Algorithmus in ihrer Größe limitiert.
 Bei einem Versuch, diese Limitierung zu überschreiten, wird die Verbindung von dem betroffenem Client getrennt.

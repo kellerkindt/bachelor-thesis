@@ -17,7 +17,7 @@ Der CPU Governor wurde für alle Tests auf \enquote{performance} gestellt, um Sc
 Eine derart überdimensionierte Hardware soll Unterschiede im Laufzeitverhalten besser aufzeigen, ohne der limitierende Faktor zu sein.
 
 Für jede Kombination aus Sensoren, Fahrzeugen und Serverimplementierung werden 10 Tests durchgeführt.
-Bei jedem Test wird am Fahrzeug für jede empfangene Nachricht, die Latenz seit dem Versand am Sensor in eine Datei geschrieben.
+\todo{Bei jedem Test wird am Fahrzeug für jede empfangene Nachricht, die Zeitdifferenz seit dem Versand am Sensor in eine Datei geschrieben.}
 Nach einem Testdurchlauf werden die Anzahl an Nachrichten gezählt und der Durchschnitt für die Latenzen gebildet.
 
 Zu jedem Zeitpunkt wird maximal ein Test gleichzeitig auf dem System ausgeführt.
@@ -188,7 +188,7 @@ Im Gegensatz zur C++ Implementation erfüllen die Rust Implementationen dies auc
 
 Der proportionale Anstieg der Reaktionszeit der C++ Implementation für jedes zusätzlich verbundene Fahrzeug (etwa 2ms bei einem Fahrzeug, kurz unter 4ms, 6ms, 8ms und 10ms bei 2, 3, 4 und 5 Fahrzeugen) lässt einen Fehler bei der Parallelisierung der Fahrzeuge vermuten.
 Der Versand von Nachrichten an die verbundenen Fahrzeuge scheint nicht parallel, sondern sequenziell ausgeführt zu werden.
-Vergleiche zwischen der Rust und C++ Implementierung für mehr als einem verbundenem Fahrzeug sind daher wenig aussagekräftig.
+Vergleiche zwischen der Rust und C++ Implementierung bei mehr als einem verbundenen Fahrzeug sind daher wenig aussagekräftig.
 
 Interessant ist der Verlauf der roten Linie (Rust mit C++ Algorithmus) zur braunen Linie (Rust Algorithmus).
 Eine Verschlechterung der Reaktionszeit, wie mit nur einem Fahrzeug (etwa 15.000 Nachrichten) gegenüber der reinen Rust Implementation war, durch die erhöhte Komplexität und die weitere Schicht zur Einbindung des C++ Algorithmus, zu erwarten gewesen.
@@ -206,9 +206,9 @@ kein oder ein negativer Anstieg der Kurve bei Erhöhung der Last aus logischen G
 
 \subsubsection{Nachtrag}
 
-Aufgrund der schwachen Aussagekraft des ersten Tests, wurde ein weiterer Test durchgeführt. Anstatt die Anzahl der Fahrzeuge zu variieren, wobei die C++ Implementation eine Schwäche zeigt, variiert die Anzahl der Sensoren\todo{,} bei nur einem verbundenem Fahrzeug.
+Aufgrund der schwachen Aussagekraft des ersten Tests, wurde ein weiterer Test durchgeführt. Anstatt die Anzahl der Fahrzeuge zu variieren, wobei die C++ Implementation eine Schwäche zeigt, variiert die Anzahl der Sensoren bei nur einem verbundenem Fahrzeug.
 In der \autoref{sensors_60s} ist hierzu das Resultat für 10, 25, 50, 75 und 100 Sensoren zu sehen.
-Auch in diesem Test weisen die Rust-Implementationen ähnliche oder geringere Laufzeiten wie die C++ Implementation auf. \todo{more text?}
+Auch in diesem Test weisen die Rust-Implementationen ähnliche oder geringere Laufzeiten wie die C++ Implementation auf.
 
 \makeDias{sensors_60s}{12.5}{80000}
 

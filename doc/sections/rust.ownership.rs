@@ -32,6 +32,6 @@ fn main() {
     println!("a: {}", a); // "a: 9"
     let f = a; // Neuer Eigentümer der Heap-Variable ist f
     // *a = 12.5_f32; // Nicht erlaubt: Nicht mehr Eigentümer
-    // *f = 12.5_f32; // Nicht erlaubt: f nicht änderlich
+    // *f = 12.5_f32; // Nicht erlaubt: f nicht veränderlich
     println!("f: {}", f); // "f: 9"
 }

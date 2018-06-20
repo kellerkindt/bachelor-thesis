@@ -193,7 +193,10 @@ Als Beispiel dient die \textit{ClientRegistration}-Nachricht in \autoref{impl:bi
 	{sections/impl.constructor.destructor.rs}
 	
 Die \textit{ClientRegistration}-Nachricht aus \autoref{impl:bindings:constructor:clientregistration} wird selbst im Speicherbereich von Rust allokiert, während der Inhalt der Nachricht auf dem C-Heap erwartet wird.
-\todo{Satz?} Dieser Mix ist nicht zu vermeiden, da die ASN.1 Funktionen zum Dekodieren der UPER-Nachrichten die inneren Datenstrukturen auf dem C-Heap anlegen, während eine Deallokation einer Heap-Variable in Rust (\rustcinline{Box}) nicht erheblichen Aufwand\footnote{Die Deallokation müsste \textbf{manuell} und durch Nutzung von unsicherem Code erfolgen, ohne ein Hilfe durch den Compiler, ob dies immer an jeder Stelle umgesetzt wurde.} beeinflusst werden kann.
+Dieser Mix ist nicht zu vermeiden, da die ASN.1 Funktionen zum Dekodieren der UPER-Nachrichten die inneren Datenstrukturen auf dem C-Heap anlegen.
+\todo{.}
+Würde sich die \textit{ClientRegistration}-Nachricht auch auf dem C-Heap befinden, müsste entweder ein Zugriff über \enquote{raw-Pointer} (siehe \autoref{rust:ffi}) erfolgen oder die automatische Deallocation von Rust müsste verhindert und durch eine manuelle Deallocation ersetzt werden.
+Beide Szenarien würden Konzepte der Speichersicherheit von Rust untergraben.
 
 Die Deklarationen, zusammen mit einer statischen Linkung mit der C-Bibliothek, ist in der \textit{libmessages-sys} umgesetzt und entspricht damit der Rust-Konvention beim Einbinden externer Bibliotheken\cite{rust:cargo:build_scripts}.
 Durch die Kapselung möglichst aller \rustcinline{unsafe} Operationen in \textit{libmessages-sys} wird eine sicherer Nutzung außerhalb dieser Crate ermöglicht.

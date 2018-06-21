@@ -48,7 +48,7 @@ Ein Release-Artefakt ist stark optimiert und ist für den Produktivbetrieb geeig
 
 In diesem Schritt wird das Release-Artefakt mittels Unit-Tests auf Fehler überprüft.
 Hierdurch soll sichergestellt werden, dass kein Fehler durch Optimierungen des Compilers aufgedeckt oder verursacht wurde.
-Des weiteren soll kein Artefakt archiviert werden, das nicht auf Fehler überprüft wurde.
+Des Weiteren soll kein Artefakt archiviert werden, das nicht auf Fehler überprüft wurde.
 
 \subsubsection{Schritt \enquote{Post-Build}}
 Dieser Schritt dient zur Zusammenstellung der Testabdeckung der Unit-Tests und der automatisierten  Erstellung der Dokumentation.
@@ -90,7 +90,7 @@ Die Graphen starten bei unterschiedlichen Versionen, da sie nacheinander eingeri
 \label{impl:channels}
 
 Wie bereits in \autoref{design:communication:architecture:async} festgestellt, ist für eine hochperformante Kommunikationsplattform eine interne Parallelisierung fördernd.
-Die Kommunikation von den zueinander asynchron arbeitenden Klassen kann mit Hilfe von verschiedenen Entwurfsmuster umgesetzt werden.
+Die Kommunikation von den zueinander asynchron arbeitenden Klassen kann mit Hilfe von verschiedenen Entwurfsmustern umgesetzt werden.
 
 Das \enquote{Message Queuing Pattern} (dt. Nachrichten-Warteschlange-Muster) gilt als stabiles und einfach umzusetzendes Entwurfsmuster, um zwischen asynchron arbeitenden Klassen Nachrichten auszutauschen \cite[207]{douglass2003real}.
 Der im Jahre 2003 von E. Douglas Jensen genannte Nachteil, Werte nur \enquote{by-value} austauschen zu können \cite[211]{douglass2003real}, ist seit der Verfügbarkeit des \ccinline{std::shared_ptr} ab C++11 nicht mehr relevant.
@@ -144,7 +144,7 @@ Durch eine Fassade kann das Erstellen eines Kommandos und das Übermitteln durch
 Durch eine Implementation der Schnittstelle für den Sendeteil kann aber auch das \enquote{Proxy Pattern} (dt. Stellvertreter-Strukturmuster) \cite[137]{goll2018entwurfsprinzipien} umgesetzt werden, wodurch keine Änderung in der aufrufenden Klasse bemerkbar ist.
 %Die Verwirklichung mittels Schnittstellen und einer Methode für jedes Kommando entspricht letztendlich dem \enquote{Proxy Pattern} (dt. Stellvertreter-Strukturmuster) \cite[137]{goll2018entwurfsprinzipien}.
 
-Da ein Beispiel aus der tatsächlich Implementierung zu groß für eine übersichtliche Erläuterung ist, wird das Beispiel aus \autoref{impl:channels:example} und \autoref{impl:commands:example} erneut aufgegriffen, um beispielhaft das Prinzip zu erklären.
+Da ein Beispiel aus der tatsächlichen Implementierung zu groß für eine übersichtliche Erläuterung ist, wird das Beispiel aus \autoref{impl:channels:example} und \autoref{impl:commands:example} erneut aufgegriffen, um beispielhaft das Prinzip zu erklären.
 
 Die neue Schnittstelle \rustcinline{EndPoint} definiert die Funktion \rustcinline{say}, um einen Text auf der Konsole auszugeben.
 Anschließend wird sie für den Sendeteil des Kanals implementiert, wodurch dieser quakt\footnote{\enquote{Duck Typing} \cite[44]{rust:orly_programming} in Rust teilweise möglich, dann aber ohne Laufzeitkosten. Auch genannt Ententest: \enquote{When I see a bird that walks like a duck and swims like a duck and quacks like a duck, I call that bird a duck.} von James Whitcomb Riley \cite{wiki:duck}} wie die \rustcinline{EndPoint}-Schnittstelle.
@@ -181,7 +181,7 @@ Mittels \gls{ffi} (siehe \autoref{rust:ffi}) wird auf diese zugegriffen.
 Damit nicht für jeden Nachrichtentyp, eingebetteten Nachrichtenuntertyp und jede Funktion manuell eine Rust Deklaration geschrieben werden muss, wird Bindgen\footnote{\url{https://crates.io/crates/bindgen}} genutzt, um diese automatisch zu generieren.
 
 %\todo{komplizierter Satz}
-Um wichtige Nachrichtentypen ohne \rustcinline{unsafe}-Blöcke instantiieren zu können, ist der unsicher Code in \rustcinline{Default} gekapselt worden.
+Um wichtige Nachrichtentypen ohne \rustcinline{unsafe}-Blöcke instanziieren zu können, ist der unsichere Code in \rustcinline{Default} gekapselt worden.
 Für eine korrekte Deallokation des Nachrichtenrumpfes wurde bei diesen Nachrichtentypen zudem \rustcinline{Drop} %(das Rust Äquivalent zu C++ Destruktoren, siehe \autoref{rust:drop})
 implementiert.
 % und für eine korrekte Deallokation, sind hierfür die Rust Äquivalente von Konstruktoren und Destruktoren implementiert worden.
@@ -195,14 +195,14 @@ Als Beispiel dient die \textit{ClientRegistration}-Nachricht in \autoref{impl:bi
 	
 Die \textit{ClientRegistration}-Nachricht aus \autoref{impl:bindings:constructor:clientregistration} wird selbst im Speicherbereich von Rust allokiert, während der Inhalt der Nachricht auf dem C-Heap erwartet wird.
 Dieser Mix ist nicht zu vermeiden, da die ASN.1 Funktionen zum Dekodieren der UPER-Nachrichten die inneren Datenstrukturen auf dem C-Heap anlegen.
-Dieser Mix ist nicht zu vermeiden, da die ASN.1 Funktionen zum Dekodieren der UPER-Nachrichten die inneren Datenstrukturen auf dem C-Heap anlegen, während eine Deallokation einer Heap-Variable in Rust (\rustcinline{Box}) nicht ohne erheblichen Aufwand\footnote{Die Deallokation müsste \textbf{manuell} und durch Nutzung von unsicherem Code erfolgen, ohne ein Hilfe durch den Compiler, ob dies immer an jeder Stelle umgesetzt wurde.} beeinflusst werden kann.
+Dieser Mix ist nicht zu vermeiden, da die ASN.1 Funktionen zum Dekodieren der UPER-Nachrichten die inneren Datenstrukturen auf dem C-Heap anlegen, während eine Deallokation einer Heap-Variable in Rust (\rustcinline{Box}) nicht ohne erheblichen Aufwand\footnote{Die Deallokation müsste \textbf{manuell} und durch Nutzung von unsicherem Code erfolgen, ohne eine Hilfe durch den Compiler, ob dies immer an jeder Stelle umgesetzt wurde.} beeinflusst werden kann.
 %Würde sich die \textit{ClientRegistration}-Nachricht auch auf dem C-Heap befinden, müsste entweder ein Zugriff mittels \enquote{Raw-Pointer} (siehe \autoref{rust:ffi}) erfolgen oder die automatische Deallokation von Rust müsste verhindert werden.
 %Die Deallokation von Rust würde bei einem vergessenen manuelle Eingriff den C-Heap korrumpieren.
 %Beide Szenarien würden Konzepte der Speichersicherheit von Rust untergraben.
 
 Die Deklarationen, zusammen mit einer statischen Linkung mit der C-Bibliothek, ist in der \textit{libmessages-sys} umgesetzt und entspricht damit der Rust-Konvention beim Einbinden externer Bibliotheken\cite{rust:cargo:build_scripts}.
-Durch die Kapselung möglichst aller \rustcinline{unsafe} Operationen in \textit{libmessages-sys} wird eine sicherer Nutzung außerhalb dieser Crate ermöglicht.
-Das Prinzip, unsichere Code in sichere Funktionen oder Abstraktionen zu kapseln, entspricht auch der Rust-Konvention zur Einbindung externer Bibliotheken\footnote{\enquote{Creating a Safe Abstraction Over Unsafe Code}}\cite{rust:book:unsafe}.
+Durch die Kapselung möglichst aller \rustcinline{unsafe} Operationen in \textit{libmessages-sys} wird eine sichere Nutzung außerhalb dieser Crate ermöglicht.
+Das Prinzip, unsicheren Code in sichere Funktionen oder Abstraktionen zu kapseln, entspricht auch der Rust-Konvention zur Einbindung externer Bibliotheken\footnote{\enquote{Creating a Safe Abstraction Over Unsafe Code}}\cite{rust:book:unsafe}.
 
 
 
@@ -275,7 +275,7 @@ Eine neue \textit{EnvironmentFrame}-Nachricht übergibt der Algorithmus an den \
 Die C++ Implementation reduziert durch dieses Vorgehen die direkte Kommunikation zwischen dem Server und dem konkreten Algorithmus auf den Aufruf von \textit{Create}.
 Durch den Austausch dieser Methode kann ein anderer Algorithmus geladen werden.
 
-Damit die Rust-Implementation den C++ Algorithmus instantiieren kann, muss die Methode \textit{Create} der Klasse \textit{AlgorithmFactory} ordnungsgemäß aufgerufen werden.
+Damit die Rust-Implementation den C++ Algorithmus instanziieren kann, muss die Methode \textit{Create} der Klasse \textit{AlgorithmFactory} ordnungsgemäß aufgerufen werden.
 Ein gültiger \textit{QueueListener} und \textit{EnvironmentListener} muss zuvor erstellt werden.
 Der Fokus liegt somit auf den folgenden Klassen:
 
@@ -311,7 +311,7 @@ Der Fokus liegt somit auf den folgenden Klassen:
 		\umluniassoc{mec::algorithm::AlgorithmFactory}{mec::extension::Extension}
 	\end{tikzpicture}
 	\centering
-	\caption{Abhängigkeiten zum Instantiieren des C++ Algorithmus}
+	\caption{Abhängigkeiten zum Instanziieren des C++ Algorithmus}
 	\label{class_dia:algorithm:cpp}
 \end{figure}
 
@@ -372,7 +372,7 @@ Die in türkis eingefärbten Klassen und Schnittstellen sind die aus der C++ Imp
 Für das Laufzeitverhalten sind die zusätzlichen Funktionsaufrufe durch den Adaptercode (\textit{AlgorithmShim} zu \textit{RustShim}, \textit{RustShim} zu \textit{RustShimInternal} und \textit{RustShimInternal} zu \textit{UpdateQueue}, gut zu sehen an der enormen Breite von \autoref{seq_dia:algorithm:cpp:binding:communication}) als ungünstig eingestuft.
 Die Komposition von \textit{AlgorithmShim} in \textit{ExternalAlgorithm} soll dem Compiler ermöglichen, den Funktionsaufruf von \textit{send\_sensor\_frame(frame: Box<SensorFrame>)} zu inlinen und so das Laufzeitverhalten zu verbessern.
 
-In der \autoref{seq_dia:algorithm:cpp:binding:create} wird aufgezeigt, wie der C++ Algorithmus instantiiert wird.
+In der \autoref{seq_dia:algorithm:cpp:binding:create} wird aufgezeigt, wie der C++ Algorithmus instanziiert wird.
 \autoref{seq_dia:algorithm:cpp:binding:communication} zeigt wie eine \textit{SensorFrame}-Nachricht weitergeleitet und mit einer \textit{RawMessage} beantwortet wird.
 Zur Vereinfachung sind hierzu einige Schritte, wie die Registrierung des Fahrzeugs, zwischen den Abbildungen ausgelassen.
 Die Sequenzdiagramme sind mit den Hintergrundfarben aus den bisherigen Diagrammen eingefärbt, um eine Zuordnung der aufgezeigten Klassen zu vereinfachen.

@@ -51,7 +51,7 @@ Die Serverimplementierung des \gls{mec}-View Projekts wird in einer \gls{mec}-Re
 %	\cite[24]{tdd}
 %\end{quotation}
 
-Bei der Test-getriebenen Entwicklung werden Tests in den Vordergrund gestellt.
+Bei der testgetriebenen Entwicklung werden Tests in den Vordergrund gestellt.
 Die Implementierung einer neuen Funktionalität wird durch neue Tests, welche die Anforderung repräsentieren, eingeleitet.
 Erst nachdem ein Test erfolgreich feststellt, dass die geforderte Funktionalität noch nicht vorhanden ist, wird mit der Implementierung begonnen.
 Eine schnelle Implementierung hat hierbei die höchste Priorität und erlaubt temporär auch eine limitierende, \enquote{stinkende} und naive Vorgehensweise \cite[7]{tdd}.
@@ -71,7 +71,7 @@ Daraus resultiert, dass gerade komplexe Algorithmen mit vielen Tests abgesichert
 Bestehende Tests bilden ein Sicherheitsnetz, mit dem Fehler durch Änderungen detektiert werden können.
 
 %\todo{manchmal stellt man beim erstellen des tests fest, dass die Anforderung blöd ist}
-Test-getriebene Entwicklung verändert auch die Vorgehensweise bei der Implementation von Anforderungen. Anstatt zu fragen \enquote{wie würde ich das implementieren?}, wird überlegt \enquote{wie würde ich das testen?} \cite[39]{tdd}, womit auch implizit gefragt wird, wie die äußere Schnittstelle idealerweise aussehen sollen \cite[4]{tdd}.
+Testgetriebene Entwicklung verändert auch die Vorgehensweise bei der Implementation von Anforderungen. Anstatt zu fragen \enquote{wie würde ich das implementieren?}, wird überlegt \enquote{wie würde ich das testen?} \cite[39]{tdd}, womit auch implizit gefragt wird, wie die äußere Schnittstelle idealerweise aussehen sollen \cite[4]{tdd}.
 
 
 %\todo{p.11, shift of practice in p.13, \enquote{Make it run, make it good} p.24, no changes unless enough motivation p.34, tests run -> not broken anything p.37, never interrupt an interruption p.41, TDD is a steering process, unsure -> smaller steps, sure -> bigger steps p.42, Test First can reduce stress p.127}
@@ -90,7 +90,7 @@ Bei funktionaler Sicherheit (\textit{safety}) geht es um die Betriebssicherheit,
 Unvertretbare Risiken sind in erster Linie Personenschäden, weswegen einheitliche Regularien in Normen wie der IEC 61508 bzw der DIN EN 61508 festgehalten sind.
 Für den Automobilbereich wurde die Norm in der ISO 26262 angepasst, um u. a. eine Einzelabnahme eines jeden Fahrzeuges, durch eine Gesamtabnahme des Produktes zu ermöglichen \cite[14]{safety}.
 
-Durch die Test-getriebene Entwicklung und der Verwendung von Rust und dessen Garantien (siehe \autoref{rust:guarantees}), sollen Fehler reduziert und eine möglichst sichere Implementierung geschaffen werden.
+Durch die testgetriebene Entwicklung und der Verwendung von Rust und dessen Garantien (siehe \autoref{rust:guarantees}), sollen Fehler reduziert und eine möglichst sichere Implementierung geschaffen werden.
 Eine Entwicklung nach ISO 26262 findet nicht statt, da dies zum einen nicht durch das Forschungsprojekt gefordert ist und zum anderen den Umfang dieser Bachelorarbeit überschreitet.
 
 %\todo{such shiat argument, arguemnt: more rust -> f. safety}
@@ -122,11 +122,11 @@ Hierbei beendet ein Funktionsaufruf für das Versenden oder Empfangen von Daten 
 
 Für einen Client, der nur zu einem Server eine Verbindung aufbaut, ist diese Herangehensweise aufgrund der niedrigen Komplexität gut geeignet.
 Für einen Server, der mit vielen Datenströmen gleichzeitig kommunizieren muss, ist diese Herangehensweise nicht geeignet.
-Eine sequentieller Sendeaufruf würde die Latenz des Servers pro Client um einen von der Verbindungsgeschwindigkeit abhängigen Wert erhöhen.
+Ein sequentieller Sendeaufruf würde die Latenz des Servers pro Client um einen von der Verbindungsgeschwindigkeit abhängigen Wert erhöhen.
 Einen Sende- und Empfangsthread je Client würde das Problem der Latenz lösen, jedoch aufgrund des je Thread benötigten Stacks und zusätzlichen Verwaltungsaufwand den Ressourcenverbrauch des Servers drastisch erhöhen.
 
-Eine asynchrone Kommunikation ermöglicht dagegen die Kommunikation mit vielen Datenströmen gleichzeitig, ohne die zuvor erwähnte Probleme zu provozieren.
-Bei einem asynchronen Sende- oder Empfangsaufruf wird nicht auf dessen Fertigstellung gewartet, sondern in der darunterliegende Implementation wird die Anfrage notiert, sobald wie möglich abgearbeitet und der Aufrufende bei Fertigstellung informiert.
+Eine asynchrone Kommunikation ermöglicht dagegen die Kommunikation mit vielen Datenströmen gleichzeitig, ohne die zuvor erwähnten Probleme zu provozieren.
+Bei einem asynchronen Sende- oder Empfangsaufruf wird nicht auf dessen Fertigstellung gewartet, sondern in der darunterliegenden Implementation wird die Anfrage notiert, sobald wie möglich abgearbeitet und der Aufrufende bei Fertigstellung informiert.
 Das erlaubt dem Aufrufer dem nächsten Datenstrom Daten zuzusenden, ohne dass dies durch die Fertigstellung des ersten Aufrufs verzögert wird.
 Eine asynchrone Kommunikation erhöht jedoch die Komplexität des Aufrufers (hier: des Servers), da nun zusätzlich der Status einer Sende- und Empfangsanfrage nachverfolgt werden muss.
 Im Gegenzug wird die Verwaltung von vielen Datenströmen bzw. Verbindungen mit wenigen Threads ermöglicht.

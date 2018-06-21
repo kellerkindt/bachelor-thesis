@@ -143,7 +143,7 @@ Unter \url{https://rustup.rs} ist dagegen das Installations- und Aktualisierungs
 \section{Aufbau eines Projektverzeichnisses}
 
 Der Aufbau eines Rust Projektverzeichnis ist auf zwei verschiedene Arten möglich.
-Zum einen gibt es den klassische Aufbau, in dem lediglich der Programmcode liegt und der Compiler direkt aufgerufen und parametrisiert wird.
+Zum einen gibt es den klassischen Aufbau, in dem lediglich der Programmcode liegt und der Compiler direkt aufgerufen und parametrisiert wird.
 Zum anderen wird der Aufbau als Crate (siehe \autoref{rust:structure:crate}) empfohlen, da dadurch Abhängigkeiten automatisch aufgelöst werden können, aber auch Metainformationen bezüglich des Autors, der Version und der Abhängigkeiten hinterlegt werden müssen.
 Ein klassischer Aufbau ist nur selten anzutreffen.
 
@@ -153,7 +153,7 @@ Ein klassischer Aufbau ist nur selten anzutreffen.
 \begin{wrapfigure}{L}[-1em]{.5\textwidth}
 	\rustcinclude
 		{rust:structure:classi}
-		{Verzeichnisstruktur des Quelltext-Verzeichnisses}
+		{Verzeichnisstruktur des\newline Quelltext-Verzeichnisses}
 		{sections/rust.classic.txt}
 \end{wrapfigure}
 
@@ -223,7 +223,7 @@ Die einzige Ausnahme sind die ganzzahligen Datentypen \rustcinline{usize} und \r
 Für die Indexierung eines Arrays oder einer Slice würden andere Datentypen, mit einer fest definierten Größe, keinen Sinn ergeben, da das Maximum an adressierbaren Elementen von der Architektur der Zielplattform abhängig ist.
 
 Durch dieses angewandte Schema der Bezeichnung der Datentypen wird eine Verwirrung, wie zum Beispiel in C, unterbunden.
-Dort haben die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe, sondern sind abhängig vom eingesetzten Compiler und der Zielplattform \cite[187]{deitel2013c}. Erst ab C99 wurden zusätzliche, aber optionale, ganzzahlige Datentypen mit festen Größe definiert \cite[141]{goll2014c}.
+Dort haben die primitiven Datentypen (\ccinline{short}, \ccinline{int}, \ccinline{long}, ..) keine definierte Größe, sondern sind abhängig vom eingesetzten Compiler und der Zielplattform \cite[187]{deitel2013c}. Erst ab C99 wurden zusätzliche, aber optionale, ganzzahlige Datentypen mit fester Größe definiert \cite[141]{goll2014c}.
 
 Konstanten können in Rust direkt einem Datentyp zugewiesen werden, indem dieser angehängt wird: \rustcinline{4711u16} ist vom Datentyp \rustcinline{u16}.
 Unterstriche dürfen an beliebiger Stelle Ziffern trennen, um die Lesbarkeit zu erhöhen: \rustcinline{1_000_000_f32}.
@@ -309,7 +309,7 @@ In Fällen, in denen dies nicht wie erwartet automatisch geschieht, kann eine ma
 \label{rust:fn}
 
 Funktionen werden durch \rustcinline{fn} gekennzeichnet, gefolgt von dem Funktionsnamen, der Parameterliste und zuletzt der Datentyp für den Rückgabewert.
-Selbst wenn kein expliziter Rückgabetyp angegeben ist, wird formal \rustcinline{()} zurück gegeben; \rustcinline{()} entspricht etwa \ccinline{void} aus bekannten Programmiersprachen.
+Selbst wenn kein expliziter Rückgabetyp angegeben ist, wird formal \rustcinline{()} zurückgegeben; \rustcinline{()} entspricht etwa \ccinline{void} aus bekannten Programmiersprachen.
 Die Parameterliste unterscheidet sich von bekannten Programmiersprachen wie C und Java, indem zuerst der Variablenname und darauf folgend der Datentyp notiert wird.
 
 \rustcinclude
@@ -396,7 +396,7 @@ Im Folgenden werden oft anzutreffende und wichtige Merkmale aus der Standardbibl
 	\item \monospaceinline{Send}: Markiert einen Datentyp als zwischen Threads übertragbar. Automatisch für alle Datentypen implementiert, bei denen auch alle beinhalteten Datentypen von Typ Send sind. Manuelle Implementation ist nicht sicher \cite{rust:book:send_sync}.
 	
 	\rustcinline{!Send}: Verhindert dagegen, dass ein Wert zu anderen Threads übertragen werden darf.
-	Somit können ansonsten rein textuell beschriebene Beschränkungen, wie zum Beispiel für der OpenGL-Kontext, durch den Compiler überprüft und erzwungen werden.
+	Somit können ansonsten rein textuell beschriebene Beschränkungen, wie zum Beispiel für den OpenGL-Kontext, durch den Compiler überprüft und erzwungen werden.
 	
 	\item \monospaceinline{Sync}: Markiert einen Datentyp als zwischen Threads synchronisierbar, d. h. mehrere Threads dürfen gleichzeitig lesend darauf zugreifen.
 	\rustcinline{!Sync} verbietet dies hingegen.
@@ -914,7 +914,7 @@ Der erste Fehler ist eine fehlende Überprüfung des Rückgabewertes von \ccinli
 Der Rückgabewert kann \ccinline{NULL} sein, falls das Öffnen der Datei fehlgeschlagen ist.
 Der Versuch in die Datei zu schreiben in Zeile 5 kann daraufhin in einem Speicherzugriffsfehler resultieren und das Programm abstürzen lassen.
 
-In Rust wird weder eine Ausnahme geworfen, noch ein Rückgabewert zurück gegeben, der ohne Prüfung verwendet werden kann:
+In Rust wird weder eine Ausnahme geworfen, noch ein Rückgabewert zurückgegeben, der ohne Prüfung verwendet werden kann:
 
 \rustcinclude
 	{rust:result:rust_good_fopen}
@@ -987,7 +987,7 @@ Das Beispiel in \autoref{rust:owner:rust_bad_free} entspricht dennoch weitestgeh
 
 In Rust werden verschiedene Arten von Speichersicherheit garantiert. Zum einen wird niemals auf einen \ccinline{NULL}-Pointer zugegriffen (siehe \autoref{rust:guarantee:no_null}), zum anderen wird niemals auf einen bereits deallokierten Speicherbereich zugegriffen (siehe \autoref{rust:guarantee:no_dangling_pointer}).
 
-Die Speichersicherheit umfasst aber auch den Zugriffe auf Puffer. So ist es nicht möglich einen Pufferüberlauf zu provozieren, da die Größe von einem Array und einer Slice immer bekannt ist.
+Die Speichersicherheit umfasst aber auch den Zugriff auf Puffer. So ist es nicht möglich einen Pufferüberlauf zu provozieren, da die Größe von einem Array und einer Slice immer bekannt ist.
 Der Compiler erzwingt eine Grenzüberprüfung beim Zugriff zur Laufzeit, falls die Einhaltung statisch nicht ersichtlich ist (\autoref{rust:zero_cost}).
 
 Ein weiterer Punkt zur Speichersicherheit ist im Bereich der Nebenläufigkeit zu finden: Ein Datenwettlauf wird durch Anwendung des Eigentümerprinzips verhindert (siehe \autoref{rust:guarantee:thread_safety}).
@@ -1027,7 +1027,7 @@ Ein Zugriff ohne gültige Sperre ist deshalb nicht möglich:
 \subsection{Zero Cost Abstraction}
 \label{rust:zero_cost}
 
-Trotz der vielen verwendeten Abstraktionen möchte Rust dadurch möglichst keine weitere Laufzeitkosten erzeugen.
+Trotz der vielen verwendeten Abstraktionen möchte Rust dadurch möglichst keine weiteren Laufzeitkosten erzeugen.
 Beim Übersetzen werden deshalb viele Abstraktionen durch Optimierungen für den Maschinencode unsichtbar.
 
 \subsection{Optional}
@@ -1220,7 +1220,7 @@ für die Speichersicherheit sind dann die Entwickler (der Standardbibliothek) ve
 \label{rust:adaptation}
 
 Der womöglich bekannteste Einsatzzweck von Rust ist im Webbrowser Firefox.
-Mehrere Versuche die Layoutberechnung in C++ zu parallelisieren sind aufgrund schwer auffindbaren Fehlern abgebrochen worden \cite{rust:example:firefox}.
+Mehrere Versuche die Layoutberechnung in C++ zu parallelisieren sind aufgrund schwer auffindbarer Fehlern abgebrochen worden \cite{rust:example:firefox}.
 Eine Parallelisierung im aktuellen Projekt \enquote{Quantum} in Rust ist dagegen mit ersten Erfolgen gekrönt \cite{rust:example:firefox_heise}
 
 Dropbox erreicht \enquote{Hunderte Millionen von Geräten} mit Rust und das GNOME Projekt ermöglicht die Integration von Rust Code \cite{rust:example:two_years}.

@@ -83,7 +83,7 @@ Die Implementation ist in drei Crates aufgeteilt:
 
 \subsubsection{Erklärung Server}
 
-Der Server instantiiert beim Start einen konkreten Algorithmus, öffnet einen TCP-Port und wartet auf dem daraus resultierenden \textit{TcpListener} auf neue Clients.
+Der Server instanziiert beim Start einen konkreten Algorithmus, öffnet einen TCP-Port und wartet auf dem daraus resultierenden \textit{TcpListener} auf neue Clients.
 Jedem neuen Client wird eine Referenz auf den Algorithmus übergeben und asynchron bearbeitet.
 
 \subsubsection{Erklärung Client, Sensor und Vehicle}
@@ -111,7 +111,7 @@ Hierzu wird eine Wandlung, wie in \autoref{analysis:messages} beschrieben, vorge
 Innerhalb der MECViewServer Crate sollen möglichst wenige Klassen die eingesetzt Nachrichtentechnologie kennen.
 Hierzu zählen die Algorithmus- (\textit{SampleAlgorithmus}), Mapper- und Adapterimplementationen (\textit{AsnAdapter}).
 Dies ist unumgänglich, weil sowohl der eingesetzte Algorithmus, der Mapper und der Adapter Felder einer Nachricht sowohl lesen als auch schreiben muss.
-Zudem muss der Server mindestens indirekt die eingesetzte Technologie kennen, um die richtigen und zueinander kompatiblen Algorithmus-, Mapper- und Adapterimplementation zu instantiieren.
+Zudem muss der Server mindestens indirekt die eingesetzte Technologie kennen, um die richtigen und zueinander kompatiblen Algorithmus-, Mapper- und Adapterimplementation zu instanziieren.
 Weitere Klassen agieren dagegen unabhängig von der eingesetzten Nachrichtentechnologie.
 
 \subsection{Kommunikationsarchitektur}

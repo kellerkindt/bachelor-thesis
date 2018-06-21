@@ -10,14 +10,14 @@ Eine Umsetzung wird trotzdem angestrebt, sofern die Zeitlimitierung für diese B
 
 \section{Funktionale Anforderungen}
 
-Die hier gelisteten funktionale Anforderungen beschreiben das gewünschte Verhalten des Systems  \cite[155]{goll2012methoden}.
+Die hier gelisteten funktionalen Anforderungen beschreiben das gewünschte Verhalten des Systems  \cite[155]{goll2012methoden}.
 
 \subsection{Top-Level Requirement}
 \requirement{top}{1000}{}{MEC-View-Server}{Die neue Implementation des MEC-View-Servers soll an Stelle der existierenden MEC-View-Server Implementation treten können. Empfangene Nachrichten von Sensoren sollen an den Algorithmus und dessen Ergebnisse an verbundene Fahrzeuge weitergeleitet werden.}
 
 \subsection{Anforderungen}
 \subsubsection{Kommunikation}
-\requirement{com:tcp}{2000}{}{TCP Server}{Auf Port 2000 sollen neue TCP-Verbindungen angenommen werden. Jedem Client soll eine eigenen TCP Verbindung zugewiesen sein.}
+\requirement{com:tcp}{2000}{}{TCP Server}{Auf Port 2000 sollen neue TCP-Verbindungen angenommen werden. Jedem Client soll eine eigene TCP Verbindung zugewiesen sein.}
 
 \subsubsection{Protokoll}
 \requirement{client:sensor}{2100}{}{Client als Sensor}{Ein Client soll sich nach dem Verbindungsaufbau als Sensor registrieren können. Ein Client soll sich nicht mehrmals registrieren können. Vor einer Registrierung soll der Typ des Clients unbekannt sein und er soll nicht als Sensor agieren können.}
@@ -102,7 +102,7 @@ Nichtfunktionale Anforderungen zeigen im Gegensatz zu funktionalen Anforderungen
 \requirement{exec:mec}{3020}{}{Plattform MEC}{Die Implementation des Servers soll in compilierter Form auf einem MEC Server mit dem Betriebssystem Ubuntu 16.04 LTS Server und der Architektur x86-64 ausführbar sein.}
 
 \subsubsection{Reaktionsverhalten}
-\requirement{exec:time}{3100}{}{Reaktionszeit des Servers}{Die Implementation des Servers soll Nachrichten von 6 Videosensoren mit einem Nachrichtenintervall von 100ms, 7 Lidarsensoren mit einem Nachrichtenintervall von 50ms und zwei gleichzeitig vebundenen Fahrzeugen in unter 5ms beantworten können.
+\requirement{exec:time}{3100}{}{Reaktionszeit des Servers}{Die Implementation des Servers soll Nachrichten von 6 Videosensoren mit einem Nachrichtenintervall von 100ms, 7 Lidarsensoren mit einem Nachrichtenintervall von 50ms und zwei gleichzeitig verbundenen Fahrzeugen in unter 5ms beantworten können.
 	Dies umfasst Nachricht dekodieren, Fusionsalgorithmus darbieten, Resultat enkodieren und versenden.
 	Die Bearbeitungszeit des Fusionsalgorithmus zählt nicht dazu.}
 

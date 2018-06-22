@@ -1,0 +1,31 @@
+﻿/* For HTML Editor */
+
+/* 23.1.2014 adapt to SP2013 */
+/* a.ms-rteStyle-ITUXCommuLearnMoreLink { */
+.ms-rteStyle-ITUXCommuLearnMoreLink { 
+-ms-name:"XCommunications Learn more";
+	background:url(/PublishingImages/masterpage/icons/more-arrow.png) no-repeat right 4px; 
+	font-weight:bold; 
+	padding-right:12px; 
+}
+
+/* 23.1.2014 adapt to SP2013. removed from rte styles */
+ul.ms-rteStyle-ITUXCommuQuickLinks {
+	padding:10px 7px !important; 
+	border:none !important
+}
+ul.ms-rteStyle-ITUXCommuQuickLinks li {
+	padding:5px 0 5px 15px  !important;
+	background:url(/PublishingImages/masterpage/icons/quicklinks-arrow.gif) no-repeat 0 10px; 
+	line-height:1.3; 
+	list-style:none !important
+}
+
+/* 20.11.2012 support cases where <ul> is surrounded by an element such as <div> */
+.ms-rteStyle-ITUXCommuQuickLinks ul {
+	line-height:normal;
+}
+.ms-rteStyle-ITUXCommuQuickLinks li {
+	list-style-image:url(/PublishingImages/masterpage/icons/quicklinks-arrow.gif) !important;
+	padding: 5px 0 5px 0 !important;
+}

@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html class="js" lang="de-DE"><head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="flattr:id" content="mqr9wn">
+<meta name="viewport" id="metaviewport" content="width=device-width">
+<title>Rust: "C ist eine feindselige Sprache" - Golem.de</title>
+<meta name="title" content="Rust: &quot;C ist eine feindselige Sprache&quot; - Golem.de">
+<meta name="fulltitle" content="Rust: &quot;C ist eine feindselige Sprache&quot; - Golem.de">
+<meta name="DC.title" content="Rust: &quot;C ist eine feindselige Sprache&quot; - Golem.de">
+<meta name="description" content="Der Mitbegründer des Gnome-Projekts Federico Mena Quintero ist nicht mehr besonders überzeugt von der Sprache C und empfiehlt aus eigener Erfahrung stattdessen Rust - vor allem">
+<meta name="news_keywords" content="Rust, Gnome, Applikationen, Open Source, Security, Softwareentwicklung">
+<link rel="image_src" href="https://www.golem.de/1610/123943-128692-i_rc.jpg">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" property="og:title" content="Rust: &quot;C ist eine feindselige Sprache&quot; - Golem.de">
+<meta name="twitter:url" property="og:url" content="https://www.golem.de/news/rust-c-ist-eine-feindselige-sprache-1707-129196.html">
+<meta name="twitter:image" property="og:image" content="https://www.golem.de/1610/123943-128691-i_rc.jpg">
+<meta property="og:image:width" content="416"><meta property="og:image:height" content="234">
+<meta name="twitter:description" property="og:description" content="Der Mitbegründer des Gnome-Projekts Federico Mena Quintero ist nicht mehr besonders überzeugt von der Sprache C und empfiehlt aus eigener Erfahrung stattdessen Rust - vor allem">
+<link rel="amphtml" href="https://www.golem.de/news/rust-c-ist-eine-feindselige-sprache-1707-129196.amp.html">
+<script async="" src="Gr%C3%BC17-Dateien/golem_cpxl_113-min.js"></script><script type="text/javascript" async="" src="Gr%C3%BC17-Dateien/ga.js"></script><script async="" src="Gr%C3%BC17-Dateien/front.html"></script><script async="" src="Gr%C3%BC17-Dateien/golem_csi-114-min.js"></script><script async="" src="Gr%C3%BC17-Dateien/adsbygoogle.js"></script><script async="" type="text/javascript" src="Gr%C3%BC17-Dateien/async.js"></script><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "Rust: &quot;C ist eine feindselige Sprache&quot; - Golem.de",
+    "mainEntityOfPage": "/news/rust-c-ist-eine-feindselige-sprache-1707-129196.html",
+    "datePublished": "2017-07-30T12:28:01+02:00",
+    "dateModified": "2017-07-30T12:28:01+02:00",
+    "author": {
+        "@type": "Person",
+        "name": "Sebastian Grüner"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Golem.de",
+        "url": "https://www.golem.de/",
+        "sameAs": ["https://www.facebook.com/golem", "https://twitter.com/GolemRedaktion", "https://plus.google.com/108635198256823282564/"],
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.golem.de/staticrl/images/golem-rss60bt.png",
+            "width": 270,
+            "height": 60
+        }
+    },
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://www.golem.de/1610/123943-128691-i_rc.jpg",
+        "width": 416,
+        "height": 234
+    }
+}
+</script>
+
+<meta name="twitter:site" content="@golemredaktion">
+<meta property="fb:pages" content="10150133802480637">
+
+<meta name="application-name" content="Golem.de">
+<meta name="msapplication-config" content="/staticrl/xml/ieconfig.xml">
+<meta name="msapplication-TileImage" content="/staticrl/images/mstiles/white144.png">
+<meta name="msapplication-TileColor" content="#222222">
+<meta name="msapplication-task" content="name=Homepage;action-uri=https://www.golem.de;icon-uri=https://www.golem.de/favicon.ico">
+<meta name="msapplication-task" content="name=Ticker;action-uri=https://www.golem.de/ticker/;icon-uri=https://www.golem.de/favicon.ico">
+<meta name="msapplication-task" content="name=Facebook;action-uri=https://www.facebook.com/golem;icon-uri=https://www.golem.de/_img/facebook_16.ico">
+<meta name="msapplication-task" content="name=Twitter;action-uri=https://twitter.com/GolemRedaktion;icon-uri=https://www.golem.de/_img/twitter_16.ico">
+<meta name="msapplication-task" content="name=Google+;action-uri=https://plus.google.com/108635198256823282564/?prsrc=3;icon-uri=https://www.golem.de/_img/gplus2_16.ico">
+<link rel="alternate" type="application/rss+xml" title="Golem.de RSS Feed" href="https://rss.golem.de/rss.php?feed=RSS1.0">
+<link rel="alternate" type="application/atom+xml" title="Golem.de ATOM Feed" href="https://rss.golem.de/rss.php?feed=ATOM1.0">
+<link rel="apple-touch-icon" href="https://www.golem.de/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="54x54" href="https://www.golem.de/apple-touch-icon-54x54.png">
+<link rel="apple-touch-icon" sizes="72x72" href="https://www.golem.de/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="https://www.golem.de/apple-touch-icon-114x114.png">
+
+
+<link rel="shortcut icon" href="https://www.golem.de/favicon.ico">
+
+<style type="text/css">
+@font-face { font-family: 'Droid Sans'; font-style: normal; font-weight: 700;
+    src: url(/staticrl/fonts/droidsans/DroidSans-Bold.woff2) format('woff2'), url(/staticrl/fonts/droidsans/DroidSans-Bold.woff) format('woff'), url(/staticrl/fonts/droidsans/DroidSans-Bold.ttf) format('truetype'), url(/staticrl/fonts/droidsans/DroidSans.svg#DroidSans-Bold) format('svg');
+}
+@font-face { font-family: 'Droid Serif'; font-style: normal; font-weight: 400;
+    src: url(/staticrl/fonts/droidserif/DroidSerif.woff2) format('woff2'), url(/staticrl/fonts/droidserif/DroidSerif.woff) format('woff'), url(/staticrl/fonts/droidserif/DroidSerif.ttf) format('truetype'), url(/staticrl/fonts/droidserif/DroidSerif.svg#DroidSerif) format('svg');
+}
+@font-face { font-family: 'Droid Sans'; font-style: normal; font-weight: 400;
+    src: url(/staticrl/fonts/droidsans/DroidSans.woff2) format('woff2'), url(/staticrl/fonts/droidsans/DroidSans.woff) format('woff'), url(/staticrl/fonts/droidsans/DroidSans.ttf) format('truetype'), url(/staticrl/fonts/droidsans/DroidSans.svg#DroidSans) format('svg');
+}
+@font-face { font-family: 'Droid Serif'; font-style: italic; font-weight: 400;
+    src: url(/staticrl/fonts/droidserif/DroidSerif-Italic.woff2) format('woff2'), url(/staticrl/fonts/droidserif/DroidSerif-Italic.woff) format('woff'), url(/staticrl/fonts/droidserif/DroidSerif-Italic.ttf) format('truetype'), url(/staticrl/fonts/droidserif/DroidSerif.svg#DroidSerif-Italic) format('svg');
+}
+@font-face { font-family: 'Droid Serif'; font-style: normal; font-weight: 700;
+    src: url(/staticrl/fonts/droidserif/DroidSerif-Bold.woff2) format('woff2'), url(/staticrl/fonts/droidserif/DroidSerif-Bold.woff) format('woff'), url(/staticrl/fonts/droidserif/DroidSerif-Bold.ttf) format('truetype'), url(/staticrl/fonts/droidserif/DroidSerif.svg#DroidSerif-Bold) format('svg');
+}
+</style>
+
+<link rel="stylesheet" href="Gr%C3%BC17-Dateien/golem_main_114-min.css" type="text/css">
+
+<script type="text/javascript"><!--
+var Golem = Golem||{};
+Golem.headstart = new Date() * 1;
+(function(h){h.className = h.className.replace('no-js', 'js');})(document.documentElement);
+var _gcpx = _gcpx || [];
+//-->
+</script>
+<!--[if lt IE 9]>
+  <script src="/staticrl/scripts/external/modernizr.custom-2.6.2.min.js"></script>
+<![endif]-->
+
+<script type="text/javascript">
+<!--
+if(!Golem.Ad) {
+    Golem.Ad = {};
+}
+Golem.pcvclass = 'desktop';
+
+var gafc_rubrik = '9985678699', gafc_zone = '3410169894',
+    ord = Math.floor(Math.random()*1e16);
+//-->
+</script>
+
+
+<style type="text/css">
+#hn1-home { color:#fff !important }
+#hn2-top { color:#888 !important }
+</style>
+
+
+<link rel="stylesheet" href="Gr%C3%BC17-Dateien/gg2_1-0-0-min.css" type="text/css">
+
+<script type="text/javascript" src="Gr%C3%BC17-Dateien/golem_main_114-min.js"></script>
+
+<script type="text/javascript">
+<!--
+Golem.CurrentArticle.idArticle = '129196';
+//-->
+</script>
+
+<script type="text/javascript">
+Golem.isTopOnHomepage = false;
+if(133203 == Golem.CurrentArticle.idArticle) {
+    Golem.isTopOnHomepage = true;
+}
+</script><style type="text/css">
+.formatted > p:last-of-type:after { content:" ■"; white-space:nowrap; }
+</style>
+
+<style type="text/css">
+.hero > noscript > img { max-width:100%; }
+</style>
+</head>
+<body class="article" id="top">
+    <div class="golemContentToHide">
+<script type="text/javascript">
+<!--
+  var IVW = "", n_pbt = "", gzipEnabled = false;
+  var _gafccsi = _gafccsi || [];
+//-->
+</script>
+<!-- begin ad tag (init) -->
+<script type="text/javascript" src="Gr%C3%BC17-Dateien/iqd_gzip_test.gz"></script>
+<script type="text/javascript">
+    // ---Laden AdController---
+    var iqd_mode = (function(){
+        var dm = window.location.href.toLowerCase();
+        return (dm.indexOf('iqdeployment=')>1) ? (dm.split('iqdeployment=')[1]).replace(/[^a-z]+/g, '') : 'live';
+    })();
+    document.write('<scr' + 'ipt src="https://iqdtms.golem.de/cdn_golem_dt/'+iqd_mode+'/iqadcontroller.js' + (gzipEnabled ? '.gz' : '') + '"></scr' + 'ipt>');
+</script><script src="Gr%C3%BC17-Dateien/iqadcontroller.gz"></script>
+<script type="text/javascript">
+if (typeof AdController !== 'undefined') {
+    AdController.setPageInfo({
+        $handle:"artikel",
+        $autoSizeFrames:true,
+        level2:"artikel",
+        level3:"",
+        keywords:"sec,oss,apps,,rust,tsilkcalb,gnome,itsicherheit,autorsebastiangruener,desktopapplikationen,opensource,security,softwareentwicklung",
+        tma:""
+    });
+    try {
+        AdController.stage();
+    } catch(e) {}
+}
+</script>
+<script type="text/javascript">
+if (typeof AdController !== 'undefined') {
+    AdController.initialize();
+}
+</script>
+<!-- end ad tag (init) -->
+<div id="bannerTopWrapper">
+<div class="iqdSiteAlign">
+<div id="superbanner">
+<!-- begin ad tag (oop) -->
+<div id="iqadtileOOP">
+<script type="text/javascript">
+if (typeof AdController !== 'undefined' && AdController._siteConfig._adapterName === 'gpt') { AdController.render('iqadtileOOP'); }
+</script>
+</div>    
+<!-- end ad tag (oop) -->
+<!-- begin ad tag (tile=1) -->
+<div id="iqadtile1">
+<script type="text/javascript">
+if (typeof AdController !== 'undefined') { AdController.render('iqadtile1'); }
+</script>
+</div>
+<!-- end ad tag (tile=1) -->
+
+<div id="skyscraper"></div><!-- skyscraper --> 
+</div><!-- superbanner -->
+
+</div>
+</div><div id="grandwrapper" class="golem-zo-grandwrapper iq-site-wrapper">
+<header id="header" class="iq-site-header">
+    <div class="dh1">
+        <a href="https://www.golem.de/"><img alt="Golem.de - IT-News für Profis" src="Gr%C3%BC17-Dateien/logo-g.png" srcset="/staticrl/images/logo-g.png 1x, /staticrl/images/golem-logo-opt2.svg 2x" style="width:212px;"></a>
+    </div>
+    <nav id="header-nav-1">
+        <div class="implied">Navigation</div>
+        <ul>
+            <li><a id="hn1-home" href="https://www.golem.de/">Home</a></li>
+            <li><a id="hn1-ticker" href="https://www.golem.de/ticker/">Ticker</a></li>
+            <li><a id="hn1-video" href="https://video.golem.de/">Video</a></li>
+            <li><a id="hn1-audio" href="https://www.golem.de/specials/vorgelesen/">Audio</a></li>
+            <li><a id="hn1-forum" href="https://forum.golem.de/">Forum</a></li>
+        </ul>
+    </nav><!-- #header-nav-1 -->
+    <nav id="header-nav-2">
+        <div id="hn2-top" class="dh2">Top-Themen:</div>
+<ul>
+<li><a id="hn2s-cebit-2018" href="https://www.golem.de/specials/cebit-2018/">Cebit 2018</a></li><li><a id="hn2s-e3-2018" href="https://www.golem.de/specials/e3-2018/">E3 2018</a></li><li><a id="hn2s-smartphone" href="https://www.golem.de/specials/smartphone/">Smartphone</a></li><li><a id="hn2s-auto" href="https://www.golem.de/specials/auto/">Auto</a></li><li><a id="hn2s-computex2018" href="https://www.golem.de/specials/computex2018/">Computex 2018</a></li><li><a id="hn2s-raumfahrt" href="https://www.golem.de/specials/raumfahrt/">Raumfahrt</a></li><li class="contains-drop"><a href="https://www.golem.de/specials/">mehr…</a><ul><li><a href="https://www.golem.de/specials/apple/">Apple</a></li><li><a href="https://www.golem.de/specials/eu-dsgvo/">DSGVO</a></li><li><a href="https://www.golem.de/specials/golemlive/">golemlive</a></li><li><a href="https://www.golem.de/specials/security/">Security</a></li><li><a href="https://www.golem.de/specials/open-source/">Open Source</a></li><li><a href="https://www.golem.de/specials/vectoring/">Vectoring</a></li><li><a href="https://www.golem.de/specials/sony/">Sony</a></li><li><a href="https://www.golem.de/specials/amd/">AMD</a></li><li><a href="https://www.golem.de/specials/nokia/">Nokia</a></li><li><a href="https://www.golem.de/specials/galaxy-s9/">Galaxy S9</a></li><li><a href="https://www.golem.de/specials/iphonex/">iPhone X</a></li><li><a href="https://www.golem.de/specials/microsoft/">Microsoft</a></li><li><a href="https://www.golem.de/specials/telekom/">Telekom</a></li><li><a href="https://www.golem.de/specials/nvidia/">Nvidia</a></li><li><a href="https://www.golem.de/specials/flugzeug/">Flugzeug</a></li><li><a href="https://www.golem.de/specials/nintendo-switch/">Nintendo Switch</a></li><li><a href="https://www.golem.de/specials/netzpolitik/">Netzpolitik</a></li><li><a href="https://www.golem.de/specials/adblocker/">AdBlocker</a></li><li><a href="https://www.golem.de/specials/amazon/">Amazon</a></li><li><a href="https://www.golem.de/specials/facebook/">Facebook</a></li><li><a href="https://www.golem.de/specials/google/">Google</a></li><li><a href="https://www.golem.de/specials/samsung/">Samsung</a></li><li><a href="https://www.golem.de/specials/android-8.0/">Android 8.0</a></li><li><a href="https://www.golem.de/specials/playstation4/">Playstation 4</a></li><li><a href="https://www.golem.de/specials/nsa/">NSA</a></li><li><a href="https://www.golem.de/specials/windows10/">Windows 10</a></li><li><a href="https://www.golem.de/specials/virtuelle-realitaet/">VR</a></li><li><a href="https://www.golem.de/specials/test/">Test</a></li><li><a href="https://www.golem.de/specials/netflix/">Netflix</a></li><li><a href="https://www.golem.de/specials/anleitung/">Anleitung</a></li><li><a href="https://www.golem.de/specials/internet-der-dinge/">IoT</a></li><li><a href="https://www.golem.de/specials/drohne/">Drohne</a></li><li><a href="https://www.golem.de/specials/linux/">Linux</a></li><li><a href="https://www.golem.de/specials/foto/">Foto</a></li><li><a href="https://www.golem.de/specials/android/">Android</a></li></ul></li>
+</ul>    </nav><!-- #header-nav-2 -->
+
+<form method="get" action="https://suche.golem.de/search.php" name="su">
+    <input name="l" value="10" type="hidden">
+    <fieldset>
+        <label class="implied" for="search-text">Suchbegriffe:</label>
+        <span class="inputText">
+            <input id="search-text" placeholder="" name="q" tabindex="1" type="text">
+        </span>
+        <span class="inputSubmit">
+            <input id="search-submit" value="Suchen" tabindex="2" type="submit">
+        </span>
+    </fieldset>
+</form>
+</header><!-- #header -->
+<div id="gservices">
+    <span id="gservabo">
+        <a href="https://account.golem.de/login" rel="nofollow">Abo</a>
+    </span>
+    <ul id="gservnav">
+        <li>Services:</li>
+<li><form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="bar" target="_blank"><input name="service" value="preisvergleich" type="hidden"><input value="Preisvergleich" style="float: left;" type="submit"></form></li>
+<li><form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="bar" target="_blank"><input name="service" value="jobs" type="hidden"><input value="Stellenmarkt" style="float: left;" type="submit"></form></li>
+<li><form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="bar" target="_blank"><input name="service" value="phitshp" type="hidden"><input value="Top-Angebote" style="float: left;" type="submit"></form></li>
+<li><form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="bar" target="_blank"><input name="service" value="profis3" type="hidden"><input value="IT-Köpfe" style="float: left;" type="submit"></form></li>
+<li><form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="bar" target="_blank"><input name="service" value="gehaltstest" type="hidden"><input value="Gehaltscheck" style="float: left;" type="submit"></form></li>
+<li><form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="bar" target="_blank"><input name="service" value="newsletter" type="hidden"><input value="Newsletter" style="float: left;" type="submit"></form></li>
+    </ul>
+</div>
+
+        <div id="screen">
+<!-- begin ad tag (tile=3) -->
+<div id="iqadtile3">
+<script type="text/javascript">
+if (typeof AdController !== 'undefined') { AdController.render('iqadtile3'); }
+</script>
+<noscript>
+<style type="text/css">
+<!--
+div.gsap.gsapb { width:1000px; height:200px; margin:0 0 30px; }
+div.gsap.gsapb > div.gsap-mit, div.gsap.gsapb > div.gsap-ohne { width:200px; height:160px; top:20px; left:30px; }
+div.gsap.gsapb > div.gsap-mit { background-image: url(/staticrl/images/abo/display-mit-werbung2.png); }
+div.gsap.gsapb > div.gsap-ohne { background-image: url(/staticrl/images/abo/display-ohne-werbung2.png); }
+div.gsap.gsapb > span { top:20px; left:340px; font-size:26px; line-height:26px; }
+div.gsap.gsapb > ul { top:60px; left:360px; font-size:16px; line-height:28px; }
+-->
+</style>
+<div class="gsap gsapb">
+<div class="gsap-img gsap-mit"></div><div class="gsap-img gsap-ohne"></div>
+<span>Golem pur</span>
+<ul><li>Golem.de ohne Werbung nutzen</li><li>Mehrseitige Artikel auf einer Seite lesen</li><li>RSS-Volltext-Feed f&uuml;r Artikel</li><li>Ab 2,50&euro; im Monat</li></ul>
+<form action="https://www.golem.de/sonstiges/service/index.php" method="POST" target="_blank"><input name="service" value="abohp" type="hidden"><input value="Jetzt Abo abschlie&szlig;en &gt;" type="submit"></form>
+</div>
+</noscript>
+</div>
+<!-- end ad tag (tile=3) -->            <div class="g g6">
+                <article>
+
+<header class="cluster-header header--centered">
+
+<h1>
+        <span class="dh2 head1">Rust</span><span class="implied">: </span>
+        <span class="dh1 head5">"C ist eine feindselige Sprache"</span>
+</h1>
+<p>
+Der Mitbegründer des <a href="https://www.golem.de/specials/gnome/" target="_blank" class="golem-internal-url golem-url-specials">Gnome</a>-Projekts
+ Federico Mena Quintero ist nicht mehr besonders überzeugt von der 
+Sprache C und empfiehlt aus eigener Erfahrung stattdessen <a href="https://www.golem.de/specials/rust/" target="_blank" class="golem-internal-url golem-url-specials">Rust</a> - vor allem für Parser.
+</p>
+
+<script>
+<!--
+document.getElementsByClassName('cluster-header')[0].classList.add('header--centered');
+//-->
+</script>
+<div class="authors">
+<span class="authors__type">Ein Bericht </span>
+<span class="authors__fillword"> von </span>
+<span class="authors__name"><a href="https://www.golem.de/specials/autor-sebastian-gruener/" rel="author">Sebastian Grüner</a></span><span class="implied"> veröffentlicht am </span>
+<time class="authors__pubdate" pubdate="pubdate" datetime="2017-07-30T12:28:01+02:00">30. Juli 2017, 12:28 Uhr</time></div><!-- .authors -->
+
+<div id="narando-placeholder"></div>
+<!-- div class="media-wrap social-sticky" -->
+<ul class="social-tools social-tools--inverted">
+    <li class="share-item">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fglm.io%2F129196%3Ff" target="_blank" onclick="_onSocialClick('mobile', 'sidebar', 'fb', '');" rel="nofollow" class="share-fb">
+            <svg width="28" height="28" viewBox="0 0 24 28">
+                <path fill="currentColor" d="M19.5 2q1.859 0 3.18 1.32t1.32 3.18v15q0 1.859-1.32 3.18t-3.18 1.32h-2.938v-9.297h3.109l.469-3.625h-3.578v-2.312q0-.875.367-1.313t1.43-.438l1.906-.016v-3.234q-.984-.141-2.781-.141-2.125 0-3.398 1.25t-1.273 3.531v2.672h-3.125v3.625h3.125v9.297h-8.313q-1.859 0-3.18-1.32t-1.32-3.18v-15q0-1.859 1.32-3.18t3.18-1.32h15z"></path>
+            </svg>
+            Teilen auf Facebook
+        </a>
+    </li>
+    <li class="share-item">
+        <a href="https://twitter.com/share?url=https%3A%2F%2Fglm.io%2F129196%3Ft&amp;text=Rust%3A%20%5C%22C%20ist%20eine%20feindselige%20Sprache%5C%22&amp;via=golem" target="_blank" onclick="_onSocialClick('mobile', 'sidebar', 'twitter', '');" rel="nofollow" class="share-twitter">
+            <svg width="28" height="28" viewBox="0 0 24 28">
+                <path fill="currentColor" d="M20 9.531q-.875.391-1.891.531 1.062-.625 1.453-1.828-1.016.594-2.094.797-.953-1.031-2.391-1.031-1.359 0-2.32.961t-.961 2.32q0 .453.078.75-2.016-.109-3.781-1.016t-3-2.422q-.453.781-.453 1.656 0 1.781 1.422 2.734-.734-.016-1.563-.406v.031q0 1.172.781 2.086t1.922 1.133q-.453.125-.797.125-.203 0-.609-.063.328.984 1.164 1.625t1.898.656q-1.813 1.406-4.078 1.406-.406 0-.781-.047 2.312 1.469 5.031 1.469 1.75 0 3.281-.555t2.625-1.484 1.883-2.141 1.172-2.531.383-2.633l-.016-.422q.984-.703 1.641-1.703zm4-3.031v15q0 1.859-1.32 3.18t-3.18 1.32h-15q-1.859 0-3.18-1.32t-1.32-3.18v-15q0-1.859 1.32-3.18t3.18-1.32h15q1.859 0 3.18 1.32t1.32 3.18z"></path>
+            </svg>
+            Teilen auf Twitter
+        </a>
+    </li>
+    <li class="share-item">
+        <a href="https://plus.google.com/share?hl=de&amp;url=https%3A%2F%2Fglm.io%2F129196%3Fg" target="_blank" onclick="_onSocialClick('mobile', 'sidebar', 'gplus', '');" rel="nofollow" class="share-gplus">
+            <svg width="28" height="28" viewBox="0 0 24 28">
+                <path fill="currentColor" d="M14.328 14.141q0-.406-.094-1h-5.656v2.063h3.391q-.047.375-.258.781t-.586.828-1.039.695-1.508.273q-1.547 0-2.641-1.109t-1.094-2.672 1.094-2.672 2.641-1.109q1.437 0 2.391.922l1.625-1.578q-1.687-1.563-4.016-1.563-2.5 0-4.25 1.758t-1.75 4.242 1.75 4.242 4.25 1.758q2.578 0 4.164-1.641t1.586-4.219zm5.391.718h1.703v-1.719h-1.703v-1.719h-1.719v1.719h-1.719v1.719h1.719v1.719h1.719v-1.719zm4.281-8.359v15q0 1.859-1.32 3.18t-3.18 1.32h-15q-1.859 0-3.18-1.32t-1.32-3.18v-15q0-1.859 1.32-3.18t3.18-1.32h15q1.859 0 3.18 1.32t1.32 3.18z"></path>
+            </svg>
+            Teilen auf Google+
+        </a>
+    </li>
+    <li class="share-item">
+        <a href="https://www.xing-share.com/app/user?op=share;sc_p=xing-share;url=https%3A%2F%2Fglm.io%2F129196%3Fx" target="_blank" onclick="_onSocialClick('mobile', 'sidebar', 'xing', '');" rel="nofollow" class="share-xing">
+            <svg width="24" height="24" viewBox="0 0.5 24 28">
+                <path fill="currentColor" d="M10.8 12.6s-.7-1.2-2-3.5c-.2-.3-.5-.5-.8-.5h-2.9c-.2 0-.3.1-.4.2-.1.1-.1.3 0 .5l1.9 3.4-3 5.4c-.1.1-.1.3 0 .4.1.1.2.2.4.2h2.9c.3 0 .6-.2.8-.6l3.1-5.5zm9.7-7.7c-.1-.1-.2-.2-.4-.2h-2.9c-.3 0-.6.2-.8.5l-6.4 11.4s1.4 2.5 4.1 7.5c.2.4.5.5.8.5h2.9c.2 0 .3-.1.4-.2.1-.1.1-.3 0-.4l-4-7.4 6.4-11.2c0-.2 0-.4-.1-.5zm3.5 2.3v14.9c0 1.2-.4 2.3-1.3 3.2s-1.9 1.3-3.2 1.3h-14.9c-1.2 0-2.3-.4-3.2-1.3s-1.3-1.9-1.3-3.2v-14.9c0-1.2.4-2.3 1.3-3.2s1.9-1.3 3.2-1.3h14.9c1.2 0 2.3.4 3.2 1.3s1.3 2 1.3 3.2z"></path>
+            </svg>
+            Teilen auf Xing
+        </a>
+    </li>
+    <li class="share-item">
+        <a href="mailto:?subject=Rust%3A%20%5C%22C%20ist%20eine%20feindselige%20Sprache%5C%22&amp;body=Artikel%20auf%20Golem.de%20lesen:%0Ahttps%3A%2F%2Fglm.io%2F129196%3Fm%0A" class="share-mail">
+            <svg width="24" height="28" viewBox="0 0 24 28">
+                <path fill="currentColor" d="M19.5 2q1.86 0 3.18 1.32T24 6.5v15q0 1.86-1.32 3.18T19.5 26h-15q-1.86 0-3.18-1.32T0 21.5v-15q0-1.86 1.32-3.18T4.5 2h15zm.5 16.5v-6.813q-.484.547-1 .86-.53.343-2.07 1.327t-2.367 1.547Q13.033 16.5 12 16.5q-1.03 0-2.56-1.08-.72-.5-2.212-1.444T5 12.53q-.186-.124-.515-.42T4 11.686V18.5q0 .625.44 1.062T5.5 20h13q.626 0 1.063-.438T20 18.5zm0-8.953q0-.64-.43-1.094T18.5 8h-13q-.625 0-1.062.438T4 9.5q0 .578.477 1.195t1.055 1.008q.734.5 2.148 1.39t2.023 1.298q.047.036.266.18t.323.22.328.207.368.203.336.147.352.117.32.04.32-.04.35-.116.336-.148.367-.204.33-.203.33-.22.264-.18l4.172-2.718q.545-.36 1.037-.977T20 9.548z"></path>
+            </svg>
+            per E-Mail versenden
+        </a>
+    </li>
+    <li class="share-item"> <!-- PRG form? -->
+        <a href="https://www.golem.de/print.php?a=129196" rel="nofollow" class="share-print">
+            <svg width="24" height="28" viewBox="0 -2 24 28">
+                <path d="M19.5,0c1.2,0 2.3,0.4 3.2,1.3c0.9,0.9 1.3,2 1.3,3.2l0,15c0,1.3 -0.4,2.3 -1.3,3.2c-0.9,0.9 -2,1.3 -3.2,1.3l-15,0c-1.2,0 -2.3,-0.4 -3.2,-1.3c-0.9,-0.9 -1.3,-2 -1.3,-3.2l0,-15c0,-1.2 0.4,-2.3 1.3,-3.2c0.9,-0.9 2,-1.3 3.2,-1.3l15,0Zm-13.635,8.5c-1.442,0 -2.635,1.194 -2.635,2.636l0,5.27l3.499,0l0,3.5l10.542,0l0,-3.5l3.499,0l0,-5.27c0,-1.442 -1.193,-2.636 -2.635,-2.636l-12.27,0Zm9.635,5.27l0,4.365l-7.001,0l0,-4.365l7.001,0Zm2.635,-1.77c0.495,0 0.906,-0.371 0.906,-0.864c0,-0.494 -0.412,-0.906 -0.906,-0.906c-0.494,0 -0.864,0.412 -0.864,0.906c0,0.493 0.37,0.864 0.864,0.864Zm-0.864,-4.406l0,-3.5l-10.542,0l0,3.5l10.542,0Z"></path>
+            </svg>
+            Drucken
+        </a>
+    </li>
+</ul>
+<!-- /div -->
+<script type="text/javascript">
+if(!_onSocialClick) {
+    var _onSocialClick = function(type, mode, sn, aid) {
+        var m = 'button';
+        switch(mode) {
+            case 'bottom': m = m + 'low' + '/' + sn + '/' + aid; break;
+            case 'sidebar': m = m + '/' + sn + '/' + aid; break;
+        }
+
+        _gcpx.push(['ev', 'd', m]); /* desktop event */
+
+        return true;
+    };
+}
+</script><!-- img -->
+<figure class="hero">
+<img src="Gr%C3%BC17-Dateien/123943-128691-i_rc.jpg" title="Rust: &quot;C ist eine feindselige Sprache&quot;" alt="Das Credo &quot;Rust statt C&quot; könnte in der Gnome-Community weitere Verbreitung finden.">
+<figcaption>
+<span class="big-image-sub">Das Credo "Rust statt C" könnte in der Gnome-Community weitere Verbreitung finden.</span>
+<span class="big-image-lic">(Bild: <a href="https://www.flickr.com/photos/elsie/8229790/" rel="nofollow" target="_blank">Les Chatfield, Flickr.com</a>/<a href="http://creativecommons.org/licenses/by/2.0/" rel="nofollow" target="_blank">CC-BY 2.0</a>)</span>
+</figcaption>
+</figure>
+</header>
+
+<!-- BANNER -->
+
+
+
+<div class="formatted">
+<!--content-->
+
+<div style="max-width:300px; width:auto; float:right; margin:0 -150px 0 20px;">
+<!-- begin ad tag (tile=8) -->
+<div id="iqadtile8">
+<script type="text/javascript">
+if (typeof AdController !== 'undefined') { AdController.render('iqadtile8'); }
+</script>
+</div>
+<!-- end ad tag (tile=8) -->
+
+</div>
+<p id="gpar1">In modernen Desktop-Betriebssystemen sind Parser 
+allgegenwärtig. Sie verarbeiten ungeprüfte und eventuell nicht 
+vertrauenswürdige Daten meist aus dem Internet und sind damit ein 
+nachvollziehbares Ziel für Angreifer. Das Schreiben von Parsern in der 
+Programmiersprache C sei allerdings berüchtigt dafür, Fehler zu machen, 
+sagt der Mitbegründer des Gnome-Projekts Federico Mena Quintero auf der 
+Guadec-Konferenz. Um diese Fehler zu vermeiden, empfiehlt er stattdessen
+ die Verwendung der Sprache <a href="https://www.golem.de/news/rust-ist-die-neue-programmiersprache-besser-1606-121227.html" target="_blank" class="golem-internal-url golem-url-news">Rust</a>.</p><!-- gpar1 -->
+
+
+<!-- begin ad tag (jobs) -->
+<section class="supplementary" id="job-market">
+    <div class="dh1 head3">Stellenmarkt</div>
+    <ol style="max-width:300px; overflow:hidden">
+<li class="text1"><form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="rcol" target="_blank"><input name="service" value="job" type="hidden"><input name="j" value="215989625" type="hidden"><input class="text1" value="Entwicklungsingenieur Software (m/w)" type="submit"></form>AVL List GmbH, Graz (Österreich)</li>
+<li class="text1"><form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="rcol" target="_blank"><input name="service" value="job" type="hidden"><input name="j" value="216071225" type="hidden"><input class="text1" value="Application Manager (m/w / divers) Customer Relationship Management" type="submit"></form>thyssenkrupp AG, Essen</li>
+    </ol>
+    <form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="rcol" target="_blank">
+        <input name="service" value="jobs" type="hidden"><input class="meta text1" value="Detailsuche" type="submit">
+    </form>
+    <img src="Gr%C3%BC17-Dateien/gif.gif" style="width: 1px; height: 1px; border: 0px none; display: none !important;" alt="" hidden="">
+</section><!-- .supplementary -->
+<!-- end ad tag (jobs) -->
+
+<p id="gpar2">Diese Empfehlung von Mena basiert auf den Erfahrungen, die er im vergangenem Jahr als Betreuer von <a href="https://wiki.gnome.org/Projects/LibRsvg" target="_blank" class="golem-external-url">Librsvg</a>
+ gesammelt hat, welche zum Darstellen (Rendern) von SVG-Dateien genutzt 
+wird. Verwendet wird die Bibliothek für eine Vielzahl von 
+Desktop-Anwendungen, so ist Librsvg etwa eine Abhängigkeit des Toolkits 
+GTK. Zudem wird die Bibliothek in Wikipedia zur Darstellung genutzt, 
+falls sehr alte Browser zum Einsatz kommen, die SVG noch nicht selbst 
+darstellen können.</p><!-- gpar2 -->
+
+
+<p id="gpar3">Mena hat die Pflege von Librsvg nach ein paar Bug-Fixes im
+ Jahr 2015 übernommen und dann im Herbst 2016 damit begonnen, kleine 
+Code-Bestandteile in Rust neu zu erstellen, zunächst, um sich die 
+Sprache beizubringen. Der Aufbau von Rust und die große 
+Interoperabilität zu C habe es dabei ermöglicht, leicht stückweise Code 
+auszutauschen. Schließlich sei Mena an dem Punkt angelangt, an dem der 
+Entwickler den gesamten Code nach Rust portieren wollte.</p><!-- gpar3 -->
+
+<h3>Rust hilft beim Fehlervermeiden</h3>
+
+<p id="gpar4">Ein große Hilfe für Mena sei dabei gewesen, wie in Rust 
+mit Fehlern umgegangen werde: So könnten Fehlerausgaben nicht nur sehr 
+einfach umgesetzt werden, das Schreiben von Fehlerbehandlungen sei zudem
+ viel kürzer, als Fehler schlicht zu ignorieren. <em>"Das ist einfach magisch"</em>, sagte Mena. Ebenso sei das Erstellen von Unit-Tests sowie von Debug-Nachrichten mit Rust einfacher als mit C.</p><!-- gpar4 -->
+<div style="width:1000px; margin: 16px -150px; clear:both;">
+<!-- begin ad tag (tile=4) -->
+<div id="iqadtile4">
+<script type="text/javascript">
+if (typeof AdController !== 'undefined') { AdController.render('iqadtile4'); }
+</script>
+</div>
+<!-- end ad tag (tile=4) -->
+
+</div>
+
+
+<p id="gpar5">Bei den Portierungsarbeiten seien Mena eine Vielzahl von 
+eigentlich üblichen Fehlern in dem C-Code aufgefallen wie etwa 
+Überläufe, die jedoch leider nicht immer offensichtlich sind. Der Code 
+für einige dieser Fehler stamme zudem von den laut Mena besten 
+C-Programmierern, die das Gnome-Projekt je hatte. Das bedeute aber 
+keinesfalls, dass das Projekt über keine guten Programmierer verfüge. 
+Der Grund für diese Fehler seien eben nicht Menschen, sondern vielmehr 
+die Sprache C selbst, die schlicht <em>"feindselig"</em> sei.</p><!-- gpar5 -->
+
+
+<p id="gpar6">Besonders treffe das auf das Schreiben von Parsern zu, die
+ in vielen grundlegenden Bibliotheken wie eben Librsvg vorkommen. Eines 
+der größten Probleme von C sei in diesem Einsatzbereich das Verarbeiten 
+von Strings, die kein nativer Datentyp der Sprache sind. Anders ist dies
+ in Rust, was Mena wieder mit einem Codebeispiel beschreibt, in dem 
+wiederum auch die einfache Umsetzung einer Fehlerbehandlung deutlich 
+wird. Der ebenfalls anwesende Google-Angestellte und Sicherheitsforscher
+ <a href="https://twitter.com/mjg59/status/891252925909094402" target="_blank" class="golem-external-url">Matthew Garrett beschreibt auf Twitter</a> jenes Beispiel einfach nur mit dem Wort <em>"überzeugend"</em>.</p><!-- gpar6 -->
+
+
+<p id="gpar7">Zusätzlich zu den bereits genannten Eigenschaften von 
+Rust, kommen noch jene neuen Funktionen hinzu, die explizit darauf 
+ausgelegt sind, die Sicherheit des geschriebenen Codes zu erhöhen. Dazu 
+gehört etwa das <a href="https://doc.rust-lang.org/book/second-edition/ch04-00-understanding-ownership.html" target="_blank" class="golem-external-url">Ownership</a>-Prinzip, der <a href="https://doc.rust-lang.org/1.8.0/book/references-and-borrowing.html" target="_blank" class="golem-external-url">Borrowing</a>-Checker oder andere Bestandteile der Sprache, die zur Kompilierzeit erzwungen werden, um Fehler in laufendem Code zu vermeiden.</p><!-- gpar7 -->
+
+
+<p id="iq-gfpop">Mena sagt, er habe selbst etwa einen Monat lang gegen 
+den Borrow-Checker gekämpft, bis seine Rust Kenntnisse gut genug waren, 
+um Code zu schreiben, der problemlos kompiliere. Den Anwesenden gibt 
+Mena dennoch den Rat: <em>"Kämpft nicht gegen den Compiler, er ist euer Freund"</em> - immerhin schützt der Rust-Compiler vor vielen Fehlern, die in C auftreten können.</p><!-- gpar8 -->
+
+<!--/content-->
+</div>
+
+
+<div class="tags" id="breadcrumbs">
+    <h3 class="tags__title">
+        <a href="https://www.golem.de/specials/">Themenseiten:</a>
+    </h3>
+    <ul class="tags__list">
+<li><a href="https://www.golem.de/specials/rust/" title="Rust" class="lm">Rust</a></li>
+<li><a href="https://www.golem.de/specials/gnome/" title="Gnome" class="lm">Gnome</a></li>
+<li><a href="https://www.golem.de/specials/desktop-applikationen/" title="Desktop-Applikationen" class="lm">Applikationen</a></li>
+<li><a href="https://www.golem.de/specials/open-source/" title="Open Source" class="lm">Open Source</a></li>
+<li><a href="https://www.golem.de/specials/security/" title="Security" class="lm">Security</a></li>
+<li><a href="https://www.golem.de/specials/softwareentwicklung/" title="Softwareentwicklung" class="lm">Softwareentwicklung</a></li>
+    </ul>
+</div>
+
+<div class="tags"><span class="tags__nada"><a href="#comments" onclick="javascript:_gcpx.push(['ev','d','commentscroll']);return true;">Zu den Kommentaren springen</a></span></div>
+                </article>
+                <hr class="implied">
+            </div><!-- .g.g6 -->
+
+<div class="g g6">
+<div class="g g6">
+<form action="https://account.golem.de/newsletter_email" class="subscribe-newsletter gnlform" data-pos="rcol" name="nl" method="post">
+    <label for="subscribe-newsletter">Erhalte täglich die wichtigsten IT-News mit unserem Newsletter:</label>
+    <input name="email" id="subscribe-newsletter" placeholder="E-Mail-Adresse" required="" type="email">
+    <input name="source" value="1" type="hidden">
+    <input name="golem-nl-html" value="1" type="hidden">
+    <input name="service" value="newsletter" type="hidden">
+    <input value="Anmelden" type="submit">
+</form>
+<hr class="implied">
+</div><!-- .g.g6 -->
+
+<!-- begin ad tag (tile=5) -->
+<div style="margin:16px 0;">
+<div id="iqadtile5">
+<script type="text/javascript">
+if (typeof AdController !== 'undefined') { AdController.render('iqadtile5'); }
+</script>
+</div>
+</div>
+<!-- end ad tag (tile=5) -->
+
+<!-- begin ad tag -->
+<div style="position:relative">
+<iframe marginheight="0" marginwidth="0" scrollbars="no" style="margin-bottom:20px;" src="Gr%C3%BC17-Dateien/minibanner_flat_620.html" width="1000" height="30" frameborder="0"></iframe>
+
+<iframe marginheight="0" marginwidth="0" scrollbars="no" src="Gr%C3%BC17-Dateien/trial-social-s3.html" style="width:120px; height:23px; border:none; position: absolute; right:0px; top: 52px;" width="120" height="23" frameborder="0"></iframe>
+</div>
+<!-- end ad tag -->
+
+<!-- begin ad tag (plista) -->
+<div id="plista_widget_underArticle" class="clearfix" style="margin: 20px 0; clear: both;"></div>
+<script type="text/javascript"><!--
+if (!window.PLISTA || !PLISTA.publickey) {
+window.PLISTA = { publickey: 'cfdeb2e72a2eff788500e423', item:
+{objectid: "129196", title: "Rust: \"C ist eine feindselige Sprache\"",
+    text: "Der Mitbegründer des Gnome-Projekts Federico Mena Quintero ist nicht mehr besonders überzeugt von der Sprache C und empfiehlt aus eigener Erfahrung stattdessen Rust - vor allem für Parser.",
+    url: "https://www.golem.de/news/rust-c-ist-eine-feindselige-sprache-1707-129196.html", img: "https://www.golem.de/1610/123943-128692-i_rc.jpg", imglong: "https://www.golem.de/1610/123943-128691-i_rc.jpg",
+    page: 1, firstpage: true, created_at: 1501410481}};
+(function(){var n='script',d=document,s=d.createElement(n),s0=d.getElementsByTagName(n)[0];s.async='async';s.type='text/javascript';s.src=(d.location.protocol==='https:'?'https:':'http:')+'//static.plista.com/async.js';s0.parentNode.insertBefore(s,s0)}());
+}
+//--></script>
+<!-- end ad tag (plista) -->
+
+<!-- begin ad tag -->
+<div id="csi_art1"></div>
+<script type="text/javascript">
+<!--
+if (typeof _gafccsi !== 'undefined') {
+  _gafccsi.push('csi_art1');
+}
+//-->
+</script>
+<!-- end ad tag -->
+
+</div><!-- .g.g6 -->
+
+            <div class="g g2 u-clear">
+<section class="supplementary" id="related">
+    <div class="dh1 head3">Verwandte Artikel</div>
+    <ol>
+<li><a href="https://www.golem.de/news/security-linux-desktops-brauchen-bessere-verteidigung-1708-129244.html"><div class="dh2 head1">Security</div><p class="text1">Linux-Desktops brauchen bessere Verteidigung</p></a></li>
+<li><a href="https://www.golem.de/news/guadec-ubuntus-wechsel-zu-gnome-wird-holprig-1707-129215.html"><div class="dh2 head1">Guadec</div><p class="text1">Ubuntus Wechsel zu Gnome wird holprig</p></a></li>
+<li><a href="https://www.golem.de/news/facepunch-studios-rust-will-nun-ohne-early-access-ueberleben-1802-132687.html"><div class="dh2 head1">Facepunch Studios</div><p class="text1">Rust will nun ohne Early Access überleben</p></a></li>
+<li><a href="https://www.golem.de/news/llvm-6-0-clang-bekommt-massnahme-gegen-spectre-angriff-1803-133241.html"><div class="dh2 head1">LLVM 6.0</div><p class="text1">Clang bekommt Maßnahme gegen Spectre-Angriff</p></a></li>
+<li><a href="https://www.golem.de/news/projekthoster-github-zeigt-sicherheitswarnungen-fuer-projektabhaengigkeiten-1711-131212.html"><div class="dh2 head1">Projekthoster</div><p class="text1">Github zeigt Sicherheitswarnungen für Projektabhängigkeiten</p></a></li>
+    </ol>
+</section><!-- .supplementary#related -->
+<hr class="implied">
+            </div><!-- .g.g2.u-clear -->
+            <div class="g g2">
+<section class="supplementary" id="recent-articles">
+	<div class="dh1 head3">Meistgelesen</div>
+    <ol>
+        <li>
+                        <a id="mral_135020" href="https://www.golem.de/news/otto-up-lieferflatrate-chancenlos-gegen-ebay-und-amazon-1806-135020.html">
+                        <div class="dh2 head1">Lieferflatrate Otto Up</div>
+            <div class="text1">Otto ist chancenlos gegen Ebay und Amazon</div>
+            </a>
+        </li>
+        <li>
+                        <a id="mral_134779" href="https://www.golem.de/news/alte-gegen-neue-model-m-wenn-die-knickfedern-wohlig-klackern-1806-134779.html">
+                        <div class="dh2 head1">Alte gegen neue Model M</div>
+            <div class="text1">Wenn die Knickfedern wohlig klackern</div>
+            </a>
+        </li>
+        <li>
+                        <a id="mral_135019" href="https://www.golem.de/news/elektroauto-elon-musk-berichtet-ueber-sabotageversuch-eines-mitarbeiters-1806-135019.html">
+                        <div class="dh2 head1">Elektroauto</div>
+            <div class="text1">Elon Musk berichtet über Sabotageversuch eines Mitarbeiters</div>
+            </a>
+        </li>
+        <li>
+                        <a id="mral_135022" href="https://www.golem.de/news/urheberrechtsreform-die-zehn-mythen-des-leistungsschutzrechts-1806-135022.html">
+                        <div class="dh2 head1">Urheberrechtsreform</div>
+            <div class="text1">Die zehn Mythen des Leistungsschutzrechts</div>
+            </a>
+        </li>
+        <li>
+                        <a id="mral_135012" href="https://www.golem.de/news/spotify-konkurrent-youtube-music-startet-gratis-musikstreaming-in-deutschland-1806-135012.html">
+                        <div class="dh2 head1">Spotify-Konkurrent</div>
+            <div class="text1">Youtube Music startet Gratis-Musikstreaming in Deutschland</div>
+            </a>
+        </li>
+    </ol>
+</section><!-- #recent-articles -->
+<hr class="implied">            </div><!-- .g.g2 -->
+            <div class="g g2">
+<section class="supplementary" id="pricehits">
+    <div style="display:block" class="text1 iqadmarker">Anzeige</div>
+<div style="position:relative">
+    <div class="dh1 head3">Blu-ray-Angebote</div>
+    <ol style="max-width:300px; overflow:hidden">
+<li class="text1"><form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="rcol" target="_blank"><input name="service" value="phit" type="hidden"><input name="h" value="145062" type="hidden"><input class="text1" value="NEU: Disney Classics: 3 Blu-rays kaufen, 2 zahlen" type="submit"></form></li>
+<li class="text1"><form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="rcol" target="_blank"><input name="service" value="phit" type="hidden"><input name="h" value="145063" type="hidden"><input class="text1" value="NEU: 3 Blu-rays für 18€" type="submit"></form></li>
+<li class="text1"><form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="rcol" target="_blank"><input name="service" value="phit" type="hidden"><input name="h" value="143810" type="hidden"><input class="text1" value="4 Blu-rays für 30€" type="submit"></form></li>
+<li class="text1"><form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="rcol" target="_blank"><input name="service" value="phit" type="hidden"><input name="h" value="141030" type="hidden"><input class="text1" value="HALO - Triple Feature Collector's Box [Blu-ray]" type="submit"></form>9,99€</li>
+    </ol>
+    <form class="gservprg" action="https://www.golem.de/sonstiges/service/index.php" method="POST" data-pos="rcol" target="_blank">
+        <input name="service" value="phitshp" type="hidden"><input class="meta text1" value="Weitere Angebote" type="submit">
+    </form>
+    <img src="Gr%C3%BC17-Dateien/gif_002.gif" style="width: 1px; height: 1px; border: 0px none; display: none !important;" alt="" hidden="">
+</div>
+</section><!-- .supplementary -->
+<hr class="implied">
+            </div><!-- .g.g2 -->
+
+
+            <div class="g g4 u-clear">
+<!-- FORUM -->
+<section id="comments">
+    <div class="dh1"><a href="https://forum.golem.de/kommentare/security/rust-c-ist-eine-feindselige-sprache/111052,list.html">Kommentarübersicht</a></div>
+    <div class="dlifc"><div class="dh2"><a href="https://forum.golem.de/kommentare/security/rust-c-ist-eine-feindselige-sprache/wieso-braucht-an-ne-neue-sprache-und-nicht-nur-neue-bibliotheken/111052,4867328,4873744,read.html#msg-4873744" id="ltlart4873744" style="display: inline;">Re: Wieso braucht an ne neue Sprache und nicht...</a></div><div class="dh3"><strong>pythoneer</strong>&nbsp;07. Aug 2017</div><p style="overflow:hidden;">
+Rust wurde nicht für Mozilla entwickelt (weder für die Application Suite noch für die...</p></div>
+<div class="dli"><div class="dh2"><a href="https://forum.golem.de/kommentare/security/rust-c-ist-eine-feindselige-sprache/librsvg-bei-wikipedia/111052,4866771,4872783,read.html#msg-4872783" id="ltlart4872783" style="display: inline;">Re: librsvg bei Wikipedia</a></div><div class="dh3"><strong>Märchenfee</strong>&nbsp;06. Aug 2017</div><p style="overflow:hidden;">Das ist natürlich die Vorschau. Nehme mal auch an das die librsvg auch genau dafür...</p></div>
+<div class="dli"><div class="dh2"><a href="https://forum.golem.de/kommentare/security/rust-c-ist-eine-feindselige-sprache/sprachentwicklung/111052,4866644,4872776,read.html#msg-4872776" id="ltlart4872776" style="display: inline;">Re: Sprachentwicklung</a></div><div class="dh3"><strong>Märchenfee</strong>&nbsp;06. Aug 2017</div><p style="overflow:hidden;">C und C++ sind eigentlich simpel. Assembler auch.
+Unsimpel wurde der Kram erst durch...</p></div>
+<div class="dli"><div class="dh2"><a href="https://forum.golem.de/kommentare/security/rust-c-ist-eine-feindselige-sprache/c-als-erste-programmiersprache-was-meint-ihr/111052,4866688,4872772,read.html#msg-4872772" id="ltlart4872772" style="display: inline;">Re: C als erste Programmiersprache? Was meint ihr?</a></div><div class="dh3"><strong>Märchenfee</strong>&nbsp;06. Aug 2017</div><p style="overflow:hidden;">Ich finde zuerst sollte man (Programmier)Sprachen etwas verstehen und rudimentär nutzen...</p></div>
+<div class="dli"><div class="dh2"><a href="https://forum.golem.de/kommentare/security/rust-c-ist-eine-feindselige-sprache/was-ist-bloss-los-mit-mena-quintero/111052,4867445,4870291,read.html#msg-4870291" id="ltlart4870291" style="display: inline;">++</a></div><div class="dh3"><strong>teenriot*</strong>&nbsp;03. Aug 2017</div><p style="overflow:hidden;">Ich stecke irgendwie in der Java-Blase fest, aber dein Beitrag macht Lust dann mal wieder...</p></div>
+    <p class="meta">
+        </p>
+</section><!-- #comments -->
+<hr class="implied">
+<!-- / FORUM -->            </div><!-- .g.g4.u-clear -->
+            <div class="g g2">
+<section class="supplementary" id="followrss">
+    <div class="dh1 head3">Folgen Sie uns</div>
+<table>
+<tbody><tr>
+    <td><a href="https://www.facebook.com/golem" target="_blank" title="Auf Facebook folgen">&nbsp;</a></td>
+    <td><a href="https://twitter.com/golem" target="_blank" title="Auf Twitter folgen">&nbsp;</a></td>
+    <td><a href="https://plus.google.com/108635198256823282564/?prsrc=3" target="_blank" title="Auf Google+ folgen">&nbsp;</a></td>
+    <td style="padding:0"><a href="https://www.golem.de/sonstiges/rss.html" title="RSS Feed abonnieren">&nbsp;</a></td>
+</tr>
+</tbody></table>
+    </section><!-- .supplementary #followrss -->
+<hr class="implied">
+<section id="gts-clip" class="supplementary">
+<!-- gts companion code expected -->
+<noscript>
+<a href='https://redirect.golem.de/nl.php?id=syseleven_selinux2017kw05n' style='display:block; margin-top:18px;'><img src='https://www.golem.de/_img/170201-sys11selinux.jpg' alt='System Engineer Linux - Syseleven' style='width:300px; height:250px; border:0;' /></a> <img src='https://cpxl.golem.de/gif?u=http%3A%2F%2Fwww.golem.de%2F&amp;d=1529439166&amp;f=ev&amp;v=d&amp;t=ad%2Fsyseleven2017kw05s' style='width:1px; height:1px; border:0;' alt='' /></noscript>
+<a style="display: block; margin-top: 18px;" href="https://hits.golem.de/nl.php?id=syseleven_selinux2017kw05"><img style="width: 300px; height: 250px;" src="Gr%C3%BC17-Dateien/170201-sys11selinux.jpg"></a></section>
+<hr class="implied">
+
+<!-- begin ad tag (tile=9) -->
+<section id="iqadtile9" class="supplementary">
+<script type="text/javascript">
+if (typeof AdController !== 'undefined') { AdController.render('iqadtile9'); }
+</script>
+</section>
+<!-- end ad tag (tile=9) -->            </div><!-- .g.g2 -->
+
+            <div class="g g6 activity">
+
+
+<figure class="media-slider__teaser hero">
+	<figcaption class="media-slider__text">
+		<div class="dh2 media-slider__headline entry-title">
+			<a href="https://video.golem.de/games/21258/bethesda-e3-2018-pressekonferenz-golem-live.html" class="media-slider__link" rel="bookmark">
+				<span class="media-slider__title">Bethesda E3 2018 Pressekonferenz -Live</span>
+			</a>
+		</div>
+		<p class="media-slider__excerpt entry-content">
+Fallout 76 wird Multiplayer bieten, Starfield und Elder Scrolls 6 werden
+ angekündigt und Bethesda bringt mit Rage 2 und Doom Eternal jede Menge 
+Action: Konnte uns das im nächtlichen Stream begeistern?		</p>
+	</figcaption>
+	<span class="media-slider__img">
+		<img src="Gr%C3%BC17-Dateien/bethesda-e3-2018-pressekonferenz-golem-live.jpg" alt="Bethesda E3 2018 Pressekonferenz -Live" class="photo">
+	</span>
+	<a class="btn--play" href="https://video.golem.de/games/21258/bethesda-e3-2018-pressekonferenz-golem-live.html"><span>Video aufrufen</span></a>
+</figure>
+            </div><!-- .g.g6.activity -->
+
+<div class="g g6 promos">
+
+<!-- 0 -->
+<section class="g g2 promo" style="clear:both; margin-left:0;">
+    <div class="dh1 head3"><a href="https://www.golem.de/specials/siri">Siri</a></div>
+    <a id="proalt_134934" href="https://www.golem.de/1806/134934.html"><img id="proali_134934" alt="Deutsche Siri auf dem Homepod im Test: Amazon und Google können sich entspannt zurücklehnen" src="Gr%C3%BC17-Dateien/sp_134934-166077-166075_rc.jpg" class="golem-data-afterload" data-src="https://www.golem.de/1806/sp_134934-166077-166075_rc.jpg"></a>
+    <header class="cluster-header">
+        <a id="proal_134934" href="https://www.golem.de/1806/134934.html">
+            <div class="dh3 head1">Deutsche Siri auf dem Homepod im Test</div>
+            <div class="dh2 head2">Amazon und Google können sich entspannt zurücklehnen</div>
+        </a>
+    </header>
+    <p>In diesem Monat kommt der dritte <a href="https://www.golem.de/specials/digitaler-assistent/" target="_blank">digitale Assistent</a> auf einem smarten Lautsprecher nach Deutschland: <a href="https://www.golem.de/specials/siri/" target="_blank">Siri</a>. Wir haben uns angehört, was die deutsche Version auf dem <a href="https://www.golem.de/specials/homepod/" target="_blank">Homepod</a> leistet.
+                <br><em>Ein Test von Ingo Pakalski</em><br>
+            </p><ol><li class="text1">
+    <a id="proalr_134934_134709" href="https://www.golem.de/1806/134709.html">
+        <strong>Patentantrag von Apple</strong> Neues Verfahren könnte Siri schlauer machen
+    </a>
+</li><li class="text1">
+    <a id="proalr_134934_133655" href="https://www.golem.de/1804/133655.html">
+        <strong>Siri vs. Google Assistant</strong> Apple schnappt sich Googles KI-Chefentwickler
+    </a>
+</li><li class="text1">
+    <a id="proalr_134934_133633" href="https://www.golem.de/1804/133633.html">
+        <strong>Digitaler Assistent</strong> Apple will Siri verbessern
+    </a>
+</li></ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied">
+
+<!-- 10 -->
+<section class="g g2 promo">
+    <div class="dh1 head3"><a href="https://www.golem.de/specials/egpu">eGPU</a></div>
+    <a id="proalt_134565" href="https://www.golem.de/1806/134565.html"><img id="proali_134565" alt="Sonnet eGFX Box 650 im Test: Wenn die Vega 64 am Thinkpad rechnet" src="Gr%C3%BC17-Dateien/sp_134565-164587-164583_rc.jpg" class="golem-data-afterload" data-src="https://www.golem.de/1806/sp_134565-164587-164583_rc.jpg"></a>
+    <header class="cluster-header">
+        <a id="proal_134565" href="https://www.golem.de/1806/134565.html">
+            <div class="dh3 head1">Sonnet eGFX Box 650 im Test</div>
+            <div class="dh2 head2">Wenn die Vega 64 am Thinkpad rechnet</div>
+        </a>
+    </header>
+    <p>Die eGFX Box 650 von Sonnet ist ein <a href="https://www.golem.de/specials/egpu/" target="_blank">eGPU</a>-Gehäuse, das dank 650-Watt-Netzteil auch mit AMDs Radeon RX <a href="https://www.golem.de/specials/vega/" target="_blank">Vega</a> 64 läuft. Die Box ist zwar recht leise, dennoch würden wir den Lüfter gerne steuern.
+                <br><em>Ein Test von Marc Sauter und Sebastian Grüner</em><br>
+            </p><ol><li class="text1">
+    <a id="proalr_134565_134459" href="https://www.golem.de/1805/134459.html">
+        <strong>Razer Core X</strong> eGPU-Box kostet 300 Euro
+    </a>
+</li><li class="text1">
+    <a id="proalr_134565_132801" href="https://www.golem.de/1802/132801.html">
+        <strong>eGFX Breakaway Box 650</strong> Sonnets Grafik-Gehäuse läuft mit Vega 64
+    </a>
+</li><li class="text1">
+    <a id="proalr_134565_131867" href="https://www.golem.de/1712/131867.html">
+        <strong>XG Station Pro</strong> Asus' zweite eGPU-Box ist schlicht
+    </a>
+</li></ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied">
+
+<!-- 4 -->
+<section class="g g2 promo">
+    <div class="dh1 head3"><a href="https://www.golem.de/specials/cyberpunk-2077">Cyberpunk 2077</a></div>
+    <a id="proalt_134915" href="https://www.golem.de/1806/134915.html"><img id="proali_134915" alt="CD Projekt Red: So spielt sich Cyberpunk 2077" src="Gr%C3%BC17-Dateien/sp_134915-165827-165825_rc.jpg" class="golem-data-afterload" data-src="https://www.golem.de/1806/sp_134915-165827-165825_rc.jpg"></a>
+    <header class="cluster-header">
+        <a id="proal_134915" href="https://www.golem.de/1806/134915.html">
+            <div class="dh3 head1">CD Projekt Red</div>
+            <div class="dh2 head2">So spielt sich Cyberpunk 2077</div>
+        </a>
+    </header>
+    <p><a href="https://www.golem.de/specials/e3-2018/" style="color:#CC1010; font-weight:bold;">E3 2018</a>  Hacker statt Hexer, Ich-Sicht statt Dritte-Person-Perspektive und Auto statt Pferd: Die <a href="https://www.golem.de/specials/witcher/" target="_blank">Witcher</a>-Entwickler haben ihr neues Großprojekt <a href="https://www.golem.de/specials/cyberpunk-2077/" target="_blank">Cyberpunk 2077</a> im Detail vorgestellt.
+                <br><em>Von Peter Steinlechner</em><br>
+            </p><ol></ol>
+</section><!-- .g.g2.promo -->
+<hr class="implied">
+</div><!-- .g.g6.promos -->
+            <div class="g g6">
+<!-- begin ad tag (tile=16) -->
+<div style="margin:16px 0;">
+<div id="iqadtile16">
+<script type="text/javascript">
+if (typeof AdController !== 'undefined') { AdController.render('iqadtile16'); }
+</script>
+</div>
+</div>
+<!-- end ad tag (tile=16) -->
+<div class="specialletters">
+<ol class="text1">
+<li style="width:66px;"><a href="https://www.golem.de/specials/">Themen</a></li>
+<li><a href="https://www.golem.de/specials/a/">A</a></li>
+<li><a href="https://www.golem.de/specials/b/">B</a></li>
+<li><a href="https://www.golem.de/specials/c/">C</a></li>
+<li><a href="https://www.golem.de/specials/d/">D</a></li>
+<li><a href="https://www.golem.de/specials/e/">E</a></li>
+<li><a href="https://www.golem.de/specials/f/">F</a></li>
+<li><a href="https://www.golem.de/specials/g/">G</a></li>
+<li><a href="https://www.golem.de/specials/h/">H</a></li>
+<li><a href="https://www.golem.de/specials/i/">I</a></li>
+<li><a href="https://www.golem.de/specials/j/">J</a></li>
+<li><a href="https://www.golem.de/specials/k/">K</a></li>
+<li><a href="https://www.golem.de/specials/l/">L</a></li>
+<li><a href="https://www.golem.de/specials/m/">M</a></li>
+<li><a href="https://www.golem.de/specials/n/">N</a></li>
+<li><a href="https://www.golem.de/specials/o/">O</a></li>
+<li><a href="https://www.golem.de/specials/p/">P</a></li>
+<li><a href="https://www.golem.de/specials/q/">Q</a></li>
+<li><a href="https://www.golem.de/specials/r/">R</a></li>
+<li><a href="https://www.golem.de/specials/s/">S</a></li>
+<li><a href="https://www.golem.de/specials/t/">T</a></li>
+<li><a href="https://www.golem.de/specials/u/">U</a></li>
+<li><a href="https://www.golem.de/specials/v/">V</a></li>
+<li><a href="https://www.golem.de/specials/w/">W</a></li>
+<li><a href="https://www.golem.de/specials/x/">X</a></li>
+<li><a href="https://www.golem.de/specials/y/">Y</a></li>
+<li><a href="https://www.golem.de/specials/z/">Z</a></li>
+<li style="width:16px;"><a href="https://www.golem.de/specials/0/">#</a></li>
+</ol>
+&nbsp;
+<hr class="implied">
+</div>
+<div class="topics">
+    <ul class="g text1" style="width:123px">
+<li class="tsect"><a href="https://www.golem.de/specials/golem.de/">Golem.de</a></li>
+<li class="tsect"><a href="https://www.golem.de/specials/test/">Tests</a></li>
+<li class="tsect"><a href="https://www.golem.de/specials/pc-hardware/">PC-Hardware</a></li>
+<li><a href="https://www.golem.de/specials/cpu/">Prozessoren</a></li>
+<li><a href="https://www.golem.de/specials/grafikhardware/">Grafikkarten</a></li>
+<li><a href="https://www.golem.de/specials/eingabegeraet/">Eingabegeräte</a></li>
+<li><a href="https://www.golem.de/specials/speichermedien/">Speichermedien</a></li>
+<li><a href="https://www.golem.de/specials/4k/">4K</a></li>
+<li><a href="https://www.golem.de/specials/mini-pc/">Mini-PC</a></li>
+<li><a href="https://www.golem.de/specials/router/">Router</a></li>
+<li><a href="https://www.golem.de/specials/usb/">USB</a></li>
+<li class="tsect"><a href="https://www.golem.de/specials/foto/">Digitale Fotografie</a></li>
+    </ul>
+
+    <ul class="g text1" style="width:136px">
+<li class="tsect"><a href="https://www.golem.de/specials/desktop-applikationen/">Software</a></li>
+<li><a href="https://www.golem.de/specials/browser/">Browser</a></li>
+<li><a href="https://www.golem.de/specials/chrome/">Chrome</a></li>
+<li><a href="https://www.golem.de/specials/firefox/">Firefox</a></li>
+<li><a href="https://www.golem.de/specials/bittorrent/">Bittorrent</a></li>
+<li><a href="https://www.golem.de/specials/linux/">Linux</a></li>
+<li><a href="https://www.golem.de/specials/macosx/">Mac OSX</a></li>
+<li><a href="https://www.golem.de/specials/windows/">Windows</a></li>
+<li><a href="https://www.golem.de/specials/open-source/">Open Source</a></li>
+<li><a href="https://www.golem.de/specials/api/">API</a></li>
+<li class="tsect"><a href="https://www.golem.de/specials/softwareentwicklung/">Softwareentwicklung</a></li>
+<li><a href="https://www.golem.de/specials/programmiersprache/">Programmiersprache</a></li>
+<li><a href="https://www.golem.de/specials/html5/">HTML5</a></li>
+<li><a href="https://www.golem.de/specials/docker/">Docker</a></li>
+    </ul>
+
+    <ul class="g text1" style="width:122px">
+<li class="tsect"><a href="https://www.golem.de/specials/mobil/">Mobil</a></li>
+<li><a href="https://www.golem.de/specials/akku/">Akku</a></li>
+<li><a href="https://www.golem.de/specials/android/">Android</a></li>
+<li><a href="https://www.golem.de/specials/cyanogenmod/">Cyanogenmod</a></li>
+<li><a href="https://www.golem.de/specials/ios/">iOS</a></li>
+<li><a href="https://www.golem.de/specials/windows-phone-8/">Windows Phone</a></li>
+<li><a href="https://www.golem.de/specials/mobilfunk/">Mobilfunk</a></li>
+<li><a href="https://www.golem.de/specials/oneplus/">Oneplus</a></li>
+<li><a href="https://www.golem.de/specials/smartphone/">Smartphone</a></li>
+<li><a href="https://www.golem.de/specials/smartwatch/">Smartwatch</a></li>
+<li><a href="https://www.golem.de/specials/tablet/">Tablet</a></li>
+<li><a href="https://www.golem.de/specials/wearable/">Wearable</a></li>
+<li><a href="https://www.golem.de/specials/streaming/">Streaming</a></li>
+<li><a href="https://www.golem.de/specials/whatsapp/">Whatsapp</a></li>
+    </ul>
+
+    <ul class="g text1" style="width:130px">
+<li class="tsect"><a href="https://www.golem.de/specials/games/">Games</a></li>
+<li><a href="https://www.golem.de/specials/spieletest/">Spieletests</a></li>
+<li><a href="https://www.golem.de/specials/oculus-rift/">Oculus Rift</a></li>
+<li><a href="https://www.golem.de/specials/spielekonsole/">Spielekonsole</a></li>
+<li><a href="https://www.golem.de/specials/playstation4">Playstation 4</a></li>
+<li><a href="https://www.golem.de/specials/xbox-one/">Xbox One</a></li>
+<li><a href="https://www.golem.de/specials/steam/">Steam</a></li>
+<li class="tsect"><a href="https://www.golem.de/specials/hausautomation/">Hausautomation</a></li>
+<li><a href="https://www.golem.de/specials/smarthome/">Smarthome</a></li>
+<li><a href="https://www.golem.de/specials/led-lampe/">LED-Lampe</a></li>
+<li class="tsect"><a href="https://www.golem.de/specials/diy-do-it-yourself/">DIY - Do it yourself</a></li>
+<li><a href="https://www.golem.de/specials/anleitung/">Anleitung</a></li>
+<li><a href="https://www.golem.de/specials/raspberry-pi/">Raspberry Pi</a></li>
+    </ul>
+
+    <ul class="g text1" style="width:141px">
+<li class="tsect"><a href="https://www.golem.de/specials/security/">Security</a></li>
+<li><a href="https://www.golem.de/specials/hacker/">Hacker</a></li>
+<li><a href="https://www.golem.de/specials/sicherheitsluecke/">Sicherheitslücke</a></li>
+<li><a href="https://www.golem.de/specials/tor-netzwerk/">TOR-Netzwerk</a></li>
+<li><a href="https://www.golem.de/specials/verschluesselung/">Verschlüsselung</a></li>
+<li><a href="https://www.golem.de/specials/ccc/">Chaos Computer Club</a></li>
+<li class="tsect"><a href="https://www.golem.de/specials/netzpolitik/">Netzpolitik</a></li>
+<li><a href="https://www.golem.de/specials/datenschutz/">Datenschutz</a></li>
+<li><a href="https://www.golem.de/specials/eu-dsgvo/">DSGVO</a></li>
+<li><a href="https://www.golem.de/specials/nsa/">NSA</a></li>
+<li><a href="https://www.golem.de/specials/ueberwachung/">Überwachung</a></li>
+<li><a href="https://www.golem.de/specials/vorratsdatenspeicherung/">Vorratsdatenspeicherung</a></li>
+<li><a href="https://www.golem.de/specials/europaeische-union/">Europäische Union</a></li>
+<li><a href="https://www.golem.de/specials/icann/">Icann</a></li>
+    </ul>
+
+    <ul class="g text1" style="width:134px">
+<li class="tsect"><a href="https://www.golem.de/specials/wissenschaft/">Wissenschaft</a></li>
+<li><a href="https://www.golem.de/specials/3d-drucker/">3D-Drucker</a></li>
+<li><a href="https://www.golem.de/specials/augmented-reality/">Augmented Reality</a></li>
+<li><a href="https://www.golem.de/specials/auto/">Automobil</a></li>
+<li><a href="https://www.golem.de/specials/cloud-computing/">Cloud Computing</a></li>
+<li><a href="https://www.golem.de/specials/drohne/">Drohne</a></li>
+<li><a href="https://www.golem.de/specials/ki/">Künstliche Intelligenz</a></li>
+<li><a href="https://www.golem.de/specials/robots/">Roboter</a></li>
+<li><a href="https://www.golem.de/specials/raumfahrt/">Raumfahrt</a></li>
+<li><a href="https://www.golem.de/specials/quantencomputer/">Quantencomputer</a></li>
+<li><a href="https://www.golem.de/specials/supercomputer/">Supercomputer</a></li>
+<li><a href="https://www.golem.de/specials/virtuelle-realitaet/">Virtuelle Realität</a></li>
+    </ul>
+
+    <ul class="g text1" style="width:93px">
+<li class="tsect"><a href="https://www.golem.de/specials/wirtschaft/">Wirtschaft</a></li>
+<li><a href="https://www.golem.de/specials/amazon/">Amazon</a></li>
+<li><a href="https://www.golem.de/specials/apple/">Apple</a></li>
+<li><a href="https://www.golem.de/specials/bitcoin/">Bitcoin</a></li>
+<li><a href="https://www.golem.de/specials/facebook/">Facebook</a></li>
+<li><a href="https://www.golem.de/specials/google/">Google</a></li>
+<li><a href="https://www.golem.de/specials/ibm/">IBM</a></li>
+<li><a href="https://www.golem.de/specials/intel/">Intel</a></li>
+<li><a href="https://www.golem.de/specials/microsoft/">Microsoft</a></li>
+<li><a href="https://www.golem.de/specials/mozilla/">Mozilla</a></li>
+<li><a href="https://www.golem.de/specials/samsung/">Samsung</a></li>
+<li><a href="https://www.golem.de/specials/sony/">Sony</a></li>
+<li><a href="https://www.golem.de/specials/yahoo/">Yahoo</a></li>
+<li><a href="https://www.golem.de/specials/wikipedia/">Wikipedia</a></li>
+    </ul>
+
+    <div class="text1" style="clear: both">&nbsp;</div>
+</div>
+
+            </div><!-- .g.g6 -->
+        </div><!-- #screen -->
+
+<footer id="footer" style="margin-bottom: 60px;">
+    <ul>
+        <li><a href="https://www.golem.de/">Home</a></li>
+        <li><a href="https://www.golem.de/ticker/">Ticker</a></li>
+        <li><a href="https://www.golem.de/sonstiges/rss.html">RSS</a></li>
+        <li><a href="https://forum.golem.de/">Forum</a></li>
+        <li><a href="https://www.golem.de/sonstiges/zusatzdienste.html">Zusatzdienste</a></li>
+        <li><a href="https://jobs.golem.de/">Jobs</a></li>
+        <li><a href="https://www.golem.de/sonstiges/impressum.html">Impressum</a></li>
+        <li><a href="https://www.golem.de/sonstiges/leitbild.html">Leitbild</a></li>
+        <li><a href="https://www.golem.de/sonstiges/Datenschutz.html">Datenschutz</a></li>
+        <li><a href="https://www.golem.de/sonstiges/werbung.html">Werbung</a></li>
+        <li><a href="https://www.golem.de/sonstiges/ansicht/">Ansicht</a></li>
+    </ul>
+    <p>© 1997—2018 <a href="https://www.golem.de/">Golem.de</a>. Alle Rechte vorbehalten.</p>
+</footer><!-- #footer -->
+
+<div id="golem-cookie-accept" style="display: block; visibility: visible;">
+<button class="text1" onclick="golemAcceptCookies();">Ich habe verstanden!</button>
+<div class="text1">
+Golem.de benutzt Cookies, um seinen Lesern das beste Webseiten-Erlebnis zu ermöglichen.
+Außerdem werden teilweise auch Cookies von Diensten Dritter gesetzt.
+Weiterführende Informationen erhalten Sie in der
+<a href="https://www.golem.de/sonstiges/Datenschutz.html">Datenschutzerklärung</a>
+von Golem.de.
+</div>
+</div>
+
+<script type="text/javascript">
+<!--
+$(document).ready(function() {
+  $(document)
+    .trigger('HP_AFTERLOAD')
+    .trigger('HP_FORUMLINKS').trigger('HP_SPECIALLINKS')
+    .trigger('DO_REFCOOKIE').trigger('DO_VIEWHINT')
+    .trigger('DO_RECENTLY');
+});
+-->
+</script>
+
+<div class="golem-gallery2-template"><!-- old fullscreen -->
+    <ul class="golem-gallery2-list"></ul>
+    <ul class="golem-gallery2-nav">
+        <li class="golem-gallery2-nav-prev"><img src="Gr%C3%BC17-Dateien/links.png"></li>
+        <li class="golem-gallery2-nav-count"><span class="golem-gallery2-nav-count-current"></span><span>&nbsp;/&nbsp;</span><span class="golem-gallery2-nav-count-all"></span></li>
+        <li class="golem-gallery2-nav-next"><img src="Gr%C3%BC17-Dateien/rechts.png"></li>
+    </ul>
+    <ul class="golem-gallery2-footer">
+        <li class="golem-gallery2-footer-hide"><img src="Gr%C3%BC17-Dateien/minus.png"></li>
+        <li class="golem-gallery2-footer-title"></li>
+        <li class="golem-gallery2-footer-fullscreen"><img src="Gr%C3%BC17-Dateien/icon-ggfs_w2.png"></li>
+    </ul>
+</div>
+
+<script type="text/javascript" src="Gr%C3%BC17-Dateien/golemgallery2_85-min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  Golem.Gallery2.init(function(event) { var e = event; });
+});
+</script>
+
+<script type="text/javascript" src="Gr%C3%BC17-Dateien/account_js_dt18_1_0.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	if(null === document.cookie.match(/golem-cookie-accept/)) {
+		var el = document.getElementById("golem-cookie-accept")
+			, elF = document.getElementById('footer');
+		el.style.display='block';
+		el.style.visibility='visible';
+		elF.style['margin-bottom']=''+el.clientHeight+'px';
+	}
+});
+function golemAcceptCookies() {
+	document.cookie = "golem-cookie-accept=true; domain=golem.de; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+	var el = document.getElementById("golem-cookie-accept")
+		, elF = document.getElementById('footer');
+	el.style.display='none';
+	el.style.visibility='hidden';
+	elF.style['margin-bottom']=0;
+}
+</script>
+</div><!-- #grandwrapper -->
+	</div><!-- #golemContentToHide -->
+<!-- begin ad tag (tile=11) -->
+<div id="iqdCheckPointHeight">
+<script type="text/javascript">
+var IQDComplete = { init: function () { return true; } };
+(function(){ var npop = document.getElementById('gfpop'); if (npop !== null) { npop.id = 'iq-gfpop'; console.log('gfpop'); }})();
+window.addEventListener('hdEvent', function(evt){
+    if ((typeof evt.detail !== "undefined") && (evt.detail.code === "1000")) {
+        $(document).ready(function() {
+            $(".rmp-poster").attr('style','display: block !important');
+        });
+    }
+});
+</script>
+</div>
+
+<script type="text/javascript">
+(function(d,n){
+    var g=d.createElement(n),s=d.getElementsByTagName(n)[0];
+    g.async=true; g.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+    s.parentNode.insertBefore(g,s);
+})(document,'script');
+(function(d,n){
+    var g=d.createElement(n),s=d.getElementsByTagName(n)[0];
+    g.async=true; g.src='/staticrl/scripts/adsense/golem_csi-114-min.js';
+    s.parentNode.insertBefore(g,s);
+})(document,'script');
+</script>
+
+<script type="text/javascript">
+if (typeof AdController !== 'undefined') {
+    var ord = window.ord || Math.floor(Math.random() * 1e16);
+    AdController.finalize();
+    document.write('<scr' + 'ipt type="text/javascript" src="https://ads.golem.de/track.ads/gx-ads.js?ord=' + ord + '&adsize=300x250&adunit=11"></scr' + 'ipt>');
+}
+</script>
+
+<script type="text/javascript" src="Gr%C3%BC17-Dateien/sdcv.js"></script>
+<!-- end ad tag (tile=11) -->
+
+<script type="text/javascript"><!--
+if (Golem.gRefReadCookie("phorum_session_v5_dev")==null) {
+$(document).ready(function(){
+  $("span#gftrhook").html('<a href="https://www.vibrantmedia.com/whatisIntelliTXT.asp?cc=de" target="_blank">Gr&uuml;ne Links</a>');
+});
+(function(d,n){
+  var g=d.createElement(n),s=d.getElementsByTagName(n)[0];
+  g.async=true; g.src='https://k.intellitxt.com/intellitxt/front.asp?ipid=28169';
+  s.parentNode.insertBefore(g,s);
+})(document,'script');
+}
+//--></script>
+
+<!-- begin gts-companion -->
+<script>
+<!--
+/* article, gts companion code */
+var gtssec = document.getElementById("gts-clip"),
+    gtsrand = Math.random()*1000, gtsifr, gtsanc;
+if ((typeof deliveringAds === 'undefined' || deliveringAds === false) && gtsrand<200)
+{
+    gtsanc = document.createElement('a');
+    gtsifr = document.createElement('img');
+    gtsanc.style.display = "block"; gtsanc.style.marginTop = "18px";
+    gtsifr.style.width = "300px"; gtsifr.style.height = "250px";
+    if (gtsrand<100) {
+        gtsanc.href = "https://hits.golem.de/nl.php?id=syseleven_junior2016kw44";
+        gtsifr.src = "https://www.golem.de/_img/161031-sys11junior.jpg";
+        _gcpx.push(['ev', 'd', 'ad/syseleven2016kw44j']);
+    } else {
+        gtsanc.href = "https://hits.golem.de/nl.php?id=syseleven_selinux2017kw05";
+        gtsifr.src = "https://www.golem.de/_img/170201-sys11selinux.jpg";
+        _gcpx.push(['ev', 'd', 'ad/syseleven2017kw05s']);
+    }
+    gtsanc.appendChild(gtsifr); gtssec.appendChild(gtsanc);
+} else {
+    gtsifr = document.createElement('iframe');
+    gtsifr.style.display = "block"; gtsifr.style.marginTop = "18px";
+    if (gtsrand<600) {
+        gtsanc = document.createElement('a');
+        gtsifr = document.createElement('img');
+        gtsanc.style.display = "block"; gtsanc.style.marginTop = "18px";
+        gtsifr.style.width = "300px"; gtsifr.style.height = "125px";
+        gtsanc.href = "https://redirect.golem.de/nl.php?id=profis1606";
+        gtsifr.src = "https://www.golem.de/_img/160622-teaser_4scotty.png";
+        gtsanc.appendChild(gtsifr); gtssec.appendChild(gtsanc);
+        _gcpx.push(['ev', 'd', 'ad/4scotty2016kw25']);
+    } else {
+        gtssec.style.display = "none";
+    }
+}
+//-->
+</script>
+<!-- end gts-companion -->
+<!-- begin ad tag -->
+<script type="text/javascript">
+/* 20180619220350 */ !function(e,t,a){function n(t,a){var n=0,r=50,i=!1,o=e.setInterval(function(){t()&&(e.clearInterval(o),a(i)),n++>r&&(e.clearInterval(o),i=!0,a(i))},10)}function r(e){var t=e.toLowerCase();if(0===t.indexOf("msie")&&0===t.indexOf("trident"))return!1;var a=/(?:msie|rv:)\s?([\d\.]+)/.exec(t);return!!(a&&parseInt(a[1],10)>=10)}function o(e,t){try{var a,i=new RegExp("Firefox/([0-9]+)[.]{1}");if(t.webkitRequestFileSystem)t.webkitRequestFileSystem(t.TEMPORARY,1,function(){a=!1},function(e){a=!0});else if(t.indexedDB&&/Firefox/.test(t.navigator.userAgent)&&i.exec(t.navigator.userAgent)[1]>50&&i.exec(t.navigator.userAgent)[1]<56){var o;try{o=t.indexedDB.open("test")}catch(e){a=!0}"undefined"==typeof a&&n(function(){return"done"===o.readyState},function(e){e||(a=!o.result)})}else if(r(t.navigator.userAgent)){a=!1;try{t.indexedDB||(a=!0)}catch(e){a=!0}}else if(t.localStorage&&/Safari/.test(t.navigator.userAgent)){try{t.localStorage.setItem("test",1)}catch(e){a=!0}"undefined"==typeof a&&(a=!1,t.localStorage.removeItem("test"))}else a=!1;n(function(){return"undefined"!=typeof a},function(t){e(a)})}catch(e){}}function s(e,t){var a=W(e);if(!a)return a;if(""!=t)for(var n=0;n<t.length;n++)"^"==t.charAt(n)&&(a=a.parentNode),"<"==t.charAt(n)&&(a=a.previousElementSibling),">"==t.charAt(n)&&(a=a.nextElementSibling),"y"==t.charAt(n)&&(a=a.firstChild);return a}function p(e,t){var a=t.getBoundingClientRect(),n=e.clientX-a.left,r=e.clientY-a.top;return{x:n,y:r}}function u(e){for(var t=0,a=0;e;)t+=e.offsetLeft+e.clientLeft,a+=e.offsetTop+e.clientTop,e=e.offsetParent;return{x:t,y:a}}function l(e,t){var a=0,n=0,r=u(t);return(e.pageX||e.pageY)&&(a=e.pageX,n=e.pageY),(e.clientX||e.clientY)&&(a=e.clientX+document.body.scrollLeft+document.documentElement.scrollLeft,n=e.clientY+document.body.scrollTop+document.documentElement.scrollTop),a-=r.x,n-=r.y,{x:a,y:n}}function f(e,t){return t.getBoundingClientRect?p(e,t):l(e,t)}function c(e,t){e.addEventListener?e.addEventListener("click",t,!0):e.attachEvent&&e.attachEvent("onclick",function(){return t.call(e,window.event)})}function d(e){if("function"==typeof e.createShadowRoot)try{var t=e.createShadowRoot();t.innerHTML=atob("ICAgICAgICA8Y29udGVudD48L2NvbnRlbnQ+DQogICAgICAgIDxzdHlsZT4jamtkZnZqayB7IG1hcmdpbjogMDsgcGFkZGluZzogMDsgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7IH1ib2R5IHttYXJnaW46IDBweCFpbXBvcnRhbnQ7fTwvc3R5bGU+DQogICAg")}catch(e){}}function b(e){h(e)}function h(e){function a(e){if(e){window.uabpdadcv="1.1";var t=0,a=50,r=function(e,t){if(e&&t)for(var a=Object.keys(t),n=0;n<a.length;n++)"[object Array]"===Object.prototype.toString.call(t[a[n]])?e.style.setProperty(a[n],t[a[n]],"important"):e.style.setProperty(a[n],t[a[n]],"")},i=setInterval(function(){++t>=a&&clearInterval(i);for(var o=0;o<e.length;o++)if(e[o]){var s=void 0===e[o].dependency?"nil":e[o].dependency&&"undefined"!=typeof n&&n[e[o].dependency]?"true":"false";if("false"===s)continue;if(e[o].minWidth&&isNaN(parseInt(e[o].minWidth))){var p=(window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth)>=e[o].minWidth;if(!p)continue}if(!e[o].skipSelectorCSS&&!e[o].cssSelectorDone&&(e[o].selector||e[o].selectorAll))for(var u=document.querySelectorAll(e[o].selector||e[o].selectorAll),l=0;l<u.length&&(r(u[l],e[o].cssApply),e[o].cssSelectorDone=!0,!e[o].selector);l++);e[o].applyToDependency&&!e[o].cssDependencyDone&&e[o].cssApply&&(e[o].cssDependencyDone=!0,r(n[e[o].dependency],e[o].cssApply)),e[o].function&&!e[o].functionDone&&(e[o].functionDone=e[o].function(e[o])||!0)}},100)}}if(e.uabpdl&&!e.uabInject){e.uabInject=!0,e.uabPc={},e.uabOc=[],e.uabAv={},e.uabAvt={};var n=[];window.uabpFlags.newInject2=!0,window.uabpforceimp=!1,window.uabpFlags.forceImp=!1,a([{dependency:"BACK",selector:"#grandwrapper",cssApply:{position:"relative"}},{dependency:"MRTop",function:function(e){var t=location.host+"/"!==location.host+window.location.pathname;if(t){var a=n[e.dependency].parentElement;a&&"-150px"===window.getComputedStyle(a).marginRight&&a.style.setProperty("margin-right","-150.1px")}}}]);var r=!1;if(e.uabpnewinject||e.uabpFlags.newInject)for(var i,o=document.styleSheets,s=0;s<o.length;s++)try{if(o[s].cssRules){if(o[s].href&&(e.uabpnewinject3||e.uabpFlags.newInject3))continue;r=!0;var p=o[s];if(e.uabpnewinject2||e.uabpFlags.newInject2)for(var u in p.cssRules)if(p.cssRules.hasOwnProperty(u)&&p.cssRules[u].selectorText.indexOf("plista")>-1){r=!1;break}if(e.uabpnewinject4||e.uabpFlags.newInject4){i=Object.values(o[s].ownerNode.attributes);for(var l=0;l<i.length;l++)if(i[l].nodeName.indexOf("data-styled-components")>-1){r=!1;break}}if(r){try{setTimeout(v(p,n),500)}catch(e){}break}}}catch(e){}if(!e.uabpnewinject&&!e.uabpFlags.newInject||!r){var f=D("style");f.type="text/css",E(f,'.xCXKtarKBM {position: fixed; left: 0; top: 0px; right: 0; bottom: 0; cursor: pointer;background-color: #000000;}.xCXKtarKBM img {width: 100%;height: 100%;}#OMAZXTQcaa {text-align: center;}#OMAZXTQcaa img {cursor: pointer;max-width: 105%;display: initial !important;}#NlTEBp img {cursor: pointer;max-width: 100%;margin: auto;}#cmQcHr {width: 960px;text-align: center;margin-left: 10px;margin-top: 10px;}#cmQcHr:empty {width: 0;height: 0;margin: 0;}.RwIlwaWYMP {direction: rtl;right: -10px;position: relative;}.RwIlwaWYMP img {cursor: pointer;}#CrAAlrDl {margin-bottom: 20px;}#CrAAlrDl img {cursor: pointer;}.reIkJjzi {margin-left: 1010px;position: fixed;}.reIkJjzi:after {content: "Anzeige";font-size: 11.01px !important;height: 16px;text-transform: uppercase;letter-spacing: 1px;font: normal normal 400 12px/20px "Droid Sans",arial,sans-serif;display: block;position: absolute;left: 0;}.reIkJjzi img {cursor: pointer;}.pQeSiFst {position: fixed;top: 0;margin-left: 1010px;}.pQeSiFst:before {content: "Anzeige";font-size: 11.01px !important;height: 16px;text-transform: uppercase;letter-spacing: 1px;font: normal normal 400 12px/20px "Droid Sans",arial,sans-serif;display: block;position: absolute;top: -14px;right: 0;}.pQeSiFst img {cursor: pointer;}.egjQeMsORp {position: relative;}.egjQeMsORp img {cursor: pointer;}@media print {#cmQcHr,.egjQeMsORp,.xCXKtarKBM,#OMAZXTQcaa,#NlTEBp,.RwIlwaWYMP,#CrAAlrDl,.reIkJjzi,.pQeSiFst{display:none;}} .uabpHid {display:none !important;}'),k(ne,f),setTimeout(m(n),0)}(e.uabpdisableab||e.uabpFlags.disableAb)&&d(t.documentElement)}}function g(e,t){if(t<0)return g(e,t+26);for(var a="",n=0;n<e.length;n++){var r=e[n];if(r.match(/[a-z]/i)){var i=e.charCodeAt(n);i>=65&&i<=90?r=String.fromCharCode((i-65+t)%26+65):i>=97&&i<=122&&(r=String.fromCharCode((i-97+t)%26+97))}a+=r}return a}function v(t,a){e[g("fmdsqfEtqqf",-12)]=t;for(var n='.xCXKtarKBM {position: fixed; left: 0; top: 0px; right: 0; bottom: 0; cursor: pointer;background-color: #000000;}.xCXKtarKBM img {width: 100%;height: 100%;}#OMAZXTQcaa {text-align: center;}#OMAZXTQcaa img {cursor: pointer;max-width: 105%;display: initial !important;}#NlTEBp img {cursor: pointer;max-width: 100%;margin: auto;}#cmQcHr {width: 960px;text-align: center;margin-left: 10px;margin-top: 10px;}#cmQcHr:empty {width: 0;height: 0;margin: 0;}.RwIlwaWYMP {direction: rtl;right: -10px;position: relative;}.RwIlwaWYMP img {cursor: pointer;}#CrAAlrDl {margin-bottom: 20px;}#CrAAlrDl img {cursor: pointer;}.reIkJjzi {margin-left: 1010px;position: fixed;}.reIkJjzi:after {content: "Anzeige";font-size: 11.01px !important;height: 16px;text-transform: uppercase;letter-spacing: 1px;font: normal normal 400 12px/20px "Droid Sans",arial,sans-serif;display: block;position: absolute;left: 0;}.reIkJjzi img {cursor: pointer;}.pQeSiFst {position: fixed;top: 0;margin-left: 1010px;}.pQeSiFst:before {content: "Anzeige";font-size: 11.01px !important;height: 16px;text-transform: uppercase;letter-spacing: 1px;font: normal normal 400 12px/20px "Droid Sans",arial,sans-serif;display: block;position: absolute;top: -14px;right: 0;}.pQeSiFst img {cursor: pointer;}.egjQeMsORp {position: relative;}.egjQeMsORp img {cursor: pointer;}@media print {#cmQcHr,.egjQeMsORp,.xCXKtarKBM,#OMAZXTQcaa,#NlTEBp,.RwIlwaWYMP,#CrAAlrDl,.reIkJjzi,.pQeSiFst{display:none;}} .uabpHid {display:none !important;}'.replace(new RegExp(atob("fVxzK30="),"g"),function(e){return"}}"}),r=n.replace(new RegExp(e.atob("fVtefV0="),"g"),function(e){return e[0]+"randomString"+e[1]}).split("randomString"),i=0;i<r.length;i++)e[g("fmdsqfEtqqf",-12)][g("uzeqdfDgxq",-12)](r[i],e[g("fmdsqfEtqqf",-12)].cssRules.length);setTimeout(m(a),0)}function m(e){var t=[];z(e,t),j(e,t),x()}function z(t,a){var n=s("#screen","");if(n){var r=D("div");a.BILLWrapper=r,t.BILLWrapper=r,navigator.userAgent.toLowerCase().indexOf("chrome")>-1&&(e.uabpforceimp||e.uabpFlags.forceImp)&&X(r),P(r,"cmQcHr"),H(r,"virbTHlk "),L(n,r),e.uabpd4.w[3606]=r}var n=s("#grandwrapper","");if(n){var r=D("div");a.WrapperWallpaper=r,t.WrapperWallpaper=r,navigator.userAgent.toLowerCase().indexOf("chrome")>-1&&(e.uabpforceimp||e.uabpFlags.forceImp)&&X(r),H(r,"egjQeMsORp "),n.firstChild?L(n.firstChild,r):k(n,r),e.uabpd4.w[3843]=r}}function j(t,a){e.uabpPtl=7,e.uabpPl=0;var n=s("body","");n?Q(V("22zzz1jrohp1gh255452vsb"+e.uabpRnd+"08936;:0lbuf1msj",-3),function(){y();var a=this;if(!(a.height<2)){var r=n,i=D("div");t.BACK=i,navigator.userAgent.toLowerCase().indexOf("chrome")>-1&&(e.uabpforceimp||e.uabpFlags.forceImp)&&X(i),H(i,"xCXKtarKBM ");var o=a;c(o,function(t,a){if(!e.uabPc[4087]){t.preventDefault(),t.stopPropagation();for(var a=f(t,this),n=0;n<e.uabOc.length;n++){var r=e.uabOc[n];if(4087==r.p&&a.x>=r.x&&a.x<r.x+r.w&&a.y>=r.y&&a.y<r.y+r.h){if(r.u){var i=r.t.length>0?r.t:"_self";i=0==t.button&&t.ctrlKey?"_blank":i,_(e,r.u,i)}return}}var o=[V("22zzz1jrohp1gh25<692vsb"+e.uabpRnd+"08665<;0lbuf1msj",-3)],s=o[1*Math.floor(1*a.y/this.offsetHeight)+Math.floor(1*a.x/this.offsetWidth)];_(e,s,0==t.button&&t.ctrlKey?"_blank":"_self")}}),k(i,a),r.firstChild?L(r.firstChild,i):k(r,i),e.uabpd4.a[4087]=i,ae(i,4087,V("22zzz1jrohp1gh2848;2vsb"+e.uabpRnd+"079579;0lbuf1msj",-3))}},y):y();var r=a.BILLWrapper;r?Q(V("22zzz1jrohp1gh249592vsb"+e.uabpRnd+"0:84<590lbuf1msj",-3),function(){y();var a=this;if(!(a.height<2)){var n=r,i=D("div");t.BILL=i,navigator.userAgent.toLowerCase().indexOf("chrome")>-1&&(e.uabpforceimp||e.uabpFlags.forceImp)&&X(i),P(i,"OMAZXTQcaa");var o=a;c(o,function(t,a){if(!e.uabPc[3607]){t.preventDefault(),t.stopPropagation();for(var a=f(t,this),n=0;n<e.uabOc.length;n++){var r=e.uabOc[n];if(3607==r.p&&a.x>=r.x&&a.x<r.x+r.w&&a.y>=r.y&&a.y<r.y+r.h){if(r.u){var i=r.t.length>0?r.t:"_self";i=0==t.button&&t.ctrlKey?"_blank":i,_(e,r.u,i)}return}}var o=[V("22zzz1jrohp1gh28;:62vsb"+e.uabpRnd+"07335370lbuf1msj",-3),V("22zzz1jrohp1gh2<8442vsb"+e.uabpRnd+"063983;0lbuf1msj",-3),V("22zzz1jrohp1gh266<82vsb"+e.uabpRnd+"08<9:<50lbuf1msj",-3),V("22zzz1jrohp1gh289:72vsb"+e.uabpRnd+"08;::530lbuf1msj",-3),V("22zzz1jrohp1gh257::2vsb"+e.uabpRnd+"0<76:9:0lbuf1msj",-3),V("22zzz1jrohp1gh26:<72vsb"+e.uabpRnd+"06:;7<:0lbuf1msj",-3),V("22zzz1jrohp1gh264<:2vsb"+e.uabpRnd+"0;;97480lbuf1msj",-3),V("22zzz1jrohp1gh2<97<2vsb"+e.uabpRnd+"0<677550lbuf1msj",-3),V("22zzz1jrohp1gh245;<2vsb"+e.uabpRnd+"08:95<30lbuf1msj",-3),V("22zzz1jrohp1gh2<6452vsb"+e.uabpRnd+"0853:;<0lbuf1msj",-3),V("22zzz1jrohp1gh267842vsb"+e.uabpRnd+"046:4890lbuf1msj",-3),V("22zzz1jrohp1gh24:772vsb"+e.uabpRnd+"097:;550lbuf1msj",-3)],s=o[12*Math.floor(1*a.y/this.offsetHeight)+Math.floor(12*a.x/this.offsetWidth)];_(e,s,0==t.button&&t.ctrlKey?"_blank":"_self")}}),k(i,a),k(n,i),e.uabpd4.a[3607]=i;var s=D("div");E(s,'<div style="font-size: 11.01px !important;height: 16px;text-transform: uppercase;letter-spacing: 1px;font: normal normal 400 12px/20px &apos;Droid Sans&apos;,arial,sans-serif;">Anzeige</div> <div> </div> <div> </div>'),B(s.childNodes,function(e,t){L(i,t)}),ae(i,3607,V("22zzz1jrohp1gh2479<2vsb"+e.uabpRnd+"09553780lbuf1msj",-3))}},y):y();var i=s("#screen > .g:last-child > .specialletters","");i?Q(V("22zzz1jrohp1gh2874;2vsb"+e.uabpRnd+"057::880lbuf1msj",-3),function(){y();var a=this;if(!(a.height<2)){var n=i,r=D("div");t.BILLFooter=r,navigator.userAgent.toLowerCase().indexOf("chrome")>-1&&(e.uabpforceimp||e.uabpFlags.forceImp)&&X(r),P(r,"NlTEBp");var o=a;c(o,function(t,a){if(!e.uabPc[4875]){t.preventDefault(),t.stopPropagation();for(var a=f(t,this),n=0;n<e.uabOc.length;n++){var r=e.uabOc[n];if(4875==r.p&&a.x>=r.x&&a.x<r.x+r.w&&a.y>=r.y&&a.y<r.y+r.h){if(r.u){var i=r.t.length>0?r.t:"_self";i=0==t.button&&t.ctrlKey?"_blank":i,_(e,r.u,i)}return}}var o=[V("22zzz1jrohp1gh26<942vsb"+e.uabpRnd+"08768460lbuf1msj",-3),V("22zzz1jrohp1gh2;47:2vsb"+e.uabpRnd+"0;449:70lbuf1msj",-3),V("22zzz1jrohp1gh2<;<:2vsb"+e.uabpRnd+"0974:3;0lbuf1msj",-3),V("22zzz1jrohp1gh2<4332vsb"+e.uabpRnd+"0:;45850lbuf1msj",-3),V("22zzz1jrohp1gh24;782vsb"+e.uabpRnd+"0;5;4530lbuf1msj",-3),V("22zzz1jrohp1gh2978:2vsb"+e.uabpRnd+"04857;40lbuf1msj",-3),V("22zzz1jrohp1gh24:592vsb"+e.uabpRnd+"043;<890lbuf1msj",-3),V("22zzz1jrohp1gh254372vsb"+e.uabpRnd+"08;636<0lbuf1msj",-3),V("22zzz1jrohp1gh29:7<2vsb"+e.uabpRnd+"049486<0lbuf1msj",-3),V("22zzz1jrohp1gh27<972vsb"+e.uabpRnd+"0::84;:0lbuf1msj",-3),V("22zzz1jrohp1gh2687<2vsb"+e.uabpRnd+"0673<330lbuf1msj",-3),V("22zzz1jrohp1gh27<6:2vsb"+e.uabpRnd+"09536390lbuf1msj",-3)],s=o[12*Math.floor(1*a.y/this.offsetHeight)+Math.floor(12*a.x/this.offsetWidth)];_(e,s,0==t.button&&t.ctrlKey?"_blank":"_self")}}),k(r,a),L(n,r),e.uabpd4.a[4875]=r;var s=D("div");E(s,'<div style="font-size: 11.01px !important;text-align: center;height: 16px;text-transform: uppercase;letter-spacing: 1px;font: normal normal 400 12px/20px &apos;Droid Sans&apos;,arial,sans-serif;">Anzeige</div> <div> </div> <div> </div>'),B(s.childNodes,function(e,t){L(r,t)}),ae(r,4875,V("22zzz1jrohp1gh25:632vsb"+e.uabpRnd+"0:458780lbuf1msj",-3))}},y):y();var o=s("#bannerTopWrapper > .iqdSiteAlign","");o?Q(V("22zzz1jrohp1gh2<;<62vsb"+e.uabpRnd+"09676:50lbuf1msj",-3),function(){y();var a=this;if(!(a.height<2)){var n=o,r=D("div");t.LBTopWallpaper=r,navigator.userAgent.toLowerCase().indexOf("chrome")>-1&&(e.uabpforceimp||e.uabpFlags.forceImp)&&X(r),H(r,"RwIlwaWYMP ");var i=a;c(i,function(t,a){if(!e.uabPc[3844]){t.preventDefault(),t.stopPropagation();for(var a=f(t,this),n=0;n<e.uabOc.length;n++){var r=e.uabOc[n];if(3844==r.p&&a.x>=r.x&&a.x<r.x+r.w&&a.y>=r.y&&a.y<r.y+r.h){if(r.u){var i=r.t.length>0?r.t:"_self";i=0==t.button&&t.ctrlKey?"_blank":i,_(e,r.u,i)}return}}var o=[V("22zzz1jrohp1gh278642vsb"+e.uabpRnd+"05;655;0lbuf1msj",-3),V("22zzz1jrohp1gh2;46:2vsb"+e.uabpRnd+"09;4;340lbuf1msj",-3),V("22zzz1jrohp1gh27<892vsb"+e.uabpRnd+"0<;<9;50lbuf1msj",-3)],s=o[3*Math.floor(1*a.y/this.offsetHeight)+Math.floor(3*a.x/this.offsetWidth)];_(e,s,0==t.button&&t.ctrlKey?"_blank":"_self")}}),k(r,a),n.firstChild?L(n.firstChild,r):k(n,r),e.uabpd4.a[3844]=r,ae(r,3844,V("22zzz1jrohp1gh2779;2vsb"+e.uabpRnd+"0756<950lbuf1msj",-3))}},y):y();var p=s("#iqadtile8","");p?Q(V("22zzz1jrohp1gh273792vsb"+e.uabpRnd+"067:4570lbuf1msj",-3),function(){y();var a=this;if(!(a.height<2)){var n=p,r=D("div");t.MRTop=r,navigator.userAgent.toLowerCase().indexOf("chrome")>-1&&(e.uabpforceimp||e.uabpFlags.forceImp)&&X(r),P(r,"CrAAlrDl");var i=a;c(i,function(t,a){if(!e.uabPc[3609]){t.preventDefault(),t.stopPropagation();for(var a=f(t,this),n=0;n<e.uabOc.length;n++){var r=e.uabOc[n];if(3609==r.p&&a.x>=r.x&&a.x<r.x+r.w&&a.y>=r.y&&a.y<r.y+r.h){if(r.u){var i=r.t.length>0?r.t:"_self";i=0==t.button&&t.ctrlKey?"_blank":i,_(e,r.u,i)}return}}var o=[V("22zzz1jrohp1gh29;3;2vsb"+e.uabpRnd+"04<49:90lbuf1msj",-3),V("22zzz1jrohp1gh296:82vsb"+e.uabpRnd+"04956:<0lbuf1msj",-3),V("22zzz1jrohp1gh2:<:42vsb"+e.uabpRnd+"05<75370lbuf1msj",-3)],s=o[1*Math.floor(3*a.y/this.offsetHeight)+Math.floor(1*a.x/this.offsetWidth)];_(e,s,0==t.button&&t.ctrlKey?"_blank":"_self")}}),k(r,a),L(n,r),e.uabpd4.a[3609]=r;var o=D("div");E(o,'<div style="font-size: 11.01px !important;height: 16px;text-transform: uppercase;letter-spacing: 1px;font: normal normal 400 12px/20px &apos;Droid Sans&apos;,arial,sans-serif;">Anzeige</div> <div> </div> <div> </div>'),B(o.childNodes,function(e,t){L(r,t)}),ae(r,3609,V("22zzz1jrohp1gh274332vsb"+e.uabpRnd+"0597;4:0lbuf1msj",-3))}},y):y();var u=s("#grandwrapper","");u?Q(V("22zzz1jrohp1gh295532vsb"+e.uabpRnd+"0:37;770lbuf1msj",-3),function(){y();var a=this;if(!(a.height<2)){var n=u,r=D("div");t.SKYRight=r,navigator.userAgent.toLowerCase().indexOf("chrome")>-1&&(e.uabpforceimp||e.uabpFlags.forceImp)&&X(r),H(r,"reIkJjzi ");var i=a;c(i,function(t,a){if(!e.uabPc[3608]){t.preventDefault(),t.stopPropagation();for(var a=f(t,this),n=0;n<e.uabOc.length;n++){var r=e.uabOc[n];if(3608==r.p&&a.x>=r.x&&a.x<r.x+r.w&&a.y>=r.y&&a.y<r.y+r.h){if(r.u){var i=r.t.length>0?r.t:"_self";i=0==t.button&&t.ctrlKey?"_blank":i,_(e,r.u,i)}return}}var o=[V("22zzz1jrohp1gh274<32vsb"+e.uabpRnd+"09455380lbuf1msj",-3),V("22zzz1jrohp1gh2;8792vsb"+e.uabpRnd+"0:896570lbuf1msj",-3),V("22zzz1jrohp1gh25;5;2vsb"+e.uabpRnd+"07864;60lbuf1msj",-3)],s=o[1*Math.floor(3*a.y/this.offsetHeight)+Math.floor(1*a.x/this.offsetWidth)];_(e,s,0==t.button&&t.ctrlKey?"_blank":"_self")}}),k(r,a),n.firstChild?L(n.firstChild,r):k(n,r),e.uabpd4.a[3608]=r,ae(r,3608,V("22zzz1jrohp1gh2;45;2vsb"+e.uabpRnd+"0<735430lbuf1msj",-3))}},y):y();var l=a.WrapperWallpaper;l?Q(V("22zzz1jrohp1gh2;6382vsb"+e.uabpRnd+"07;;7750lbuf1msj",-3),function(){y();var a=this;if(!(a.height<2)){var n=l,r=D("div");t.SKYRightWallpaper=r,navigator.userAgent.toLowerCase().indexOf("chrome")>-1&&(e.uabpforceimp||e.uabpFlags.forceImp)&&X(r),P(r,"FQDbRzZ"),H(r,"pQeSiFst ");var i=a;c(i,function(t,a){if(!e.uabPc[3845]){t.preventDefault(),t.stopPropagation();for(var a=f(t,this),n=0;n<e.uabOc.length;n++){var r=e.uabOc[n];if(3845==r.p&&a.x>=r.x&&a.x<r.x+r.w&&a.y>=r.y&&a.y<r.y+r.h){if(r.u){var i=r.t.length>0?r.t:"_self";i=0==t.button&&t.ctrlKey?"_blank":i,_(e,r.u,i)}return}}var o=[V("22zzz1jrohp1gh2;5<72vsb"+e.uabpRnd+"07:55<50lbuf1msj",-3),V("22zzz1jrohp1gh289662vsb"+e.uabpRnd+"09:<5870lbuf1msj",-3),V("22zzz1jrohp1gh2::682vsb"+e.uabpRnd+"0;3559:0lbuf1msj",-3)],s=o[1*Math.floor(3*a.y/this.offsetHeight)+Math.floor(1*a.x/this.offsetWidth)];_(e,s,0==t.button&&t.ctrlKey?"_blank":"_self")}}),k(r,a),k(n,r),e.uabpd4.a[3845]=r,ae(r,3845,V("22zzz1jrohp1gh2:7952vsb"+e.uabpRnd+"097648<0lbuf1msj",-3))}},y):y(),(e.uabpautorecov||e.uabpFlags.autoRecov)&&te(),x()}function x(){B(T("#iqadtile4 > .iqadmarker"),function(e,t){t.className+=" uabpHid"}),B(T("#iqadtile8 > .iqadmarker"),function(e,t){t.className+=" uabpHid"}),B(T("#iqadtile9 > .iqadmarker"),function(e,t){t.className+=" uabpHid"}),B(T("#iqadtile3"),function(e,t){t.className+=" uabpHid"})}function y(){e.uabpPl++,e.uabpPl>=e.uabpPtl&&w()}function w(){var t=function(t){if(null!==t.data&&"object"==typeof t.data)try{var a=t.data,n=document.createElement("a");if(n.href=t.origin,window.location.hostname!=n.hostname&&"www.golem.de"!=n.hostname)return;if("cc"==a.c)B(T(a.d+" > *"),function(e,t){q(t)});else if("cs"==a.c)if(e[g("fmdsqfEtqqf",-12)])for(var r=e[g("fmdsqfEtqqf",-12)],i=a.d.replace(new RegExp(atob("fVxzK30="),"g"),function(e){return"}}"}),o=i.replace(new RegExp(e.atob("fVtefV0="),"g"),function(e){return e[0]+"randomString"+e[1]}).split("randomString"),s=0;s<o.length;s++)r[g("uzeqdfDgxq",-12)](o[s],r.cssRules.length);else{var r=D("style");r.type="text/css",E(r,a.d),k(ne,r)}else if("pc"==a.c)e.uabPc[a.d]=!0;else if("oc"==a.c)e.uabOc.push(a.d);else if("ac"==a.c){var p=W(a.d.slc),r=D("div");r.innerHTML=a.d.cnt,B(r.childNodes,function(e,t){p.appendChild(t)})}else if("js"==a.c){var r=D("script");E(r,a.d),k(re,r)}else if("if"==a.c){var r=D("iframe");r.src=a.d,r.style.display="none",k(re,r)}}catch(e){}};e.addEventListener("message",t,!1);var a=D("iframe");a.src=V("22zzz1jrohp1gh247962vsb"+e.uabpRnd+"06955;;0lbuf1msj",-3),a.style.display="none",k(re,a)}function R(t,a){if(e.uabTrack)return!1;e.uabTrack=!0;var n=function(){Y(this)||b(e)};t?a?K(V("22zzz1jrohp1gh2;9962vsb"+e.uabpRnd+"093<;:60lbuf1msj",-3),n,n):window.uabpnpm||window.uabpFlags.npm||K(V("22zzz1jrohp1gh279592vsb"+e.uabpRnd+"04:;;470lbuf1msj",-3),n,n):a&&K(V("22zzz1jrohp1gh2:3332vsb"+e.uabpRnd+"05969<50lbuf1msj",-3),n,n)}function A(t){var a=function(){};"1"==t&&Q(V("22zzz1jrohp1gh2:9532vsb"+e.uabpRnd+"06785530lbuf1msj",-3),a,a),"2"==t&&Q(V("22zzz1jrohp1gh249372vsb"+e.uabpRnd+"0664<690lbuf1msj",-3),a,a),"3"==t&&Q(V("22zzz1jrohp1gh2;3472vsb"+e.uabpRnd+"09697770lbuf1msj",-3),a,a),"4"==t&&Q(V("22zzz1jrohp1gh2<6762vsb"+e.uabpRnd+"08988<60lbuf1msj",-3),a,a)}function I(){if(e.uabpd3++,e.uabpd3==e.uabpd1.length)if(e.uabpd2.length==e.uabpd3)e.uabpij=!0;else{for(var t=0;!e.uabpij&&t<e.uabpd2.length;)("string"==typeof e.uabpd2[t]||e.uabpd2[t]instanceof String)&&0==e.uabpd2[t].indexOf("blockers")?(e.uabpij=!0,e.uabpd5.s++):("string"==typeof e.uabpd2[t]||e.uabpd2[t]instanceof String)&&0==e.uabpd2[t].indexOf("generic")&&(e.uabpij=!0,e.uabpd5.s++),t++;e.uabpd5.e>0&&0==e.uabpd5.s&&0!==e.uabpd2.length&&e.uabpd2.length==e.uabpd3-e.uabpd5.e&&(e.uabpij=!0)}}function F(){C()}function C(){if(!e.uabDetect){e.uabDetect=!0,e.uabpd1=[],e.uabpd2=[],e.uabpd3=0,e.uabpd4={},e.uabpd4.a={},e.uabpd4.w={},e.uabpd5={},e.uabpd5.e=0,e.uabpd5.s=0,e.uabpij=!1;var t=D("DIV");E(t,"&nbsp;"),k(re,t);var a=D("DIV"),n=a,r=a;H(r,"iqadmarker"),E(r,"&nbsp;"),k(re,a),a=r;var i=function(){if(!Y(this)){var r=navigator.userAgent||navigator.vendor||window.opera;e.uabpMobile=r.match(/iPad/i)||r.match(/iPhone/i)||r.match(/iPod/i)||r.match(/Android/i);var i=function(){setTimeout(function(){Z(t,a)&&e.uabpd2.push(a),q(t),q(n),I()},500)};e.uabpd1.push(i);var s=function(t){var a=Y(this);if(this.parentElement||!a&&navigator.userAgent.indexOf("Safari")>-1&&navigator.userAgent.indexOf("Chrome")==-1){if(!this.parentElement){k(W("body"),this);var n=this;n.src=n.src,setTimeout(function(){J(n)&&e.uabpd2.push(n),I(),n.parentNode.removeChild(n)},500)}}else a&&(e.uabpd2.push(this),I())},i=function(){Q(V("22zzz1jrohp1gh2873<2dgbslfv2vsb"+e.uabpRnd+"0;376:60lbuf1msj",-3),s,s)};e.uabpd1.push(i);for(var p=0;p<e.uabpd1.length;p++)e.uabpd1[p]();e.uabpfp||e.uabpFlags.fp?R(!0,!1):"function"==typeof o&&o(function(e){try{"undefined"!=typeof e&&e&&(A(3),/Firefox/.test(window.navigator.userAgent)&&!window.uabpnpm&&!window.uabpFlags.npm);var t=setInterval(function(){(window.uabpd3==window.uabpd1.length||window.uabpij)&&(clearInterval(t),R("undefined"!=typeof e&&e&&/Firefox/.test(window.navigator.userAgent),window.uabpij))},100)}catch(e){}},e)}};Q(V("22zzz1jrohp1gh246682vsb"+e.uabpRnd+"0:438650lbuf1msj",-3),i,i)}}function M(){if(e.uabpRnd=e.uabpRnd||O(),e.uabpdl&&!e.uabpdln&&(A(4),e.uabpdln=!0),!e.uabpdl){e.uabpdl=!0,e.uabpdln=!0,e.uabpdgenat="20180619220350",e.uabpdsthash="05f2a577cba58d5b85a82f48f002c3bd",e.uabpRnd=e.uabpRnd||O(),e.uabpforceimp=!1,e.uabpnewinject=!0,e.uabpFlags.newSafDet=!!e.uabpFlags.newSafDet&&e.uabpFlags.newSafDet,e.uabpFlags.newInject=!e.uabpFlags.newInject||e.uabpFlags.newInject,e.uabpFlags.newInject2=!!e.uabpFlags.newInject2&&e.uabpFlags.newInject2,e.uabpFlags.newInject3=!!e.uabpFlags.newInject3&&e.uabpFlags.newInject3,e.uabpFlags.newInject4=!!e.uabpFlags.newInject4&&e.uabpFlags.newInject4,e.uabpFlags.forceImp=!!e.uabpFlags.forceImp&&e.uabpFlags.forceImp,e.uabpFlags.disableAb=!!e.uabpFlags.disableAb&&e.uabpFlags.disableAb,e.uabpFlags.autoRecov=!!e.uabpFlags.autoRecov&&e.uabpFlags.autoRecov,e.uabpFlags.fp=!!e.uabpFlags.fp&&e.uabpFlags.fp,e.uabpFlags.npm=!!e.uabpFlags.npm&&e.uabpFlags.npm;var t=setInterval(function(){if(re=W("body"),null!=re){if(e.uabBody)return;e.uabBody=!0,clearInterval(t);var a=D("style");a.type="text/css",k(ne,a),F()}},10)}}function O(){var e=S();return V(e,3)}function S(){for(var e="0123456789bcdefghijklmnopqrstuvwxyzBCDEFGHIJKLMNOPQRSTUVWXYZ",t=a.max(4,1+a.floor(6*a.random())),n="";n.length<t;)n+=e.charAt(a.floor(a.random()*e.length));return n}function D(e){return t.createElement(e)}function E(e,t){e.innerHTML=t}function k(e,t){e.appendChild(t)}function L(e,t){e.parentElement.insertBefore(t,e)}function q(e){e&&e.parentElement&&e.parentElement.removeChild(e)}function H(e,t){e.className=t}function P(e,t){e.id=t}function W(e){return t.querySelector(e)}function T(e){return t.querySelectorAll(e)}function Q(e,t,a){var n=D("IMG");n.onload=t,n.onerror=a,n.src=e}function K(e,t,a){var n=D("IMG");n.onload=t,n.onerror=a,n.referrerPolicy="unsafe-url",n.src=e}function B(e,t){if(e&&e.length)for(var a=0;a<e.length;a++)t(a,e[a])}function N(e){try{return e.self!==e.top}catch(e){return!0}}function _(e,t,a){if(N(e))e.open(t);else if("_blank"===a){var n=S();e.open(V("22zzz1jrohp1gh288<32vsb"+e.uabpRnd+"07:8<560lbuf1msj",-3)+"#"+n),e.addEventListener("message",function(e){if(null!==e.data&&"object"==typeof e.data&&e.data.message&&"ping"===e.data.message&&e.data.tabId&&e.data.tabId===n)try{e.source.postMessage({message:"pong",targetURL:t,tabId:n},"*")}catch(e){}},!1)}else e.location.assign(t)}function X(e){e.style.setProperty("display","inherit","important")}function Y(e){return e.height<2}function Z(e,t){return 0==t.offsetHeight&&0!=e.offsetHeight}function J(e){return 0==e.offsetHeight}function V(e,t){var a="";for(i=0;i<e.length;i++)a+=String.fromCharCode(e.charCodeAt(i)+t);return a}function G(e,t,a){return e.classList.add("uabpHid"),""===t?"":"."===t[0]?(e.classList.remove(t.slice(1)),e.classList.add(a),"."+a):(e.id=a,"#"+e.id.trim())}function U(e){for(var t="",a="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",n=0;n<e;n++)t+=a.charAt(Math.floor(Math.random()*a.length));return t}function $(t,a,n,r){var i=t.classList.item(0)?"."+t.classList.item(0):"",o=G(t,i,U(6)),s=t.id.trim()?"#"+t.id.trim():"",p=G(t,s,U(6)),u="",l="";if(e[g("fmdsqfEtqqf",-12)])for(var f=e[g("fmdsqfEtqqf",-12)],c=0;c<f.cssRules.length;c++)l=f.cssRules[c].cssText,""!==i&&l.indexOf(i)>-1?u=l.replace(i,o):""!==s&&l.indexOf(s)>-1&&(u=l.replace(s,p)),""!==u&&(f.deleteRule(c--),f.insertRule(u,f.cssRules.length),u="");t.classList.remove("uabpHid"),n&&0===t.scrollHeight&&0===t.scrollWidth&&(r[n]&&r[n].hidden>3?r[n].ignore=!0:r[n]?r[n].hidden++:r[n]={hidden:1});for(var d=0;d<a.length;d++)t.parentNode===a[d]&&$(a[d],a)}function ee(e,t){return!t[e]||!t[e].ignore}function te(){var t,a,n,r=[],i=0,o=[];e.uabpFlags.mutationRecord=o;setInterval(function(){t=Object.keys(e.uabpd4.a);for(var s=0;s<t.length;s++)r[s]=t[s];n=Object.values(e.uabpd4.w);for(var p=0;p<r.length;p++){var u=r[p];a=e.uabpd4.a[u].firstChild?e.uabpd4.a[u].firstChild:e.uabpd4.a[u],0===a.scrollHeight&&0===a.scrollWidth?ee(u,o)&&("IMG"===a.nodeName&&(a=a.parentNode),$(a,n,u,o)):o[u]&&(o[u]={hidden:0})}i++},500)}function ae(a,n,r){if(e.uabAv[n]||(e.uabAv[n]=0,e.uabAvt[n]=e.setTimeout(function(){ae(a,n,r)},100)),!(e.uabAv[n]>=2)){var i=a.getBoundingClientRect();if("undefined"==typeof a.width)var o=a.offsetHeight,s=a.offsetWidth;else var o=a.height,s=a.width;if(0!=o&&0!=s){var p=i.left+s/2,u=i.top+o/2,l=t.documentElement,f=0,c=0;if(e.innerWidth&&e.innerHeight?(f=e.innerHeight,c=e.innerWidth):!l||isNaN(l.clientHeight)||isNaN(l.clientWidth)||(f=t.clientHeight,c=t.clientWidth),0<=u&&u<=f&&0<=p&&p<=c){if(e.uabAv[n]++,e.uabAv[n]>=2){var d=function(){};Q(r,d,d),e.clearTimeout(e.uabAvt[n])}}else e.uabAv[n]=0}}}if(e.UABPdd=I,e.uabpFlags={},e.uabpRnd=e.uabpRnd||O(),window.uabpnewsafaridetection=!0,1){var ne=W("head"),re=null;navigator.userAgent.search("Firefox")==-1&&(t.addEventListener?t.addEventListener("DOMContentLoaded",M,!1):t.attachEvent&&t.attachEvent("onreadystatechange",function(){"complete"===t.readyState&&M()})),e.addEventListener?e.addEventListener("load",M,!1):e.attachEvent&&e.attachEvent("onload",M),e.addEventListener?e.addEventListener("addefend.init",M,!1):e.attachEvent&&e.attachEvent("addefend.init",M)}}(window,document,Math); /* 05f2a577cba58d5b85a82f48f002c3bd */</script>
+<!-- end ad tag -->
+<div id="ivwcontainer">
+<!-- SZM VERSION="2.0" -->
+<script type="text/javascript" src="Gr%C3%BC17-Dateien/iam.js"></script>
+<script type="text/javascript">
+<!--
+var iam_data = {
+"st":"golem",
+"cp":"G_SEC",
+"sv":"i2"
+};
+if (typeof iom !== 'undefined') { iom.c(iam_data, 1); }
+//-->
+</script>
+<!--/SZM -->
+
+<script type="text/javascript">
+<!--
+var disableStr='ga-disable-UA-518800-';
+if(document.cookie.indexOf(disableStr+'2=true')>-1){for(var i=1;i<8;i++){window[disableStr+i]=true;}}
+var _gaq = _gaq || [];
+_gaq.push(['_gat._anonymizeIp'],
+['_setAccount','UA-518800-2'],['_setDomainName','golem.de'],['_trackPageview'],['_trackPageLoadTime']);
+(function(d,t) {
+    var ga = d.createElement(t); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://www.google-analytics.com/ga.js';
+    var s = d.getElementsByTagName(t)[0]; s.parentNode.insertBefore(ga, s);
+})(document,'script');
+var _gcpx = _gcpx || [];
+$(document).ready(function() {
+  $('body').append("<img src='https://cpx.golem.de/cpx.php?class=1&amp;aid=129196&amp;page=1&amp;ts="+(Math.round(new Date().getTime()/1000))+"&amp;ref="+escape(document.referrer)+"'>");
+_gcpx.push(['pi','d','article/129196']);
+_gcpx.push(['var','author','sg']); var bottomad = $('#bottom_ad'),
+    iqdGolemCheckVar = 'false';
+if(typeof deliveringAds=='boolean' && deliveringAds && bottomad.length==1 && bottomad.height()>0) { iqdGolemCheckVar='true'; }
+_gcpx.push(['var','iqcv',(((typeof iqdGolemCheckVar==="string")&&(iqdGolemCheckVar==="true"))?'1':(((typeof subDomainCheckVar!=="undefined")&&(subDomainCheckVar===true))?'3':'0'))]);
+_gcpx.push(['var','special',['sec','oss','apps','rust','tsilkcalb','gnome','itsicherheit','autorsebastiangruener','desktopapplikationen','opensource','security','softwareentwicklung']]);
+_gcpx.push(['var','flbd',0]);
+$('.gservprg, .gnlform').on('submit', function(e) {
+  if(e.isDefaultPrevented()){ return; }
+  e.preventDefault();
+  var t = $(e.target), s = $(this).find('[name=service]').val(), p = $(this).data('pos') || 'none';
+  _gcpx.push(['ev', 'd', 'service/' + s + '/' + p]);
+  setTimeout(function(){ t.unbind('submit').trigger('submit'); }, 50);
+});
+$.each(['gsidetoc', 'related', 'recent-articles', 'recent-comments', 'breadcrumbs', 'small-ticker10', 'video-clip', 'followrss', 'newsletter'], function(i, v) {
+  $('#' + v + ' a').on('click', {p: v}, function(e) {
+    if (e.isDefaultPrevented()) { return; }
+    _gcpx.push(['ev', 'd', 'anchor/' + e.data.p.replace(/[^a-z0-9]+/g, '')]);
+    $(e.target).unbind('click');
+    if (!($(this).attr('target') || e.altKey || e.ctrlKey || e.shiftKey || e.metaKey)) {
+      var self = this; setTimeout(function(){ self.click(); }, 50);
+      return false;
+    }
+  });
+});
+(function(d,n){
+  var g=d.createElement(n),s=d.getElementsByTagName(n)[0];
+  g.async=true; g.src='/staticrl/scripts/golem_cpxl_113-min.js';
+  s.parentNode.insertBefore(g,s);
+})(document,'script');
+});
+//-->
+</script>
+<noscript>
+<img src="https://cpx.golem.de/cpx.php?class=1&amp;aid=129196&amp;page=1&amp;ts=1529439166&amp;ref=nojs" alt="" width="1" height="1" />
+<img src="https://cpxl.golem.de/gif?u=http%3A%2F%2Fwww.golem.de%2Fnews%2Frust-c-ist-eine-feindselige-sprache-1707-129196.html&amp;d=1529439166&amp;f=pi&amp;v=d&amp;t=article%2F129196&amp;z%5Bauthor%5D%5B%5D=sg" alt="" width="1" height="1" /><img src="https://ads.golem.de/cpxl.php?u=https%3A%2F%2Fwww.golem.de%2Fnews%2Frust-c-ist-eine-feindselige-sprache-1707-129196.html&amp;d=1529439166&amp;f=pi&amp;v=d&amp;t=article%2F129196&amp;z%5Bauthor%5D%5B%5D=sg" alt="" width="1" height="1" /></noscript>
+
+<img src="Gr%C3%BC17-Dateien/635ec31d6b4645eca834ab36114f8a0c.gif" alt="" style="display: none !important;" width="1" hidden="" height="1">
+</div>
+<div id="fb-root"></div>
+<script type="text/javascript">
+<!--
+var _gaq=_gaq || [];
+var shareUrl='https://www.golem.de/news/rust-c-ist-eine-feindselige-sprache-1707-129196.html',
+    ___gcfg={lang: 'de'};
+//-->
+</script>
+    
+
+<img src="Gr%C3%BC17-Dateien/cpx.gif" style="display: none !important;" hidden=""></body></html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html class="js sidebar-visible light" lang="en"><head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Constructors - </title>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="rgb(255, 255, 255)">
+
+        <!-- base href="https://doc.rust-lang.org/beta/nomicon/constructors.html" -->
+
+        <link rel="stylesheet" href="Rusi-Dateien/book.css">
+        <link href="Rusi-Dateien/css.css" rel="stylesheet" type="text/css">
+        <link href="Rusi-Dateien/css_002.css" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="https://doc.rust-lang.org/beta/nomicon/favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="Rusi-Dateien/font-awesome.css">
+
+        <link rel="stylesheet" href="Rusi-Dateien/highlight.css">
+        <link rel="stylesheet" href="Rusi-Dateien/tomorrow-night.css">
+        <link rel="stylesheet" href="Rusi-Dateien/ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents" aria-hidden="false">
+            <ol class="chapter"><li class="affix"><a href="https://doc.rust-lang.org/beta/nomicon/README.html" tabindex="0">Introduction</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/meet-safe-and-unsafe.html" tabindex="0"><strong aria-hidden="true">1.</strong> Meet Safe and Unsafe</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/beta/nomicon/safe-unsafe-meaning.html" tabindex="0"><strong aria-hidden="true">1.1.</strong> How Safe and Unsafe Interact</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/what-unsafe-does.html" tabindex="0"><strong aria-hidden="true">1.2.</strong> What Unsafe Can Do</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/working-with-unsafe.html" tabindex="0"><strong aria-hidden="true">1.3.</strong> Working with Unsafe</a></li></ol></li><li><a href="https://doc.rust-lang.org/beta/nomicon/data.html" tabindex="0"><strong aria-hidden="true">2.</strong> Data Layout</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/beta/nomicon/repr-rust.html" tabindex="0"><strong aria-hidden="true">2.1.</strong> repr(Rust)</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/exotic-sizes.html" tabindex="0"><strong aria-hidden="true">2.2.</strong> Exotically Sized Types</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/other-reprs.html" tabindex="0"><strong aria-hidden="true">2.3.</strong> Other reprs</a></li></ol></li><li><a href="https://doc.rust-lang.org/beta/nomicon/ownership.html" tabindex="0"><strong aria-hidden="true">3.</strong> Ownership</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/beta/nomicon/references.html" tabindex="0"><strong aria-hidden="true">3.1.</strong> References</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/aliasing.html" tabindex="0"><strong aria-hidden="true">3.2.</strong> Aliasing</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/lifetimes.html" tabindex="0"><strong aria-hidden="true">3.3.</strong> Lifetimes</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/lifetime-mismatch.html" tabindex="0"><strong aria-hidden="true">3.4.</strong> Limits of Lifetimes</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/lifetime-elision.html" tabindex="0"><strong aria-hidden="true">3.5.</strong> Lifetime Elision</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/unbounded-lifetimes.html" tabindex="0"><strong aria-hidden="true">3.6.</strong> Unbounded Lifetimes</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/hrtb.html" tabindex="0"><strong aria-hidden="true">3.7.</strong> Higher-Rank Trait Bounds</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/subtyping.html" tabindex="0"><strong aria-hidden="true">3.8.</strong> Subtyping and Variance</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/dropck.html" tabindex="0"><strong aria-hidden="true">3.9.</strong> Drop Check</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/phantom-data.html" tabindex="0"><strong aria-hidden="true">3.10.</strong> PhantomData</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/borrow-splitting.html" tabindex="0"><strong aria-hidden="true">3.11.</strong> Splitting Borrows</a></li></ol></li><li><a href="https://doc.rust-lang.org/beta/nomicon/conversions.html" tabindex="0"><strong aria-hidden="true">4.</strong> Type Conversions</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/beta/nomicon/coercions.html" tabindex="0"><strong aria-hidden="true">4.1.</strong> Coercions</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/dot-operator.html" tabindex="0"><strong aria-hidden="true">4.2.</strong> The Dot Operator</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/casts.html" tabindex="0"><strong aria-hidden="true">4.3.</strong> Casts</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/transmutes.html" tabindex="0"><strong aria-hidden="true">4.4.</strong> Transmutes</a></li></ol></li><li><a href="https://doc.rust-lang.org/beta/nomicon/uninitialized.html" tabindex="0"><strong aria-hidden="true">5.</strong> Uninitialized Memory</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/beta/nomicon/checked-uninit.html" tabindex="0"><strong aria-hidden="true">5.1.</strong> Checked</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/drop-flags.html" tabindex="0"><strong aria-hidden="true">5.2.</strong> Drop Flags</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/unchecked-uninit.html" tabindex="0"><strong aria-hidden="true">5.3.</strong> Unchecked</a></li></ol></li><li><a href="https://doc.rust-lang.org/beta/nomicon/obrm.html" tabindex="0"><strong aria-hidden="true">6.</strong> Ownership Based Resource Management</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/beta/nomicon/constructors.html" class="active" tabindex="0"><strong aria-hidden="true">6.1.</strong> Constructors</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/destructors.html" tabindex="0"><strong aria-hidden="true">6.2.</strong> Destructors</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/leaking.html" tabindex="0"><strong aria-hidden="true">6.3.</strong> Leaking</a></li></ol></li><li><a href="https://doc.rust-lang.org/beta/nomicon/unwinding.html" tabindex="0"><strong aria-hidden="true">7.</strong> Unwinding</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/beta/nomicon/exception-safety.html" tabindex="0"><strong aria-hidden="true">7.1.</strong> Exception Safety</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/poisoning.html" tabindex="0"><strong aria-hidden="true">7.2.</strong> Poisoning</a></li></ol></li><li><a href="https://doc.rust-lang.org/beta/nomicon/concurrency.html" tabindex="0"><strong aria-hidden="true">8.</strong> Concurrency</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/beta/nomicon/races.html" tabindex="0"><strong aria-hidden="true">8.1.</strong> Races</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/send-and-sync.html" tabindex="0"><strong aria-hidden="true">8.2.</strong> Send and Sync</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/atomics.html" tabindex="0"><strong aria-hidden="true">8.3.</strong> Atomics</a></li></ol></li><li><a href="https://doc.rust-lang.org/beta/nomicon/vec.html" tabindex="0"><strong aria-hidden="true">9.</strong> Implementing Vec</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/beta/nomicon/vec-layout.html" tabindex="0"><strong aria-hidden="true">9.1.</strong> Layout</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/vec-alloc.html" tabindex="0"><strong aria-hidden="true">9.2.</strong> Allocating</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/vec-push-pop.html" tabindex="0"><strong aria-hidden="true">9.3.</strong> Push and Pop</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/vec-dealloc.html" tabindex="0"><strong aria-hidden="true">9.4.</strong> Deallocating</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/vec-deref.html" tabindex="0"><strong aria-hidden="true">9.5.</strong> Deref</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/vec-insert-remove.html" tabindex="0"><strong aria-hidden="true">9.6.</strong> Insert and Remove</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/vec-into-iter.html" tabindex="0"><strong aria-hidden="true">9.7.</strong> IntoIter</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/vec-raw.html" tabindex="0"><strong aria-hidden="true">9.8.</strong> RawVec</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/vec-drain.html" tabindex="0"><strong aria-hidden="true">9.9.</strong> Drain</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/vec-zsts.html" tabindex="0"><strong aria-hidden="true">9.10.</strong> Handling Zero-Sized Types</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/vec-final.html" tabindex="0"><strong aria-hidden="true">9.11.</strong> Final Code</a></li></ol></li><li><a href="https://doc.rust-lang.org/beta/nomicon/arc-and-mutex.html" tabindex="0"><strong aria-hidden="true">10.</strong> Implementing Arc and Mutex</a></li><li><a href="https://doc.rust-lang.org/beta/nomicon/ffi.html" tabindex="0"><strong aria-hidden="true">11.</strong> FFI</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar" aria-expanded="true">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title"></h1> 
+
+                        <div class="right-buttons">
+                            <a href="https://doc.rust-lang.org/beta/nomicon/print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input name="search" id="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header" type="search">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="https://doc.rust-lang.org/beta/nomicon/constructors.html#constructors" id="constructors"><h1>Constructors</h1></a>
+<p>There is exactly one way to create an instance of a user-defined type: name it,
+and initialize all its fields at once:</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Foo</span></span> {
+    a: <span class="hljs-built_in">u8</span>,
+    b: <span class="hljs-built_in">u32</span>,
+    c: <span class="hljs-built_in">bool</span>,
+}
+
+<span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Bar</span></span> {
+    X(<span class="hljs-built_in">u32</span>),
+    Y(<span class="hljs-built_in">bool</span>),
+}
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Unit</span></span>;
+
+<span class="hljs-keyword">let</span> foo = Foo { a: <span class="hljs-number">0</span>, b: <span class="hljs-number">1</span>, c: <span class="hljs-literal">false</span> };
+<span class="hljs-keyword">let</span> bar = Bar::X(<span class="hljs-number">0</span>);
+<span class="hljs-keyword">let</span> empty = Unit;<span class="hidden">
+}</span></code></pre></pre>
+<p>That's it. Every other way you make an instance of a type is just calling a
+totally vanilla function that does some stuff and eventually bottoms out to The
+One True Constructor.</p>
+<p>Unlike C++, Rust does not come with a slew of built-in kinds of constructor.
+There are no Copy, Default, Assignment, Move, or whatever constructors. The
+reasons for this are varied, but it largely boils down to Rust's philosophy of
+<em>being explicit</em>.</p>
+<p>Move constructors are meaningless in Rust because we don't enable types to
+"care" about their location in memory. Every type must be ready for it to be
+blindly memcopied to somewhere else in memory. This means pure on-the-stack-but-
+still-movable intrusive linked lists are simply not happening in Rust (safely).</p>
+<p>Assignment and copy constructors similarly don't exist because move semantics
+are the only semantics in Rust. At most <code class="hljs">x = y</code> just moves the bits of y into
+the x variable. Rust does provide two facilities for providing C++'s copy-
+oriented semantics: <code class="hljs">Copy</code> and <code class="hljs">Clone</code>. Clone is our moral equivalent of a copy
+constructor, but it's never implicitly invoked. You have to explicitly call
+<code class="hljs">clone</code> on an element you want to be cloned. Copy is a special case of Clone
+where the implementation is just "copy the bits". Copy types <em>are</em> implicitly
+cloned whenever they're moved, but because of the definition of Copy this just
+means not treating the old copy as uninitialized -- a no-op.</p>
+<p>While Rust provides a <code class="hljs">Default</code> trait for specifying the moral equivalent of a
+default constructor, it's incredibly rare for this trait to be used. This is
+because variables <a href="https://doc.rust-lang.org/beta/nomicon/uninitialized.html">aren't implicitly initialized</a>. Default is basically
+only useful for generic programming. In concrete contexts, a type will provide a
+static <code class="hljs">new</code> method for any kind of "default" constructor. This has no relation
+to <code class="hljs">new</code> in other languages and has no special meaning. It's just a naming
+convention.</p>
+<p>TODO: talk about "placement new"?</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="https://doc.rust-lang.org/beta/nomicon/obrm.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="https://doc.rust-lang.org/beta/nomicon/destructors.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="https://doc.rust-lang.org/beta/nomicon/obrm.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="https://doc.rust-lang.org/beta/nomicon/destructors.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        
+        <script src="Rusi-Dateien/searchindex.js" type="text/javascript" charset="utf-8"></script>
+        
+        
+        <script src="Rusi-Dateien/elasticlunr.js" type="text/javascript" charset="utf-8"></script>
+        <script src="Rusi-Dateien/mark.js" type="text/javascript" charset="utf-8"></script>
+        <script src="Rusi-Dateien/searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="Rusi-Dateien/clipboard.js" type="text/javascript" charset="utf-8"></script>
+        <script src="Rusi-Dateien/highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="Rusi-Dateien/book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+    
+
+</body></html>

@@ -1,0 +1,91 @@
+body {
+	color: black;
+	background: rgb(247, 240, 218);
+	/* background-image: url("stripe.png"); */
+	font-family: Lucida,Helvetica,Arial,sans-serif;
+	max-width: 48em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+p.navbar {
+	color: black;
+	background: rgb(240, 230, 140);
+	font-size: 75%;
+}
+
+address.footer {
+	color: black;
+	background: rgb(240, 230, 140);
+	font-size: 75%;
+}
+
+pre {
+    overflow: auto;
+}
+
+img {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+}
+
+img.photo {
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.small-text {
+	font-size: 75%;
+}
+
+.dark-background {
+	background: rgb(205, 197, 191);
+}
+
+tt {
+    font-size: 100%;
+}
+
+.code-example {
+    font-size: 100%;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+    padding: 0.5em;
+    background: rgb(205, 197, 191);
+}
+
+
+/* Even and odd rows for busy tables */
+
+tr.e {
+    background: rgb(237, 227, 219);
+}
+
+tr.o {
+    background: rgb(222, 218, 216);
+}
+
+nav#toplevel-nav {
+    width: 50%;
+    background: rgb(237, 227, 219);
+    padding: 0.5em;
+}
+
+h2#conferences {
+    clear: both;
+}
+
+div#changelog {
+    float: right;
+    width: 40%;
+    font-size: 75%;
+    background: rgb(222, 218, 216);
+    padding: 1em;
+}
+
+#bottom-changelog {
+    align: right;
+}

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="sidebar-visible light" lang="en"><head>
+        <meta charset="UTF-8">
+        <title>Statements and expressions - The Rust Reference</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="rgb(255, 255, 255)">
+
+        <!-- base href="https://doc.rust-lang.org/reference/statements-and-expressions.html" -->
+
+        <link rel="stylesheet" href="Rush-Dateien/book.css">
+        <link href="Rush-Dateien/css.css" rel="stylesheet" type="text/css">
+        <link href="Rush-Dateien/css_002.css" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="https://doc.rust-lang.org/reference/favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="Rush-Dateien/font-awesome.css">
+
+        <link rel="stylesheet" href="Rush-Dateien/highlight.css">
+        <link rel="stylesheet" href="Rush-Dateien/tomorrow-night.css">
+        <link rel="stylesheet" href="Rush-Dateien/ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+        <link rel="stylesheet" href="Rush-Dateien/reference.css">
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="Rush-Dateien/clipboard_002.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script><script src="Rush-Dateien/clipboard.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents" aria-hidden="false">
+            <ol class="chapter"><li class="affix"><a href="https://doc.rust-lang.org/reference/introduction.html" tabindex="0">Introduction</a></li><li><a href="https://doc.rust-lang.org/reference/notation.html" tabindex="0"><strong aria-hidden="true">1.</strong> Notation</a></li><li><a href="https://doc.rust-lang.org/reference/lexical-structure.html" tabindex="0"><strong aria-hidden="true">2.</strong> Lexical structure</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/reference/input-format.html" tabindex="0"><strong aria-hidden="true">2.1.</strong> Input format</a></li><li><a href="https://doc.rust-lang.org/reference/keywords.html" tabindex="0"><strong aria-hidden="true">2.2.</strong> Keywords</a></li><li><a href="https://doc.rust-lang.org/reference/identifiers.html" tabindex="0"><strong aria-hidden="true">2.3.</strong> Identifiers</a></li><li><a href="https://doc.rust-lang.org/reference/comments.html" tabindex="0"><strong aria-hidden="true">2.4.</strong> Comments</a></li><li><a href="https://doc.rust-lang.org/reference/whitespace.html" tabindex="0"><strong aria-hidden="true">2.5.</strong> Whitespace</a></li><li><a href="https://doc.rust-lang.org/reference/tokens.html" tabindex="0"><strong aria-hidden="true">2.6.</strong> Tokens</a></li><li><a href="https://doc.rust-lang.org/reference/paths.html" tabindex="0"><strong aria-hidden="true">2.7.</strong> Paths</a></li></ol></li><li><a href="https://doc.rust-lang.org/reference/macros.html" tabindex="0"><strong aria-hidden="true">3.</strong> Macros</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/reference/macros-by-example.html" tabindex="0"><strong aria-hidden="true">3.1.</strong> Macros By Example</a></li><li><a href="https://doc.rust-lang.org/reference/procedural-macros.html" tabindex="0"><strong aria-hidden="true">3.2.</strong> Procedural Macros</a></li></ol></li><li><a href="https://doc.rust-lang.org/reference/crates-and-source-files.html" tabindex="0"><strong aria-hidden="true">4.</strong> Crates and source files</a></li><li><a href="https://doc.rust-lang.org/reference/items-and-attributes.html" tabindex="0"><strong aria-hidden="true">5.</strong> Items and attributes</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/reference/items.html" tabindex="0"><strong aria-hidden="true">5.1.</strong> Items</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/reference/items/modules.html" tabindex="0"><strong aria-hidden="true">5.1.1.</strong> Modules</a></li><li><a href="https://doc.rust-lang.org/reference/items/extern-crates.html" tabindex="0"><strong aria-hidden="true">5.1.2.</strong> Extern crates</a></li><li><a href="https://doc.rust-lang.org/reference/items/use-declarations.html" tabindex="0"><strong aria-hidden="true">5.1.3.</strong> Use declarations</a></li><li><a href="https://doc.rust-lang.org/reference/items/functions.html" tabindex="0"><strong aria-hidden="true">5.1.4.</strong> Functions</a></li><li><a href="https://doc.rust-lang.org/reference/items/type-aliases.html" tabindex="0"><strong aria-hidden="true">5.1.5.</strong> Type aliases</a></li><li><a href="https://doc.rust-lang.org/reference/items/structs.html" tabindex="0"><strong aria-hidden="true">5.1.6.</strong> Structs</a></li><li><a href="https://doc.rust-lang.org/reference/items/enumerations.html" tabindex="0"><strong aria-hidden="true">5.1.7.</strong> Enumerations</a></li><li><a href="https://doc.rust-lang.org/reference/items/unions.html" tabindex="0"><strong aria-hidden="true">5.1.8.</strong> Unions</a></li><li><a href="https://doc.rust-lang.org/reference/items/constant-items.html" tabindex="0"><strong aria-hidden="true">5.1.9.</strong> Constant items</a></li><li><a href="https://doc.rust-lang.org/reference/items/static-items.html" tabindex="0"><strong aria-hidden="true">5.1.10.</strong> Static items</a></li><li><a href="https://doc.rust-lang.org/reference/items/traits.html" tabindex="0"><strong aria-hidden="true">5.1.11.</strong> Traits</a></li><li><a href="https://doc.rust-lang.org/reference/items/implementations.html" tabindex="0"><strong aria-hidden="true">5.1.12.</strong> Implementations</a></li><li><a href="https://doc.rust-lang.org/reference/items/external-blocks.html" tabindex="0"><strong aria-hidden="true">5.1.13.</strong> External blocks</a></li></ol></li><li><a href="https://doc.rust-lang.org/reference/items/associated-items.html" tabindex="0"><strong aria-hidden="true">5.2.</strong> Associated Items</a></li><li><a href="https://doc.rust-lang.org/reference/visibility-and-privacy.html" tabindex="0"><strong aria-hidden="true">5.3.</strong> Visibility and Privacy</a></li><li><a href="https://doc.rust-lang.org/reference/attributes.html" tabindex="0"><strong aria-hidden="true">5.4.</strong> Attributes</a></li></ol></li><li><a href="https://doc.rust-lang.org/reference/statements-and-expressions.html" class="active" tabindex="0"><strong aria-hidden="true">6.</strong> Statements and expressions</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/reference/statements.html" tabindex="0"><strong aria-hidden="true">6.1.</strong> Statements</a></li><li><a href="https://doc.rust-lang.org/reference/expressions.html" tabindex="0"><strong aria-hidden="true">6.2.</strong> Expressions</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/reference/expressions/literal-expr.html" tabindex="0"><strong aria-hidden="true">6.2.1.</strong> Literal expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/path-expr.html" tabindex="0"><strong aria-hidden="true">6.2.2.</strong> Path expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/block-expr.html" tabindex="0"><strong aria-hidden="true">6.2.3.</strong> Block expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/operator-expr.html" tabindex="0"><strong aria-hidden="true">6.2.4.</strong> Operator expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/grouped-expr.html" tabindex="0"><strong aria-hidden="true">6.2.5.</strong> Grouped expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/array-expr.html" tabindex="0"><strong aria-hidden="true">6.2.6.</strong> Array and index expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/tuple-expr.html" tabindex="0"><strong aria-hidden="true">6.2.7.</strong> Tuple and index expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/struct-expr.html" tabindex="0"><strong aria-hidden="true">6.2.8.</strong> Struct expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/enum-variant-expr.html" tabindex="0"><strong aria-hidden="true">6.2.9.</strong> Enum variant expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/call-expr.html" tabindex="0"><strong aria-hidden="true">6.2.10.</strong> Call expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/method-call-expr.html" tabindex="0"><strong aria-hidden="true">6.2.11.</strong> Method call expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/field-expr.html" tabindex="0"><strong aria-hidden="true">6.2.12.</strong> Field access expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/closure-expr.html" tabindex="0"><strong aria-hidden="true">6.2.13.</strong> Closure expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/loop-expr.html" tabindex="0"><strong aria-hidden="true">6.2.14.</strong> Loop expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/range-expr.html" tabindex="0"><strong aria-hidden="true">6.2.15.</strong> Range expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/if-expr.html" tabindex="0"><strong aria-hidden="true">6.2.16.</strong> If and if let expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/match-expr.html" tabindex="0"><strong aria-hidden="true">6.2.17.</strong> Match expressions</a></li><li><a href="https://doc.rust-lang.org/reference/expressions/return-expr.html" tabindex="0"><strong aria-hidden="true">6.2.18.</strong> Return expressions</a></li></ol></li></ol></li><li><a href="https://doc.rust-lang.org/reference/type-system.html" tabindex="0"><strong aria-hidden="true">7.</strong> Type system</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/reference/types.html" tabindex="0"><strong aria-hidden="true">7.1.</strong> Types</a></li><li><a href="https://doc.rust-lang.org/reference/dynamically-sized-types.html" tabindex="0"><strong aria-hidden="true">7.2.</strong> Dynamically Sized Types</a></li><li><a href="https://doc.rust-lang.org/reference/type-layout.html" tabindex="0"><strong aria-hidden="true">7.3.</strong> Type layout</a></li><li><a href="https://doc.rust-lang.org/reference/interior-mutability.html" tabindex="0"><strong aria-hidden="true">7.4.</strong> Interior mutability</a></li><li><a href="https://doc.rust-lang.org/reference/subtyping.html" tabindex="0"><strong aria-hidden="true">7.5.</strong> Subtyping</a></li><li><a href="https://doc.rust-lang.org/reference/type-coercions.html" tabindex="0"><strong aria-hidden="true">7.6.</strong> Type coercions</a></li><li><a href="https://doc.rust-lang.org/reference/destructors.html" tabindex="0"><strong aria-hidden="true">7.7.</strong> Destructors</a></li><li><a href="https://doc.rust-lang.org/reference/lifetime-elision.html" tabindex="0"><strong aria-hidden="true">7.8.</strong> Lifetime elision</a></li></ol></li><li><a href="https://doc.rust-lang.org/reference/special-types-and-traits.html" tabindex="0"><strong aria-hidden="true">8.</strong> Special types and traits</a></li><li><a href="https://doc.rust-lang.org/reference/memory-model.html" tabindex="0"><strong aria-hidden="true">9.</strong> Memory model</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/reference/memory-allocation-and-lifetime.html" tabindex="0"><strong aria-hidden="true">9.1.</strong> Memory allocation and lifetime</a></li><li><a href="https://doc.rust-lang.org/reference/memory-ownership.html" tabindex="0"><strong aria-hidden="true">9.2.</strong> Memory ownership</a></li><li><a href="https://doc.rust-lang.org/reference/variables.html" tabindex="0"><strong aria-hidden="true">9.3.</strong> Variables</a></li></ol></li><li><a href="https://doc.rust-lang.org/reference/linkage.html" tabindex="0"><strong aria-hidden="true">10.</strong> Linkage</a></li><li><a href="https://doc.rust-lang.org/reference/unsafety.html" tabindex="0"><strong aria-hidden="true">11.</strong> Unsafety</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/reference/unsafe-functions.html" tabindex="0"><strong aria-hidden="true">11.1.</strong> Unsafe functions</a></li><li><a href="https://doc.rust-lang.org/reference/unsafe-blocks.html" tabindex="0"><strong aria-hidden="true">11.2.</strong> Unsafe blocks</a></li><li><a href="https://doc.rust-lang.org/reference/behavior-considered-undefined.html" tabindex="0"><strong aria-hidden="true">11.3.</strong> Behavior considered undefined</a></li><li><a href="https://doc.rust-lang.org/reference/behavior-not-considered-unsafe.html" tabindex="0"><strong aria-hidden="true">11.4.</strong> Behavior not considered unsafe</a></li></ol></li><li><a href="https://doc.rust-lang.org/reference/influences.html" tabindex="0">Appendix: Influences</a></li><li class="affix"><a href="https://doc.rust-lang.org/reference/undocumented.html" tabindex="0">Appendix: As-yet-undocumented Features</a></li><li class="affix"><a href="https://doc.rust-lang.org/reference/glossary.html" tabindex="0">Appendix: Glossary</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <header><p class="warning">
+    For now, this reference is a best-effort document. We strive for validity
+    and completeness, but are not yet there. In the future, the docs and lang
+    teams will work together to figure out how best to do this. Until then, this
+    is a best-effort attempt. If you find something wrong or missing, file an
+    <a href="https://github.com/rust-lang-nursery/reference/issues">issue</a> or
+    send in a pull request.
+</p></header>
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar" aria-expanded="true">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
+
+                        <h1 class="menu-title">The Rust Reference</h1>
+
+                        <div class="right-buttons">
+                            <a href="https://doc.rust-lang.org/reference/print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="https://doc.rust-lang.org/reference/statements-and-expressions.html#statements-and-expressions" id="statements-and-expressions"><h1>Statements and expressions</h1></a>
+<p>Rust is <em>primarily</em> an expression language. This means that most forms of
+value-producing or effect-causing evaluation are directed by the uniform syntax
+category of <em>expressions</em>. Each kind of expression can typically <em>nest</em> within
+each other kind of expression, and rules for evaluation of expressions involve
+specifying both the value produced by the expression and the order in which its
+sub-expressions are themselves evaluated.</p>
+<p>In contrast, statements in Rust serve <em>mostly</em> to contain and explicitly
+sequence expression evaluation.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="https://doc.rust-lang.org/reference/attributes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="https://doc.rust-lang.org/reference/statements.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="https://doc.rust-lang.org/reference/attributes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="https://doc.rust-lang.org/reference/statements.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
+            }
+        </script>
+
+        
+
+        
+
+        
+
+        
+
+        <script src="Rush-Dateien/highlight.js"></script>
+        <script src="Rush-Dateien/book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    
+
+</body></html>

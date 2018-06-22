@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html class="client-js ve-not-available" dir="ltr" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>X.690 - Wikipedia</title>
+<script>document.documentElement.className = document.documentElement.className.replace( /(^|\s)client-nojs(\s|$)/, "$1client-js$2" );</script>
+<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"X.690","wgTitle":"X.690","wgCurRevisionId":820700186,"wgRevisionId":820700186,"wgArticleId":29948096,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["ITU-T recommendations","Data serialization formats","Encodings","ASN.1"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"X.690","wgRelevantArticleId":29948096,"wgRequestId":"WylxMwpAMFoAAA-p9gYAAABD","wgIsProbablyEditable":true,"wgRelevantPageIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgFlaggedRevsParams":{"tags":{}},"wgStableRevisionId":null,"wgCategoryTreePageCategoryOptions":"{\"mode\":0,\"hideprefix\":20,\"showcount\":true,\"namespaces\":false}","wgWikiEditorEnabledModules":[],"wgBetaFeaturesFeatures":[],"wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgPopupsShouldSendModuleToUser":true,"wgPopupsConflictsWithNavPopupGadget":false,"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr","pageVariantFallbacks":"en","usePageImages":true,"usePageDescriptions":true},"wgPreferredVariant":"en","wgMFExpandAllSectionsUserOption":true,"wgMFEnableFontChanger":true,"wgMFDisplayWikibaseDescriptions":{"search":true,"nearby":true,"watchlist":true,"tagline":false},"wgRelatedArticles":null,"wgRelatedArticlesUseCirrusSearch":true,"wgRelatedArticlesOnlyUseCirrusSearch":false,"wgULSCurrentAutonym":"English","wgNoticeProject":"wikipedia","wgCentralNoticeCookiesToDelete":[],"wgCentralNoticeCategoriesUsingLegacy":["Fundraising","fundraising"],"wgWikibaseItemId":"Q797714","wgScoreNoteLanguages":{"arabic":"العربية","catalan":"català","deutsch":"Deutsch","english":"English","espanol":"español","italiano":"italiano","nederlands":"Nederlands","norsk":"norsk","portugues":"português","suomi":"suomi","svenska":"svenska","vlaams":"West-Vlams"},"wgScoreDefaultNoteLanguage":"nederlands","wgCentralAuthMobileDomain":false,"wgCodeMirrorEnabled":true,"wgVisualEditorToolbarScrollOffset":0,"wgVisualEditorUnsupportedEditParams":["undo","undoafter","veswitched"],"wgEditSubmitButtonLabelPublish":true});mw.loader.state({"ext.gadget.charinsert-styles":"ready","ext.globalCssJs.user.styles":"ready","ext.globalCssJs.site.styles":"ready","site.styles":"ready","noscript":"ready","user.styles":"ready","ext.globalCssJs.user":"ready","ext.globalCssJs.site":"ready","user":"ready","user.options":"ready","user.tokens":"loading","ext.cite.styles":"ready","mediawiki.legacy.shared":"ready","mediawiki.legacy.commonPrint":"ready","wikibase.client.init":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.uls.interlanguage":"ready","ext.wikimediaBadges":"ready","mediawiki.skinning.interface":"ready","skins.vector.styles":"ready"});mw.loader.implement("user.tokens@1dqfd7l",function($,jQuery,require,module){/*@nomin*/mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+});mw.loader.load(["ext.cite.a11y","site","mediawiki.page.startup","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.toc","mediawiki.searchSuggest","ext.gadget.teahouse","ext.gadget.ReferenceTooltips","ext.gadget.watchlist-notice","ext.gadget.DRN-wizard","ext.gadget.charinsert","ext.gadget.refToolbar","ext.gadget.extra-toolbar-buttons","ext.gadget.switcher","ext.centralauth.centralautologin","ext.popups","ext.visualEditor.desktopArticleTarget.init","ext.visualEditor.targetLoader","ext.eventLogging.subscriber","ext.wikimediaEvents","ext.navigationTiming","ext.uls.eventlogger","ext.uls.init","ext.uls.compactlinks","ext.uls.interface","ext.3d","ext.centralNotice.geoIP","ext.centralNotice.startUp","skins.vector.js"]);});</script>
+<link rel="stylesheet" href="Wik18d-Dateien/load.css">
+<script async="" src="Wik18d-Dateien/load_002.php"></script>
+<style>
+.cite-accessibility-label{ top:-99999px;clip:rect(1px 1px 1px 1px); clip:rect(1px,1px,1px,1px); position:absolute !important;padding:0 !important;border:0 !important;height:1px !important;width:1px !important; overflow:hidden}
+.mw-spinner{background-color:transparent;background-position:center center;background-repeat:no-repeat}.mw-spinner-small{background-image:url(data:image/gif;base64,R0lGODlhFAAUAIQQAAYJBRkbGCYnJTI0MT9APk5QTVhZV2ZoZXR2c4SGg5CSj52fnKyuq7m7uMfJxtPV0v///////////////////////////////////////////////////////////////yH/C05FVFNDQVBFMi4wAwEAAAAh+QQJCgABACwAAAAAFAAUAAAFc2AgjuNQkCipHCMAiI6TjoWAiG7gNM08CgTca+cbGWyBXEMm6okMJxGBNWLuGo8ngWBY+HgxlIFwm4VnimKKkWgn1Dzwwv0uxpfqfJWZ2p1hV0VXTA9gMCRETXxOOj08jXxfMo+NcHiUgT5nlAFZejqRKCEAIfkECQoADAAsAAAAABQAFAAABXYgI45jcZAouSSjIIjDkI4HwTJBIALvLBIFUY4xAPhoA1ZAcAjIRI2RQlFCkIIMR6PxEC0UiYXDt3WMSdOFz0w+prTb6DHeMNPd9LN7n9WjtGwjdnIzcGeGIn5aI3WMglFbWY14kHKLR4AMkZKEb2ebDF18fUchACH5BAkKAAEALAAAAAAUABQAAAV6YCCO44GQKOkw40CIxZuKi9KIwyAK8hwkCpyOIPCNFglWTjEojAgJkeMmUixIhiABADhIGw3HwycACLyqsI+ATo2NqCmY6puH5WC43QHvjxx8M3KBUnJGgyIPYIGEAVMjaiJ0j3lTjTN5eQGadWqainQpgJJ0b36jPiEAIfkECQoAAQAsAAAAABQAFAAABXVgII7jwpAo+TxjkoiGkY5OwwauSBTz2DSinIHQozUcuISCIIMpRDUfcoRYBAwCwQH6c9xSBAEBgapNUwfy7Fs0/oBFgBwwqL3bcwCvzYeey10qdkV2Uw+BAX9RIkc+RgE/iY1tkZGSlI2Wgz0OU5YBbG2dRSEAIfkECQoACAAsAAAAABQAFAAABXcgIo4j05Ao+TjjsohuOjoNi8RIoshjDb+KBG/mczUUL9EhSevZYKwDgSBE0GoPXmFgqBKfqIMXlR2iro3TMCBgF9BqXpt9MKPGJAeYRAhw81dDAwAAAyIPaTZgTSIChiJxTWlWPmaTk5SWPpiBPHqQcWV2VnskIQAh+QQJCgABACwAAAAAFAAUAAAFemAgjqPjkCj5nGLTiAyTlg3rios8t/bLLDvayeXIjRYsx4tHcjwCi0RCp6w9Z4qEQifcxXbXYNN1Cw7Og0O1vEMTEGKUYmfaGQaEQ7O6WxQEAwUiD0QiLCIEAiMEBCNLAUoBNwcAA3E3ZQIAYoVllI10PSMHCXGGhykhACH5BAkKAAEALAAAAAAUABQAAAV3YCCOo+OQKPmcYtOIZlo2T/sGDSvjrBs4t90vh6MRYbXh6Igc0mAuRzIV1UGtpJhsKpy5grKEOLEAfrvjBKOLUuy0KQTBkMiadwsDYS56RGEkBwQjBQZLMwEAAAEIAoZdPooiBAKQRJKMAgVCWpgBB25sAQUDQiEAIfkECQoAEAAsAAAAABQAFAAABXsgJI6j45Ao+Zxi04hmWjZP+0INK+OsCzm33S+HoxFhteHoiBzSYC5HMhXVQa2kmGwqnLmCsm8O+O2KseadNrVQKBhZsnqRSChEj6iIQEIURm5LIwMBCAIBEAkDB10QAAIQAYgQBnxChyKYiQSMOwKQEJ8jCQuNIgd/OyEAIfkECQoAHwAsAAAAABQAFAAABXzgJ46j45Ao+Zxi04hmWjZP+34NK+Os+zm33S+HoxFhteHoiBzSYC5HMhXVQa2kmGwqnLmCsm8O+O2KsV0u6UDYAbWigwAg2K2iIgMAMPgsDCQMCkssCW0iBQMKA30MCQtdHwNtjCILCV0EfZKbDY9CBAUimiMMaDIIgDshACH5BAkKAB8ALAAAAAAUABQAAAV44CeOo+OQKPmcYtOIZlo2T/t+DSvjrPs5t90vh6MRYbXh6Igc0mAuRzIV1UGtpJhsKhwVAGBA1xUdhMVCMrMr4pIQhx1QK0IQBITdKio6CAQFHwsIWUFHCoEiBgQKCQlDWCkEgY5QXQV5H5WQQgWJmx8PbjsMC0IhACH5BAkKAB8ALAAAAAAUABQAAAV14CeOo+OQKPmcYtO0bwo/cC3b7pffotOcrsevRPsMBKMh8eNrFAcBwEBxczlRUMLNdEvwUgWAGPC1/gZjMs9c/I7aqMRh62KJEoZB4bay3gkEcw4LJD5JMQtzIgsKfj52XVQ7OzcKVDoxQjEyCoSYb3A8XDchACH5BAEKAB8ALAAAAAAUABQAAAV64CeOo+OQKJkcY9OIZjoSAPu5Ii6LgJC/jtdONKjdGo/GCfYQEQYjAYHkaAaVosJgUFjsXDHS07ALpxTDFOK5TbvAh217+MamSU0Zg1FWLkUMCgloMg9XSwwJCV6GVEI3Sw5eMEg4QX9fJzo6X0I6SZgoYZwPeXdmKSEAOw==);background-image:url(/w/resources/src/jquery.spinner/images/spinner.gif?ca65b)!ie;height:20px;width:20px; min-width:20px}.mw-spinner-large{background-image:url(data:image/gif;base64,R0lGODlhIAAgAOMAAP///wAAAMbGxoSEhLa2tpqamjY2NlZWVtjY2OTk5Ly8vB4eHgQEBP///////////yH/C05FVFNDQVBFMi4wAwEAAAAh+QQFCgAPACwAAAAAIAAgAAAE5/DJSWlhperN52JLhSSdRgwVo1ICQZRUsiwHpTJT4iowNS8vyW2icCF6k8HMMBk+EDskxTBDPZwuAkkqIfxIQyhBQBFvHwSDITM5VDW6XNE4KagNh6Bgwe60smQUB3d4Rz1ZBApnFASDd0hihh12BkE9kjAJVlycXIg7CQIFA6SlnJ87paqbSKiKoqusnbMdmDC2tXQlkUhziYtyWTxIfy6BE8WJt5YJvpJivxNaGmLHT0VnOgSYf0dZXS7APdpB309RnHOG5g/qXGLDaC457D1zZ/V/nmOM82XiHRLYKhKP1oZmADdEAAAh+QQFCgAPACwAAAAAGAAXAAAEcvDJSesiNetplqlDsYnUYlIGw2jGV55SoS5sq0wmLS3qoBWtAw42mG0ehxYp90CoGKRNy8U8qFzNweCGwlJkgolCq0VIEAbMkUIghxLrDcLti2/Gg7D9qN774wkKBIOEfw+ChIV/gYmDho+QkZKTR3p7EQAh+QQFCgAPACwBAAAAHQAOAAAEcvDJSScxNev9jjkZwU2IUhkodSzLKA2DOKGYRLD1CA/InEoGlkui2PlyuKGkADM9aI8EayGbJDYI4zM1YIEmAwajkCAoehNmTNNaLsQMHmGuuEYHgpHAAGfUBHNzeUp9VBQJCoFOLmFxWHNoQweRWEocEQAh+QQFCgAPACwHAAAAGQARAAAEavDJ+cQQNOtdRsnf9iRINpyZYYgEgU3nQKnr1hIJjEqHGmqIlkInexRUB5FE0So9YhKaUpK4SaAPlWaxIFAETQ3B4BxzF2Kn8nBeJKebdm3SgksKXDt8kNP7/xoMgoMLP36DiAyAD4kMhREAIfkEBQoADwAsDgAAABIAGAAABGUQFfSqvZiUghXF1cZZxTCA4WYh5omKVqugD/woLV2rT/u9KoJpFDIYaIJBwnIwGogoivOoq0wPs6r1qe16v5WFeEzVjc+LKnphIIC9g193wGC4uvX6Aoo05BllVQULeXdadAxuEQAh+QQFCgAPACwOAAAAEgAeAAAEgDCp9Kq9WBGFBb5ECBbFV4XERaYmahGk14qPQJbm4z53foq2AquiGAwQJsQQYTRyfIlCc4DzTY8+i8CZxQy74KxhTD58P+S0Qaw+hN8WyruwWMDrdcM5ecAv3CYDDDIEBngmBwwMaxeGJgmKDFVdggx2bwuKA28EkXAGinJhVCYRACH5BAUKAA8ALA8AAQARAB8AAAR88Mn5UKIYC0KyT5ziZQqHjBQSohRHXGzFCSkHU/eTlCa7uTSUi6DIeVSEU0yiXDo9g6i0EIRKr6hrlPrsOgkGQ8EZDh+eZcOosKAcymPKYLE4TwphCWMvoS86HnsME3RqgXwSBnQjghR+h4MTB4sZjRiAGAsMbU4FDHFLEQAh+QQFCgAPACwIAA4AGAASAAAEbPDJSesjOKtk+8yg4nkgto1oihIqKgyD2FpwjcxUUtRDMROG2wPBkz0EjEHHYKgoYMKHgcE4PBZYCbM5KlAZHOxCUmBaPQuq8pqVHJg+GnUsEVO2nTQjzqZPmB1UXHVtE3wVOxUGC4M4H34qEQAh+QQFCgAPACwCABIAHQAOAAAEePDJSat96FJ0tEUEkV0DwwwepYSEklDEYpopJbCEIBkzY+geweD1SKxCiJJpUZAgmBbCYNCcIFaJggk1OSwWKINYMh2MLMRJ7LsbPxTl2sTAbhsmhalC/vje7VZxNXQLBHNuEnlcKV8dh38TCmcehhUHBo58cpA1EQAh+QQFCgAPACwAAA8AGQARAAAEZ7AsRuu7OOtbO9tgJnlfaJ7omQwpuixFCxrvK2dHvRwoQmw1w+8i3PgIggzBpjEYLoPohUBNoJzPR5T1OCpOB2dMK70oqIhQwcmDlh8J6nCDzWwzAmrIqblnEFZqGgUDYzcaAgNJGxEAIfkEBQoADwAsAQAIABEAGAAABFyQMDaevfiOyVbJ4GNwjCGEWLGQaLZRbYZUcW3feK7vaGEYNsXh96sRgYiW73e4JAYn0O9zKQwGhAdhi5pdLdts6DpQgLkgBfkSHl+TZ7ELi2mDEHKLgmC+JRQJEQAh+QQFCgAPACwAAAIADgAdAAAEcvDJ+cqgeDJmMt4M4U3DtozTsl1oASJpRxnbkS6LIT4Cw0oHHO4A8xAMwhPqgSssH4nnknAwWK+Zq1ZGoW650vAOpRgMBCOEee2xrAtRTNlcQEsI8Yd6oKAICARFHgmAYx4KgIIZCIB9ZIB5RgR2KAmKEQA7);background-image:url(/w/resources/src/jquery.spinner/images/spinner-large.gif?57f34)!ie;height:32px;width:32px; min-width:32px}.mw-spinner-block{display:block; width:100%}.mw-spinner-inline{display:inline-block;vertical-align:middle}
+.suggestions{overflow:hidden;position:absolute;top:0;left:0;width:0;border:0;z-index:1099;padding:0;margin:-1px 0 0 0}.suggestions-special{position:relative;background-color:#fff;cursor:pointer;border:1px solid #a2a9b1;margin:0;margin-top:-2px;display:none;padding:0.25em 0.25em;line-height:1.25em}.suggestions-results{background-color:#fff;cursor:pointer;border:1px solid #a2a9b1;padding:0;margin:0}.suggestions-result{color:#000;margin:0;line-height:1.5em;padding:0.01em 0.25em;text-align:left; overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.suggestions-result-current{background-color:#2a4b8d;color:#fff}.suggestions-special .special-label{color:#72777d;text-align:left}.suggestions-special .special-query{color:#000;font-style:italic;text-align:left}.suggestions-special .special-hover{background-color:#c8ccd1}.suggestions-result-current .special-label,.suggestions-result-current .special-query{color:#fff}.highlight{font-weight:bold}
+@media screen {
+	.tochidden,.toctoggle{-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}.toctoggle{font-size:94%}}
+@media print {
+	.toc.tochidden,.toctoggle{display:none}}
+.uls-menu{border-radius:2px; font-size:medium}.uls-search,.uls-language-settings-close-block{border-top-right-radius:2px;border-top-left-radius:2px}.uls-language-list{border-bottom-right-radius:2px;border-bottom-left-radius:2px}.uls-menu.callout:before,.uls-menu.callout:after{border-top:10px solid transparent;border-bottom:10px solid transparent;display:inline-block; top:17px;position:absolute;content:''}.uls-menu.callout.selector-right:before{ border-left:10px solid #c8ccd1; right:-11px}.uls-menu.callout.selector-right:after{ border-left:10px solid #f8f9fa; right:-10px}.uls-menu.callout.selector-left:before{ border-right:10px solid #c8ccd1; left:-11px}.uls-menu.callout.selector-left:after{ border-right:10px solid #f8f9fa; left:-10px}.uls-ui-languages button{margin:5px 15px 5px 0;white-space:nowrap;overflow:hidden}.uls-search-wrapper-wrapper{position:relative;padding-left:40px;margin-top:5px;margin-bottom:5px}.uls-icon-back{background:transparent url(/w/extensions/UniversalLanguageSelector/resources/images/back-grey-ltr.png?90e9b) no-repeat scroll center center;background-image:-webkit-linear-gradient(transparent,transparent),url(/w/extensions/UniversalLanguageSelector/resources/images/back-grey-ltr.svg?e226b);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22%3E %3Cpath fill=%22%2354595d%22 d=%22M7 13.1l8.9 8.9c.8-.8.8-2 0-2.8l-6.1-6.1 6-6.1c.8-.8.8-2 0-2.8L7 13.1z%22/%3E %3C/svg%3E");background-size:28px;background-position:center center;height:32px;width:40px;display:block;position:absolute;left:0;border-right:1px solid #c8ccd1;opacity:0.8}.uls-icon-back:hover{opacity:1;cursor:pointer}.uls-menu .uls-no-results-view .uls-no-found-more{background-color:#fff}.uls-menu .uls-no-results-view h3{padding:0 28px;margin:0;color:#54595d;font-size:1em;font-weight:normal}  .skin-vector .uls-menu{border-color:#c8ccd1;-webkit-box-shadow:0 2px 2px 0 rgba(0,0,0,0.25);box-shadow:0 2px 2px 0 rgba(0,0,0,0.25);font-size:0.875em}.skin-vector .uls-search{border-bottom-color:#c8ccd1}.skin-vector .uls-filtersuggestion{color:#72777d}.skin-vector .uls-lcd-region-title{color:#54595d}
+.mw-editfont-monospace{font-family:monospace,monospace}.mw-editfont-sans-serif{font-family:sans-serif}.mw-editfont-serif{font-family:serif} .mw-editfont-monospace,.mw-editfont-sans-serif,.mw-editfont-serif{font-size:13px; }.mw-editfont-monospace.oo-ui-textInputWidget,.mw-editfont-sans-serif.oo-ui-textInputWidget,.mw-editfont-serif.oo-ui-textInputWidget{font-size:inherit}.mw-editfont-monospace > .oo-ui-inputWidget-input,.mw-editfont-sans-serif > .oo-ui-inputWidget-input,.mw-editfont-serif > .oo-ui-inputWidget-input{font-size:13px}
+@-webkit-keyframes centralAuthPPersonalAnimation{0%{opacity:0;-webkit-transform:translateY(-20px)}100%{opacity:1;-webkit-transform:translateY(0)}}@-moz-keyframes centralAuthPPersonalAnimation{0%{opacity:0;-moz-transform:translateY(-20px)}100%{opacity:1;-moz-transform:translateY(0)}}@-o-keyframes centralAuthPPersonalAnimation{0%{opacity:0;-o-transform:translateY(-20px)}100%{opacity:1;-o-transform:translateY(0)}}@keyframes centralAuthPPersonalAnimation{0%{opacity:0;transform:translateY(-20px)}100%{opacity:1;transform:translateY(0)}}.centralAuthPPersonalAnimation{-webkit-animation-duration:1s;-moz-animation-duration:1s;-o-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;-moz-animation-fill-mode:both;-o-animation-fill-mode:both;animation-fill-mode:both;-webkit-animation-name:centralAuthPPersonalAnimation;-moz-animation-name:centralAuthPPersonalAnimation;-o-animation-name:centralAuthPPersonalAnimation;animation-name:centralAuthPPersonalAnimation}
+@media print{#centralNotice{display:none}}.cn-closeButton{display:inline-block;zoom:1;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAElBMVEUAAAAQEBDPz88AAABAQEDv7+9oe1vvAAAABnRSTlMA3rLe3rJS22KzAAAARElEQVQI12PAAUIUQCSTK5BwFgIxFU1AhKECUFAYKAAioXwwBeZChMGCEGGQIFQYJohgIhQgtCEMQ7ECYTHCOciOxA4AADgJTXIb9s8AAAAASUVORK5CYII=) no-repeat;background:url(/w/extensions/CentralNotice/resources/subscribing/close.png?8e3d8) no-repeat!ie;width:20px;height:20px;text-indent:20px;white-space:nowrap;overflow:hidden}
+.mw-ui-button{font-family:inherit;font-size:1em;display:inline-block;min-width:4em;max-width:28.75em;padding:0.546875em 1em;line-height:1.286;margin:0;border-radius:2px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-appearance:none;*display:inline; zoom:1;vertical-align:middle;background-color:#f8f9fa;color:#222222;border:1px solid #a2a9b1;text-align:center;font-weight:bold;cursor:pointer}.mw-ui-button:visited{color:#222222}.mw-ui-button:hover{background-color:#ffffff;color:#444444;border-color:#a2a9b1}.mw-ui-button:focus{background-color:#ffffff;color:#222222;border-color:#3366cc;box-shadow:inset 0 0 0 1px #3366cc,inset 0 0 0 2px #ffffff}.mw-ui-button:active,.mw-ui-button.is-on,.mw-ui-button.mw-ui-checked{background-color:#d9d9d9;color:#000000;border-color:#72777d;box-shadow:none}.mw-ui-button:disabled{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1}.mw-ui-button:disabled:hover,.mw-ui-button:disabled:active{background-color:#c8ccd1;color:#fff;box-shadow:none;border-color:#c8ccd1}.mw-ui-button:focus{outline-width:0}.mw-ui-button:focus::-moz-focus-inner{border-color:transparent;padding:0}.mw-ui-button:not(:disabled){-webkit-transition:background-color 100ms,color 100ms,border-color 100ms,box-shadow 100ms;-moz-transition:background-color 100ms,color 100ms,border-color 100ms,box-shadow 100ms;transition:background-color 100ms,color 100ms,border-color 100ms,box-shadow 100ms}.mw-ui-button:disabled{text-shadow:none;cursor:default}.mw-ui-button.mw-ui-big{font-size:1.3em}.mw-ui-button.mw-ui-block{display:block;width:100%;margin-left:auto;margin-right:auto}.mw-ui-button.mw-ui-progressive{background-color:#3366cc;color:#fff;border:1px solid #3366cc}.mw-ui-button.mw-ui-progressive:hover{background-color:#447ff5;border-color:#447ff5}.mw-ui-button.mw-ui-progressive:focus{box-shadow:inset 0 0 0 1px #3366cc,inset 0 0 0 2px #ffffff}.mw-ui-button.mw-ui-progressive:active,.mw-ui-button.mw-ui-progressive.is-on,.mw-ui-button.mw-ui-progressive.mw-ui-checked{background-color:#2a4b8d;border-color:#2a4b8d;box-shadow:none}.mw-ui-button.mw-ui-progressive:disabled{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1}.mw-ui-button.mw-ui-progressive:disabled:hover,.mw-ui-button.mw-ui-progressive:disabled:active,.mw-ui-button.mw-ui-progressive:disabled.mw-ui-checked{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1;box-shadow:none}.mw-ui-button.mw-ui-progressive.mw-ui-quiet{color:#222222}.mw-ui-button.mw-ui-progressive.mw-ui-quiet:hover{background-color:transparent;color:#447ff5}.mw-ui-button.mw-ui-progressive.mw-ui-quiet:active,.mw-ui-button.mw-ui-progressive.mw-ui-quiet.mw-ui-checked{color:#2a4b8d}.mw-ui-button.mw-ui-progressive.mw-ui-quiet:focus{background-color:transparent;color:#3366cc}.mw-ui-button.mw-ui-progressive.mw-ui-quiet:disabled{color:#c8ccd1}.mw-ui-button.mw-ui-destructive{background-color:#dd3333;color:#fff;border:1px solid #dd3333}.mw-ui-button.mw-ui-destructive:hover{background-color:#ff4242;border-color:#ff4242}.mw-ui-button.mw-ui-destructive:focus{box-shadow:inset 0 0 0 1px #dd3333,inset 0 0 0 2px #ffffff}.mw-ui-button.mw-ui-destructive:active,.mw-ui-button.mw-ui-destructive.is-on,.mw-ui-button.mw-ui-destructive.mw-ui-checked{background-color:#b32424;border-color:#b32424;box-shadow:none}.mw-ui-button.mw-ui-destructive:disabled{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1}.mw-ui-button.mw-ui-destructive:disabled:hover,.mw-ui-button.mw-ui-destructive:disabled:active,.mw-ui-button.mw-ui-destructive:disabled.mw-ui-checked{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1;box-shadow:none}.mw-ui-button.mw-ui-destructive.mw-ui-quiet{color:#222222}.mw-ui-button.mw-ui-destructive.mw-ui-quiet:hover{background-color:transparent;color:#ff4242}.mw-ui-button.mw-ui-destructive.mw-ui-quiet:active,.mw-ui-button.mw-ui-destructive.mw-ui-quiet.mw-ui-checked{color:#b32424}.mw-ui-button.mw-ui-destructive.mw-ui-quiet:focus{background-color:transparent;color:#dd3333}.mw-ui-button.mw-ui-destructive.mw-ui-quiet:disabled{color:#c8ccd1}.mw-ui-button.mw-ui-quiet{background:transparent;border:0;text-shadow:none;color:#222222}.mw-ui-button.mw-ui-quiet:hover{background-color:transparent;color:#444444}.mw-ui-button.mw-ui-quiet:active,.mw-ui-button.mw-ui-quiet.mw-ui-checked{color:#000000}.mw-ui-button.mw-ui-quiet:focus{background-color:transparent;color:#222222}.mw-ui-button.mw-ui-quiet:disabled{color:#c8ccd1}.mw-ui-button.mw-ui-quiet:hover,.mw-ui-button.mw-ui-quiet:focus{box-shadow:none}.mw-ui-button.mw-ui-quiet:active,.mw-ui-button.mw-ui-quiet:disabled{background:transparent}input.mw-ui-button::-moz-focus-inner,button.mw-ui-button::-moz-focus-inner{margin-top:-1px;margin-bottom:-1px}a.mw-ui-button{text-decoration:none}a.mw-ui-button:hover,a.mw-ui-button:focus{text-decoration:none}.mw-ui-button-group > *{min-width:48px;border-radius:0;float:left}.mw-ui-button-group > *:first-child{border-top-left-radius:2px;border-bottom-left-radius:2px}.mw-ui-button-group > *:not(:first-child){border-left:0}.mw-ui-button-group > *:last-child{border-top-right-radius:2px;border-bottom-right-radius:2px}.mw-ui-button-group .is-on .button{cursor:default}</style><style>
+.mw-3d-wrapper{display:inline-block;position:relative;overflow:hidden;vertical-align:top}.mw-3d-badge{position:absolute;top:11px;left:11px;color:#1e1f21;font-size:14px;line-height:19px;font-weight:bold;opacity:0.8;padding:2px 5px;background-color:#f8f9fa;border-radius:2px}.mw-3d-thumb-placeholder{display:inline-block;text-decoration:none;color:#222}
+.suggestions a.mw-searchSuggest-link,.suggestions a.mw-searchSuggest-link:hover,.suggestions a.mw-searchSuggest-link:active,.suggestions a.mw-searchSuggest-link:focus{color:#000;text-decoration:none}.suggestions-result-current a.mw-searchSuggest-link,.suggestions-result-current a.mw-searchSuggest-link:hover,.suggestions-result-current a.mw-searchSuggest-link:active,.suggestions-result-current a.mw-searchSuggest-link:focus{color:#fff}.suggestions a.mw-searchSuggest-link .special-query{ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#uls-settings-block{background-color:#f8f9fa;border-top:1px solid #c8ccd1;padding-left:10px;line-height:1.2em;border-radius:0 0 2px 2px}#uls-settings-block > button{background:left top transparent no-repeat;background-size:20px auto;color:#54595d;display:inline-block;margin:8px 15px;border:0;padding:0 0 0 26px;font-size:medium;cursor:pointer}#uls-settings-block > button:hover{color:#222}#uls-settings-block > button.display-settings-block{background-image:url(/w/extensions/UniversalLanguageSelector/resources/images/display.png?d25f1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E %3Cpath fill=%22%23222%22 d=%22M.002 2.275V15.22h8.405c.535 1.624-.975 1.786-1.902 2.505 0 0 2.293-.024 3.439-.024 1.144 0 3.432.024 3.432.024-.905-.688-2.355-.868-1.902-2.505h8.527V2.275h-20zm6.81 1.84h.797l3.313 8.466H9.879L8.836 9.943H5.462l-1.043 2.638h-.982zm.368 1.104c-.084.369-.211.785-.368 1.227L5.83 9.023h2.699l-.982-2.577c-.128-.33-.234-.747-.368-1.227zm7.117.982c.753 0 1.295.157 1.656.491.365.334.552.858.552 1.595v4.294h-.675l-.184-.859h-.062c-.315.396-.605.655-.92.798-.311.138-.758.184-1.227.184-.626 0-1.115-.168-1.472-.491-.353-.323-.491-.754-.491-1.35 0-1.275 1.028-1.963 3.068-2.025h1.043v-.429c0-.495-.091-.87-.307-1.104-.211-.238-.574-.307-1.043-.307-.526 0-1.115.107-1.779.429l-.307-.675a4.748 4.748 0 0 1 1.043-.429 4.334 4.334 0 0 1 1.104-.123zm.307 3.313c-.761.027-1.318.157-1.656.368-.334.207-.491.54-.491.982 0 .346.1.617.307.798.211.181.544.245.92.245.595 0 1.012-.164 1.35-.491.342-.326.552-.762.552-1.35v-.552z%22/%3E %3C/svg%3E")}#uls-settings-block > button.input-settings-block{background-image:url(/w/extensions/UniversalLanguageSelector/resources/images/input.png?aea9e);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E %3Cpath fill=%22%23222%22 d=%22M9 1.281c-.124.259-.185.599-.5.688-.55.081-1.133.018-1.688 0-.866-.032-1.733-.148-2.594 0-.588.157-.953.727-1.188 1.25-.178.416-.271.836-.344 1.281H-.002V16h20V4.5H3.654c.109-.52.203-1.057.563-1.469.222-.231.587-.17.875-.188 1.212.003 2.415.179 3.625.063.463-.058.812-.455.969-.875l.188-.438-.875-.313zM1.875 7.125h1.563c.094 0 .188.093.188.188v1.531a.201.201 0 0 1-.188.188H1.875c-.094 0-.156-.093-.156-.188V7.313c0-.094.062-.188.156-.188zm2.844 0h1.563c.094 0 .156.093.156.188v1.531c0 .094-.062.188-.156.188H4.719c-.094 0-.156-.093-.156-.188V7.313c0-.094.062-.188.156-.188zm2.844 0h1.563c.094 0 .156.093.156.188v1.531c0 .094-.062.188-.156.188H7.563a.201.201 0 0 1-.188-.188V7.313c0-.094.093-.188.188-.188zm2.813 0h1.563c.094 0 .188.093.188.188v1.531a.201.201 0 0 1-.188.188h-1.563c-.094 0-.156-.093-.156-.188V7.313c0-.094.062-.188.156-.188zm2.844 0h1.563c.094 0 .156.093.156.188v1.531c0 .094-.062.188-.156.188H13.22c-.094 0-.156-.093-.156-.188V7.313c0-.094.062-.188.156-.188zm2.844 0h1.531c.094 0 .188.093.188.188v1.531a.201.201 0 0 1-.188.188h-1.531a.201.201 0 0 1-.188-.188V7.313c0-.094.093-.188.188-.188zm-12.844 3h1.563c.094 0 .156.093.156.188v1.563c0 .094-.062.156-.156.156H3.22c-.094 0-.156-.062-.156-.156v-1.563c0-.094.062-.188.156-.188zm2.906 0h1.563c.094 0 .188.093.188.188v1.563c0 .094-.093.156-.188.156H6.126c-.094 0-.156-.062-.156-.156v-1.563c0-.094.062-.188.156-.188zm2.938 0h1.531c.094 0 .188.093.188.188v1.563c0 .094-.093.156-.188.156H9.064c-.094 0-.188-.062-.188-.156v-1.563c0-.094.093-.188.188-.188zm2.906 0h1.563c.094 0 .156.093.156.188v1.563c0 .094-.062.156-.156.156H11.97c-.094 0-.188-.062-.188-.156v-1.563c0-.094.093-.188.188-.188zm2.906 0h1.563c.094 0 .156.093.156.188v1.563c0 .094-.062.156-.156.156h-1.563c-.094 0-.156-.062-.156-.156v-1.563c0-.094.062-.188.156-.188zM4.001 13.688h12c.088 0 .156.068.156.156v.844a.154.154 0 0 1-.156.156h-12a.154.154 0 0 1-.156-.156v-.844c0-.088.068-.156.156-.156z%22/%3E %3C/svg%3E")}
+.ve-init-mw-tempWikitextEditorWidget{border:0;padding:0;color:inherit;line-height:1.5em; }.ve-init-mw-tempWikitextEditorWidget:focus{outline:0;padding:0}.ve-init-mw-tempWikitextEditorWidget::selection{background:rgba(109,169,247,0.5); }
+#p-lang .body ul .uls-trigger,#p-lang .pBody ul .uls-trigger{background-image:none;padding:0} .mw-interlanguage-selector,.mw-interlanguage-selector:active{cursor:pointer;padding:4px 6px 4px 25px;font-size:13px;font-weight:normal;background-image:url(/w/extensions/UniversalLanguageSelector/resources/images/compact-links-trigger.png?b0c8e);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2218%22 height=%2218%22 viewBox=%220 0 24 24%22%3E %3Cpath fill=%22%2372777d%22 d=%22M13 19l.8-3h5.3l.9 3h2.2L18 6h-3l-4.2 13H13zm3.5-11l2 6h-4l2-6zM5 4l.938 1.906H1V8h1.594C3.194 9.8 4 11.206 5 12.406c-1.1.7-4.313 1.781-4.313 1.781L2 16s3.487-1.387 4.688-2.188c1 .7 2.319 1.188 3.719 1.688l.594-2c-1-.3-1.988-.688-2.688-1.188 1.1-1.1 1.9-2.506 2.5-4.406h2.188l.5-2H7.938L7 4H5zm-.188 4h3.781c-.4 1.3-.906 2-1.906 3-1.1-1-1.475-1.7-1.875-3z%22/%3E %3C/svg%3E");background-size:18px;background-repeat:no-repeat;background-position:left 4px center;margin:4px 0;text-align:left}.mw-interlanguage-selector:active,.mw-interlanguage-selector.selector-open{background-color:#c8ccd1;color:#54595d}.interlanguage-uls-menu:before,.interlanguage-uls-menu:after{border-top:10px solid transparent;border-bottom:10px solid transparent;display:inline-block; top:17px;position:absolute;content:''}.interlanguage-uls-menu.selector-right:before{ border-left:10px solid #c8ccd1; right:-11px}.interlanguage-uls-menu.selector-right:after{ border-left:10px solid #f8f9fa; right:-10px}.interlanguage-uls-menu.selector-left:before{ border-right:10px solid #c8ccd1; left:-11px}.interlanguage-uls-menu.selector-left:after{ border-right:10px solid #f8f9fa; left:-10px}</style><style>
+.ve-activated .ve-init-mw-desktopArticleTarget-editableContent #toc,.ve-activated #siteNotice,.ve-activated .mw-indicators,.ve-activated #t-print,.ve-activated #t-permalink,.ve-activated #p-coll-print_export,.ve-activated #t-cite,.ve-deactivating .ve-ui-surface,.ve-active .ve-init-mw-desktopArticleTarget-editableContent,.ve-active .ve-init-mw-tempWikitextEditorWidget{display:none} .ve-activating .ve-ui-surface{height:0;padding:0 !important; overflow:hidden} .ve-loading #content > :not(.ve-init-mw-desktopArticleTarget-loading-overlay), .ve-activated .ve-init-mw-desktopArticleTarget-uneditableContent{pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;opacity:0.5}.ve-activated #catlinks{cursor:pointer}.ve-activated #catlinks a{opacity:1} .ve-activated #content{position:relative} .ve-init-mw-desktopArticleTarget-loading-overlay{position:absolute;top:1.25em;left:0;right:0;z-index:1;margin-top:-0.5em}.ve-init-mw-desktopArticleTarget-progress{height:1em;overflow:hidden;margin:0 25%}.ve-init-mw-desktopArticleTarget-progress-bar{height:1em;width:0}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{transition:height 250ms ease;height:0; } .oo-ui-element-hidden{display:none !important; } .mw-editsection{white-space:nowrap; unicode-bidi:-moz-isolate;unicode-bidi:-webkit-isolate;unicode-bidi:isolate}.mw-editsection-divider{color:#54595d} .ve-init-mw-desktopArticleTarget-progress{height:0.75em;border:1px solid #36c;background:#fff;border-radius:2px;box-shadow:0 0.1em 0 0 rgba(0,0,0,0.15)}.ve-init-mw-desktopArticleTarget-progress-bar{height:0.75em;background:#36c}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{border-bottom:1px solid #c8ccd1;box-shadow:0 1px 1px 0 rgba(0,0,0,0.1)}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-open{height:40px} .skin-vector .ve-init-mw-desktopArticleTarget-toolbar,.skin-vector .ve-init-mw-desktopArticleTarget-toolbarPlaceholder{font-size:0.875em; margin:-1.14em -1.14em 1.14em -1.14em; }@media screen and (min-width:982px){.skin-vector .ve-init-mw-desktopArticleTarget-toolbar,.skin-vector .ve-init-mw-desktopArticleTarget-toolbarPlaceholder{ margin:-1.43em -1.71em 1.43em -1.71em}}</style><style>
+.referencetooltip{position:absolute;list-style:none;list-style-image:none;opacity:0;font-size:12px;margin:0;z-index:5;padding:0}.referencetooltip > li{background:#fff;border:1px solid #bbb;-webkit-box-shadow:0 0 10px rgba(0,0,0,0.2);-moz-box-shadow:0 0 10px rgba(0,0,0,0.2);box-shadow:0 0 10px rgba(0,0,0,0.2);margin:0;padding:8px 10px;line-height:18px;max-width:300px}.referencetooltip > li + li{box-sizing:border-box;margin-left:7px;margin-top:-1px;border:0;padding:0;height:3px;width:0;background-color:transparent;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;border-top:12px #bbb solid;border-right:7px transparent solid;border-left:7px transparent solid}.referencetooltip > li + li::after{z-index:111;content:'';border:6px solid transparent;border-bottom:0;border-top:8px solid #fff;height:0;width:0;display:block;margin-left:-6px;margin-top:-12px}.RTflipped{padding-top:13px}.referencetooltip.RTflipped > li + li{position:absolute;top:0;border-top:0;border-bottom:12px #bbb solid}.referencetooltip.RTflipped > li + li::after{border-top:0;border-bottom:8px #fff solid;position:absolute;margin-top:7px}.RTsettings{ background-image:linear-gradient(transparent,transparent),url(data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0D%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%0D%0A%20%20%20%20%3Cpath%20fill%3D%22%23555%22%20d%3D%22M20%2014.5v-2.9l-1.8-.3c-.1-.4-.3-.8-.6-1.4l1.1-1.5-2.1-2.1-1.5%201.1c-.5-.3-1-.5-1.4-.6L13.5%205h-2.9l-.3%201.8c-.5.1-.9.3-1.4.6L7.4%206.3%205.3%208.4l1%201.5c-.3.5-.4.9-.6%201.4l-1.7.2v2.9l1.8.3c.1.5.3.9.6%201.4l-1%201.5%202.1%202.1%201.5-1c.4.2.9.4%201.4.6l.3%201.8h3l.3-1.8c.5-.1.9-.3%201.4-.6l1.5%201.1%202.1-2.1-1.1-1.5c.3-.5.5-1%20.6-1.4l1.5-.3zM12%2016c-1.7%200-3-1.3-3-3s1.3-3%203-3%203%201.3%203%203-1.3%203-3%203z%22%2F%3E%0D%0A%3C%2Fsvg%3E);  display:block;float:right;cursor:pointer;margin:0;margin-top:-4px;height:24px;width:24px;border-radius:2px;box-sizing:border-box;background-position:center center;background-repeat:no-repeat;background-size:24px 24px;margin-left:8px}.RTsettings:hover{background-color:#eee}.RTTarget{background-color:#def}
+.wp-teahouse-question-form{position:absolute;margin-left:auto;margin-right:auto;background-color:#f4f3f0;border:1px solid #a7d7f9;padding:1em}#wp-th-question-ask{float:right}.wp-teahouse-ask a.external{background-image:none !important}.wp-teahouse-respond-form{position:absolute;margin-left:auto;margin-right:auto;background-color:#f4f3f0;border:1px solid #a7d7f9;padding:1em}.wp-th-respond{float:right}.wp-teahouse-respond a.external{background-image:none !important}</style><meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="Wik18d-Dateien/load_002.css">
+<link rel="stylesheet" href="Wik18d-Dateien/load_003.css">
+<meta name="generator" content="MediaWiki 1.32.0-wmf.8">
+<meta name="referrer" content="origin">
+<meta name="referrer" content="origin-when-crossorigin">
+<meta name="referrer" content="origin-when-cross-origin">
+<meta name="robots" content="noindex,nofollow">
+<link rel="alternate" type="application/x-wiki" title="Edit this page" href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit">
+<link rel="edit" title="Edit this page" href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit">
+<link rel="apple-touch-icon" href="https://en.wikipedia.org/static/apple-touch/wikipedia.png">
+<link rel="shortcut icon" href="https://en.wikipedia.org/static/favicon/wikipedia.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="https://en.wikipedia.org/w/opensearch_desc.php" title="Wikipedia (en)">
+<link rel="EditURI" type="application/rsd+xml" href="https://en.wikipedia.org/w/api.php?action=rsd">
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/">
+<link rel="alternate" type="application/atom+xml" title="Wikipedia Atom feed" href="https://en.wikipedia.org/w/index.php?title=Special:RecentChanges&amp;feed=atom">
+<link rel="canonical" href="https://en.wikipedia.org/wiki/X.690">
+<link rel="dns-prefetch" href="https://login.wikimedia.org/">
+<link rel="dns-prefetch" href="https://meta.wikimedia.org/">
+<!--[if lt IE 9]><script src="/w/load.php?debug=false&amp;lang=en&amp;modules=html5shiv&amp;only=scripts&amp;skin=vector&amp;sync=1"></script><![endif]-->
+<script src="Wik18d-Dateien/load.php"></script></head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-X_690 rootpage-X_690 skin-vector action-view">		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<div id="content" class="mw-body" role="main">
+			<a id="top"></a>
+			<div id="siteNotice" class="mw-body-content"><div id="centralNotice"></div><!-- CentralNotice --></div><div class="mw-indicators mw-body-content">
+</div>
+<h1 id="firstHeading" class="firstHeading" lang="en">X.690</h1>			<div id="bodyContent" class="mw-body-content">
+				<div id="siteSub" class="noprint">From Wikipedia, the free encyclopedia</div>				<div id="contentSub"><div class="mw-revision"><div id="mw-revision-info-current"><table id="revision-info-current" class="plainlinks fmbox fmbox-system" role="presentation"><tbody><tr><td class="mbox-text"><b>This is the <a href="https://en.wikipedia.org/wiki/Help:Page_history" title="Help:Page history">current revision</a> of this page, as edited by <span id="mw-revision-name"><a href="https://en.wikipedia.org/wiki/User:Beauty_School_Dropout" class="mw-userlink" title="User:Beauty School Dropout"><bdi>Beauty School Dropout</bdi></a> <span class="mw-usertoollinks">(<a href="https://en.wikipedia.org/wiki/User_talk:Beauty_School_Dropout" class="mw-usertoollinks-talk" title="User talk:Beauty School Dropout">talk</a>&nbsp;| <a href="https://en.wikipedia.org/wiki/Special:Contributions/Beauty_School_Dropout" class="mw-usertoollinks-contribs" title="Special:Contributions/Beauty School Dropout">contribs</a>)</span></span> at <span id="mw-revision-date">03:19, 16 January 2018</span><span id="mw-revision-summary"> <span class="comment">(Undid revision 820699608 by <a href="https://en.wikipedia.org/wiki/Special:Contributions/Jonathanwilbur1993" title="Special:Contributions/Jonathanwilbur1993">Jonathanwilbur1993</a> (<a href="https://en.wikipedia.org/wiki/User_talk:Jonathanwilbur1993" title="User talk:Jonathanwilbur1993">talk</a>) Questionable edit by new Wikipedia user.)</span></span>. The present address (URL) is a <a href="https://en.wikipedia.org/wiki/Help:Permanent_link" title="Help:Permanent link">permanent link</a> to this version.</b></td></tr></tbody></table><div id="revision-info-current-plain" style="display: none;">Revision as of 03:19, 16 January 2018 by <a href="https://en.wikipedia.org/wiki/User:Beauty_School_Dropout" class="mw-userlink" title="User:Beauty School Dropout"><bdi>Beauty School Dropout</bdi></a> <span class="mw-usertoollinks">(<a href="https://en.wikipedia.org/wiki/User_talk:Beauty_School_Dropout" class="mw-usertoollinks-talk" title="User talk:Beauty School Dropout">talk</a>&nbsp;| <a href="https://en.wikipedia.org/wiki/Special:Contributions/Beauty_School_Dropout" class="mw-usertoollinks-contribs" title="Special:Contributions/Beauty School Dropout">contribs</a>)</span> <span class="comment">(Undid revision 820699608 by <a href="https://en.wikipedia.org/wiki/Special:Contributions/Jonathanwilbur1993" title="Special:Contributions/Jonathanwilbur1993">Jonathanwilbur1993</a> (<a href="https://en.wikipedia.org/wiki/User_talk:Jonathanwilbur1993" title="User talk:Jonathanwilbur1993">talk</a>) Questionable edit by new Wikipedia user.)</span></div>
+</div><div id="mw-revision-nav">(<a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;diff=prev&amp;oldid=820700186" title="X.690">diff</a>) <a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;direction=prev&amp;oldid=820700186" title="X.690">← Previous revision</a>&nbsp;| Latest revision (diff)&nbsp;| Newer revision → (diff)</div></div></div>
+				<div id="jump-to-nav"></div>				<a class="mw-jump-link" href="#mw-head">Jump to navigation</a>
+				<a class="mw-jump-link" href="#p-search">Jump to search</a>
+				<div id="mw-content-text" dir="ltr" class="mw-content-ltr" lang="en"><div class="mw-parser-output"><p><b>X.690</b> is an <a href="https://en.wikipedia.org/wiki/ITU-T" title="ITU-T">ITU-T</a> standard specifying several <a href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One" title="Abstract Syntax Notation One">ASN.1</a> encoding formats:</p>
+<ul>
+<li><a href="#BER_encoding">Basic Encoding Rules</a> (BER)</li>
+<li><a href="#CER_encoding">Canonical Encoding Rules</a> (CER)</li>
+<li><a href="#DER_encoding">Distinguished Encoding Rules</a> (DER)</li>
+</ul>
+<p>The Basic Encoding Rules were the original rules laid out by the 
+ASN.1 standard for encoding abstract information into a concrete data 
+stream. The rules, collectively referred to as a <i>transfer syntax</i> in ASN.1 parlance, specify the exact <a href="https://en.wikipedia.org/wiki/Octet_(computing)" title="Octet (computing)">octet</a>
+ sequences which are used to encode a given data item. The syntax 
+defines such elements as: the representations for basic data types, the 
+structure of length information, and the means for defining complex or 
+compound types based on more primitive types. The BER syntax, along with
+ two subsets of BER (the <a href="https://en.wikipedia.org/wiki/Canonical_Encoding_Rules" class="mw-redirect" title="Canonical Encoding Rules">Canonical Encoding Rules</a> and the <a href="https://en.wikipedia.org/wiki/Distinguished_Encoding_Rules" class="mw-redirect" title="Distinguished Encoding Rules">Distinguished Encoding Rules</a>), are defined by the <a href="https://en.wikipedia.org/wiki/ITU-T" title="ITU-T">ITU-T</a>'s X.690 standards document, which is part of the ASN.1 document series.</p>
+<p></p>
+<div id="toc" class="toc">
+<div class="toctitle" dir="ltr" xml:lang="en" lang="en">
+<h2>Contents</h2>
+<span class="toctoggle">&nbsp;[<a role="button" tabindex="0" class="togglelink">hide</a>]&nbsp;</span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#BER_encoding"><span class="tocnumber">1</span> <span class="toctext">BER encoding</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#Encoding_structure"><span class="tocnumber">1.1</span> <span class="toctext">Encoding structure</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="#Identifier_octets"><span class="tocnumber">1.2</span> <span class="toctext">Identifier octets</span></a>
+<ul>
+<li class="toclevel-3 tocsection-4"><a href="#Types"><span class="tocnumber">1.2.1</span> <span class="toctext">Types</span></a></li>
+<li class="toclevel-3 tocsection-5"><a href="#Encoding"><span class="tocnumber">1.2.2</span> <span class="toctext">Encoding</span></a></li>
+<li class="toclevel-3 tocsection-6"><a href="#Long_form"><span class="tocnumber">1.2.3</span> <span class="toctext">Long form</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-7"><a href="#Length_octets"><span class="tocnumber">1.3</span> <span class="toctext">Length octets</span></a>
+<ul>
+<li class="toclevel-3 tocsection-8"><a href="#Definite_form"><span class="tocnumber">1.3.1</span> <span class="toctext">Definite form</span></a></li>
+<li class="toclevel-3 tocsection-9"><a href="#Indefinite_form"><span class="tocnumber">1.3.2</span> <span class="toctext">Indefinite form</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-10"><a href="#Contents_octets"><span class="tocnumber">1.4</span> <span class="toctext">Contents octets</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-11"><a href="#CER_encoding"><span class="tocnumber">2</span> <span class="toctext">CER encoding</span></a></li>
+<li class="toclevel-1 tocsection-12"><a href="#DER_encoding"><span class="tocnumber">3</span> <span class="toctext">DER encoding</span></a></li>
+<li class="toclevel-1 tocsection-13"><a href="#BER,_CER_and_DER_compared"><span class="tocnumber">4</span> <span class="toctext">BER, CER and DER compared</span></a>
+<ul>
+<li class="toclevel-2 tocsection-14"><a href="#Criticisms_of_BER_encoding"><span class="tocnumber">4.1</span> <span class="toctext">Criticisms of BER encoding</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-15"><a href="#Usage"><span class="tocnumber">5</span> <span class="toctext">Usage</span></a></li>
+<li class="toclevel-1 tocsection-16"><a href="#See_also"><span class="tocnumber">6</span> <span class="toctext">See also</span></a></li>
+<li class="toclevel-1 tocsection-17"><a href="#References"><span class="tocnumber">7</span> <span class="toctext">References</span></a></li>
+<li class="toclevel-1 tocsection-18"><a href="#External_links"><span class="tocnumber">8</span> <span class="toctext">External links</span></a></li>
+</ul>
+</div>
+<p></p>
+<h2><span class="mw-headline" id="BER_encoding">BER encoding</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=1" title="Edit section: BER encoding">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The format for Basic Encoding Rules specifies a self-describing and 
+self-delimiting format for encoding ASN.1 data structures. Each data 
+element is encoded as a type identifier, a length description, the 
+actual data elements, and, where necessary, an end-of-content marker. 
+These types of encodings are commonly called <a href="https://en.wikipedia.org/wiki/Type-length-value" title="Type-length-value">type-length-value</a>
+ or TLV encodings. This format allows a receiver to decode the ASN.1 
+information from an incomplete stream, without requiring any 
+pre-knowledge of the size, content, or semantic meaning of the data.<sup id="cite_ref-X.690_1-0" class="reference"><a href="#cite_note-X.690-1">[1]</a></sup></p>
+<h3><span class="mw-headline" id="Encoding_structure">Encoding structure</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=2" title="Edit section: Encoding structure">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The encoding of data does generally consist of four components which appear in the following order:</p>
+<table class="wikitable" style="text-align:center; width:600px;">
+<tbody><tr>
+<td>Identifier octets<br>
+<i>Type</i></td>
+<td>Length octets<br>
+<i>Length</i></td>
+<td>Contents octets<br>
+<i>Value</i></td>
+<td>End-of-contents octets</td>
+</tr>
+</tbody></table>
+<p>The End-of-contents octets are optional and only used if the 
+indefinite length form is used. The Contents octet may also be omitted 
+if there is no content to encode like in the NULL type.</p>
+<h3><span class="mw-headline" id="Identifier_octets">Identifier octets</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=3" title="Edit section: Identifier octets">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h4><span class="mw-headline" id="Types">Types</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=4" title="Edit section: Types">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>Data (especially members of sequences and sets and choices) can be 
+tagged with a unique tag number (shown in ASN.1 within square brackets 
+[]) to distinguish that data from other members. Such tags can be 
+implicit (where they are encoded as the TLV tag of the value instead of 
+using the base type as the TLV tag) or explicit (where the tag is used 
+in a constructed TLV that wraps the base type TLV). The default tagging 
+style is explicit, unless implicit is set at ASN.1 module-level. Such 
+tags have a default class of context-specific, but that can be 
+overridden by using a class name in front of the tag.</p>
+<p>The encoding of a choice value is the same as the encoding of a value
+ of the chosen type. The encoding may be primitive or constructed, 
+depending on the chosen type. The tag used in the identifier octets is 
+the tag of the chosen type, as specified in the ASN.1 definition of the 
+chosen type..</p>
+<p>The following tags are native to ASN.1:</p>
+<table class="wikitable">
+<caption>Types, universal class</caption>
+<tbody><tr>
+<th rowspan="2">Name</th>
+<th rowspan="2">Value<br>
+encodings</th>
+<th colspan="2">Tag number</th>
+</tr>
+<tr>
+<th>Decimal</th>
+<th>Hexadecimal</th>
+</tr>
+<tr>
+<td>End-of-Content (EOC)</td>
+<td align="center">Primitive</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td>BOOLEAN</td>
+<td align="center">Primitive</td>
+<td align="center">1</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td>INTEGER</td>
+<td align="center">Primitive</td>
+<td align="center">2</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td>BIT STRING</td>
+<td align="center">Both</td>
+<td align="center">3</td>
+<td align="center">3</td>
+</tr>
+<tr>
+<td>OCTET STRING</td>
+<td align="center">Both</td>
+<td align="center">4</td>
+<td align="center">4</td>
+</tr>
+<tr>
+<td>NULL</td>
+<td align="center">Primitive</td>
+<td align="center">5</td>
+<td align="center">5</td>
+</tr>
+<tr>
+<td><a href="https://en.wikipedia.org/wiki/Object_identifier" title="Object identifier">OBJECT IDENTIFIER</a></td>
+<td align="center">Primitive</td>
+<td align="center">6</td>
+<td align="center">6</td>
+</tr>
+<tr>
+<td>Object Descriptor</td>
+<td align="center">Both</td>
+<td align="center">7</td>
+<td align="center">7</td>
+</tr>
+<tr>
+<td>EXTERNAL</td>
+<td align="center">Constructed</td>
+<td align="center">8</td>
+<td align="center">8</td>
+</tr>
+<tr>
+<td>REAL (float)</td>
+<td align="center">Primitive</td>
+<td align="center">9</td>
+<td align="center">9</td>
+</tr>
+<tr>
+<td>ENUMERATED</td>
+<td align="center">Primitive</td>
+<td align="center">10</td>
+<td align="center">A</td>
+</tr>
+<tr>
+<td>EMBEDDED PDV</td>
+<td align="center">Constructed</td>
+<td align="center">11</td>
+<td align="center">B</td>
+</tr>
+<tr>
+<td><a href="https://en.wikipedia.org/wiki/UTF-8" title="UTF-8">UTF8String</a></td>
+<td align="center">Both</td>
+<td align="center">12</td>
+<td align="center">C</td>
+</tr>
+<tr>
+<td>RELATIVE-OID</td>
+<td align="center">Primitive</td>
+<td align="center">13</td>
+<td align="center">D</td>
+</tr>
+<tr>
+<td data-sort-value="" style="background: #ececec; color: #2C2C2C; vertical-align: middle; font-size: smaller; text-align: center;" class="table-na">Reserved</td>
+<td align="center"></td>
+<td align="center">14</td>
+<td align="center">E</td>
+</tr>
+<tr>
+<td data-sort-value="" style="background: #ececec; color: #2C2C2C; vertical-align: middle; font-size: smaller; text-align: center;" class="table-na">Reserved</td>
+<td align="center"></td>
+<td align="center">15</td>
+<td align="center">F</td>
+</tr>
+<tr>
+<td>SEQUENCE and SEQUENCE OF</td>
+<td align="center">Constructed</td>
+<td align="center">16</td>
+<td align="center">10</td>
+</tr>
+<tr>
+<td>SET and SET OF</td>
+<td align="center">Constructed</td>
+<td align="center">17</td>
+<td align="center">11</td>
+</tr>
+<tr>
+<td>NumericString</td>
+<td align="center">Both</td>
+<td align="center">18</td>
+<td align="center">12</td>
+</tr>
+<tr>
+<td><a href="https://en.wikipedia.org/wiki/PrintableString" title="PrintableString">PrintableString</a></td>
+<td align="center">Both</td>
+<td align="center">19</td>
+<td align="center">13</td>
+</tr>
+<tr>
+<td><a href="https://en.wikipedia.org/wiki/ITU_T.61" title="ITU T.61">T61String</a></td>
+<td align="center">Both</td>
+<td align="center">20</td>
+<td align="center">14</td>
+</tr>
+<tr>
+<td>VideotexString</td>
+<td align="center">Both</td>
+<td align="center">21</td>
+<td align="center">15</td>
+</tr>
+<tr>
+<td><a href="https://en.wikipedia.org/wiki/IA5String" class="mw-redirect" title="IA5String">IA5String</a></td>
+<td align="center">Both</td>
+<td align="center">22</td>
+<td align="center">16</td>
+</tr>
+<tr>
+<td><a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time" title="Coordinated Universal Time">UTCTime</a></td>
+<td align="center">Both</td>
+<td align="center">23</td>
+<td align="center">17</td>
+</tr>
+<tr>
+<td><a href="https://en.wikipedia.org/wiki/GeneralizedTime" title="GeneralizedTime">GeneralizedTime</a></td>
+<td align="center">Both</td>
+<td align="center">24</td>
+<td align="center">18</td>
+</tr>
+<tr>
+<td>GraphicString</td>
+<td align="center">Both</td>
+<td align="center">25</td>
+<td align="center">19</td>
+</tr>
+<tr>
+<td>VisibleString</td>
+<td align="center">Both</td>
+<td align="center">26</td>
+<td align="center">1A</td>
+</tr>
+<tr>
+<td>GeneralString</td>
+<td align="center">Both</td>
+<td align="center">27</td>
+<td align="center">1B</td>
+</tr>
+<tr>
+<td><a href="https://en.wikipedia.org/wiki/Universal_Character_Set" class="mw-redirect" title="Universal Character Set">UniversalString</a></td>
+<td align="center">Both</td>
+<td align="center">28</td>
+<td align="center">1C</td>
+</tr>
+<tr>
+<td>CHARACTER STRING</td>
+<td align="center">Both</td>
+<td align="center">29</td>
+<td align="center">1D</td>
+</tr>
+<tr>
+<td>BMPString</td>
+<td align="center">Both</td>
+<td align="center">30</td>
+<td align="center">1E</td>
+</tr>
+</tbody></table>
+<h4><span class="mw-headline" id="Encoding">Encoding</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=5" title="Edit section: Encoding">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>The identifier octets encode the element type as an ASN.1 tag, 
+consisting of the class and number, and whether the contents octets 
+represent a constructed or primitive value. Note that some types can 
+have values with either primitive or constructed encodings. It is 
+encoded as 1 or more octets.</p>
+<table class="wikitable" style="text-align:center;">
+<tbody><tr>
+<th colspan="8">Octet 1</th>
+<th colspan="8" style="border-left: solid #aaa 2px">Octet 2 onwards</th>
+</tr>
+<tr>
+<th>8</th>
+<th>7</th>
+<th>6</th>
+<th>5</th>
+<th>4</th>
+<th>3</th>
+<th>2</th>
+<th>1</th>
+<th style="border-left: solid #aaa 2px">8</th>
+<th>7</th>
+<th>6</th>
+<th>5</th>
+<th>4</th>
+<th>3</th>
+<th>2</th>
+<th>1</th>
+</tr>
+<tr>
+<td rowspan="2" colspan="2">Tag class</td>
+<td rowspan="2">P/C</td>
+<td colspan="5" style="border-right: solid #aaa 2px">Tag number (0–30)</td>
+<td colspan="8" data-sort-value="" style="background: #ececec; color: #2C2C2C; vertical-align: middle; font-size: smaller; text-align: center;" class="table-na">N/A</td>
+</tr>
+<tr>
+<td colspan="5">31</td>
+<td style="border-left: solid #aaa 2px">More</td>
+<td colspan="7">Tag number</td>
+</tr>
+</tbody></table>
+<p>In the initial octet, bit 6 encodes whether the type is primitive or 
+constructed, bit 7–8 encode the class of the type, and bits 1–5 encode 
+the tag number. The following values are possible:</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Class</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>Universal</td>
+<td>0</td>
+<td>The type is native to ASN.1</td>
+</tr>
+<tr>
+<td>Application</td>
+<td>1</td>
+<td>The type is only valid for one specific application</td>
+</tr>
+<tr>
+<td>Context-specific</td>
+<td>2</td>
+<td>Meaning of this type depends on the context (such as within a sequence, set or choice)</td>
+</tr>
+<tr>
+<td>Private</td>
+<td>3</td>
+<td>Defined in private specifications</td>
+</tr>
+</tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>P/C</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>Primitive (P)</td>
+<td>0</td>
+<td>The contents octets directly encode the element value.</td>
+</tr>
+<tr>
+<td>Constructed (C)</td>
+<td>1</td>
+<td>The contents octets contain 0, 1, or more element encodings.</td>
+</tr>
+</tbody></table>
+<h4><span class="mw-headline" id="Long_form">Long form</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=6" title="Edit section: Long form">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>Where the identifier is not universal, its tag number may be too 
+large for the 5-bit tag field, so it is encoded in further octets.</p>
+<p>The initial octet encodes the class and primitive/constructed as 
+before, and bits 1–5 are 1. The tag number is encoded in the following 
+octets, where bit 8 of each is 1 if there are more octets, and bits 1–7 
+encode the tag number. The tag number bits combined, big-endian, encode 
+the tag number. The least number of following octets should be encoded; 
+that is, bits 1–7 should not all be 0 in the first following octet.</p>
+<h3><span class="mw-headline" id="Length_octets">Length octets</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=7" title="Edit section: Length octets">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>There are two forms of the length octets: The definite form and the indefinite form.</p>
+<table class="wikitable">
+<caption>First length octet</caption>
+<tbody><tr>
+<th rowspan="2">Form</th>
+<th colspan="8">Bits</th>
+</tr>
+<tr>
+<th>8</th>
+<th>7</th>
+<th>6</th>
+<th>5</th>
+<th>4</th>
+<th>3</th>
+<th>2</th>
+<th>1</th>
+</tr>
+<tr>
+<td>Definite, short</td>
+<td>0</td>
+<td colspan="7">Length (0–127)</td>
+</tr>
+<tr>
+<td>Indefinite</td>
+<td>1</td>
+<td colspan="7">0</td>
+</tr>
+<tr>
+<td>Definite, long</td>
+<td>1</td>
+<td colspan="7">Number of following octets (1–126)</td>
+</tr>
+<tr>
+<td>Reserved</td>
+<td>1</td>
+<td colspan="7">127</td>
+</tr>
+</tbody></table>
+<h4><span class="mw-headline" id="Definite_form">Definite form</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=8" title="Edit section: Definite form">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>This encodes the number of content octets and is always used if the 
+type is primitive or constructed and data are immediately available. 
+There is a short form and a long form, which can encode different ranges
+ of lengths. Numeric data is encoded as unsigned integers with the least
+ significant bit always first (to the right).</p>
+<p>The <b>short form</b> consists of a single octet in which bit 8 is 0, and bits 1–7 encode the length (which may be 0) as a number of octets.</p>
+<p>The <b>long form</b> consist of 1 initial octet followed by 1 or more
+ subsequent octets, containing the length. In the initial octet, bit 8 
+is 1, and bits 1–7 (excluding the values 0 and 127) encode the number of
+ octets that follow.<sup id="cite_ref-X.690_1-1" class="reference"><a href="#cite_note-X.690-1">[1]</a></sup> The following octets encode, as big-endian, the length (which may be 0) as a number of octets.</p>
+<table class="wikitable" style="text-align:center;">
+<caption>Long form example, length 435</caption>
+<tbody><tr>
+<th colspan="8">Octet 1</th>
+<th colspan="8" style="border-left:solid 2px #aaa;">Octet 2</th>
+<th colspan="8" style="border-left:solid 2px #aaa;">Octet 3</th>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td style="border-left:solid 2px #aaa;">0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td style="border-left:solid 2px #aaa;">1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Long form</td>
+<td colspan="7">2 length octets</td>
+<td colspan="16" style="border-left:solid 2px #aaa;">435 content octets</td>
+</tr>
+</tbody></table>
+<h4><span class="mw-headline" id="Indefinite_form">Indefinite form</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=9" title="Edit section: Indefinite form">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>This does not encode the length at all, but that the content octets 
+finish at marker octets. This applies to constructed types and is 
+typically used if the content is not immediately available at encoding 
+time.</p>
+<p>It consists of single octet, in which bit 8 is 1, and bits 1–7 are 0. Then, 2 <a href="#Identifier_octets">end-of-contents octets</a> must terminate the content octets.</p>
+<h3><span class="mw-headline" id="Contents_octets">Contents octets</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=10" title="Edit section: Contents octets">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The contents octets encode the element data value.<sup id="cite_ref-X.690_1-2" class="reference"><a href="#cite_note-X.690-1">[1]</a></sup></p>
+<p>Note that there may be no contents octets (hence, the element has a 
+length of 0) if only the existence of the ASN.1 object, or its 
+emptiness, is to be noted. For example, this is the case for an ASN.1 
+NULL value.</p>
+<h2><span class="mw-headline" id="CER_encoding">CER encoding</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=11" title="Edit section: CER encoding">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>CER (Canonical Encoding Rules) is a restricted variant of <a href="#BER_encoding">BER</a> for producing unequivocal transfer syntax for data structures described by <a href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One" title="Abstract Syntax Notation One">ASN.1</a>. Whereas BER gives choices as to how data values may be encoded, CER (together with <a href="#DER_encoding">DER</a>)
+ selects just one encoding from those allowed by the basic encoding 
+rules, eliminating rest of the options. CER is useful when the encodings
+ must be preserved; e.g., in security exchanges.</p>
+<h2><span class="mw-headline" id="DER_encoding">DER encoding</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=12" title="Edit section: DER encoding">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>DER (Distinguished Encoding Rules) is a restricted variant of <a href="#BER_encoding">BER</a> for producing unequivocal transfer syntax for data structures described by <a href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One" title="Abstract Syntax Notation One">ASN.1</a>. Like <a href="#CER_encoding">CER</a>, DER encodings are valid BER encodings. DER is the same thing as BER with all but one sender's options removed.</p>
+<p>DER is a subset of BER providing for exactly one way to encode an 
+ASN.1 value. DER is intended for situations when a unique encoding is 
+needed, such as in <a href="https://en.wikipedia.org/wiki/Cryptography" title="Cryptography">cryptography</a>,
+ and ensures that a data structure that needs to be digitally signed 
+produces a unique serialized representation. DER can be considered a <a href="https://en.wikipedia.org/wiki/Canonical_form" title="Canonical form">canonical form</a> of BER. For example, in BER a <a href="https://en.wikipedia.org/wiki/Boolean_data_type" title="Boolean data type">Boolean</a>
+ value of true can be encoded as any of 255 non-zero byte values, while 
+in DER there is one way to encode a boolean value of true.</p>
+<p>The most significant DER encoding constraints are:</p>
+<ol>
+<li>Length encoding must use the definite form
+<ul>
+<li>Additionally, the shortest possible length encoding must be used</li>
+</ul>
+</li>
+<li>Bitstring, octetstring, and restricted character strings must use the primitive encoding</li>
+<li>Elements of a Set are encoded in sorted order, based on their tag value</li>
+</ol>
+<p>DER is widely used for digital certificates such as <a href="https://en.wikipedia.org/wiki/X.509" title="X.509">X.509</a>.</p>
+<h2><span id="BER.2C_CER_and_DER_compared"></span><span class="mw-headline" id="BER,_CER_and_DER_compared">BER, CER and DER compared</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=13" title="Edit section: BER, CER and DER compared">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>The key difference between the BER format and the CER or DER formats 
+is the flexibility provided by the Basic Encoding Rules. BER, as 
+explained above, is the basic set of encoding rules given by ITU X.690 
+for the transfer of ASN.1 data structures. It gives senders clear rules 
+for encoding data structures they want to send, but also leaves senders 
+some encoding choices. As stated in the X.690 standard, "Alternative 
+encodings are permitted by the basic encoding rules as a sender's 
+option. Receivers who claim conformance to the basic encoding rules 
+shall support all alternatives".<sup id="cite_ref-X.690_1-3" class="reference"><a href="#cite_note-X.690-1">[1]</a></sup></p>
+<p>A receiver must be prepared to accept all legal encodings in order to
+ legitimately claim BER-compliance. By contrast, both CER and DER 
+restrict the available length specifications to a single option. As 
+such, CER and DER are restricted forms of BER and serve to disambiguate 
+the BER standard.</p>
+<p>CER and DER differ in the set of restrictions that they place on the 
+sender. The basic difference between CER and DER is that DER uses 
+definitive length form and CER uses indefinite length form in some 
+precisely defined cases. That is, DER always has leading length 
+information, while CER uses end-of-contents octets instead of providing 
+the length of the encoded data. Because of this, CER requires less 
+metadata for large encoded values, while DER does it for small ones.</p>
+<p>In order to facilitate a choice between encoding rules, the X.690 standards document provides the following guidance:</p>
+<blockquote class="templatequote">
+<p>The distinguished encoding rules is more suitable than the canonical 
+encoding rules if the encoded value is small enough to fit into the 
+available memory and there is a need to rapidly skip over some nested 
+values. The canonical encoding rules is more suitable than the 
+distinguished encoding rules if there is a need to encode values that 
+are so large that they cannot readily fit into the available memory or 
+it is necessary to encode and transmit a part of a value before the 
+entire value is available. The basic encoding rules is more suitable 
+than the canonical or distinguished encoding rules if the encoding 
+contains a set value or set-of value and there is no need for the 
+restrictions that the canonical and distinguished encoding rules impose.</p>
+</blockquote>
+<h3><span class="mw-headline" id="Criticisms_of_BER_encoding">Criticisms of BER encoding</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=14" title="Edit section: Criticisms of BER encoding">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>There is a common perception of BER as being "inefficient" compared 
+to alternative encoding rules. It has been argued by some that this 
+perception is primarily due to poor implementations, not necessarily any
+ inherent flaw in the encoding rules.<sup id="cite_ref-2" class="reference"><a href="#cite_note-2">[2]</a></sup>
+ These implementations rely on the flexibility that BER provides to use 
+encoding logic that is easier to implement, but results in a larger 
+encoded data stream than necessary. Whether this inefficiency is reality
+ or perception, it has led to a number of alternative encoding schemes, 
+such as the <a href="https://en.wikipedia.org/wiki/Packed_Encoding_Rules" class="mw-redirect" title="Packed Encoding Rules">Packed Encoding Rules</a>, which attempt to improve on BER performance and size.</p>
+<p>Other alternative formatting rules, which still provide the 
+flexibility of BER but use alternative encoding schemes, are also being 
+developed. The most popular of these are XML-based alternatives, such as
+ the <a href="https://en.wikipedia.org/wiki/XML_Encoding_Rules" class="mw-redirect" title="XML Encoding Rules">XML Encoding Rules</a> and ASN.1 <a href="https://en.wikipedia.org/wiki/SOAP" title="SOAP">SOAP</a>.<sup id="cite_ref-3" class="reference"><a href="#cite_note-3">[3]</a></sup> In addition, there is a standard mapping to convert an XML Schema to an ASN.1 schema, which can then be encoded using BER.<sup id="cite_ref-4" class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<h2><span class="mw-headline" id="Usage">Usage</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=15" title="Edit section: Usage">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Despite its perceived problems, BER is a popular format for 
+transmitting data, particularly in systems with different native data 
+encodings.</p>
+<ul>
+<li>The <a href="https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol" title="Simple Network Management Protocol">SNMP</a> and <a href="https://en.wikipedia.org/wiki/LDAP" class="mw-redirect" title="LDAP">LDAP</a> protocols specify ASN.1 with BER as their required encoding scheme.</li>
+<li>The <a href="https://en.wikipedia.org/wiki/EMV" title="EMV">EMV</a> standard for credit and debit cards uses BER to encode data onto the card</li>
+<li>The digital signature standard <a href="https://en.wikipedia.org/wiki/PKCS" title="PKCS">PKCS</a> #7 also specifies ASN.1 with BER to encode encrypted messages and their <a href="https://en.wikipedia.org/wiki/Digital_signature" title="Digital signature">digital signature</a> or <a href="https://en.wikipedia.org/wiki/Digital_envelope" class="mw-redirect" title="Digital envelope">digital envelope</a>.</li>
+<li>Many telecommunication systems, such as <a href="https://en.wikipedia.org/wiki/ISDN" class="mw-redirect" title="ISDN">ISDN</a>,
+ toll-free call routing, and most cellular phone services use ASN.1 with
+ BER to some degree for transmitting control messages over the network.</li>
+<li>GSM TAP (Transferred Account Procedures), <a href="https://en.wikipedia.org/w/index.php?title=NRTRDE&amp;action=edit&amp;redlink=1" class="new" title="NRTRDE (page does not exist)">NRTRDE</a> (Near Real Time Roaming Data Exchange) files are encoded using BER. <a rel="nofollow" class="external autonumber" href="http://www.gsmworld.com/using/billing/potential.shtml">[1]</a></li>
+</ul>
+<p>By comparison, the more definite DER encoding is widely used to transfer digital certificates such as <a href="https://en.wikipedia.org/wiki/X.509" title="X.509">X.509</a>.</p>
+<h2><span class="mw-headline" id="See_also">See also</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=16" title="Edit section: See also">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Kerberos_(protocol)" title="Kerberos (protocol)">Kerberos</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Packed_Encoding_Rules" class="mw-redirect" title="Packed Encoding Rules">Packed Encoding Rules</a> (PER, X.691)</li>
+<li>Structured Data eXchange Format (<a href="https://en.wikipedia.org/wiki/SDXF" title="SDXF">SDXF</a>)</li>
+<li><a href="https://en.wikipedia.org/wiki/Serialization" title="Serialization">Serialization</a></li>
+</ul>
+<h2><span class="mw-headline" id="References">References</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=17" title="Edit section: References">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p><span class="citation foldoc"><small>This article is based on material taken from the <i><a href="https://en.wikipedia.org/wiki/Free_On-line_Dictionary_of_Computing" title="Free On-line Dictionary of Computing">Free On-line Dictionary of Computing</a></i>  prior to 1 November 2008 and incorporated under the "relicensing" terms of the <a href="https://en.wikipedia.org/wiki/GNU_Free_Documentation_License" title="GNU Free Documentation License">GFDL</a>, version 1.3 or later.</small></span></p>
+<div class="reflist" style="list-style-type: decimal;">
+<div class="mw-references-wrap">
+<ol class="references">
+<li id="cite_note-X.690-1"><span class="mw-cite-backlink">^ <a href="#cite_ref-X.690_1-0"><span class="cite-accessibility-label">Jump up to: </span><sup><i><b>a</b></i></sup></a> <a href="#cite_ref-X.690_1-1"><sup><i><b>b</b></i></sup></a> <a href="#cite_ref-X.690_1-2"><sup><i><b>c</b></i></sup></a> <a href="#cite_ref-X.690_1-3"><sup><i><b>d</b></i></sup></a></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://www.itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf">Information
+ technology – ASN.1 encoding rules: Specification of Basic Encoding 
+Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding 
+Rules (DER)</a>, ITU-T X6.90, 07/2002</span></li>
+<li id="cite_note-2"><span class="mw-cite-backlink"><b><a href="#cite_ref-2"><span class="cite-accessibility-label">Jump up </span>^</a></b></span> <span class="reference-text">Lin,
+ Huai-An. “Estimation of the Optimal Performance of ASN.1/BER Transfer 
+Syntax”. ACM Computer Communication Review. July 93, 45 - 58.</span></li>
+<li id="cite_note-3"><span class="mw-cite-backlink"><b><a href="#cite_ref-3"><span class="cite-accessibility-label">Jump up </span>^</a></b></span> <span class="reference-text">ITU-T Rec. X.892, ISO/IEC 24824-2</span></li>
+<li id="cite_note-4"><span class="mw-cite-backlink"><b><a href="#cite_ref-4"><span class="cite-accessibility-label">Jump up </span>^</a></b></span> <span class="reference-text">ITU-T X.694, ISO/IEC ISO/IEC 8825-5</span></li>
+</ol>
+</div>
+</div>
+<h2><span class="mw-headline" id="External_links">External links</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit&amp;section=18" title="Edit section: External links">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul>
+<li><a rel="nofollow" class="external text" href="ftp://ftp.rsasecurity.com/pub/pkcs/ascii/layman.asc">RSA's 'A Layman's Guide to a Subset of ASN.1, BER, and DER '</a></li>
+<li><a rel="nofollow" class="external text" href="https://www.itu.int/rec/T-REC-X.690/">ITU-T X.690, ISO/IEC 8825-1</a></li>
+<li><a rel="nofollow" class="external text" href="https://www.itu.int/rec/T-REC-X.892/">ITU-T X.892, ISO/IEC 24824-2</a></li>
+<li><a rel="nofollow" class="external text" href="https://www.itu.int/rec/T-REC-X.694/">ITU-T X.694, ISO/IEC ISO/IEC 8825-5</a></li>
+<li><a rel="nofollow" class="external text" href="http://www.rsasecurity.com/rsalabs/node.asp?id=2129">PKCS #7</a></li>
+<li><a rel="nofollow" class="external text" href="https://www.openmuc.org/asn1/">jASN1</a> Java ASN.1 BER encoding/decoding library at openmuc.org, LGPL-licensed</li>
+<li><a rel="nofollow" class="external text" href="https://github.com/FGrosse/PHPASN1">PHPASN1</a> PHP ASN.1 BER encoding/decoding library at github, GPL-licensed</li>
+<li><a rel="nofollow" class="external text" href="https://github.com/GlobalSign/ASN1.js">ASN1js</a> JavaScript ASN.1 BER encoding/decoding library at github, GPL-licensed</li>
+<li><a rel="nofollow" class="external text" href="http://www.cs.auckland.ac.nz/~pgut001/pubs/x509guide.txt">Peter Gutmann's 'X.509 Style Guide'</a></li>
+</ul>
+
+
+<!-- 
+NewPP limit report
+Parsed by mw1325
+Cached time: 20180611231933
+Cache expiry: 1900800
+Dynamic content: false
+CPU time usage: 0.060 seconds
+Real time usage: 0.074 seconds
+Preprocessor visited node count: 300/1000000
+Preprocessor generated node count: 0/1500000
+Post‐expand include size: 2047/2097152 bytes
+Template argument size: 838/2097152 bytes
+Highest expansion depth: 7/40
+Expensive parser function count: 0/500
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 1982/5000000 bytes
+Number of Wikibase entities loaded: 0/400
+Lua time usage: 0.004/10.000 seconds
+Lua memory usage: 522 KB/50 MB
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%   41.418      1 -total
+ 70.18%   29.068      1 Template:Reflist
+  7.41%    3.069      1 Template:Quote
+  6.31%    2.615      3 Template:N/a
+  5.31%    2.201      1 Template:FOLDOC
+  5.19%    2.148      1 Template:Main_other
+-->
+</div>
+<!-- Saved in parser cache with key enwiki:pcache:idhash:29948096-0!canonical and timestamp 20180611231933 and revision id 820700186
+ -->
+<noscript><img src="//en.wikipedia.org/wiki/Special:CentralAutoLogin/start?type=1x1" alt="" title="" width="1" height="1" style="border: none; position: absolute;" /></noscript></div>					<div class="printfooter">
+						Retrieved from "<a dir="ltr" href="https://en.wikipedia.org/w/index.php?title=X.690&amp;oldid=820700186">https://en.wikipedia.org/w/index.php?title=X.690&amp;oldid=820700186</a>"					</div>
+				<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="https://en.wikipedia.org/wiki/Help:Category" title="Help:Category">Categories</a>: <ul><li><a href="https://en.wikipedia.org/wiki/Category:ITU-T_recommendations" title="Category:ITU-T recommendations">ITU-T recommendations</a></li><li><a href="https://en.wikipedia.org/wiki/Category:Data_serialization_formats" title="Category:Data serialization formats">Data serialization formats</a></li><li><a href="https://en.wikipedia.org/wiki/Category:Encodings" title="Category:Encodings">Encodings</a></li><li><a href="https://en.wikipedia.org/wiki/Category:ASN.1" title="Category:ASN.1">ASN.1</a></li></ul></div></div>				<div class="visualClear"></div>
+							</div>
+		</div>
+		<div id="mw-navigation">
+			<h2>Navigation menu</h2>
+			<div id="mw-head">
+									<div id="p-personal" role="navigation" class="" aria-labelledby="p-personal-label">
+						<h3 id="p-personal-label">Personal tools</h3>
+						<ul>
+							<li id="pt-anonuserpage">Not logged in</li><li id="pt-anontalk"><a href="https://en.wikipedia.org/wiki/Special:MyTalk" title="Discussion about edits from this IP address [Alt+Umschalt+n]" accesskey="n">Talk</a></li><li id="pt-anoncontribs"><a href="https://en.wikipedia.org/wiki/Special:MyContributions" title="A list of edits made from this IP address [Alt+Umschalt+y]" accesskey="y">Contributions</a></li><li id="pt-createaccount"><a href="https://en.wikipedia.org/w/index.php?title=Special:CreateAccount&amp;returnto=X.690&amp;returntoquery=oldid%3D820700186" title="You are encouraged to create an account and log in; however, it is not mandatory">Create account</a></li><li id="pt-login"><a href="https://en.wikipedia.org/w/index.php?title=Special:UserLogin&amp;returnto=X.690&amp;returntoquery=oldid%3D820700186" title="You're encouraged to log in; however, it's not mandatory. [Alt+Umschalt+o]" accesskey="o">Log in</a></li>						</ul>
+					</div>
+									<div id="left-navigation">
+										<div id="p-namespaces" role="navigation" class="vectorTabs" aria-labelledby="p-namespaces-label">
+						<h3 id="p-namespaces-label">Namespaces</h3>
+						<ul>
+							<li id="ca-nstab-main" class="selected"><span><a href="https://en.wikipedia.org/wiki/X.690" title="View the content page [Alt+Umschalt+c]" accesskey="c">Article</a></span></li><li id="ca-talk"><span><a href="https://en.wikipedia.org/wiki/Talk:X.690" rel="discussion" title="Discussion about the content page [Alt+Umschalt+t]" accesskey="t">Talk</a></span></li>						</ul>
+					</div>
+										<div id="p-variants" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-variants-label">
+												<input class="vectorMenuCheckbox" aria-labelledby="p-variants-label" type="checkbox">
+						<h3 id="p-variants-label">
+							<span>Variants</span>
+						</h3>
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+									</div>
+				<div id="right-navigation">
+										<div id="p-views" role="navigation" class="vectorTabs" aria-labelledby="p-views-label">
+						<h3 id="p-views-label">Views</h3>
+						<ul>
+							<li id="ca-view" class="collapsible selected"><span><a href="https://en.wikipedia.org/wiki/X.690">Read</a></span></li><li id="ca-edit" class="collapsible"><span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=edit" title="Edit this page [Alt+Umschalt+e]" accesskey="e">Edit</a></span></li><li id="ca-history" class="collapsible"><span><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=history" title="Past revisions of this page [Alt+Umschalt+h]" accesskey="h">View history</a></span></li>						</ul>
+					</div>
+										<div id="p-cactions" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-cactions-label" style="">
+						<input class="vectorMenuCheckbox" aria-labelledby="p-cactions-label" type="checkbox">
+						<h3 id="p-cactions-label"><span>More</span></h3>
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+										<div id="p-search" role="search">
+						<h3>
+							<label for="searchInput">Search</label>
+						</h3>
+						<form action="/w/index.php" id="searchform">
+							<div id="simpleSearch">
+								<input name="search" placeholder="Search Wikipedia" title="Search Wikipedia [Alt+Umschalt+f]" accesskey="f" id="searchInput" tabindex="1" autocomplete="off" type="search"><input value="Special:Search" name="title" type="hidden"><input name="go" value="Go" title="Go to a page with this exact name if it exists" id="searchButton" class="searchButton" type="submit">							</div>
+						</form>
+					</div>
+									</div>
+			</div>
+			<div id="mw-panel">
+				<div id="p-logo" role="banner"><a class="mw-wiki-logo" href="https://en.wikipedia.org/wiki/Main_Page" title="Visit the main page"></a></div>
+						<div class="portal" role="navigation" id="p-navigation" aria-labelledby="p-navigation-label">
+			<h3 id="p-navigation-label">Navigation</h3>
+			<div class="body">
+								<ul>
+					<li id="n-mainpage-description"><a href="https://en.wikipedia.org/wiki/Main_Page" title="Visit the main page [Alt+Umschalt+z]" accesskey="z">Main page</a></li><li id="n-contents"><a href="https://en.wikipedia.org/wiki/Portal:Contents" title="Guides to browsing Wikipedia">Contents</a></li><li id="n-featuredcontent"><a href="https://en.wikipedia.org/wiki/Portal:Featured_content" title="Featured content – the best of Wikipedia">Featured content</a></li><li id="n-currentevents"><a href="https://en.wikipedia.org/wiki/Portal:Current_events" title="Find background information on current events">Current events</a></li><li id="n-randompage"><a href="https://en.wikipedia.org/wiki/Special:Random" title="Load a random article [Alt+Umschalt+x]" accesskey="x">Random article</a></li><li id="n-sitesupport"><a href="https://donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&amp;utm_medium=sidebar&amp;utm_campaign=C13_en.wikipedia.org&amp;uselang=en" title="Support us">Donate to Wikipedia</a></li><li id="n-shoplink"><a href="https://shop.wikimedia.org/" title="Visit the Wikipedia store">Wikipedia store</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-interaction" aria-labelledby="p-interaction-label">
+			<h3 id="p-interaction-label">Interaction</h3>
+			<div class="body">
+								<ul>
+					<li id="n-help"><a href="https://en.wikipedia.org/wiki/Help:Contents" title="Guidance on how to use and edit Wikipedia">Help</a></li><li id="n-aboutsite"><a href="https://en.wikipedia.org/wiki/Wikipedia:About" title="Find out about Wikipedia">About Wikipedia</a></li><li id="n-portal"><a href="https://en.wikipedia.org/wiki/Wikipedia:Community_portal" title="About the project, what you can do, where to find things">Community portal</a></li><li id="n-recentchanges"><a href="https://en.wikipedia.org/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [Alt+Umschalt+r]" accesskey="r">Recent changes</a></li><li id="n-contactpage"><a href="https://en.wikipedia.org/wiki/Wikipedia:Contact_us" title="How to contact Wikipedia">Contact page</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-tb" aria-labelledby="p-tb-label">
+			<h3 id="p-tb-label">Tools</h3>
+			<div class="body">
+								<ul>
+					<li id="t-whatlinkshere"><a href="https://en.wikipedia.org/wiki/Special:WhatLinksHere/X.690" title="List of all English Wikipedia pages containing links to this page [Alt+Umschalt+j]" accesskey="j">What links here</a></li><li id="t-recentchangeslinked"><a href="https://en.wikipedia.org/wiki/Special:RecentChangesLinked/X.690" rel="nofollow" title="Recent changes in pages linked from this page [Alt+Umschalt+k]" accesskey="k">Related changes</a></li><li id="t-upload"><a href="https://en.wikipedia.org/wiki/Wikipedia:File_Upload_Wizard" title="Upload files [Alt+Umschalt+u]" accesskey="u">Upload file</a></li><li id="t-specialpages"><a href="https://en.wikipedia.org/wiki/Special:SpecialPages" title="A list of all special pages [Alt+Umschalt+q]" accesskey="q">Special pages</a></li><li id="t-permalink"><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;oldid=820700186" title="Permanent link to this revision of the page">Permanent link</a></li><li id="t-info"><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;action=info" title="More information about this page">Page information</a></li><li id="t-wikibase"><a href="https://www.wikidata.org/wiki/Special:EntityPage/Q797714" title="Link to connected data repository item [Alt+Umschalt+g]" accesskey="g">Wikidata item</a></li><li id="t-cite"><a href="https://en.wikipedia.org/w/index.php?title=Special:CiteThisPage&amp;page=X.690&amp;id=820700186" title="Information on how to cite this page">Cite this page</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-coll-print_export" aria-labelledby="p-coll-print_export-label">
+			<h3 id="p-coll-print_export-label">Print/export</h3>
+			<div class="body">
+								<ul>
+					<li id="coll-create_a_book"><a href="https://en.wikipedia.org/w/index.php?title=Special:Book&amp;bookcmd=book_creator&amp;referer=X.690">Create a book</a></li><li id="coll-download-as-rdf2latex"><a href="https://en.wikipedia.org/w/index.php?title=Special:ElectronPdf&amp;page=X.690&amp;action=show-download-screen">Download as PDF</a></li><li id="t-print"><a href="https://en.wikipedia.org/w/index.php?title=X.690&amp;printable=yes" title="Printable version of this page [Alt+Umschalt+p]" accesskey="p">Printable version</a></li>				</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-lang" aria-labelledby="p-lang-label"><button class="uls-settings-trigger" title="Language settings"></button>
+			<h3 id="p-lang-label">Languages</h3>
+			<div class="body">
+								<ul>
+					<li class="interlanguage-link interwiki-fr"><a href="https://fr.wikipedia.org/wiki/Distinguished_Encoding_Rules" title="Distinguished Encoding Rules – French" hreflang="fr" class="interlanguage-link-target" lang="fr">Français</a></li><li class="interlanguage-link interwiki-ru"><a href="https://ru.wikipedia.org/wiki/X.690" title="X.690 – Russian" hreflang="ru" class="interlanguage-link-target" lang="ru">Русский</a></li>				</ul>
+				<div class="after-portlet after-portlet-lang"><span class="wb-langlinks-edit wb-langlinks-link"><a href="https://www.wikidata.org/wiki/Special:EntityPage/Q797714#sitelinks-wikipedia" title="Edit interlanguage links" class="wbc-editpage">Edit links</a></span></div>			</div>
+		</div>
+				</div>
+		</div>
+				<div id="footer" role="contentinfo">
+						<ul id="footer-info">
+								<li id="footer-info-lastmod"> This page was last edited on 16 January 2018, at 03:19<span class="anonymous-show">&nbsp;(UTC)</span>.</li>
+								<li id="footer-info-copyright">Text is available under the <a rel="license" href="https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License">Creative Commons Attribution-ShareAlike License</a><a rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/" style="display:none;"></a>;
+additional terms may apply.  By using this site, you agree to the <a href="https://wikimediafoundation.org/wiki/Terms_of_Use">Terms of Use</a> and <a href="https://wikimediafoundation.org/wiki/Privacy_policy">Privacy Policy</a>. Wikipedia® is a registered trademark of the <a href="https://www.wikimediafoundation.org/">Wikimedia Foundation, Inc.</a>, a non-profit organization.</li>
+							</ul>
+						<ul id="footer-places">
+								<li id="footer-places-privacy"><a href="https://wikimediafoundation.org/wiki/Privacy_policy" class="extiw" title="wmf:Privacy policy">Privacy policy</a></li>
+								<li id="footer-places-about"><a href="https://en.wikipedia.org/wiki/Wikipedia:About" title="Wikipedia:About">About Wikipedia</a></li>
+								<li id="footer-places-disclaimer"><a href="https://en.wikipedia.org/wiki/Wikipedia:General_disclaimer" title="Wikipedia:General disclaimer">Disclaimers</a></li>
+								<li id="footer-places-contact"><a href="https://en.wikipedia.org/wiki/Wikipedia:Contact_us">Contact Wikipedia</a></li>
+								<li id="footer-places-developers"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/How_to_contribute">Developers</a></li>
+								<li id="footer-places-cookiestatement"><a href="https://wikimediafoundation.org/wiki/Cookie_statement">Cookie statement</a></li>
+								<li id="footer-places-mobileview"><a href="https://en.m.wikipedia.org/w/index.php?title=X.690&amp;oldid=820700186&amp;mobileaction=toggle_view_mobile" class="noprint stopMobileRedirectToggle">Mobile view</a></li>
+							</ul>
+										<ul id="footer-icons" class="noprint">
+										<li id="footer-copyrightico">
+						<a href="https://wikimediafoundation.org/"><img src="Wik18d-Dateien/wikimedia-button.png" srcset="/static/images/wikimedia-button-1.5x.png 1.5x, /static/images/wikimedia-button-2x.png 2x" alt="Wikimedia Foundation" width="88" height="31"></a>					</li>
+										<li id="footer-poweredbyico">
+						<a href="https://www.mediawiki.org/"><img src="Wik18d-Dateien/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="/static/images/poweredby_mediawiki_132x47.png 1.5x, /static/images/poweredby_mediawiki_176x62.png 2x" width="88" height="31"></a>					</li>
+									</ul>
+						<div style="clear: both;"></div>
+		</div>
+		
+<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"limitreport":{"cputime":"0.060","walltime":"0.074","ppvisitednodes":{"value":300,"limit":1000000},"ppgeneratednodes":{"value":0,"limit":1500000},"postexpandincludesize":{"value":2047,"limit":2097152},"templateargumentsize":{"value":838,"limit":2097152},"expansiondepth":{"value":7,"limit":40},"expensivefunctioncount":{"value":0,"limit":500},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":1982,"limit":5000000},"entityaccesscount":{"value":0,"limit":400},"timingprofile":["100.00%   41.418      1 -total"," 70.18%   29.068      1 Template:Reflist","  7.41%    3.069      1 Template:Quote","  6.31%    2.615      3 Template:N/a","  5.31%    2.201      1 Template:FOLDOC","  5.19%    2.148      1 Template:Main_other"]},"scribunto":{"limitreport-timeusage":{"value":"0.004","limit":"10.000"},"limitreport-memusage":{"value":534835,"limit":52428800}},"cachereport":{"origin":"mw1325","timestamp":"20180611231933","ttl":1900800,"transientcontent":false}}});mw.config.set({"wgBackendResponseTime":131,"wgHostname":"mw1255"});});</script>
+	
+
+<div style="display: none; font-size: 13px;" class="suggestions"><div class="suggestions-results"></div><div class="suggestions-special"></div></div><a accesskey="v" href="https://en.wikipedia.org/wiki/X.690?action=edit" class="oo-ui-element-hidden"></a></body></html>

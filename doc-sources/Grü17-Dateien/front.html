@@ -1,0 +1,57 @@
+var head = document.getElementsByTagName('head')[0];
+
+/**
+ * Reload the go service with the consent parameter
+ */
+function reloadGo (consentStr) {
+
+    console.log('VM: ReloadGo with consentStr: <' + consentStr + '>');
+
+    // build new /go url
+    var goUrl = '//k.intellitxt.com/go/1/?ipid=28169';
+    goUrl += '&consentstr=' + consentStr;
+
+    var goScript = document.createElement('script');
+    goScript.src = goUrl;
+    head.appendChild(goScript);
+}
+
+function checkLocalEuconsent () {
+
+    var vmCookieName = 'euconsent';
+    var consentStr = '';
+    var name = vmCookieName + '=';
+
+    var decodedCookie;
+
+    try {
+        decodedCookie = decodeURIComponent(document.cookie);
+    } catch (err) {
+        if (err) {
+            console.log('VM: Error attempting to decode cookie: ' + document.cookie);
+        }
+    }
+
+    if (decodedCookie) {
+        var cookieArray = decodedCookie.split(';');
+        if (cookieArray && cookieArray.length) {
+
+            for (var cookieIdx = 0; cookieIdx < cookieArray.length; cookieIdx++) {
+
+                var cookie = cookieArray[cookieIdx];
+                cookie = cookie.trim();
+
+                if (cookie.indexOf(name) === 0) {
+                    consentStr = cookie.substring(name.length, cookie.length);
+                    break;
+                }
+            }
+        }
+    }
+
+    return consentStr;
+}
+
+var consentStr = checkLocalEuconsent();
+reloadGo(consentStr);
+

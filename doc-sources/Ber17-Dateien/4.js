@@ -1,0 +1,1 @@
+webpackJsonp([4],{446:function(t,e,i){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(t){t.style.width=t.getAttribute("width")+"px",t.style.height=t.getAttribute("height")+"px"}}});

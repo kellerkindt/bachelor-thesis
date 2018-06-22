@@ -1,0 +1,11 @@
+table.conf-list {
+    border-collapse: collapse;
+}
+
+table.conf-list td {
+    padding: 0.5em;
+}
+
+.conf-materials {
+    font-size: 75%;
+}

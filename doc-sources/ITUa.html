@@ -1,0 +1,1161 @@
+<!-- ITU template starts : language INdependent -->
+<!-- ITU template ends -->
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US"><head id="ctl00_Head1"><meta name="google-site-verification" content="F8qi7hvEFEFOIFmbgDrAZSdB_O-BAeeZIh7XZB9RlqU"><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10"><meta charset="utf-8"><meta name="GENERATOR" content="Microsoft SharePoint"><meta http-equiv="Content-type" content="text/html; charset=UTF-8"><meta http-equiv="Expires" content="0">
+		
+        <!-- ===== STARTER: Robots  ======================================================================================================= -->
+        
+		
+		<!-- ===== STARTER: Page Title loaded from page or page layout ==================================================================== -->
+		<title>
+	
+    Introduction to ASN.1​
+
+</title>
+		
+		<!-- ===== STARTER: SP Scripts and CSS  =========================================================================================== -->
+		<link id="CssRegistration1" rel="stylesheet" type="text/css" href="ITUa-Dateien/corev15.css">
+<link rel="stylesheet" type="text/css" href="ITUa-Dateien/itu-t.css">
+<script type="text/javascript" src="ITUa-Dateien/init.js"></script>
+<script type="text/javascript" src="ITUa-Dateien/ScriptResource.axd"></script>
+<script type="text/javascript" src="ITUa-Dateien/blank.js"></script>
+<script type="text/javascript" src="ITUa-Dateien/ScriptResource_002.axd"></script>
+<script type="text/javascript">RegisterSod("initstrings.js", "\u002f_layouts\u002f15\u002f1033\u002finitstrings.js?rev=pRgiaBWoVWlT3BVtOSGI3g\u00253D\u00253D");</script>
+<script type="text/javascript">RegisterSod("strings.js", "\u002f_layouts\u002f15\u002f1033\u002fstrings.js?rev=kHuug6I4CV98h72DIrODHA\u00253D\u00253D");RegisterSodDep("strings.js", "initstrings.js");</script>
+<script type="text/javascript">RegisterSod("sp.init.js", "\u002f_layouts\u002f15\u002fsp.init.js?rev=jvJC3Kl5gbORaLtf7kxULQ\u00253D\u00253D");</script>
+<script type="text/javascript">RegisterSod("sp.res.resx", "\u002f_layouts\u002f15\u002fScriptResx.ashx?culture=en\u00252Dus\u0026name=SP\u00252ERes\u0026rev=yNk\u00252FhRzgBn40LJVP\u00252BqfgdQ\u00253D\u00253D");</script>
+<script type="text/javascript">RegisterSod("sp.ui.dialog.js", "\u002f_layouts\u002f15\u002fsp.ui.dialog.js?rev=3Oh2QbaaiXSb7ldu2zd6QQ\u00253D\u00253D");RegisterSodDep("sp.ui.dialog.js", "sp.init.js");RegisterSodDep("sp.ui.dialog.js", "sp.res.resx");</script>
+<script type="text/javascript">RegisterSod("core.js", "\u002f_layouts\u002f15\u002fcore.js?rev=e414h9gggBxEMzL59lPyTQ\u00253D\u00253D");RegisterSodDep("core.js", "strings.js");</script>
+<script type="text/javascript">RegisterSod("menu.js", "\u002f_layouts\u002f15\u002fmenu.js?rev=cXv35JACAh0ZCqUwKU592w\u00253D\u00253D");</script>
+<script type="text/javascript">RegisterSod("mQuery.js", "\u002f_layouts\u002f15\u002fmquery.js?rev=VYAJYBo5H8I3gVSL3MzD6A\u00253D\u00253D");</script>
+<script type="text/javascript">RegisterSod("callout.js", "\u002f_layouts\u002f15\u002fcallout.js?rev=ryx2n4ePkYj1\u00252FALmcsXZfA\u00253D\u00253D");RegisterSodDep("callout.js", "strings.js");RegisterSodDep("callout.js", "mQuery.js");RegisterSodDep("callout.js", "core.js");</script>
+<script type="text/javascript">RegisterSod("clienttemplates.js", "\u002f_layouts\u002f15\u002fclienttemplates.js?rev=DtGR5acM6ziVIonSYHS\u00252Fqw\u00253D\u00253D");RegisterSodDep("clienttemplates.js", "initstrings.js");</script>
+<script type="text/javascript">RegisterSod("sharing.js", "\u002f_layouts\u002f15\u002fsharing.js?rev=XxxHIxIIc8BsW9ikVc6dgA\u00253D\u00253D");RegisterSodDep("sharing.js", "strings.js");RegisterSodDep("sharing.js", "mQuery.js");RegisterSodDep("sharing.js", "clienttemplates.js");RegisterSodDep("sharing.js", "core.js");</script>
+<script type="text/javascript">RegisterSod("suitelinks.js", "\u002f_layouts\u002f15\u002fsuitelinks.js?rev=REwVU5jSsadDdOZlCx4wpA\u00253D\u00253D");RegisterSodDep("suitelinks.js", "strings.js");RegisterSodDep("suitelinks.js", "core.js");</script>
+<script type="text/javascript">RegisterSod("sp.runtime.js", "\u002f_layouts\u002f15\u002fsp.runtime.js?rev=5f2WkYJoaxlIRdwUeg4WEg\u00253D\u00253D");RegisterSodDep("sp.runtime.js", "sp.res.resx");</script>
+<script type="text/javascript">RegisterSod("sp.js", "\u002f_layouts\u002f15\u002fsp.js?rev=oeV1SZzbj9Pm3IZCTXB9dg\u00253D\u00253D");RegisterSodDep("sp.js", "sp.runtime.js");RegisterSodDep("sp.js", "sp.ui.dialog.js");RegisterSodDep("sp.js", "sp.res.resx");</script>
+<script type="text/javascript">RegisterSod("userprofile", "\u002f_layouts\u002f15\u002fsp.userprofiles.js?rev=p5tCOm\u00252FlHUwcfll7W3pKNw\u00253D\u00253D");RegisterSodDep("userprofile", "sp.runtime.js");</script>
+<script type="text/javascript">RegisterSod("followingcommon.js", "\u002f_layouts\u002f15\u002ffollowingcommon.js?rev=jWqEDmcjCSPmnQw2ZIfItQ\u00253D\u00253D");RegisterSodDep("followingcommon.js", "strings.js");RegisterSodDep("followingcommon.js", "sp.js");RegisterSodDep("followingcommon.js", "userprofile");RegisterSodDep("followingcommon.js", "core.js");RegisterSodDep("followingcommon.js", "mQuery.js");</script>
+<script type="text/javascript">RegisterSod("profilebrowserscriptres.resx", "\u002f_layouts\u002f15\u002fScriptResx.ashx?culture=en\u00252Dus\u0026name=ProfileBrowserScriptRes\u0026rev=J5HzNnB\u00252FO1Id\u00252FGI18rpRcw\u00253D\u00253D");</script>
+<script type="text/javascript">RegisterSod("sp.ui.mysitecommon.js", "\u002f_layouts\u002f15\u002fsp.ui.mysitecommon.js?rev=Ua8qmZSU9nyf53S7PEyJwQ\u00253D\u00253D");RegisterSodDep("sp.ui.mysitecommon.js", "sp.init.js");RegisterSodDep("sp.ui.mysitecommon.js", "sp.runtime.js");RegisterSodDep("sp.ui.mysitecommon.js", "userprofile");RegisterSodDep("sp.ui.mysitecommon.js", "profilebrowserscriptres.resx");</script>
+<script type="text/javascript">RegisterSod("browserScript", "\u002f_layouts\u002f15\u002fie55up.js?rev=0R4dbpInVlmjoVSw2Gglmw\u00253D\u00253D");RegisterSodDep("browserScript", "strings.js");</script>
+<script type="text/javascript">RegisterSod("inplview", "\u002f_layouts\u002f15\u002finplview.js?rev=gj\u00252BiqPqpNPU131h9hI01nA\u00253D\u00253D");RegisterSodDep("inplview", "strings.js");RegisterSodDep("inplview", "core.js");RegisterSodDep("inplview", "sp.js");</script>
+<link type="text/xml" rel="alternate" href="https://www.itu.int/en/ITU-T/asn1/_vti_bin/spsdisco.aspx">
+	
+		<!-- ===== STARTER: Core SharePoint CSS =========================================================================================== -->
+		
+
+<!-- ITU template starts : language INdependent -->
+<link rel="shortcut icon" type="image/x-icon" href="https://www.itu.int/PublishingImages/masterpage/logos/itu-favicon.ico"><link rel="apple-touch-icon" href="https://www.itu.int/PublishingImages/masterpage/logos/apple-57.png"><link rel="apple-touch-icon" sizes="72x72" href="https://www.itu.int/PublishingImages/masterpage/logos/apple-72.png"><link rel="apple-touch-icon" sizes="114x114" href="https://www.itu.int/PublishingImages/masterpage/logos/apple-114.png"><link rel="stylesheet" href="ITUa-Dateien/itu-base.css" type="text/css" media="all"><link rel="stylesheet" href="ITUa-Dateien/itu-main.css" type="text/css" media="all">
+
+<!-- Added by Rajani Vepa on 10 Feb 2015  the lines below -->
+<script type="text/javascript" src="ITUa-Dateien/jquery-1.js"></script>
+<script type="text/javascript" src="ITUa-Dateien/jquery-ui-1.js"></script>
+
+<script type="text/javascript" src="ITUa-Dateien/itu-functions.js"></script>
+<script type="text/javascript" src="ITUa-Dateien/itu-own-functions.js"></script>
+<!-- ITU template ends -->
+    
+		<!-- ===== STARTER: Additional header placeholder - overridden by asp:content on pages or page layouts  =========================== -->
+		
+	<link rel="stylesheet" type="text/css" href="ITUa-Dateien/ms-rteCustom-ITUv6.css">
+<link rel="canonical" href="http://www.itu.int/en/ITU-T/asn1/Pages/introduction.aspx">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async="" src="ITUa-Dateien/js.js"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		
+		  gtag('config', 'UA-118643238-1');
+		</script>
+
+	<style type="text/css">
+	/* <![CDATA[ */
+	#ctl00_PlaceHolderMain_QuickLaunchMenu img.icon { border-style:none;vertical-align:middle; }
+	#ctl00_PlaceHolderMain_QuickLaunchMenu img.separator { border-style:none;display:block; }
+	#ctl00_PlaceHolderMain_QuickLaunchMenu ul { list-style:none;margin:0;padding:0;width:auto; }
+	#ctl00_PlaceHolderMain_QuickLaunchMenu ul.dynamic { z-index:1; }
+	#ctl00_PlaceHolderMain_QuickLaunchMenu a { text-decoration:none;white-space:nowrap;display:block; }
+	#ctl00_PlaceHolderMain_QuickLaunchMenu a.popout { background-image:url("/WebResource.axd?d=ok6aLaIvqYvO4JKY3htzbSdHkEFYwYe24U-VFkO9gwDPiArMdiMXiF7JhEqM-fLyakmqpXD9M6O8BFdF0bvt1EMXZU_mvwvrB4W1UQYAepjI0p-IazovA7HmZL2lx9yg0&t=636487059871879128");background-repeat:no-repeat;background-position:right center;padding-right:14px; }
+	#ctl00_PlaceHolderMain_QuickLaunchMenu a.level1 { text-decoration:none;border-style:none; }
+	#ctl00_PlaceHolderMain_QuickLaunchMenu a.level2 { text-decoration:none;border-style:none; }
+	/* ]]> */
+</style><script type="text/javascript" src="ITUa-Dateien/initstrings.js"></script><script type="text/javascript" src="ITUa-Dateien/strings.js"></script><script type="text/javascript" src="ITUa-Dateien/core.js"></script></head>
+	
+<!-- ITU template starts : language dependent -->
+<!--[if lt IE 7]>  <body class="ie ie6 lte9 lte8 lte7 inside"> <![endif]-->
+<!--[if IE 7]>     <body class="ie ie7 lte9 lte8 lte7 inside"> <![endif]-->
+<!--[if IE 8]>     <body class="ie ie8 lte9 lte8 inside"> <![endif]-->
+<!--[if IE 9]>     <body class="ie ie9 lte9 inside"> <![endif]-->
+<!--[if gt IE 9]>  <body class="inside"> <![endif]-->
+<!--[if !IE]><!--> <body class="inside ms-backgroundImage"> <!--<![endif]-->
+<!-- ITU template ends -->
+
+		<!-- ===== STARTER: SP IDs / Prefetch SP images / SP Form  =========================================================================== -->
+		
+		<div id="imgPrefetch" style="display:none">
+<img src="ITUa-Dateien/spcommon.png">
+</div>
+
+		<form method="post" action="/en/ITU-T/asn1/Pages/introduction.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div class="aspNetHidden">
+<input name="_wpcmWpid" id="_wpcmWpid" value="" type="hidden">
+<input name="wpcmVal" id="wpcmVal" value="" type="hidden">
+<input name="MSOWebPartPage_PostbackSource" id="MSOWebPartPage_PostbackSource" value="" type="hidden">
+<input name="MSOTlPn_SelectedWpId" id="MSOTlPn_SelectedWpId" value="" type="hidden">
+<input name="MSOTlPn_View" id="MSOTlPn_View" value="0" type="hidden">
+<input name="MSOTlPn_ShowSettings" id="MSOTlPn_ShowSettings" value="False" type="hidden">
+<input name="MSOGallery_SelectedLibrary" id="MSOGallery_SelectedLibrary" value="" type="hidden">
+<input name="MSOGallery_FilterString" id="MSOGallery_FilterString" value="" type="hidden">
+<input name="MSOTlPn_Button" id="MSOTlPn_Button" value="none" type="hidden">
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__REQUESTDIGEST" id="__REQUESTDIGEST" value="0x371D80C99949A881877AB046C984D99C1F253F771E12DFDDA75D74725BF544FA8BC324BA5A791D6FE29306D8622A39F53883D473DC54CD575700C5B5FA2607BA,19 Jun 2018 20:18:58 -0000" type="hidden">
+<input name="MSOSPWebPartManager_DisplayModeName" id="MSOSPWebPartManager_DisplayModeName" value="Browse" type="hidden">
+<input name="MSOSPWebPartManager_ExitingDesignMode" id="MSOSPWebPartManager_ExitingDesignMode" value="false" type="hidden">
+<input name="MSOWebPartPage_Shared" id="MSOWebPartPage_Shared" value="" type="hidden">
+<input name="MSOLayout_LayoutChanges" id="MSOLayout_LayoutChanges" value="" type="hidden">
+<input name="MSOLayout_InDesignMode" id="MSOLayout_InDesignMode" value="" type="hidden">
+<input name="_wpSelected" id="_wpSelected" value="" type="hidden">
+<input name="_wzSelected" id="_wzSelected" value="" type="hidden">
+<input name="MSOSPWebPartManager_OldDisplayModeName" id="MSOSPWebPartManager_OldDisplayModeName" value="Browse" type="hidden">
+<input name="MSOSPWebPartManager_StartWebPartEditingName" id="MSOSPWebPartManager_StartWebPartEditingName" value="false" type="hidden">
+<input name="MSOSPWebPartManager_EndWebPartEditing" id="MSOSPWebPartManager_EndWebPartEditing" value="false" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUBMA9kFgJmD2QWAgICD2QWBAIBD2QWBAIJD2QWAmYPZBYCAgEPFgIeE1ByZXZpb3VzQ29udHJvbE1vZGULKYgBTWljcm9zb2Z0LlNoYXJlUG9pbnQuV2ViQ29udHJvbHMuU1BDb250cm9sTW9kZSwgTWljcm9zb2Z0LlNoYXJlUG9pbnQsIFZlcnNpb249MTUuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49NzFlOWJjZTExMWU5NDI5YwFkAiEPZBYCZg9kFgJmDzwrAAYAZAIHD2QWBgIBD2QWAgUmZ184ZWE5OGI2ZF9mMmEwXzRiYzZfYjAyM181Mjc5MTNmYzFiNjUPZBYEZg8WAh4HVmlzaWJsZWhkAgEPFgIfAWhkAgUPZBYCAgEPZBYCAgIPZBYCAgUPZBYCAgMPFgIfAWgWAmYPZBYEAgIPZBYGAgEPFgIfAWhkAgMPFgIfAWhkAgUPFgIfAWhkAgMPDxYCHglBY2Nlc3NLZXkFAS9kZAIJD2QWBAIID2QWBAIBD2QWAgIBDxYCHwALKwQBZAIFDxYCHwALKwQBZAIMD2QWLgIFDxYCHwALKwQBZAIRD2QWBAIBDxYCHwALKwQBZAIDDxYCHwALKwQBZAIfD2QWBAIBDxYCHwALKwQBZAIDDxYCHwALKwQBZAItD2QWBAIBDxYCHwALKwQBZAIDDxYCHwALKwQBZAI7D2QWBAIBDxYCHwALKwQBZAIDDxYCHwALKwQBZAJJD2QWBAIBDxYCHwALKwQBZAIDDxYCHwALKwQBZAJXD2QWBAIBDxYCHwALKwQBZAIDDxYCHwALKwQBZAJlD2QWBAIBDxYCHwALKwQBZAIDDxYCHwALKwQBZAJzD2QWBAIBDxYCHwALKwQBZAIDDxYCHwALKwQBZAKDAQ9kFgYCAQ8WAh8ACysEAWQCAw8WAh8ACysEAWQCBQ8WAh8ACysEAWQChQEPZBYCAgEPFgIfAAsrBAFkApEBD2QWAgIBDxYCHwALKwQBZAKdAQ9kFgICAQ8WAh8ACysEAWQCqQEPFgIfAAsrBAFkAqsBDxYCHwALKwQBZAK5AQ9kFgYCAQ8WAh8ACysEAWQCAw8WAh8ACysEAWQCBQ8WAh8ACysEAWQCuwEPZBYCAgEPFgIfAAsrBAFkAscBD2QWAgIBDxYCHwALKwQBZALTAQ9kFgICAQ8WAh8ACysEAWQC3wEPFgIfAAsrBAFkAuEBDxYCHwALKwQBZALtAQ8WAh8ACysEAWQC7wEPFgIfAAsrBAFkGAEFJWN0bDAwJFBsYWNlSG9sZGVyTWFpbiRRdWlja0xhdW5jaE1lbnUPD2QFB1Byb2plY3RkXrL7ZdN6WqAHV0yhjEMBNf4nlqiF7zwgENCf+viQhG4=" type="hidden">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="ITUa-Dateien/WebResource.axd" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+var MSOWebPartPageFormName = 'aspnetForm';
+var g_presenceEnabled = true;
+var g_wsaEnabled = false;
+var g_wsaQoSEnabled = false;
+var g_wsaQoSDataPoints = [];
+var g_wsaLCID = 1033;
+var g_wsaListTemplateId = 850;
+var g_wsaSiteTemplateId = 'ITUCUSTOM#2';
+var _fV4UI=true;var _spPageContextInfo = {webServerRelativeUrl: "\u002fen\u002fITU-T\u002fasn1", webAbsoluteUrl: "http:\u002f\u002fwww.itu.int\u002fen\u002fITU-T\u002fasn1", siteAbsoluteUrl: "http:\u002f\u002fwww.itu.int", serverRequestPath: "\u002fen\u002fITU-T\u002fasn1\u002fPages\u002fintroduction.aspx", layoutsUrl: "_layouts\u002f15", webTitle: "ASN.1 Project", webTemplate: "100001", tenantAppVersion: "0", isAppWeb: false, webLogoUrl: "\u002f_layouts\u002fimages\u002ftitlegraphic.gif", webLanguage: 1033, currentLanguage: 1033, currentUICultureName: "en-US", currentCultureName: "en-US", clientServerTimeDelta: new Date("2018-06-19T20:18:48.7444910Z") - new Date(), siteClientTag: "1458$$15.0.4805.1000", crossDomainPhotosEnabled:false, webUIVersion:15, webPermMasks:{High:16,Low:196673},pageListId:"{3a6fabbf-8e6a-4f56-aa0a-3796124945de}",pageItemId:1, pagePersonalizationScope:1, alertsEnabled:true, siteServerRelativeUrl: "\u002f", allowSilverlightPrompt:'True'};var L_Menu_BaseUrl="/en/ITU-T/asn1";
+var L_Menu_LCID="1033";
+var L_Menu_SiteTheme="null";
+document.onreadystatechange=fnRemoveAllStatus; function fnRemoveAllStatus(){removeAllStatus(true)};var _spWebPartComponents = new Object();//]]>
+</script>
+
+<script src="ITUa-Dateien/ScriptResource_003.axd" type="text/javascript"></script>
+<script src="ITUa-Dateien/blank.js" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+(function(){
+
+        if (typeof(_spBodyOnLoadFunctions) === 'undefined' || _spBodyOnLoadFunctions === null) {
+            return;
+        }
+        _spBodyOnLoadFunctions.push(function() 
+        {
+          ExecuteOrDelayUntilScriptLoaded(
+            function()
+            {
+              var pairs = SP.ScriptHelpers.getDocumentQueryPairs();
+              var followDoc, itemId, listId, docName;
+              for (var key in pairs)
+              {
+                if(key.toLowerCase() == 'followdocument') 
+                  followDoc = pairs[key];
+                else if(key.toLowerCase() == 'itemid') 
+                  itemId = pairs[key];
+                else if(key.toLowerCase() == 'listid') 
+                  listId = pairs[key];
+                else if(key.toLowerCase() == 'docname') 
+                  docName = decodeURI(pairs[key]);
+              } 
+
+              if(followDoc != null && followDoc == '1' && listId!=null && itemId != null && docName != null)
+              {
+                SP.SOD.executeFunc('followingcommon.js', 'FollowDocumentFromEmail', function() 
+                { 
+                  FollowDocumentFromEmail(itemId, listId, docName);
+                });
+              }
+
+            }, 'SP.init.js');
+
+        });
+    })();(function(){
+
+        if (typeof(_spBodyOnLoadFunctions) === 'undefined' || _spBodyOnLoadFunctions === null) {
+            return;
+        }
+        _spBodyOnLoadFunctions.push(function() {
+
+            if (typeof(SPClientTemplates) === 'undefined' || SPClientTemplates === null || (typeof(APD_InAssetPicker) === 'function' && APD_InAssetPicker())) {
+                return;
+            }
+
+            var renderFollowFooter = function(renderCtx,  calloutActionMenu)
+            {
+                if (renderCtx.ListTemplateType == 700) 
+                    myDocsActionsMenuPopulator(renderCtx, calloutActionMenu);
+                else
+                    CalloutOnPostRenderTemplate(renderCtx, calloutActionMenu);
+
+                var listItem = renderCtx.CurrentItem;
+                if (typeof(listItem) === 'undefined' || listItem === null) {
+                    return;
+                }
+                if (listItem.FSObjType == 0) {
+                    calloutActionMenu.addAction(new CalloutAction({
+                        text: Strings.STS.L_CalloutFollowAction,
+                        tooltip: Strings.STS.L_CalloutFollowAction_Tooltip,
+                        onClickCallback: function (calloutActionClickEvent, calloutAction) {
+                            var callout = GetCalloutFromRenderCtx(renderCtx);
+                            if (!(typeof(callout) === 'undefined' || callout === null))
+                                callout.close();
+                            SP.SOD.executeFunc('followingcommon.js', 'FollowSelectedDocument', function() { FollowSelectedDocument(renderCtx); });
+                        }
+                    }));
+                }
+            };
+
+            var registerOverride = function(id) {
+                var followingOverridePostRenderCtx = {};
+                followingOverridePostRenderCtx.BaseViewID = 'Callout';
+                followingOverridePostRenderCtx.ListTemplateType = id;
+                followingOverridePostRenderCtx.Templates = {};
+                followingOverridePostRenderCtx.Templates.Footer = function(renderCtx) {
+                    var  renderECB;
+                    if (typeof(isSharedWithMeView) === 'undefined' || isSharedWithMeView === null) {
+                        renderECB = true;
+                    } else {
+                        var viewCtx = getViewCtxFromCalloutCtx(renderCtx);
+                        renderECB = !isSharedWithMeView(viewCtx);
+                    }
+                    return CalloutRenderFooterTemplate(renderCtx, renderFollowFooter, renderECB);
+                };
+                SPClientTemplates.TemplateManager.RegisterTemplateOverrides(followingOverridePostRenderCtx);
+            }
+            registerOverride(101);
+            registerOverride(700);
+        });
+    })();if (typeof(DeferWebFormInitCallback) == 'function') DeferWebFormInitCallback();function WebForm_OnSubmit() {
+UpdateFormDigest('\u002fen\u002fITU-T\u002fasn1', 5760000);if (typeof(_spFormOnSubmitWrapper) != 'undefined') {return _spFormOnSubmitWrapper();} else {return true;};
+return true;
+}
+//]]>
+</script>
+
+<div class="aspNetHidden">
+
+	<input name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="59AC9B81" type="hidden">
+</div>
+		
+		<!-- ===== STARTER: SharePoint Reqs this for adding columns ===================================================== -->
+		<script type="text/javascript">		    var submitHook = function () { return false; }; theForm._spOldSubmit = theForm.submit; theForm.submit = function () { if (!submitHook()) { this._spOldSubmit(); } }; </script>
+
+		<!-- ===== STARTER: Web Part Manager  ============================================================================================= -->
+				
+		
+			<!-- ===== STARTER: ScriptManager ===================================================== -->
+			<script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManager', 'aspnetForm', [], [], [], 90, 'ctl00');
+//]]>
+</script>
+
+		
+<!-- ITU template starts : language INdependent -->
+<!-- show ribbon at staging only  -->
+		
+<!-- ITU template ends -->
+			
+			<!-- ===== STARTER: Main Scrolling Body Starts Here =============================================================================== -->
+			<div id="s4-workspace">
+				<div id="s4-bodyContainer">
+				
+<!-- ITU template starts : language INdependent -->
+				        
+<!-- ITU template ends -->
+
+				<!-- ===== STARTER: This decides where the web part menu lives ===================================================== -->
+				<div id="ctl00_DeltaPlaceHolderMain">
+
+<!-- ITU template starts : language dependent -->
+
+<!-- Added Wrapper for SDG Logo by Rajani Vepa on 26 Aug 2016  -->
+<div class="wrapper" style="background:#fff url(/PublishingImages/masterpage/background/body-top-bg-219x10.png) repeat-x 0 0px;">
+
+<!-- Original Wrapper commented on 26 AUG 2016 for SDG Logo
+ <div class="wrapper" style="background:#fff url(/PublishingImages/masterpage/background/body-top-bg-184x10.png) repeat-x 0 -13px;">  -->
+
+<a name="TOP"></a>
+
+    <div class="container">
+    <div class="row">
+    	<div class="header">
+        <div class="col-21">
+           
+		<!--	<h1 class="logo"><a href="/en/" title="ITU"><img src="/PublishingImages/masterpage/logos/itu-logo.png" alt="ITU" /></a></h1> -->
+ <a href="https://www.itu.int/en/" title="ITU"><img class="logo" src="ITUa-Dateien/itu-logo.png" alt="ITU"></a>
+
+
+
+            <div class="tagline lang-switcher">
+            	<h2>Committed to connecting the world</h2>
+            	
+            </div><!--/.tagline .lang-switcher-->
+            
+             <!--Moved here the Search Box to be on the right Hand side on 26 AUG 2016 Rajani VEPA --Moved from right hand side to Left for SDGLOGO by Rajani Vepa -->        	
+            <div class="header-search">
+            	<label for="q">Search for:</label>
+                <input name="q" class="hsearch-input" value="What would you like to search for?" onkeypress="return entsub(event)" type="text">
+                <a href="javascript:void(SearchSubmit())">
+	                <img src="ITUa-Dateien/blank.gif" class="hsearch-btn" alt="Search">
+                </a>
+			  <script type="text/javascript">
+			      function SearchSubmit() {
+			       window.location.href = "https://www.itu.int/search#?q=" + document.forms['aspnetForm'].q.value; 
+			        //  document.searchform.q.value = document.forms['aspnetForm'].q.value;
+			        //  document.searchform.submit();
+			      }
+
+			      function entsub(e) {
+			          var keyPressed;
+			          if (window.event)
+			              keyPressed = window.event.keyCode; // IE
+			          else
+			              keyPressed = e.which; // Firefox
+
+			          if (keyPressed == 13) {
+			              //alert("you hit enter key");
+			              SearchSubmit();
+			              return false;
+			          } else
+			              return true;
+			      }
+			  </script>
+            </div><!--/.header-search-->
+             <!--Ends here -- Moved from right hand side to here  by Rajani Vepa on 26 AUG 2016 for SDG logo  -->
+          
+            
+            <div class="clear"></div>
+        </div><!--/.col-21-->
+        <div class="col-11">       	
+        
+        	   <!-- Removed the ITU150 Logo on 06 Jan 2016 by Rajani Vepa -
+		        	  	<!--Added by Rajani Vepa on 16 dec 2014 for ITU-150 logo  -->
+		        	    <!--<a href="http://www.itu150.org" title="ITU 150"><img  class="logo-itu150" src="/PublishingImages/masterpage/logos/itu-150-logo-web-banner.png" alt="ITU 150 " /></a> -->
+		        	    <!--Ends here - Added by Rajani Vepa on 16 dec 2014  -->
+		        	
+        	
+        	<!--Added by Rajani Vepa on 26 AUG 2016  for SDG logo  -->
+		    <a href="https://www.itu.int/en/sustainable-world/Pages/default.aspx" title="SDGs"><img class="logo-sdg" src="ITUa-Dateien/ict4sdglogo-transparent.png" style="padding-top:35px;" alt="ICTs for a Sustainable World #ICT4SDG" height="55"></a>
+		    <!--Ends here - Added by Rajani Vepa on26 AUG 2016  for SDG logo   -->
+		        	
+
+            
+        </div><!--/.col-11-->
+    	</div><!--/.header-->
+    </div><!--/.row-->
+    
+    <div class="row">
+    
+    <div class="col-32">
+	    <div id="mainnav-master" class="main-nav">
+			
+<ul class="clearfix">
+	<li class="home mn01">
+		<a href="https://www.itu.int/en/Pages/default.aspx">ITU</a>
+	</li>
+	<li class="mn02">
+		<a href="https://www.itu.int/en/general-secretariat/Pages/default.aspx">General Secretariat</a>
+	</li>
+	<li class="mn03 radiocommunication">
+		<a href="https://www.itu.int/en/ITU-R">Radiocommunication</a>
+	</li>
+	<li class="mn04 active">
+		<a href="https://www.itu.int/en/ITU-T/Pages/default.aspx">Standardization</a>
+		<ul class="clearfix">
+			<li class="sub-nav">
+				<a href="https://www.itu.int/en/ITU-T/about/Pages/default.aspx">About ITU-T</a>
+			</li>
+			<li class="sub-nav">
+				<a href="https://www.itu.int/en/ITU-T/studygroups/Pages/default.aspx">Study Groups</a>
+			</li>
+			<li class="sub-nav">
+				<a href="http://www.itu.int/ITU-T/events/">Events</a>
+			</li>
+			<li class="sub-nav">
+				<a href="https://www.itu.int/en/ITU-T/groups/Pages/default.aspx">All Groups</a>
+			</li>
+			<li class="sub-nav">
+				<a href="https://www.itu.int/en/ITU-T/membership/Pages/default.aspx">Join ITU-T</a>
+			</li>
+			<li class="sub-nav">
+				<a href="https://www.itu.int/en/ITU-T/publications/Pages/default.aspx">Standards</a>
+			</li>
+			<li class="sub-nav">
+				<a href="https://www.itu.int/en/ITU-T/info/Pages/resources.aspx">Resources</a>
+			</li>
+			<li class="sub-nav">
+				<a href="https://www.itu.int/en/ITU-D/Pages/Regional-Presence.aspx">Regional Presence</a>
+			</li>
+			<li class="sub-nav-search active">
+				<a href="https://www.itu.int/net4/ITU-T/search/GlobalSearch/Landing"></a>
+			</li>
+			<li class="sub-nav-workspace active">
+				<a href="https://www.itu.int/net4/ITU-T/myworkspace/"></a>
+			</li>
+		</ul>
+	</li>
+	<li class="mn05">
+		<a href="https://www.itu.int/en/ITU-D">Development</a>
+	</li>
+	<li class="mn06">
+		<a href="https://www.itu.int/en/itutelecom">ITU Telecom</a>
+	</li>
+	<li class="mn07">
+		<a href="https://www.itu.int/en/membership">Members' Zone</a>
+	</li>
+	<li class="join-itu">
+		<a href="https://www.itu.int/en/join">Join ITU</a>
+	</li>
+</ul>
+	    </div><!--/.main-nav-->
+        
+    </div><!--/.col-32-->
+    
+    </div><!--/.row-->
+
+    <div id="pagetitle" class="row">
+           
+	<div class="col-24 page-heading">
+
+		 <div>
+	
+		    <h1>Introduction to ASN.1​</h1>
+		
+</div>
+		
+		 
+     
+    </div><!--/.col-24 page-heading-->
+ <div class="col-8"></div><!--/.col-8 page-heading--> 
+ <div class="col-8" style="text-align:right;">
+	<div id="ctl00_PlaceHolderPageTitleInTitleArea_ctl02__ControlWrapper_RichImageField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderPageTitleInTitleArea_ctl02_label"><div class="ms-rtestate-field"></div></div>
+	
+ </div><!--/.col-8 page-heading--> 
+
+    </div><!--/.row-->
+    
+    <div id="breadcrumb" class="row">
+    	<div class="col-32 breadcrumb">
+    	<div class="col-24 col-first">
+        	<p>
+        		<em>You are here</em> 
+		<span id="ctl00_SiteMapPath1"><a href="#ctl00_SiteMapPath1_SkipLink"><img alt="Skip Navigation Links" src="ITUa-Dateien/WebResource.gif" style="border-width:0px;" width="0" height="0"></a><span><a href="https://www.itu.int/en/Pages/default.aspx">Home</a></span><span> &gt; </span><span><a title="Telecommunication Standardization Sector (ITU-T)" href="https://www.itu.int/en/ITU-T/Pages/default.aspx">ITU-T</a></span><span> &gt; </span><span>ASN.1 Project</span><a id="ctl00_SiteMapPath1_SkipLink"></a></span>
+        	</p>
+        </div><!--/.col-24-->
+    	<div class="col-8 col-last">
+        	<div class="share-this clearfix"> 
+                <p>Share</p>
+                <div class="addthis_toolbox">
+                   <div class="custom_images">
+                      <a class="addthis_button_facebook"><img src="ITUa-Dateien/facebook-round.png" alt="Share on Facebook"></a>
+                      <a class="addthis_button_twitter"><img src="ITUa-Dateien/twitter-round.png" alt="Share on twitter"></a>
+                      <a class="addthis_button_linkedin"><img src="ITUa-Dateien/linkedin-round.png" alt="Share on LinkedIn"></a>
+                      <a class="addthis_button_email"><img src="ITUa-Dateien/email-round.png" alt="Share via email"></a>
+                   </div><!--/.custom_images-->
+                </div><!--/.addthis_toolbox-->
+            </div><!--/.share-this-->
+        </div><!--/.col-8 page-heading-->
+        </div><!--/.col-32 breadcrumb-->
+    </div><!--/.row-->
+<!-- ITU template ends -->
+<!-- Print Section // -->
+
+							<!-- ===== STARTER: Main Placeholder gets replaced with content of the page ======================================= -->
+							
+   
+ 
+ 
+ <div class="row">
+    	<div class="col-6 lhs-nav">
+			<div id="lhs-nav">
+				<div id="ctl00_PlaceHolderMain_QuickLaunchNavigationManager">
+	
+				<div>
+					
+					
+					<div id="ctl00_PlaceHolderMain_QuickLaunchMenu" style="float: left;">
+		<ul class="level1 static" tabindex="0" style="position: relative; width: auto; float: left;" role="menu">
+			<li role="menuitem" class="static" style="position: relative;"><a class="level1 selected static" href="https://www.itu.int/en/ITU-T/asn1/Pages/asn1_project.aspx" tabindex="-1">Project</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level1 static" href="https://www.itu.int/en/ITU-T/asn1/Pages/introduction.aspx" tabindex="-1">Introduction to ASN.1</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level1 static" href="https://www.itu.int/en/ITU-T/asn1/Pages/Short_introduction.aspx" tabindex="-1">Short introduction</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level1 static" href="https://www.itu.int/en/ITU-T/asn1/Pages/Myths-about-asn-1.aspx" tabindex="-1">Myths about ASN.1</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level1 static" href="https://www.itu.int/en/ITU-T/asn1/Pages/Application-fields-of-ASN-1.aspx" tabindex="-1">Application fields of ASN.1</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level1 static" href="http://www.itu.int/en/ITU-T/asn1/Pages/Defects-and-Technical-Corrigenda-on-ASN1-2015-Edition.aspx" tabindex="-1">Defects and Technical Corrigenda on ASN.1 2015 Edition</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level1 static" href="https://www.itu.int/en/ITU-T/asn1/Pages/Tools.aspx" tabindex="-1">Tools</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level1 static" href="https://www.itu.int/en/ITU-T/asn1/Pages/ecn.aspx" tabindex="-1">The Encoding control notation</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level2 itu-navitem static" href="https://www.itu.int/en/ITU-T/asn1/Pages/Tutorial.aspx" tabindex="-1">Tutorial</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level2 itu-navitem static" href="https://www.itu.int/en/ITU-T/asn1/Pages/ECN-specification-for-Bluetooth-SDP.aspx" tabindex="-1">ECN specification for Bluetooth SDP</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level2 itu-navitem static" href="https://www.itu.int/en/ITU-T/asn1/Pages/ECN-specification-for-UMTS-RRC-protocol.aspx" tabindex="-1">ECN specification for UMTS RRC protocol</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level1 static" href="https://www.itu.int/en/ITU-T/asn1/Pages/XML-encoding-rules-(XER)-for-ASN-1.aspx" tabindex="-1">XML encoding rules</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level2 itu-navitem static" href="https://www.itu.int/en/ITU-T/asn1/Pages/xer.aspx" tabindex="-1">XML encoding rules (XER) for ASN.1</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level2 itu-navitem static" href="https://www.itu.int/en/ITU-T/asn1/Pages/Mapping-from-XML-Schemas-to-ASN-1-modules.aspx" tabindex="-1">Mapping from XML Schemas to ASN.1 modules</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level2 itu-navitem static" href="https://www.itu.int/en/ITU-T/asn1/Pages/Why-using-ASN-1-as-a-binary-encoding-for-XML.aspx" tabindex="-1">Why using ASN.1 as a binary encoding for XML</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level2 itu-navitem static" href="https://www.itu.int/en/ITU-T/asn1/Pages/Fast-Web-Service.aspx" tabindex="-1">Fast Web Services</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level2 itu-navitem static" href="https://www.itu.int/en/ITU-T/asn1/Pages/Advantages-of-Fast-Web-Services.aspx" tabindex="-1">Advantages of Fast Web Services</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level2 itu-navitem static" href="https://www.itu.int/en/ITU-T/asn1/Pages/Fast-Infoset.aspx" tabindex="-1">Fast Infoset</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level1 static" href="https://www.itu.int/en/ITU-T/asn1/Pages/OID-project.aspx" tabindex="-1">OID Project</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level2 itu-navitem static" href="https://www.itu.int/en/ITU-T/asn1/Pages/UUID/uuids.aspx" tabindex="-1">UUIDs</a></li><li role="menuitem" class="static" style="position: relative;"><a class="level1 static" href="https://www.itu.int/en/ITU-T/asn1/Pages/Press-releases,-presentations-and-articles-on-ASN-1-and-XML.aspx" tabindex="-1">More on ASN.1 and XML</a></li>
+		</ul>
+	</div><div style="clear: left;"></div>
+				</div>
+				
+</div>
+			</div><!--/#lhs-nav-->
+        </div><!--/.col-6-->
+        
+             
+        <div class="col-16">   <!--/START of Center-Column  -->       
+        	
+        
+  		
+						
+						<div class="content-webpart">
+						<menu class="ms-hide">
+	<ie:menuitem id="MSOMenu_Help" iconsrc="/_layouts/15/images/HelpIcon.gif" onmenuclick="MSOWebPartPage_SetNewWindowLocation(MenuWebPart.getAttribute('helpLink'), MenuWebPart.getAttribute('helpMode'))" text="Help" type="option" style="display:none">
+
+	</ie:menuitem>
+</menu>
+						
+						</div>
+		   
+
+
+        <!--/.Underline Boxes 1 in a row with Page title-hyperlink/content field,webpartzone using page content2  -->
+                <div class="row contentNew  _invisibleIfEmpty"> 
+               	<div class="module module-caps  module-thumbnail clearfix _invisibleIfEmpty">                	
+	                	 <div>
+	
+							<h2> Main concepts </h2>
+							<div id="ctl00_PlaceHolderMain_ctl05_ctl01__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_ctl05_ctl01_label"><p>​
+ASN.1 is a formal notation used for describing data transmitted by 
+telecommunications protocols, regardless of language implementation and 
+physical representation of these data, whatever the application, whether
+ complex or very simple.</p><table width="400" cellpadding="5" bordercolor="#006666" border="1" align="center"><tbody><tr><td><div align="center">Abstract Syntax Notation number One<br>is a&nbsp;standard&nbsp;that defines a formalism<br>for the specification of abstract data types.</div></td></tr></tbody></table><blockquote>The notation provides a certain number of pre-defined basic types such as:&nbsp;<ul><li>integers (<tt>INTEGER</tt>),</li><li>booleans (<tt>BOOLEAN</tt>),</li><li>character strings (<tt>IA5String</tt>,&nbsp;<tt>UniversalString</tt>...),</li><li>bit strings (<tt>BIT STRING</tt>),</li><li>etc.,</li></ul>and makes it possible to define constructed types such as:&nbsp;<ul><li>structures (<tt>SEQUENCE</tt>),</li><li>lists (<tt>SEQUENCE OF</tt>),</li><li>choice between types (<tt>CHOICE</tt>),</li><li>etc.</li></ul>Subtyping constraints can be also applied on any ASN.1 type in order to restrict its set of values.<br><br>Unlike
+ many other syntaxes which claim to be extensible, ASN.1 offers 
+extensibility which addresses the problem of, and provides support for, 
+the interworking between previously deployed systems and newer, updated 
+versions designed years apart.<br><br>ASN.1 sends information in any 
+form (audio, video, data, etc.) anywhere it needs to be communicated 
+digitally. ASN.1 only covers the structural aspects of information 
+(there are no operators to handle the values once these are defined or 
+to make calculations with). Therefore it is not a programming language.<br><br>ASN.1
+ definition can be contrasted to the concept in ABNF of "valid syntax", 
+or in XSD of a "valid document", where the focus is entirely on what are
+ valid encodings of data, without concern with any meaning that might be
+ attached to such encodings. That is, without any of the necessary 
+semantic linkages.<br><br><table width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr><td width="80%" valign="top"><blockquote>One
+ of the main reasons for the success of ASN.1 is that this notation is 
+associated with several standardized encoding rules such as the BER 
+(Basic Encoding Rules), or more recently the PER (Packed Encoding 
+Rules), which prove useful for applications that undergo restrictions in
+ terms of bandwidth. These encoding rules describe how the values 
+defined in ASN.1 should be encoded for transmission (i.e., how they can 
+be translated into the bytes 'over the wire' and reverse), regardless of
+ machine, programming language, or how it is represented in an 
+application program. ASN.1's encodings are more streamlined than many 
+competing notations, enabling rapid and reliable transmission of 
+extensible messages -- an advantage for wireless broadband. Because 
+ASN.1 has been an international standard since 1984, its encoding rules 
+are mature and have a long track record of reliability and 
+interoperability.</blockquote></td><td>&nbsp;</td></tr><tr><td><blockquote>An
+ ASN.1 definition can be readily mapped (by a pre-run-time processor) 
+into a C or C++ or Java data structure that can be used by application 
+code, and supported by run-time libraries providing encoding and 
+decoding of representations in either an XML or a TLV format, or a very 
+compact packed encoding format.</blockquote></td><td>&nbsp;</td></tr><tr><td><blockquote>Tools
+ on almost all operating systems support ASN.1. ASN.1 also supports 
+popular programming languages such as Java, C and C++, as well as older 
+ones including COBOL. As an example of ASN.1's universality, there are 
+tools that have been ported to over 150 different computing platforms.</blockquote></td><td>&nbsp;</td></tr><tr><td><blockquote>There
+ are a lot of well-tested ASN.1 tools that have been used for a long 
+time. Using such tools, there are less likely to be costly delays in 
+bringing new products to market or, even worse, recalling products based
+ on new code that hasn't been sufficiently tested for flaws.</blockquote></td><td>&nbsp;</td></tr><tr><td><blockquote>ASN.1
+ is widely used in industry sectors where efficient (low-bandwidth, 
+low-transaction-cost) computer communications are needed, but is also 
+being used in sectors where XML-encoded data is required (for example, 
+transfer of biometric information).</blockquote></td></tr></tbody></table></blockquote></div>
+						
+</div>	
+						 
+			    
+
+						
+						<div class="content-webpart">
+						
+						
+						</div>
+		   
+				</div>
+                </div>
+              
+               
+      
+
+  					 <!--/.Underline Boxes 2 in a row with Page title-hyperlink/content field,webpartzone using page content3  -->
+                	<div class="row contentNew  _invisibleIfEmpty"> 
+                    <div class="module module-caps module-thumbnail clearfix _invisibleIfEmpty"> 
+	                	 <div id="ctl00_PlaceHolderMain_DisplayModeContentBox3">
+	
+							<h2> Case study </h2>
+							<div id="ctl00_PlaceHolderMain_DisplayModeContentBox3_ctl01__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_DisplayModeContentBox3_ctl01_label">​
+Suppose a company owns several sales outlets linked to a central 
+warehouse where stocks are maintained and deliveries start from. The 
+company requires that its protocol have the following features: 
+<ul><li>the orders are collected locally at the sales outlets ;</li><li>they are transmitted to the warehouse, where the delivery procedure should be managed ;</li><li>an account of the delivery must be sent back to the sales outlets for following through the client's order.</li></ul>This protocol can be specified with the two following ASN.1 modules:<br> 
+
+
+
+
+
+
+
+
+-- Module sample (sample:01/2014)<br>
+-- See also the <a href="https://www.itu.int/en/ITU-T/asn1/Pages/index.html">README</a> file<br>
+-- See also the <a href="https://www.itu.int/en/ITU-T/asn1/Pages/index2.html">index</a> of all ASN.1 assignments needed in this Recommendation<br><br>
+<pre><a name="Module-order"></a>Module-order <font color="#0000ff"><b>DEFINITIONS</b></font> <font color="#666666"><b>AUTOMATIC TAGS</b></font> ::=
+<font color="#0000ff"><b>BEGIN</b></font>
+
+<a name="Module-order.Order"></a>Order ::= <font color="#b8860b"><b>SEQUENCE</b></font> {header  <a href="#Module-order.Order-header">Order-header</a>,
+                    items   <font color="#b8860b"><b>SEQUENCE</b></font> <font color="#b8860b"><b>OF</b></font> <a href="#Module-order.Order-line">Order-line</a>
+}
+
+<a name="Module-order.Order-header"></a>Order-header ::= <font color="#b8860b"><b>SEQUENCE</b></font> {
+  number   <a href="#Module-order.Order-number">Order-number</a>,
+  date     <a href="#Module-order.Date">Date</a>,
+  client   <a href="#Module-order.Client">Client</a>,
+  payment  <a href="#Module-order.Payment-method">Payment-method</a>
+}
+
+<a name="Module-order.Order-number"></a>Order-number ::= <font color="#5f9ea0"><b>NumericString</b></font><font color="#228b22">(<font color="#228b22"><b>SIZE</b></font> <font color="#228b22">(12)</font>)</font>
+
+<a name="Module-order.Date"></a>Date ::= <font color="#5f9ea0"><b>NumericString</b></font><font color="#228b22">(<font color="#228b22"><b>SIZE</b></font> <font color="#228b22">(8)</font>)<font color="#b22222"><i> -- MMDDYYYY</i></font>
+                      </font>
+
+<a name="Module-order.Client"></a>Client ::= <font color="#b8860b"><b>SEQUENCE</b></font> {
+  name      <font color="#5f9ea0"><b>PrintableString</b></font><font color="#228b22">(<font color="#228b22"><b>SIZE</b></font> <font color="#228b22">(1..20)</font>)</font>,
+  street    <font color="#5f9ea0"><b>PrintableString</b></font><font color="#228b22">(<font color="#228b22"><b>SIZE</b></font> <font color="#228b22">(1..50)</font>)</font> <font color="#666666"><b>OPTIONAL</b></font>,
+  postcode  <font color="#5f9ea0"><b>NumericString</b></font><font color="#228b22">(<font color="#228b22"><b>SIZE</b></font> <font color="#228b22">(5)</font>)</font>,
+  town      <font color="#5f9ea0"><b>PrintableString</b></font><font color="#228b22">(<font color="#228b22"><b>SIZE</b></font> <font color="#228b22">(1..30)</font>)</font>,
+  country   <font color="#5f9ea0"><b>PrintableString</b></font><font color="#228b22">(<font color="#228b22"><b>SIZE</b></font> <font color="#228b22">(1..20)</font>)</font> <font color="#666666"><b>DEFAULT</b></font> <a href="#Module-order.default-country">default-country</a>
+}
+
+<a name="Module-order.default-country"></a>default-country <font color="#5f9ea0"><b>PrintableString</b></font> ::= "France"
+
+<a name="Module-order.Payment-method"></a>Payment-method ::= <font color="#b8860b"><b>CHOICE</b></font> {
+  check        <font color="#5f9ea0"><b>NumericString</b></font><font color="#228b22">(<font color="#228b22"><b>SIZE</b></font> <font color="#228b22">(15)</font>)</font>,
+  credit-card  <a href="#Module-order.Credit-card">Credit-card</a>,
+  cash         <font color="#5f9ea0"><b>NULL</b></font>
+}
+
+<a name="Module-order.Credit-card"></a>Credit-card ::= <font color="#b8860b"><b>SEQUENCE</b></font> {
+  type         <a href="#Module-order.Card-type">Card-type</a>,
+  number       <font color="#5f9ea0"><b>NumericString</b></font><font color="#228b22">(<font color="#228b22"><b>SIZE</b></font> <font color="#228b22">(20)</font>)</font>,
+  expiry-date  <font color="#5f9ea0"><b>NumericString</b></font><font color="#228b22">(<font color="#228b22"><b>SIZE</b></font> <font color="#228b22">(6)</font>)<font color="#b22222"><i>-- MMYYYY -- </i></font></font>
+}
+
+<a name="Module-order.Card-type"></a>Card-type ::= <font color="#5f9ea0"><b>ENUMERATED</b></font> {
+  cb(0), visa(1), eurocard(2), diners(3), american-express(4)}
+
+<a name="Module-order.Order-line"></a>Order-line ::= <font color="#b8860b"><b>SEQUENCE</b></font> {
+  item-code  <a href="#Module-order.Item-code">Item-code</a>,
+  label      <a href="#Module-order.Label">Label</a>,
+  quantity   <a href="#Module-order.Quantity">Quantity</a>,
+  price      <a href="#Module-order.Cents">Cents</a>
+}
+
+<a name="Module-order.Item-code"></a>Item-code ::= <font color="#5f9ea0"><b>NumericString</b></font><font color="#228b22">(<font color="#228b22"><b>SIZE</b></font> <font color="#228b22">(7)</font>)</font>
+
+<a name="Module-order.Label"></a>Label ::= <font color="#5f9ea0"><b>PrintableString</b></font><font color="#228b22">(<font color="#228b22"><b>SIZE</b></font> <font color="#228b22">(1..30)</font>)</font>
+
+<a name="Module-order.Quantity"></a>Quantity ::= <font color="#b8860b"><b>CHOICE</b></font> {
+  unites        <font color="#5f9ea0"><b>INTEGER</b></font>,
+  millimetres   <font color="#5f9ea0"><b>INTEGER</b></font>,
+  milligrammes  <font color="#5f9ea0"><b>INTEGER</b></font>
+}
+
+<a name="Module-order.Cents"></a>Cents ::= <font color="#5f9ea0"><b>INTEGER</b></font>
+
+<a name="Module-order.Delivery-report"></a>Delivery-report ::= <font color="#b8860b"><b>SEQUENCE</b></font> {
+  order-code  <a href="#Module-order.Order-number">Order-number</a>,
+  delivery    <font color="#b8860b"><b>SEQUENCE</b></font> <font color="#b8860b"><b>OF</b></font> <a href="#Module-order.Delivery-line">Delivery-line</a>
+}
+
+<a name="Module-order.Delivery-line"></a>Delivery-line ::= <font color="#b8860b"><b>SEQUENCE</b></font> {item      <a href="#Module-order.Item-code">Item-code</a>,
+                            quantity  <a href="#Module-order.Quantity">Quantity</a>
+}
+
+<font color="#0000ff"><b>END</b></font>
+
+
+
+<a name="Protocol"></a>Protocol <font color="#0000ff"><b>DEFINITIONS</b></font> <font color="#666666"><b>AUTOMATIC TAGS</b></font> ::=
+<font color="#0000ff"><b>BEGIN</b></font>
+
+<font color="#0000ff"><b>IMPORTS</b></font>
+  Order, Delivery-report, Item-code, Quantity, Order-number
+    <font color="#0000ff"><b>FROM</b></font> Module-order;
+
+<a name="Protocol.PDU"></a>PDU ::= <font color="#b8860b"><b>CHOICE</b></font> {
+  question
+    <font color="#b8860b"><b>CHOICE</b></font> {question1  <a href="#Module-order.Order">Order</a>,
+            question2  <a href="#Module-order.Item-code">Item-code</a>,
+            question3  <a href="#Module-order.Order-number">Order-number</a>,
+            ...},
+  answer
+    <font color="#b8860b"><b>CHOICE</b></font> {answer1  <a href="#Module-order.Delivery-report">Delivery-report</a>,
+            answer2  <a href="#Module-order.Quantity">Quantity</a>,
+            answer3  <a href="#Module-order.Delivery-report">Delivery-report</a>,
+            ...}
+}
+
+<font color="#0000ff"><b>END</b></font>
+</pre>
+
+</div>
+						 
+</div>	
+						 
+
+						
+						
+						<div class="content-webpart">
+						
+						
+						</div>
+		   
+					 </div>
+                  </div>
+            
+                     <!--/.  Underline Box3 in a row with Page title-hyperlink/content field,webpartzone using page content 4 -->            
+                    <div class="row contentNew  _invisibleIfEmpty"> 
+                	<div class="module module-caps module-thumbnail clearfix _invisibleIfEmpty">                	
+	                	 <div id="ctl00_PlaceHolderMain_DisplayModeContentBox4">
+	
+							<h2> Applications fields </h2>
+							<div id="ctl00_PlaceHolderMain_DisplayModeContentBox4_ctl01__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_DisplayModeContentBox4_ctl01_label">​
+Originally standardized to specify data protocols in an open system 
+interconnection (OSI) environment, ASN.1 has imposed its intrinsic 
+advantages in many other popular fields.<br><br>A lot of application fields of ASN.1 are presented in&nbsp;<a href="https://www.itu.int/en/ITU-T/asn1/Documents/chap7.pdf">Chapter 7</a>&nbsp;of the book "ASN.1. Communication between Heterogeneous Systems", by<a href="mailto:asn1@rd.francetelecom.com">Olivier Dubuisson</a>&nbsp;(© 1999).<br><br>Other application fields are also listed&nbsp;<a href="https://www.itu.int/en/ITU-T/asn1/Pages/Application-fields-of-ASN-1.aspx">here</a>. ASN.1 is a critical part of our daily lives; it's everywhere, but it works so well it's invisible.<br><br></div>
+						 
+</div>	
+						 
+					
+						
+						<div class="content-webpart">
+						
+						
+						</div>
+		   
+					 </div>
+                   </div>    
+               
+
+                     <!--/Underline Box 4 in a row with Page title-hyperlink/content field,webpartzone using page content 5 -->     
+                	<div class="row contentNew _invisibleIfEmpty"> 
+                    <div class="module module-caps module-thumbnail clearfix _invisibleIfEmpty"> 
+	                	 <div id="ctl00_PlaceHolderMain_DisplayModeContentBox5">
+	
+							<h2> State of standardization </h2>
+							<div id="ctl00_PlaceHolderMain_DisplayModeContentBox5_ctl01__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_DisplayModeContentBox5_ctl01_label">​
+ASN.1 was first standardized in 1984 by the CCITT (International 
+Telegraph and Telephone Consultative Committee, now called 
+ITU-T,International Telecommunication Union - Telecommunication 
+Standardization Sector) under the name "X.409 Recommendation". A little 
+later, ISO (International Organization for Standardization) chose to 
+adopt this notation and split this recommendation into two separate 
+documents: the abstract syntax (ASN.1) and the encoding rules (BER). In 
+1985, the CCITT decided to collaborate with ISO on these two documents.<br><br>In
+ 1987, ISO published these documents as 8824 and 8825 (only three new 
+types of character strings are added). In 1988, ISO merged with the IEC 
+(International Electrotechnical Commission) forming a joint technical 
+committee called&nbsp;ISO/IEC&nbsp;<a href="http://www.jtc1.org/">JTC 1</a>, which is now in charge of the ASN.1 standard.<br><br>For
+ its&nbsp;Blue Book, in 1989, the CCITT published the X.208 and X.209 
+recommendations: a new release for the ASN.1 standard, which was 
+provided with extensions resulting from a common work with the JTC 1.<br><br>For the last version (available since end of 2008), the ISO 8824 standard was split into four parts:&nbsp;<blockquote><ul><li><a href="https://www.itu.int/itu-t/x.680">ISO 8824-1 | ITU-T X.680</a>:&nbsp;Specification of basic notation,</li><li><a href="https://www.itu.int/itu-t/x.681">ISO 8824-2 | ITU-T X.681</a>:&nbsp;Information object specification,</li><li><a href="https://www.itu.int/itu-t/x.682">ISO 8824-3 | ITU-T X.682</a>:&nbsp;Constraint specification,</li><li><a href="https://www.itu.int/itu-t/x.683">ISO 8824-4 | ITU-T X.683</a>:&nbsp;Parameterization of ASN.1 specifications.</li></ul>As far as encoding rules are concerned, ISO 8825 standard was split into&nbsp;seven parts:<ul><li><a href="https://www.itu.int/itu-t/x.690">ISO 8825-1 | ITU-T X.690</a>:&nbsp;Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)</li><li><a href="https://www.itu.int/itu-t/x.691">ISO 8825-2 | ITU-T X.691</a>:&nbsp;Specification of Packed Encoding Rules (PER)</li><li><a href="https://www.itu.int/itu-t/x.692">ISO 8825-3 | ITU-T X.692</a>:&nbsp;ASN.1 encoding rules: Specification of Encoding Control Notation (ECN)</li><li><a href="https://www.itu.int/itu-t/X.693">ISO 8825-4 | ITU-T X.693</a>:&nbsp;ASN.1 encoding rules: XML Encoding Rules (XER)</li><li><a href="https://www.itu.int/itu-t/X.694">ISO 8825-5 | ITU-T X.694</a>:&nbsp;ASN.1 encoding rules: Mapping W3C XML schema definitions into ASN.1</li><li><a href="https://www.itu.int/itu-t/X.695"><span lang="EN-GB">ISO 8825-6 | ITU-T X.695</span></a>: ASN.1 encoding rules: Registration and application of PER encoding instructions</li><li><a href="https://www.itu.int/itu-t/X.696"><span lang="EN-GB">ISO 8825-7 | ITU-T X.696</span></a>: ASN.1 encoding rules: Specification of Octet Encoding Rules (OER)</li></ul></blockquote></div>
+						 
+</div>	
+						 
+						
+
+						
+						<div class="content-webpart">
+						
+						
+						</div>
+		   
+
+					 </div>
+                   </div>
+
+
+ 			 <!--/Underline Box 5 in a row with Page title-hyperlink/content field,webpartzone using page content 17 -->
+
+               	<div class="row  contentNew _invisibleIfEmpty"> 
+                    <div class="module module-caps module-thumbnail clearfix _invisibleIfEmpty"> 
+	                	 <div>
+	
+							<h2> ASN.1:2002 and later editions are, from now on, strongly recommended. The 1990-release is no longer available. </h2>
+							<div id="ctl00_PlaceHolderMain_ctl22_ctl01__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_ctl22_ctl01_label">​Presented during the January 1999 ASN.1 meeting, the encoding control notation (<a href="https://www.itu.int/en/ITU-T/asn1/Pages/ecn.aspx">ECN</a>)
+ allows specifiers to define their own encoding rules by referencing 
+standardized encoding rules and modifying some of their characteristics,
+ or even to set up completely new ones.<br><br>ASN.1 has a long record 
+of accomplishment, having been in use since 1984. It has evolved over 
+time to meet industry needs, such as PER support for the 
+bandwidth-constrained wireless industry and XML support for easy use of 
+common Web browsers.<br><br></div>
+						 
+</div>	
+						 
+												
+						
+						<div class="content-webpart">
+						
+						
+						</div>
+		   
+						</div>
+                   </div>
+
+ 			<!--/Underline Box 6 in a row with Page title-hyperlink/content field,webpartzone using page content 18 -->
+               	
+
+
+
+ 		<!--/Underline Box 7 in a row with Page title-hyperlink/content field,webpartzone using page content 19 -->
+               	
+
+
+ 		<!--/Underline Box 8 in a row with Page title-hyperlink/content field,webpartzone using page content 20 -->
+               	
+
+
+        </div><!--/.col-16-->  <!--/END of Center-Column  -->   
+        
+        
+        <!--/Right hand side Column  -->
+        <div class="col-10 sidebar">        
+        
+           <!--/First Right hand side Tabs : below is the Edit Mode using page content 11,12,13 -->            
+ 		   
+ 					
+            <!--/First Right hand side Tabs : below is the Display Mode with invisibility class -->
+            <div class="module module-tabs _invisibleIfEmpty ui-tabs ui-widget ui-widget-content ui-corner-all">
+                        	
+				<ul class="tabs clearfix ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+					<li class="_invisibleIfEmpty ui-state-default ui-corner-top ui-tabs-selected ui-state-active" style="width:92px"><a href="#tab1">
+					<span>References</span></a></li>
+					<li class="_invisibleIfEmpty ui-state-default ui-corner-top" style="width:92px"><a href="#tab2">
+					<span>ASN.1 "fathers"</span></a></li>
+					<li class="_invisibleIfEmpty ui-state-default ui-corner-top" style="width:92px"><a href="#tab3">
+					<span>More ...</span></a></li>
+				</ul>
+                 
+                
+				<div class="tab-box ui-tabs-panel ui-widget-content ui-corner-bottom" id="tab1">
+					<div class="module-content">
+
+	                      
+						   <div class="contentNew _invisibleIfEmpty"><div id="ctl00_PlaceHolderMain_ctl48_ctl00__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_ctl48_ctl00_label"><p>​<a href="http://www.oss.com/asn1/tutorials.html">ASN.1 reference card</a>, by OSS Nokalva<br>[pdf - 2 p]</p><a href="https://www.itu.int/en/ITU-T/asn1/Documents/ASN1-XML-FastWebServices.pdf">ASN.1: A Powerful Schema Notation for XML and Fast Web Services</a>&nbsp;(by O. Dubuisson)<br>Slides: [<a href="https://www.itu.int/en/ITU-T/asn1/Documents/ASN1-XML-FastWebServices.pdf">pdf</a>]<br><br></div></div>
+	                    
+	                  
+						
+						<div class="content-webpart">
+						
+						
+						</div>
+		 			 </div>
+				</div>
+                            
+				<div class="tab-box ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide" id="tab2">
+					<div class="module-content">
+	                      
+						   <div class="contentNew _invisibleIfEmpty"><div id="ctl00_PlaceHolderMain_ctl53_ctl00__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_ctl53_ctl00_label">​<a href="mailto:j.larmouth@btinternet.com">John Larmouth</a><br><a href="mailto:doug@steedman.com">Douglas Steedman</a><br><a href="mailto:white@nuance.com">James E. White</a><br><br></div></div>
+	                    
+	                
+						
+						<div class="content-webpart">
+						
+						
+						</div>
+		 			 </div>
+				</div>
+				<div class="tab-box ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide" id="tab3">
+					<div class="module-content">
+	                      
+						   <div class="contentNew _invisibleIfEmpty"><div id="ctl00_PlaceHolderMain_ctl58_ctl00__ControlWrapper_RichHtmlField" class="ms-rtestate-field" style="display:inline" aria-labelledby="ctl00_PlaceHolderMain_ctl58_ctl00_label"><p><a href="https://www.itu.int/en/ITU-T/asn1/Pages/Changing-from-ASN-119881990-to-ASN-12008.aspx">Changing from ASN.1:1988 to ASN.1:2002</a><br><br></p></div></div>
+	                    
+	                
+						
+						<div class="content-webpart">
+						
+						
+						</div>
+		  			</div>
+				</div>
+			</div>
+        
+            
+              <!--/ Blue Box 1 with title,content-field,webpart zone using invisibility class & page content/title 15  -->              
+           	<div class="module module-blue module-greybg _invisibleIfEmpty">
+            	  <div class="contentNew module-content _invisibleIfEmpty"> 
+
+						<div class="module-header _invisibleIfEmpty"><h2>
+							What is ASN.1 ? </h2></div>
+                         
+                
+						
+						<div class="content-webpart">
+						<div class="ms-webpart-zone ms-fullWidth">
+	<div id="MSOZoneCell_WebPartWPQ1" class="s4-wpcell-plain ms-webpartzone-cell ms-webpart-cell-vertical ms-fullWidth ">
+		<div class="ms-webpart-chrome ms-webpart-chrome-vertical ms-webpart-chrome-fullWidth ">
+			<div webpartid="8ea98b6d-f2a0-4bc6-b023-527913fc1b65" haspers="false" id="WebPartWPQ1" width="100%" class="ms-WPBody " allowdelete="false" style=""><div class="ms-rtestate-field"><iframe src="http://www.youtube.com/embed/O7lQ2AgNiA0" width="280" height="180" frameborder="0"></iframe><br></div><div class="ms-clear"></div></div>
+		</div>
+	</div>
+</div>
+						
+						</div>
+		          </div>
+           </div>  
+      
+ 			      <!--/second  Right hand side Tabs : below is the Edit Mode --> 			
+         		   
+ 					
+            <!--/Second  Right hand side Tabs : below is the Display Mode with invisibility class using page content 6,7,8 -->           
+        	
+           
+            
+              <!--/ Blue Box 2 with title,content-field,webpart zone using invisibility class & page content/title 14  -->
+         	
+            
+            
+              <!--/ Blue Box 3 with title,content-field,webpart zone using invisibility class & page content/title 16  -->
+              
+            
+		 	
+
+       
+ 
+	 </div><!--/.col-10 sidebar-->
+    </div><!--/.row-->
+    
+
+		
+<div style="display:none" id="hidZone"></div>
+
+<!-- Print Section // -->
+<!-- ITU template starts : language dependent -->
+    <div class="row follow">
+    	<div class="col-18">
+        	<div class="social">
+            	<ul class="clearfix">
+                	
+                 <!--	<li><em>Follow us</em></li> Commented by Rajani Vepa on 28 Jan 2014 -->
+                    <li><a href="https://www.itu.int/en/Pages/social-media.aspx" style="background-image:none; text-indent:0px; width:80px;"><em>Follow us</em></a></li>              	
+                    <li><a href="https://www.itu.int/twitter" class="twitter">Twitter</a></li>
+                    <li><a href="https://www.itu.int/facebook" class="facebook">Facebook</a></li>
+                    <li><a href="https://www.itu.int/youtube" class="youtube">YouTube</a></li>
+                    <li><a href="https://www.itu.int/flickr" class="flickr">Flickr</a></li>				
+					<li><a href="https://www.linkedin.com/company/international-telecommunication-union" rel="publisher" class="linkedin">Linkedin</a></li>
+					<li><a href="https://www.itu.int/gplus" class="gplus">gplus</a></li>
+
+                </ul>
+            </div><!--/.social-->
+        </div><!--/.col-18-->
+        <div class="col-14">
+            
+        </div><!--/.col-14-->
+    </div><!--/.row-->
+    
+    <div class="row row-back-to-top">
+    	<div class="col-32 footer">
+    	<div class="col-16 col-first">
+        	<p>© ITU <span id="copyright_year">2018</span> All Rights Reserved</p>
+        </div><!--col-16-->
+        <div class="col-16 col-last">
+        	<ul class="clearfix">
+            	<li><a href="https://www.itu.int/home/feedback/index.phtml">Feedback</a></li>
+                <li><a href="https://www.itu.int/home/contact/index.html">Contact Us</a></li>
+                <li>  </li>
+                <li><a href="https://www.itu.int/en/Pages/accessibility.aspx">Accessibility</a></li>
+            </ul>
+        </div><!--col-16-->
+ 
+		<a href="#TOP" class="go-to-top">Back to top</a>
+
+        </div><!--/.col-32-->
+    </div><!--/.row .footer-->
+    
+    </div><!--/.container-->
+    
+</div><!--/.wrapper-->
+</div><!--/#DeltaPlaceHolderMain-->
+
+<!-- addthis javascript link -->
+
+<!--<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e9c3a3c258dc7e3"></script>
+-->
+<!-- Rajani Vepa -  Updated the Link on 16 Oct 2017 and added https://s7...  Since the Share button was not working in Chrome as ITU is using HTTPS 
+<script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=iturss"></script>-->
+
+<script type="text/javascript" src="ITUa-Dateien/addthis_widget.js"></script>
+
+
+<!-- ITU template ends -->
+
+				</div>
+			</div>
+			<!-- ===== STARTER: Main Scrolling Body Ends Here ================================================================================= -->
+			
+			<!-- ===== STARTER: Needed for form stuff ========================================================================================= -->
+			
+				<script type="text/javascript">//<![CDATA[
+        var formDigestElement = document.getElementsByName('__REQUESTDIGEST')[0];
+        if (!((formDigestElement == null) || (formDigestElement.tagName.toLowerCase() != 'input') || (formDigestElement.type.toLowerCase() != 'hidden') ||
+            (formDigestElement.value == null) || (formDigestElement.value.length <= 0)))
+        {
+            formDigestElement.value = '0x371D80C99949A881877AB046C984D99C1F253F771E12DFDDA75D74725BF544FA8BC324BA5A791D6FE29306D8622A39F53883D473DC54CD575700C5B5FA2607BA,19 Jun 2018 20:18:58 -0000';
+            g_updateFormDigestPageLoaded = new Date();
+        }
+        //]]>
+        </script>
+			
+		
+			<!-- ===== STARTER: Hidden Placeholders =========================================================================================== -->	
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+<!-- ITU template starts : language INdependent -->
+<!-- own defined place holder, used in some old layouts  -->
+            
+<!-- ITU template ends -->
+
+		
+
+<script type="text/javascript">
+//<![CDATA[
+var _spFormDigestRefreshInterval = 5760000;window.g_updateFormDigestPageLoaded = new Date(); window.g_updateFormDigestPageLoaded.setDate(window.g_updateFormDigestPageLoaded.getDate() -5);var _fV4UI = true;
+function _RegisterWebPartPageCUI()
+{
+    var initInfo = {editable: false,isEditMode: false,allowWebPartAdder: false,listId: "{3a6fabbf-8e6a-4f56-aa0a-3796124945de}",itemId: 1,recycleBinEnabled: true,enableMinorVersioning: true,enableModeration: false,forceCheckout: true,rootFolderUrl: "\u002fen\u002fITU-T\u002fasn1\u002fPages",itemPermissions:{High:16,Low:196673}};
+    SP.Ribbon.WebPartComponent.registerWithPageManager(initInfo);
+    var wpcomp = SP.Ribbon.WebPartComponent.get_instance();
+    var hid;
+    hid = document.getElementById("_wpSelected");
+    if (hid != null)
+    {
+        var wpid = hid.value;
+        if (wpid.length > 0)
+        {
+            var zc = document.getElementById(wpid);
+            if (zc != null)
+                wpcomp.selectWebPart(zc, false);
+        }
+    }
+    hid = document.getElementById("_wzSelected");
+    if (hid != null)
+    {
+        var wzid = hid.value;
+        if (wzid.length > 0)
+        {
+            wpcomp.selectWebPartZone(null, wzid);
+        }
+    }
+};
+function __RegisterWebPartPageCUI() {
+ExecuteOrDelayUntilScriptLoaded(_RegisterWebPartPageCUI, "sp.ribbon.js");}
+_spBodyOnLoadFunctionNames.push("__RegisterWebPartPageCUI");var __wpmExportWarning='This Web Part Page has been personalized. As a result, one or more Web Part properties may contain confidential information. Make sure the properties contain information that is safe for others to read. After exporting this Web Part, view properties in the Web Part description file (.WebPart) by using a text editor such as Microsoft Notepad.';var __wpmCloseProviderWarning='You are about to close this Web Part.  It is currently providing data to other Web Parts, and these connections will be deleted if this Web Part is closed.  To close this Web Part, click OK.  To keep this Web Part, click Cancel.';var __wpmDeleteWarning='You are about to permanently delete this Web Part.  Are you sure you want to do this?  To delete this Web Part, click OK.  To keep this Web Part, click Cancel.';//]]>
+</script>
+<script type="text/javascript">new Sys.WebForms.Menu({ element: 'ctl00_PlaceHolderMain_QuickLaunchMenu', disappearAfter: 500, orientation: 'vertical', tabIndex: 0, disabled: false });</script>
+<script type="text/javascript">
+//<![CDATA[
+var g_clientIdDeltaPlaceHolderMain = "ctl00_DeltaPlaceHolderMain";
+//]]>
+</script>
+</form>
+<!-- ITU template starts : language INdependent -->
+      
+
+	<form action="https://www.itu.int/net/itu_search/index.aspx" name="searchform">
+	  <input name="cx" value="001276825495132238663:nqzm45z846q" type="hidden">
+	  <input name="cof" value="FORID:9" type="hidden">
+	  <input name="ie" value="UTF-8" type="hidden">
+	  <input name="q" type="hidden">
+	</form>
+<script type="text/javascript">
+    //<![CDATA[
+    setCopyRightYear();
+    // Fix for the name.dll ActitveX issue.
+    function ProcessImn() { }
+    // 27.9.2013
+    $("a").removeClass("itu-navheader");
+    //]]>
+</script>
+
+<!-- START OF SmartSource Data Collector TAG -->
+<!-- Copyright (c) 1996-2014 Webtrends Inc.  All rights reserved. -->
+<!-- Version: 9.4.0 -->
+<!-- Tag Builder Version: 4.1  -->
+<!-- Created: 10/15/2014 8:08:50 AM -->
+<script src="ITUa-Dateien/webtrends.js" type="text/javascript"></script>
+<!-- ----------------------------------------------------------------------------------- -->
+<!-- Warning: The two script blocks below must remain inline. Moving them to an external -->
+<!-- JavaScript include file can cause serious problems with cross-domain tracking.      -->
+<!-- ----------------------------------------------------------------------------------- -->
+<script type="text/javascript">
+//<![CDATA[
+var _tag=new WebTrends();
+_tag.dcsGetId();
+//]]>
+</script><script type="text/javascript" src="ITUa-Dateien/wtid.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+_tag.dcsCustom=function(){
+// Add custom parameters here.
+//_tag.DCSext.param_name=param_value;
+}
+_tag.dcsCollect();
+//]]>
+</script>
+<noscript>
+<div><img alt="DCSIMG" id="DCSIMG" width="1" height="1" src="//sdc.itu.int/dcsxwo60zspjo5dshtr0ytqo3_9q8g/njs.gif?dcsuri=/nojavascript&amp;WT.js=No&amp;WT.tv=9.4.0&amp;dcssip=www.itu.int"/></div>
+</noscript>
+<!-- END OF SmartSource Data Collector TAG -->
+
+<!-- ITU template ends -->
+
+
+	
+	
+	
+</body><!-- Created from Starter SP2013 Master Page originally by Randy Drisgill (http://blog.drisgill.com) - April 21, 2013 --></html>
+<!-- Rendered using cache profile:Public Internet (Purely Anonymous) at: 2018-06-19T22:18:49 -->

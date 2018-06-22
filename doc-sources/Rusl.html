@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html class="sidebar-visible light" lang="en"><head>
+        <meta charset="UTF-8">
+        <title>Conditional Compilation - The Rust Programming Language</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="rgb(255, 255, 255)">
+
+        <!-- base href="https://doc.rust-lang.org/book/first-edition/conditional-compilation.html" -->
+
+        <link rel="stylesheet" href="Rusl-Dateien/book.css">
+        <link href="Rusl-Dateien/css.css" rel="stylesheet" type="text/css">
+        <link href="Rusl-Dateien/css_002.css" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="https://doc.rust-lang.org/book/first-edition/favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="Rusl-Dateien/font-awesome.css">
+
+        <link rel="stylesheet" href="Rusl-Dateien/highlight.css">
+        <link rel="stylesheet" href="Rusl-Dateien/tomorrow-night.css">
+        <link rel="stylesheet" href="Rusl-Dateien/ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+        <link rel="stylesheet" href="Rusl-Dateien/first-edition.css">
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="Rusl-Dateien/clipboard_002.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script><script src="Rusl-Dateien/clipboard.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents" aria-hidden="false">
+            <ol class="chapter"><li class="affix"><a href="https://doc.rust-lang.org/book/first-edition/README.html" tabindex="0">Introduction</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/getting-started.html" tabindex="0"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/guessing-game.html" tabindex="0"><strong aria-hidden="true">2.</strong> Tutorial: Guessing Game</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/syntax-and-semantics.html" tabindex="0"><strong aria-hidden="true">3.</strong> Syntax and Semantics</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/book/first-edition/variable-bindings.html" tabindex="0"><strong aria-hidden="true">3.1.</strong> Variable Bindings</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/functions.html" tabindex="0"><strong aria-hidden="true">3.2.</strong> Functions</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/primitive-types.html" tabindex="0"><strong aria-hidden="true">3.3.</strong> Primitive Types</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/comments.html" tabindex="0"><strong aria-hidden="true">3.4.</strong> Comments</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/if.html" tabindex="0"><strong aria-hidden="true">3.5.</strong> if</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/loops.html" tabindex="0"><strong aria-hidden="true">3.6.</strong> Loops</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/vectors.html" tabindex="0"><strong aria-hidden="true">3.7.</strong> Vectors</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/ownership.html" tabindex="0"><strong aria-hidden="true">3.8.</strong> Ownership</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/references-and-borrowing.html" tabindex="0"><strong aria-hidden="true">3.9.</strong> References and Borrowing</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/lifetimes.html" tabindex="0"><strong aria-hidden="true">3.10.</strong> Lifetimes</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/mutability.html" tabindex="0"><strong aria-hidden="true">3.11.</strong> Mutability</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/structs.html" tabindex="0"><strong aria-hidden="true">3.12.</strong> Structs</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/enums.html" tabindex="0"><strong aria-hidden="true">3.13.</strong> Enums</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/match.html" tabindex="0"><strong aria-hidden="true">3.14.</strong> Match</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/patterns.html" tabindex="0"><strong aria-hidden="true">3.15.</strong> Patterns</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/method-syntax.html" tabindex="0"><strong aria-hidden="true">3.16.</strong> Method Syntax</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/strings.html" tabindex="0"><strong aria-hidden="true">3.17.</strong> Strings</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/generics.html" tabindex="0"><strong aria-hidden="true">3.18.</strong> Generics</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/traits.html" tabindex="0"><strong aria-hidden="true">3.19.</strong> Traits</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/drop.html" tabindex="0"><strong aria-hidden="true">3.20.</strong> Drop</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/if-let.html" tabindex="0"><strong aria-hidden="true">3.21.</strong> if let</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/trait-objects.html" tabindex="0"><strong aria-hidden="true">3.22.</strong> Trait Objects</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/closures.html" tabindex="0"><strong aria-hidden="true">3.23.</strong> Closures</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/ufcs.html" tabindex="0"><strong aria-hidden="true">3.24.</strong> Universal Function Call Syntax</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/crates-and-modules.html" tabindex="0"><strong aria-hidden="true">3.25.</strong> Crates and Modules</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/const-and-static.html" tabindex="0"><strong aria-hidden="true">3.26.</strong> const and static</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/attributes.html" tabindex="0"><strong aria-hidden="true">3.27.</strong> Attributes</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/type-aliases.html" tabindex="0"><strong aria-hidden="true">3.28.</strong> type aliases</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/casting-between-types.html" tabindex="0"><strong aria-hidden="true">3.29.</strong> Casting between types</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/associated-types.html" tabindex="0"><strong aria-hidden="true">3.30.</strong> Associated Types</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/unsized-types.html" tabindex="0"><strong aria-hidden="true">3.31.</strong> Unsized Types</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/operators-and-overloading.html" tabindex="0"><strong aria-hidden="true">3.32.</strong> Operators and Overloading</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/deref-coercions.html" tabindex="0"><strong aria-hidden="true">3.33.</strong> Deref coercions</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/macros.html" tabindex="0"><strong aria-hidden="true">3.34.</strong> Macros</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/raw-pointers.html" tabindex="0"><strong aria-hidden="true">3.35.</strong> Raw Pointers</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/unsafe.html" tabindex="0"><strong aria-hidden="true">3.36.</strong> unsafe</a></li></ol></li><li><a href="https://doc.rust-lang.org/book/first-edition/effective-rust.html" tabindex="0"><strong aria-hidden="true">4.</strong> Effective Rust</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/book/first-edition/the-stack-and-the-heap.html" tabindex="0"><strong aria-hidden="true">4.1.</strong> The Stack and the Heap</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/testing.html" tabindex="0"><strong aria-hidden="true">4.2.</strong> Testing</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/conditional-compilation.html" class="active" tabindex="0"><strong aria-hidden="true">4.3.</strong> Conditional Compilation</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/documentation.html" tabindex="0"><strong aria-hidden="true">4.4.</strong> Documentation</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/iterators.html" tabindex="0"><strong aria-hidden="true">4.5.</strong> Iterators</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/concurrency.html" tabindex="0"><strong aria-hidden="true">4.6.</strong> Concurrency</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/error-handling.html" tabindex="0"><strong aria-hidden="true">4.7.</strong> Error Handling</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/choosing-your-guarantees.html" tabindex="0"><strong aria-hidden="true">4.8.</strong> Choosing your Guarantees</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/ffi.html" tabindex="0"><strong aria-hidden="true">4.9.</strong> FFI</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/borrow-and-asref.html" tabindex="0"><strong aria-hidden="true">4.10.</strong> Borrow and AsRef</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/release-channels.html" tabindex="0"><strong aria-hidden="true">4.11.</strong> Release Channels</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/using-rust-without-the-standard-library.html" tabindex="0"><strong aria-hidden="true">4.12.</strong> Using Rust without the standard library</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/procedural-macros.html" tabindex="0"><strong aria-hidden="true">4.13.</strong> Procedural Macros (and custom derive)</a></li></ol></li><li><a href="https://doc.rust-lang.org/book/first-edition/glossary.html" tabindex="0"><strong aria-hidden="true">5.</strong> Glossary</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/syntax-index.html" tabindex="0"><strong aria-hidden="true">6.</strong> Syntax Index</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/bibliography.html" tabindex="0"><strong aria-hidden="true">7.</strong> Bibliography</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="draft-warning" class="warning">
+    <span class="message">You are reading an <strong>outdated</strong> edition of TRPL. For more, go <a href="https://doc.rust-lang.org/book/index.html">here</a>.</span>
+    <button type="button" id="hide-draft-warning" title="Hide draft warning" class="button">
+        <i class="fa fa-times"></i>
+    </button>
+</div>
+<!-- Hide / unhide warning before it is displayed -->
+<script type="text/javascript">
+var warning = localStorage.getItem('trpl-first-edition-draft-warning');
+
+if (warning === 'hidden') {
+    Array
+    .from(document.querySelectorAll('#page-wrapper'))
+    .forEach(function(block) { block.classList.remove('has-warning'); });
+    var elem = document.getElementById("draft-warning");
+    elem.parentNode.removeChild(elem);
+}
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+    document.getElementById("hide-draft-warning").addEventListener("click", function(e) {
+        var elem = document.getElementById("draft-warning");
+        elem.parentNode.removeChild(elem);
+
+        localStorage.setItem('trpl-first-edition-draft-warning', 'hidden');
+    });
+});
+</script>
+
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar" aria-expanded="true">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
+
+                        <h1 class="menu-title">The Rust Programming Language</h1>
+
+                        <div class="right-buttons">
+                            <a href="https://doc.rust-lang.org/book/first-edition/print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="https://doc.rust-lang.org/book/first-edition/conditional-compilation.html#conditional-compilation" id="conditional-compilation"><h1>Conditional Compilation</h1></a>
+<p>Rust has a special attribute, <code class="hljs">#[cfg]</code>, which allows you to compile code
+based on a flag passed to the compiler. It has two forms:</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-meta">#[cfg(foo)]</span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">foo</span></span>() {}</span>
+
+<span class="hljs-meta">#[cfg(bar = <span class="hljs-meta-string">"baz"</span>)]</span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">bar</span></span>() {}</span><span class="hidden">
+}</span></code></pre></pre>
+<p>They also have some helpers:</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-meta">#[cfg(any(unix, windows))]</span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">foo</span></span>() {}</span>
+
+<span class="hljs-meta">#[cfg(all(unix, target_pointer_width = <span class="hljs-meta-string">"32"</span>))]</span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">bar</span></span>() {}</span>
+
+<span class="hljs-meta">#[cfg(not(foo))]</span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">not_foo</span></span>() {}</span><span class="hidden">
+}</span></code></pre></pre>
+<p>These can nest arbitrarily:</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-meta">#[cfg(any(not(unix), all(target_os=<span class="hljs-meta-string">"macos"</span>, target_arch = <span class="hljs-meta-string">"powerpc"</span>)))]</span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">foo</span></span>() {}</span><span class="hidden">
+}</span></code></pre></pre>
+<p>As for how to enable or disable these switches, if you’re using Cargo,
+they get set in the <a href="http://doc.crates.io/manifest.html#the-features-section"><code class="hljs">[features]</code> section</a> of your <code class="hljs">Cargo.toml</code>:</p>
+<pre><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button></div><code class="language-toml hljs ini"><span class="hljs-section">[features]</span>
+<span class="hljs-comment"># no features by default</span>
+<span class="hljs-attr">default</span> = []
+
+<span class="hljs-comment"># Add feature "foo" here, then you can use it. </span>
+<span class="hljs-comment"># Our "foo" feature depends on nothing else.</span>
+<span class="hljs-attr">foo</span> = []
+</code></pre>
+<p>When you do this, Cargo passes along a flag to <code class="hljs">rustc</code>:</p>
+<pre><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button></div><code class="language-text hljs">--cfg feature="${feature_name}"
+</code></pre>
+<p>The sum of these <code class="hljs">cfg</code> flags will determine which ones get activated, and
+therefore, which code gets compiled. Let’s take this code:</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-meta">#[cfg(feature = <span class="hljs-meta-string">"foo"</span>)]</span>
+<span class="hljs-keyword">mod</span> foo {
+}<span class="hidden">
+}</span></code></pre></pre>
+<p>If we compile it with <code class="hljs">cargo build --features "foo"</code>, it will send the <code class="hljs">--cfg feature="foo"</code> flag to <code class="hljs">rustc</code>, and the output will have the <code class="hljs">mod foo</code> in it.
+If we compile it with a regular <code class="hljs">cargo build</code>, no extra flags get passed on,
+and so, no <code class="hljs">foo</code> module will exist.</p>
+<a class="header" href="https://doc.rust-lang.org/book/first-edition/conditional-compilation.html#cfg_attr" id="cfg_attr"><h1>cfg_attr</h1></a>
+<p>You can also set another attribute based on a <code class="hljs">cfg</code> variable with <code class="hljs">cfg_attr</code>:</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-meta">#[cfg_attr(a, b)]</span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">foo</span></span>() {}</span><span class="hidden">
+}</span></code></pre></pre>
+<p>Will be the same as <code class="hljs">#[b]</code> if <code class="hljs">a</code> is set by <code class="hljs">cfg</code> attribute, and nothing otherwise.</p>
+<a class="header" href="https://doc.rust-lang.org/book/first-edition/conditional-compilation.html#cfg" id="cfg"><h1>cfg!</h1></a>
+<p>The <code class="hljs">cfg!</code> macro lets you use these kinds of flags elsewhere in your code, too:</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-keyword">if</span> <span class="hljs-built_in">cfg!</span>(target_os = <span class="hljs-string">"macos"</span>) || <span class="hljs-built_in">cfg!</span>(target_os = <span class="hljs-string">"ios"</span>) {
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"Think Different!"</span>);
+}<span class="hidden">
+}</span></code></pre></pre>
+<p>These will be replaced by a <code class="hljs">true</code> or <code class="hljs">false</code> at compile-time, depending on the
+configuration settings.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="https://doc.rust-lang.org/book/first-edition/testing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="https://doc.rust-lang.org/book/first-edition/documentation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="https://doc.rust-lang.org/book/first-edition/testing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="https://doc.rust-lang.org/book/first-edition/documentation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
+            }
+        </script>
+
+        
+
+        
+
+        
+
+        
+
+        <script src="Rusl-Dateien/highlight.js"></script>
+        <script src="Rusl-Dateien/book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    
+
+</body></html>

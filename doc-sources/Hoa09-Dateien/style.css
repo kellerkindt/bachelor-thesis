@@ -1,0 +1,120 @@
+#presentationNotes {
+    display: block!important;
+    position: relative;
+    max-height: 800px;
+    padding-bottom: 80px;
+    overflow: hidden;
+    transition: max-height .15s ease-in-out
+}
+
+#presentationNotes:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    z-index: 1;
+    background: linear-gradient(transparent 50%, #fff 60%, #fff)
+}
+
+#presentationNotes * {
+    box-sizing: border-box
+}
+
+#presentationNotes>h2 {
+    float: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 10px 10px 10px 28px;
+    cursor: pointer;
+    position: relative;
+    display: block;
+    margin-bottom: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+#presentationNotes>h2:before {
+    content: "";
+    background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTNweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMyA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0MC4zICgzMzgzOSkgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+74SjPC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnM+PC9kZWZzPgogICAgPGcgaWQ9IkZpbmFsIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iRmluYWwtLS1DdXJyZW50LVN0eWxlcyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEwNjQuMDAwMDAwLCAtODMyLjAwMDAwMCkiIGZpbGw9IiMwMDAwMDAiPgogICAgICAgICAgICA8ZyBpZD0iNHRoLUFydGljbGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDM2My4wMDAwMDAsIDgyMi4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik03MDcuMTI1LDE0Ljg5ODQzNzUgTDcxMS44ODI4MTIsMTAuMzMyMDMxMiBDNzEyLjAyODY0NywxMC4xODYxOTcyIDcxMi4xNzQ0NzgsMTAuMTg2MTk3MiA3MTIuMzIwMzEyLDEwLjMzMjAzMTIgTDcxMy4xNjc5NjksMTEuMTUyMzQzOCBDNzEzLjMxMzgwMywxMS4yOTgxNzc4IDcxMy4zMTM4MDMsMTEuNDQ0MDA5NyA3MTMuMTY3OTY5LDExLjU4OTg0MzggTDcwNy4zNDM3NSwxNy4xNjc5Njg4IEM3MDcuMjg5MDYyLDE3LjIyMjY1NjUgNzA3LjIxNjE0NiwxNy4yNSA3MDcuMTI1LDE3LjI1IEM3MDcuMDMzODU0LDE3LjI1IDcwNi45NjA5MzgsMTcuMjIyNjU2NSA3MDYuOTA2MjUsMTcuMTY3OTY4OCBMNzAxLjA4MjAzMSwxMS41ODk4NDM4IEM3MDAuOTM2MTk3LDExLjQ0NDAwOTcgNzAwLjkzNjE5NywxMS4yOTgxNzc4IDcwMS4wODIwMzEsMTEuMTUyMzQzOCBMNzAxLjkyOTY4OCwxMC4zMzIwMzEyIEM3MDIuMDc1NTIyLDEwLjE4NjE5NzIgNzAyLjIyMTM1MywxMC4xODYxOTcyIDcwMi4zNjcxODgsMTAuMzMyMDMxMiBMNzA3LjEyNSwxNC44OTg0Mzc1IFoiIGlkPSLvhKMiPjwvcGF0aD4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+");
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 20px;
+    height: 20px;
+    line-height: 1.25rem;
+    text-align: center;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    transition: -webkit-transform .15s ease-in-out;
+    transition: transform .15s ease-in-out;
+    transition: transform .15s ease-in-out, -webkit-transform .15s ease-in-out
+}
+
+#presentationNotes>h2+.notesWrapper,
+#presentationNotes>h2+ul {
+    max-height: 0;
+    overflow: hidden;
+    margin-bottom: 10px;
+    position: relative;
+    padding: 0;
+    clear: both;
+    float: left;
+    transition: max-height .35s ease-in-out, padding .35s ease-in-out
+}
+
+#presentationNotes>h2.expanded:before {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg)
+}
+
+#presentationNotes>h2.expanded+.notesWrapper,
+#presentationNotes>h2.expanded+ul {
+    padding: 15px 0;
+    max-height: 8000px;
+    width: 100%
+}
+
+#presentationNotes>h2.expanded:not(.full)+.notesWrapper .expand-to-full,
+#presentationNotes>h2.expanded:not(.full)+ul .expand-to-full {
+    opacity: 1;
+    visibility: visible
+}
+
+#presentationNotes.full {
+    max-height: 40000px
+}
+
+#presentationNotes.full .expand-to-full {
+    opacity: 0;
+    visibility: hidden
+}
+
+#presentationNotes .expand-to-full {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    cursor: pointer;
+    width: auto;
+    padding: 3px 14px;
+    border-radius: 2px;
+    background: #fff;
+    line-height: 1.25rem;
+    text-align: left;
+    font-weight: 700;
+    color: #286AB2;
+    z-index: 2;
+    border: 1px solid;
+    transition: all .15s ease-in-out
+}
+
+#presentationNotes .expand-to-full:hover {
+    color: #222
+}

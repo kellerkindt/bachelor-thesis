@@ -1,0 +1,28 @@
+﻿
+@import "/Style%20Library/itu.css";
+
+.itu-navitem a:hover{
+background-color: #93117E;
+color: #FFFFFF;
+}
+
+table.itu-navitem {
+background-image: url('/PublishingImages/colors/93117E.gif');
+}
+
+.itu-navitem-dynamic a:hover{
+background-color: #93117E;
+color: #FFFFFF;
+}
+
+table.itu-navitem-dynamic {
+background-image: url('/PublishingImages/colors/93117E.gif');
+}
+
+.hnbg {
+	background-image:url('/en/ITU-T/homenetworking/PublishingImages/hn.jpg'); 
+	background-position:center; 
+	background-repeat:no-repeat; 
+	
+	
+}

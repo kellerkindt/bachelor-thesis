@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html class="sidebar-visible light" lang="en"><head>
+        <meta charset="UTF-8">
+        <title>Loops - The Rust Programming Language</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="rgb(255, 255, 255)">
+
+        <!-- base href="https://doc.rust-lang.org/book/first-edition/loops.html" -->
+
+        <link rel="stylesheet" href="Rusk-Dateien/book.css">
+        <link href="Rusk-Dateien/css.css" rel="stylesheet" type="text/css">
+        <link href="Rusk-Dateien/css_002.css" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="https://doc.rust-lang.org/book/first-edition/favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="Rusk-Dateien/font-awesome.css">
+
+        <link rel="stylesheet" href="Rusk-Dateien/highlight.css">
+        <link rel="stylesheet" href="Rusk-Dateien/tomorrow-night.css">
+        <link rel="stylesheet" href="Rusk-Dateien/ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+        <link rel="stylesheet" href="Rusk-Dateien/first-edition.css">
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="Rusk-Dateien/clipboard_002.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script><script src="Rusk-Dateien/clipboard.js"></script>
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents" aria-hidden="false">
+            <ol class="chapter"><li class="affix"><a href="https://doc.rust-lang.org/book/first-edition/README.html" tabindex="0">Introduction</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/getting-started.html" tabindex="0"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/guessing-game.html" tabindex="0"><strong aria-hidden="true">2.</strong> Tutorial: Guessing Game</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/syntax-and-semantics.html" tabindex="0"><strong aria-hidden="true">3.</strong> Syntax and Semantics</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/book/first-edition/variable-bindings.html" tabindex="0"><strong aria-hidden="true">3.1.</strong> Variable Bindings</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/functions.html" tabindex="0"><strong aria-hidden="true">3.2.</strong> Functions</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/primitive-types.html" tabindex="0"><strong aria-hidden="true">3.3.</strong> Primitive Types</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/comments.html" tabindex="0"><strong aria-hidden="true">3.4.</strong> Comments</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/if.html" tabindex="0"><strong aria-hidden="true">3.5.</strong> if</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/loops.html" class="active" tabindex="0"><strong aria-hidden="true">3.6.</strong> Loops</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/vectors.html" tabindex="0"><strong aria-hidden="true">3.7.</strong> Vectors</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/ownership.html" tabindex="0"><strong aria-hidden="true">3.8.</strong> Ownership</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/references-and-borrowing.html" tabindex="0"><strong aria-hidden="true">3.9.</strong> References and Borrowing</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/lifetimes.html" tabindex="0"><strong aria-hidden="true">3.10.</strong> Lifetimes</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/mutability.html" tabindex="0"><strong aria-hidden="true">3.11.</strong> Mutability</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/structs.html" tabindex="0"><strong aria-hidden="true">3.12.</strong> Structs</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/enums.html" tabindex="0"><strong aria-hidden="true">3.13.</strong> Enums</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/match.html" tabindex="0"><strong aria-hidden="true">3.14.</strong> Match</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/patterns.html" tabindex="0"><strong aria-hidden="true">3.15.</strong> Patterns</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/method-syntax.html" tabindex="0"><strong aria-hidden="true">3.16.</strong> Method Syntax</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/strings.html" tabindex="0"><strong aria-hidden="true">3.17.</strong> Strings</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/generics.html" tabindex="0"><strong aria-hidden="true">3.18.</strong> Generics</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/traits.html" tabindex="0"><strong aria-hidden="true">3.19.</strong> Traits</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/drop.html" tabindex="0"><strong aria-hidden="true">3.20.</strong> Drop</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/if-let.html" tabindex="0"><strong aria-hidden="true">3.21.</strong> if let</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/trait-objects.html" tabindex="0"><strong aria-hidden="true">3.22.</strong> Trait Objects</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/closures.html" tabindex="0"><strong aria-hidden="true">3.23.</strong> Closures</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/ufcs.html" tabindex="0"><strong aria-hidden="true">3.24.</strong> Universal Function Call Syntax</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/crates-and-modules.html" tabindex="0"><strong aria-hidden="true">3.25.</strong> Crates and Modules</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/const-and-static.html" tabindex="0"><strong aria-hidden="true">3.26.</strong> const and static</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/attributes.html" tabindex="0"><strong aria-hidden="true">3.27.</strong> Attributes</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/type-aliases.html" tabindex="0"><strong aria-hidden="true">3.28.</strong> type aliases</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/casting-between-types.html" tabindex="0"><strong aria-hidden="true">3.29.</strong> Casting between types</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/associated-types.html" tabindex="0"><strong aria-hidden="true">3.30.</strong> Associated Types</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/unsized-types.html" tabindex="0"><strong aria-hidden="true">3.31.</strong> Unsized Types</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/operators-and-overloading.html" tabindex="0"><strong aria-hidden="true">3.32.</strong> Operators and Overloading</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/deref-coercions.html" tabindex="0"><strong aria-hidden="true">3.33.</strong> Deref coercions</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/macros.html" tabindex="0"><strong aria-hidden="true">3.34.</strong> Macros</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/raw-pointers.html" tabindex="0"><strong aria-hidden="true">3.35.</strong> Raw Pointers</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/unsafe.html" tabindex="0"><strong aria-hidden="true">3.36.</strong> unsafe</a></li></ol></li><li><a href="https://doc.rust-lang.org/book/first-edition/effective-rust.html" tabindex="0"><strong aria-hidden="true">4.</strong> Effective Rust</a></li><li><ol class="section"><li><a href="https://doc.rust-lang.org/book/first-edition/the-stack-and-the-heap.html" tabindex="0"><strong aria-hidden="true">4.1.</strong> The Stack and the Heap</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/testing.html" tabindex="0"><strong aria-hidden="true">4.2.</strong> Testing</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/conditional-compilation.html" tabindex="0"><strong aria-hidden="true">4.3.</strong> Conditional Compilation</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/documentation.html" tabindex="0"><strong aria-hidden="true">4.4.</strong> Documentation</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/iterators.html" tabindex="0"><strong aria-hidden="true">4.5.</strong> Iterators</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/concurrency.html" tabindex="0"><strong aria-hidden="true">4.6.</strong> Concurrency</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/error-handling.html" tabindex="0"><strong aria-hidden="true">4.7.</strong> Error Handling</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/choosing-your-guarantees.html" tabindex="0"><strong aria-hidden="true">4.8.</strong> Choosing your Guarantees</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/ffi.html" tabindex="0"><strong aria-hidden="true">4.9.</strong> FFI</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/borrow-and-asref.html" tabindex="0"><strong aria-hidden="true">4.10.</strong> Borrow and AsRef</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/release-channels.html" tabindex="0"><strong aria-hidden="true">4.11.</strong> Release Channels</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/using-rust-without-the-standard-library.html" tabindex="0"><strong aria-hidden="true">4.12.</strong> Using Rust without the standard library</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/procedural-macros.html" tabindex="0"><strong aria-hidden="true">4.13.</strong> Procedural Macros (and custom derive)</a></li></ol></li><li><a href="https://doc.rust-lang.org/book/first-edition/glossary.html" tabindex="0"><strong aria-hidden="true">5.</strong> Glossary</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/syntax-index.html" tabindex="0"><strong aria-hidden="true">6.</strong> Syntax Index</a></li><li><a href="https://doc.rust-lang.org/book/first-edition/bibliography.html" tabindex="0"><strong aria-hidden="true">7.</strong> Bibliography</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="draft-warning" class="warning">
+    <span class="message">You are reading an <strong>outdated</strong> edition of TRPL. For more, go <a href="https://doc.rust-lang.org/book/index.html">here</a>.</span>
+    <button type="button" id="hide-draft-warning" title="Hide draft warning" class="button">
+        <i class="fa fa-times"></i>
+    </button>
+</div>
+<!-- Hide / unhide warning before it is displayed -->
+<script type="text/javascript">
+var warning = localStorage.getItem('trpl-first-edition-draft-warning');
+
+if (warning === 'hidden') {
+    Array
+    .from(document.querySelectorAll('#page-wrapper'))
+    .forEach(function(block) { block.classList.remove('has-warning'); });
+    var elem = document.getElementById("draft-warning");
+    elem.parentNode.removeChild(elem);
+}
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+    document.getElementById("hide-draft-warning").addEventListener("click", function(e) {
+        var elem = document.getElementById("draft-warning");
+        elem.parentNode.removeChild(elem);
+
+        localStorage.setItem('trpl-first-edition-draft-warning', 'hidden');
+    });
+});
+</script>
+
+                <div id="menu-bar" class="menu-bar folded bordered">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar" aria-expanded="true">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
+
+                        <h1 class="menu-title">The Rust Programming Language</h1>
+
+                        <div class="right-buttons">
+                            <a href="https://doc.rust-lang.org/book/first-edition/print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="https://doc.rust-lang.org/book/first-edition/loops.html#loops" id="loops"><h1>Loops</h1></a>
+<p>Rust currently provides three approaches to performing some kind of iterative activity. They are: <code class="hljs">loop</code>, <code class="hljs">while</code> and <code class="hljs">for</code>. Each approach has its own set of uses.</p>
+<a class="header" href="https://doc.rust-lang.org/book/first-edition/loops.html#loop" id="loop"><h2>loop</h2></a>
+<p>The infinite <code class="hljs">loop</code> is the simplest form of loop available in Rust. Using the keyword <code class="hljs">loop</code>, Rust provides a way to loop indefinitely until some terminating statement is reached. Rust's infinite <code class="hljs">loop</code>s look like this:</p>
+<pre><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button></div><code class="language-rust ignore hljs"><span class="hljs-keyword">loop</span> {
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"Loop forever!"</span>);
+}
+</code></pre>
+<a class="header" href="https://doc.rust-lang.org/book/first-edition/loops.html#while" id="while"><h2>while</h2></a>
+<p>Rust also has a <code class="hljs">while</code> loop. It looks like this:</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> x = <span class="hljs-number">5</span>; <span class="hljs-comment">// mut x: i32</span>
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> done = <span class="hljs-literal">false</span>; <span class="hljs-comment">// mut done: bool</span>
+
+<span class="hljs-keyword">while</span> !done {
+    x += x - <span class="hljs-number">3</span>;
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"{}"</span>, x);
+
+    <span class="hljs-keyword">if</span> x % <span class="hljs-number">5</span> == <span class="hljs-number">0</span> {
+        done = <span class="hljs-literal">true</span>;
+    }
+}<span class="hidden">
+}</span></code></pre></pre>
+<p><code class="hljs">while</code> loops are the correct choice when you’re not sure how many times
+you need to loop.</p>
+<p>If you need an infinite loop, you may be tempted to write this:</p>
+<pre><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button></div><code class="language-rust ignore hljs"><span class="hljs-keyword">while</span> <span class="hljs-literal">true</span> {
+</code></pre>
+<p>However, <code class="hljs">loop</code> is far better suited to handle this case:</p>
+<pre><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button></div><code class="language-rust ignore hljs"><span class="hljs-keyword">loop</span> {
+</code></pre>
+<p>Rust’s control-flow analysis treats this construct differently than a <code class="hljs">while true</code>, since we know that it will always loop. In general, the more information
+we can give to the compiler, the better it can do with safety and code
+generation, so you should always prefer <code class="hljs">loop</code> when you plan to loop
+infinitely.</p>
+<a class="header" href="https://doc.rust-lang.org/book/first-edition/loops.html#for" id="for"><h2>for</h2></a>
+<p>The <code class="hljs">for</code> loop is used to loop a particular number of times. Rust’s <code class="hljs">for</code> loops
+work a bit differently than in other systems languages, however. Rust’s <code class="hljs">for</code>
+loop doesn’t look like this “C-style” <code class="hljs">for</code> loop:</p>
+<pre><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button></div><code class="language-c hljs cpp"><span class="hljs-keyword">for</span> (x = <span class="hljs-number">0</span>; x &lt; <span class="hljs-number">10</span>; x++) {
+    <span class="hljs-built_in">printf</span>( <span class="hljs-string">"%d\n"</span>, x );
+}
+</code></pre>
+<p>Instead, it looks like this:</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..<span class="hljs-number">10</span> {
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"{}"</span>, x); <span class="hljs-comment">// x: i32</span>
+}<span class="hidden">
+}</span></code></pre></pre>
+<p>In slightly more abstract terms,</p>
+<pre><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button></div><code class="language-rust ignore hljs"><span class="hljs-keyword">for</span> var <span class="hljs-keyword">in</span> expression {
+    code
+}
+</code></pre>
+<p>The expression is an item that can be converted into an <a href="https://doc.rust-lang.org/book/first-edition/iterators.html">iterator</a> using
+<a href="https://doc.rust-lang.org/std/iter/trait.IntoIterator.html"><code class="hljs">IntoIterator</code></a>. The iterator gives back a series of elements, one element per
+iteration of the loop. That value is then bound to the name <code class="hljs">var</code>, which is
+valid for the loop body. Once the body is over, the next value is fetched from
+the iterator, and we loop another time. When there are no more values, the <code class="hljs">for</code>
+loop is over.</p>
+<p>In our example, <code class="hljs">0..10</code> is an expression that takes a start and an end position,
+and gives an iterator over those values. The upper bound is exclusive, though,
+so our loop will print <code class="hljs">0</code> through <code class="hljs">9</code>, not <code class="hljs">10</code>.</p>
+<p>Rust does not have the “C-style” <code class="hljs">for</code> loop on purpose. Manually controlling
+each element of the loop is complicated and error prone, even for experienced C
+developers.</p>
+<a class="header" href="https://doc.rust-lang.org/book/first-edition/loops.html#enumerate" id="enumerate"><h3>Enumerate</h3></a>
+<p>When you need to keep track of how many times you have already looped, you can
+use the <code class="hljs">.enumerate()</code> function.</p>
+<a class="header" href="https://doc.rust-lang.org/book/first-edition/loops.html#on-ranges" id="on-ranges"><h4>On ranges:</h4></a>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-keyword">for</span> (index, value) <span class="hljs-keyword">in</span> (<span class="hljs-number">5</span>..<span class="hljs-number">10</span>).enumerate() {
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"index = {} and value = {}"</span>, index, value);
+}<span class="hidden">
+}</span></code></pre></pre>
+<p>Outputs:</p>
+<pre><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button></div><code class="language-text hljs">index = 0 and value = 5
+index = 1 and value = 6
+index = 2 and value = 7
+index = 3 and value = 8
+index = 4 and value = 9
+</code></pre>
+<p>Don't forget to add the parentheses around the range.</p>
+<a class="header" href="https://doc.rust-lang.org/book/first-edition/loops.html#on-iterators" id="on-iterators"><h4>On iterators:</h4></a>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-keyword">let</span> lines = <span class="hljs-string">"hello\nworld"</span>.lines();
+
+<span class="hljs-keyword">for</span> (linenumber, line) <span class="hljs-keyword">in</span> lines.enumerate() {
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"{}: {}"</span>, linenumber, line);
+}<span class="hidden">
+}</span></code></pre></pre>
+<p>Outputs:</p>
+<pre><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button></div><code class="language-text hljs">0: hello
+1: world
+</code></pre>
+<a class="header" href="https://doc.rust-lang.org/book/first-edition/loops.html#ending-iteration-early" id="ending-iteration-early"><h2>Ending iteration early</h2></a>
+<p>Let’s take a look at that <code class="hljs">while</code> loop we had earlier:</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> x = <span class="hljs-number">5</span>;
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> done = <span class="hljs-literal">false</span>;
+
+<span class="hljs-keyword">while</span> !done {
+    x += x - <span class="hljs-number">3</span>;
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"{}"</span>, x);
+
+    <span class="hljs-keyword">if</span> x % <span class="hljs-number">5</span> == <span class="hljs-number">0</span> {
+        done = <span class="hljs-literal">true</span>;
+    }
+}<span class="hidden">
+}</span></code></pre></pre>
+<p>We had to keep a dedicated <code class="hljs">mut</code> boolean variable binding, <code class="hljs">done</code>, to know
+when we should exit out of the loop. Rust has two keywords to help us with
+modifying iteration: <code class="hljs">break</code> and <code class="hljs">continue</code>.</p>
+<p>In this case, we can write the loop in a better way with <code class="hljs">break</code>:</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> x = <span class="hljs-number">5</span>;
+
+<span class="hljs-keyword">loop</span> {
+    x += x - <span class="hljs-number">3</span>;
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"{}"</span>, x);
+
+    <span class="hljs-keyword">if</span> x % <span class="hljs-number">5</span> == <span class="hljs-number">0</span> { <span class="hljs-keyword">break</span>; }
+}<span class="hidden">
+}</span></code></pre></pre>
+<p>We now loop forever with <code class="hljs">loop</code> and use <code class="hljs">break</code> to break out early. Issuing an explicit <code class="hljs">return</code> statement will also serve to terminate the loop early.</p>
+<p><code class="hljs">continue</code> is similar, but instead of ending the loop, it goes to the next
+iteration. This will only print the odd numbers:</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..<span class="hljs-number">10</span> {
+    <span class="hljs-keyword">if</span> x % <span class="hljs-number">2</span> == <span class="hljs-number">0</span> { <span class="hljs-keyword">continue</span>; }
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"{}"</span>, x);
+}<span class="hidden">
+}</span></code></pre></pre>
+<a class="header" href="https://doc.rust-lang.org/book/first-edition/loops.html#loop-labels" id="loop-labels"><h2>Loop labels</h2></a>
+<p>You may also encounter situations where you have nested loops and need to
+specify which one your <code class="hljs">break</code> or <code class="hljs">continue</code> statement is for. Like most
+other languages, Rust's <code class="hljs">break</code> or <code class="hljs">continue</code> apply to the innermost loop.
+In a situation where you would like to <code class="hljs">break</code> or <code class="hljs">continue</code> for one
+of the outer loops, you can use labels to specify which loop the <code class="hljs">break</code> or
+<code class="hljs">continue</code> statement applies to.</p>
+<p>In the example below, we <code class="hljs">continue</code> to the next iteration of <code class="hljs">outer</code> loop
+when <code class="hljs">x</code> is even, while we <code class="hljs">continue</code> to the next iteration of <code class="hljs">inner</code>
+loop when y is even. So it will execute the <code class="hljs">println!</code> when both <code class="hljs">x</code> and
+<code class="hljs">y</code> are odd.</p>
+<pre><pre class="playpen"><div class="buttons"><button class="fa fa-copy clip-button" title="Copy to clipboard" aria-label="Copy to clipboard"><i class="tooltiptext"></i></button><button class="fa fa-play play-button" title="Run this code" aria-label="Run this code" hidden=""></button><button class="fa fa-expand" title="Show hidden lines" aria-label="Show hidden lines"></button></div><code class="language-rust hljs"><span class="hidden">
+<span class="hljs-meta">#![allow(unused_variables)]</span></span><span class="hidden">
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {</span>
+<span class="hljs-symbol">'outer</span>: <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..<span class="hljs-number">10</span> {
+    <span class="hljs-symbol">'inner</span>: <span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..<span class="hljs-number">10</span> {
+        <span class="hljs-keyword">if</span> x % <span class="hljs-number">2</span> == <span class="hljs-number">0</span> { <span class="hljs-keyword">continue</span> <span class="hljs-symbol">'outer</span>; } <span class="hljs-comment">// Continues the loop over `x`.</span>
+        <span class="hljs-keyword">if</span> y % <span class="hljs-number">2</span> == <span class="hljs-number">0</span> { <span class="hljs-keyword">continue</span> <span class="hljs-symbol">'inner</span>; } <span class="hljs-comment">// Continues the loop over `y`.</span>
+        <span class="hljs-built_in">println!</span>(<span class="hljs-string">"x: {}, y: {}"</span>, x, y);
+    }
+}<span class="hidden">
+}</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="https://doc.rust-lang.org/book/first-edition/if.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="https://doc.rust-lang.org/book/first-edition/vectors.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="https://doc.rust-lang.org/book/first-edition/if.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="https://doc.rust-lang.org/book/first-edition/vectors.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
+            }
+        </script>
+
+        
+
+        
+
+        
+
+        
+
+        <script src="Rusk-Dateien/highlight.js"></script>
+        <script src="Rusk-Dateien/book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    
+
+</body></html>

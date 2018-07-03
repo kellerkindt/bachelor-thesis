@@ -1,8 +1,12 @@
 extern crate sdl2;
 
+use std::collections::HashMap;
+
 use sdl2::event::Event;
 use sdl2::event::WindowEvent;
 use sdl2::rect::Rect;
+use sdl2::render::Texture;
+use sdl2::render::TextureCreator;
 use sdl2::image::LoadTexture;
 
 fn main() -> Result<(), String> {
@@ -28,7 +32,9 @@ fn main() -> Result<(), String> {
     let _image_context = sdl2::image::init(::sdl2::image::INIT_PNG)?;
 
     let texture_creator = canvas.texture_creator();
-    let texture = texture_creator.load_texture("rustacean-flat-happy.png")?;
+    let mut cache = TextureCache::new(texture_creator);
+
+    cache.load(MyTexture::Crab)?;
 
     let mut s = 1;
     let mut x = 0;
@@ -43,7 +49,9 @@ fn main() -> Result<(), String> {
 
 
         canvas.clear();
-        canvas.copy(&texture, None, Some(Rect::new(x, 320, 240, 160)))?;
+        if let Some(texture) = cache.get(&MyTexture::Crab) {
+            canvas.copy(texture, None, Some(Rect::new(x, 320, 240, 160)))?;
+        }
         canvas.present();
 
         // abort if close is requested
@@ -56,5 +64,41 @@ fn main() -> Result<(), String> {
                 return Ok(());
             }
         }
+    }
+}
+
+#[derive(Copy, Clone, Hash, Eq, PartialEq)]
+enum MyTexture {
+    Crab
+}
+
+impl MyTexture {
+    fn path(&self) -> &str {
+        match self {
+            &MyTexture::Crab => "rustacean-flat-happy.png"
+        }
+    }
+}
+
+struct TextureCache<'r, T: 'r> {
+    creator: TextureCreator<T>,
+    cached: HashMap<MyTexture, Texture<'r>>,
+}
+
+impl<'r, T: 'r> TextureCache<'r, T> {
+    fn new(creator: TextureCreator<T>) -> TextureCache<'r, T> {
+        TextureCache {
+            creator,
+            cached: Default::default(),
+        }
+    }
+
+    fn load(&mut self, id: MyTexture) -> Result<(), String> {
+        self.cached.insert(id, self.creator.load_texture(id.path())?);
+        Ok(())
+    }
+
+    fn get(&self, id: &MyTexture) -> Option<&Texture<'r>> {
+        self.cached.get(id)
     }
 }

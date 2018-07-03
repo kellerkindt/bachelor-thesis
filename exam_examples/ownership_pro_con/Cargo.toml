@@ -1,0 +1,13 @@
+[package]
+name = "ownership_pro_con"
+version = "0.1.0"
+authors = ["Michael Watzko <michael@watzko.de>"]
+
+[dependencies]
+
+[dependencies.sdl2]
+version = "0.31"
+default-features = false
+#features = ["image","gfx"]
+features = ["ttf","image", "gfx"]
+#features = ["ttf","image","gfx","mixer", "unsafe_textures"]

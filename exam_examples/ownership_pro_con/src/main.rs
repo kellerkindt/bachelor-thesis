@@ -33,7 +33,7 @@ fn main() -> Result<(), String> {
 
 
     let texture_creator = canvas.texture_creator();
-    let mut cache = TextureCache::new(texture_creator);
+    let mut cache = TextureCache::new(&texture_creator);
 
 
     let mut s = 1;
@@ -78,20 +78,20 @@ impl MyTexture {
     }
 }
 
-struct TextureCache<'r, T> {
-    creator: TextureCreator<T>,
+struct TextureCache<'r, T: 'r> {
+    creator: &'r TextureCreator<T>,
     cached: HashMap<MyTexture, Texture<'r>>,
 }
 
 impl<'r, T> TextureCache<'r, T> {
-    fn new(creator: TextureCreator<T>) -> TextureCache<'r, T> {
+    fn new(creator: &'r TextureCreator<T>) -> TextureCache<'r, T> {
         TextureCache {
             creator,
             cached: Default::default(),
         }
     }
 
-    fn get_or_load(&'r mut self, id: MyTexture) -> Result<&Texture<'r>, String> {
+    fn get_or_load(&mut self, id: MyTexture) -> Result<&Texture<'r>, String> {
         if !self.cached.contains_key(&id) {
             let texture = self.creator.load_texture(id.path())?;
             self.cached.insert(id, texture);
@@ -101,14 +101,4 @@ impl<'r, T> TextureCache<'r, T> {
             .get(&id)
             .ok_or("Insert failed".into())
     }
-/*
-    fn load(&mut self, id: MyTexture) -> Result<(), String> {
-        self.cached.insert(id, self.creator.load_texture(id.path())?);
-        Ok(())
-    }
-
-    fn get(&self, id: &MyTexture) -> Option<&Texture<'r>> {
-        self.cached.get(id)
-    }
-    */
 }

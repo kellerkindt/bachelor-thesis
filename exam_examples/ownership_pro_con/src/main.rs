@@ -10,8 +10,10 @@ use sdl2::render::TextureCreator;
 use sdl2::image::LoadTexture;
 
 fn main() -> Result<(), String> {
-    let sdl_context = sdl2::init().unwrap();
-    let video_subsystem: sdl2::VideoSubsystem = sdl_context.video().unwrap();
+    let _image_context = sdl2::image::init(::sdl2::image::INIT_PNG)?;
+
+    let sdl_context = sdl2::init()?;
+    let video_subsystem: sdl2::VideoSubsystem = sdl_context.video()?;
 
     let window = video_subsystem
         .window("SDL2", 640, 480)
@@ -29,10 +31,9 @@ fn main() -> Result<(), String> {
 
     let mut event_pump = sdl_context.event_pump()?;
 
-    let _image_context = sdl2::image::init(::sdl2::image::INIT_PNG)?;
 
     let texture_creator = canvas.texture_creator();
-    let mut cache = TextureCache::new(texture_creator);
+    let mut cache = TextureCache::new(&texture_creator);
 
     cache.load(MyTexture::Crab)?;
 
@@ -81,12 +82,12 @@ impl MyTexture {
 }
 
 struct TextureCache<'r, T: 'r> {
-    creator: TextureCreator<T>,
+    creator: &'r TextureCreator<T>,
     cached: HashMap<MyTexture, Texture<'r>>,
 }
 
 impl<'r, T: 'r> TextureCache<'r, T> {
-    fn new(creator: TextureCreator<T>) -> TextureCache<'r, T> {
+    fn new(creator: &'r TextureCreator<T>) -> TextureCache<'r, T> {
         TextureCache {
             creator,
             cached: Default::default(),

@@ -33,9 +33,8 @@ fn main() -> Result<(), String> {
 
 
     let texture_creator = canvas.texture_creator();
-    let mut cache = TextureCache::new(&texture_creator);
+    let mut cache = TextureCache::new(texture_creator);
 
-    cache.load(MyTexture::Crab)?;
 
     let mut s = 1;
     let mut x = 0;
@@ -50,9 +49,7 @@ fn main() -> Result<(), String> {
 
 
         canvas.clear();
-        if let Some(texture) = cache.get(&MyTexture::Crab) {
-            canvas.copy(texture, None, Some(Rect::new(x, 320, 240, 160)))?;
-        }
+        canvas.copy(cache.get_or_load(MyTexture::Crab)?, None, Some(Rect::new(x, 320, 240, 160)))?;
         canvas.present();
 
         // abort if close is requested
@@ -70,7 +67,7 @@ fn main() -> Result<(), String> {
 
 #[derive(Copy, Clone, Hash, Eq, PartialEq)]
 enum MyTexture {
-    Crab
+    Crab,
 }
 
 impl MyTexture {
@@ -81,19 +78,30 @@ impl MyTexture {
     }
 }
 
-struct TextureCache<'r, T: 'r> {
-    creator: &'r TextureCreator<T>,
+struct TextureCache<'r, T> {
+    creator: TextureCreator<T>,
     cached: HashMap<MyTexture, Texture<'r>>,
 }
 
-impl<'r, T: 'r> TextureCache<'r, T> {
-    fn new(creator: &'r TextureCreator<T>) -> TextureCache<'r, T> {
+impl<'r, T> TextureCache<'r, T> {
+    fn new(creator: TextureCreator<T>) -> TextureCache<'r, T> {
         TextureCache {
             creator,
             cached: Default::default(),
         }
     }
 
+    fn get_or_load(&'r mut self, id: MyTexture) -> Result<&Texture<'r>, String> {
+        if !self.cached.contains_key(&id) {
+            let texture = self.creator.load_texture(id.path())?;
+            self.cached.insert(id, texture);
+        }
+
+        self.cached
+            .get(&id)
+            .ok_or("Insert failed".into())
+    }
+/*
     fn load(&mut self, id: MyTexture) -> Result<(), String> {
         self.cached.insert(id, self.creator.load_texture(id.path())?);
         Ok(())
@@ -102,4 +110,5 @@ impl<'r, T: 'r> TextureCache<'r, T> {
     fn get(&self, id: &MyTexture) -> Option<&Texture<'r>> {
         self.cached.get(id)
     }
+    */
 }

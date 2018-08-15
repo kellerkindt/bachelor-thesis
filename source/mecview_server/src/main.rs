@@ -128,8 +128,7 @@ fn parse_config() -> ServerConfig {
                 "warn" => Some(LevelFilter::Warn),
                 "err" => Some(LevelFilter::Error),
                 _ => panic!("Invalid log level"),
-            })
-            .or(None),
+            }).or(None),
         init_message: matches.value_of("init_message").map(|s| String::from(s)),
         algorithm_type: matches
             .value_of("algorithm_type")
@@ -142,8 +141,7 @@ fn parse_config() -> ServerConfig {
                         .unwrap(),
                 ),
                 s => panic!("Unknown argument for algorithm type: {}", s),
-            })
-            .unwrap(),
+            }).unwrap(),
     }
 }
 
@@ -161,8 +159,7 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
                 .help("Sets the TCP listen port")
                 .takes_value(true)
                 .default_value("2000"),
-        )
-        .arg(
+        ).arg(
             Arg::with_name("interface")
                 .short("i")
                 .long("interface")
@@ -170,8 +167,7 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
                 .help("Sets the interface to listen on")
                 .takes_value(true)
                 .default_value("0.0.0.0"),
-        )
-        .arg(
+        ).arg(
             Arg::with_name("log")
                 .short("l")
                 .long("log")
@@ -179,24 +175,21 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
                 .help("Sets the log level of the server")
                 .takes_value(true)
                 .possible_values(&["trace", "debug", "info", "warn", "err"]),
-        )
-        .arg(
+        ).arg(
             Arg::with_name("init_message")
                 .short("v")
                 .long("init-message")
                 .value_name("PATH")
                 .help("The path to the InitMessage to send to a Vehicle")
                 .takes_value(true),
-        )
-        .arg(
+        ).arg(
             Arg::with_name("environment_frame")
                 .short("e")
                 .long("environment-frame")
                 .value_name("PATH")
                 .help("The path to the EnvironmentFrame to send to the Vehicles")
                 .takes_value(true),
-        )
-        .arg(
+        ).arg(
             Arg::with_name("algorithm_config")
                 .short("a")
                 .long("algorithm")
@@ -204,8 +197,7 @@ fn create_argument_parser<'a, 'b>() -> App<'a, 'b> {
                 .help("The path to the algorithm configuration file")
                 .takes_value(true)
                 .default_value("/etc/mecview/algorithm.json"),
-        )
-        .arg(
+        ).arg(
             Arg::with_name("algorithm_type")
                 .short("u")
                 .long("use")
@@ -230,8 +222,7 @@ pub(crate) fn init_log4rs(level: Option<LevelFilter>) -> Result<Handle, SetLogge
             Root::builder()
                 .appender("stdout")
                 .build(level.unwrap_or(LevelFilter::Info)),
-        )
-        .expect("Failed to create logger config");
+        ).expect("Failed to create logger config");
 
     log4rs::init_config(config)
 }

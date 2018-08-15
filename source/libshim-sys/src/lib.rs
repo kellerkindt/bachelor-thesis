@@ -27,8 +27,7 @@ unsafe impl<
         FE: Publisher<E> + Send + 'static,
         FI: Publisher<I> + Send + 'static,
     > Send for AlgorithmShim<I, E, S, FE, FI>
-{
-}
+{}
 
 impl<
         I: Send,

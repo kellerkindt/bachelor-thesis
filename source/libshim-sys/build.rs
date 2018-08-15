@@ -132,8 +132,7 @@ fn find_headers(sdk_dir: &str) -> Vec<String> {
                 } else {
                     None
                 }
-            })
-            .unwrap_or(None);
+            }).unwrap_or(None);
         if entry.is_some() {
             headers.push(entry.unwrap());
         }

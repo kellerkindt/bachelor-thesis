@@ -77,9 +77,10 @@ impl Server {
         match <raw::InitMessage as libasn::AsnMessage>::try_decode_xer(&xml) {
             Err(_) => Err(Error::from(ErrorKind::InvalidData)),
             Ok(init) => {
-                self.init_message = Some(Arc::new(init
-                    .try_encode_uper()
-                    .map_err(|_| Error::from(ErrorKind::InvalidData))?));
+                self.init_message = Some(Arc::new(
+                    init.try_encode_uper()
+                        .map_err(|_| Error::from(ErrorKind::InvalidData))?,
+                ));
                 Ok(())
             }
         }
@@ -103,8 +104,7 @@ impl Server {
                         Ok(_) => Ok(()),
                         Err(_) => Err(Error::from(ErrorKind::UnexpectedEof)),
                     },
-                )
-                .then(|r| match r {
+                ).then(|r| match r {
                     Err(_) => Err(()),
                     Ok(_) => Ok(()),
                 }),
@@ -341,8 +341,10 @@ impl Decoder for RawMessageCodec {
                     message.len(),
                     &message[..message.len()]
                 );
-                Ok(Some(Arc::new(RawMessage::new(identifier, message)
-                    .map_err(|_| Error::from(ErrorKind::InvalidData))?)))
+                Ok(Some(Arc::new(
+                    RawMessage::new(identifier, message)
+                        .map_err(|_| Error::from(ErrorKind::InvalidData))?,
+                )))
             } else {
                 let capacity = src.capacity();
                 if capacity < total_length {

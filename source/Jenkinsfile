@@ -13,6 +13,7 @@ pipeline {
         CRATE_SERVER = 'source/mecview_server'
         CRATE_LIBMSG = 'source/libmessages'
         CRATE_LIBMSGSYS = 'source/libmessages-sys'
+	RUST_BACKTRACE = 'full'
     }
     stages {
         stage('prepare') {

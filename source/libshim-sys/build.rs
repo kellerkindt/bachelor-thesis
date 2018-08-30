@@ -9,7 +9,7 @@ use std::path::Path;
 use walkdir::DirEntry;
 use walkdir::WalkDir;
 
-const LIBRARY_FILE: &'static str = "libalgorithm.a";
+const LIBRARY_FILE: &'static str = "libshim.a";
 const BINDINGS_FILE: &'static str = "src/bindings.rs";
 
 fn main() {

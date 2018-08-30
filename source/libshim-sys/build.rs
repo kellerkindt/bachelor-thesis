@@ -27,7 +27,7 @@ fn main() {
 
         generate_main_header(&headers, main_header);
 
-        let _headers = compile_sdk(&["cpp/impl", "cpp/wrapper/"], LIBRARY_FILE);
+        let _headers = compile_sdk(&["cpp/shim/", "cpp/wrapper/"], LIBRARY_FILE);
 
         if !Path::new(BINDINGS_FILE).exists() {
             generate_bindings(
